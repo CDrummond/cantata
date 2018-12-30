@@ -277,6 +277,14 @@ static bool albumSort(const Song &s1, const Song &s2)
     return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
+static bool titleSort(const Song &s1, const Song &s2)
+{
+    const QString v1=s1.title;
+    const QString v2=s2.title;
+    int c=v1.localeAwareCompare(v2);
+    return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
+}
+
 static bool genreSort(const Song &s1, const Song &s2)
 {
     int c=s1.compareGenres(s2);
@@ -333,6 +341,9 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
         break;
     case RulesPlaylists::Order_Rating:
         qSort(songs.begin(), songs.end(), ratingSort);
+        break;
+    case RulesPlaylists::Order_Title:
+        qSort(songs.begin(), songs.end(), titleSort);
         break;
     case RulesPlaylists::Order_Age:
         qSort(songs.begin(), songs.end(), ageSort);

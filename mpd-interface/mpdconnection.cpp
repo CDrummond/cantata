@@ -712,6 +712,18 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             // setting commands are not supported. So, if we get this error then just ignore it.
             if (!isMpd() && (command.startsWith("crossfade ") || command.startsWith("replay_gain_mode "))) {
                 emitError=false;
+            } else if (isMpd() && command.startsWith("albumart ")) {
+                // MPD will report a generic "file not found" error if it can't find album art; this can happen
+                // several times in a large playlist so hide this from the GUI (but report it using DBUG here).
+                emitError=false;
+                const auto start = command.indexOf(' ');
+                const auto end = command.lastIndexOf(' ') - start;
+                if (start > 0 && (end > 0 && (start + end) < command.length())) {
+                    const QString filename = command.mid(start, end);
+                    DBUG << "MPD reported no album art for" << filename;
+                } else {
+                    DBUG << "MPD albumart command was malformed:" << command;
+                }
             }
             if (emitError) {
                 if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
@@ -1277,12 +1289,14 @@ void MPDConnection::playFirstTrack(bool emitErrors)
     sendCommand("play 0", emitErrors);
 }
 
-void MPDConnection::seek()
+void MPDConnection::seek(qint32 offset)
 {
-    QObject *s=sender();
-    int offset=s ? s->property("offset").toInt() : 0;
     if (0==offset) {
-        return;
+        QObject *s=sender();
+        offset=s ? s->property("offset").toInt() : 0;
+        if (0==offset) {
+            return;
+        }
     }
     toggleStopAfterCurrent(false);
     Response response=sendCommand("status");
@@ -1484,6 +1498,69 @@ void MPDConnection::getTagTypes()
     }
 }
 
+void MPDConnection::getCover(const Song &song)
+{
+    int dataToRead = -1;
+    int imageSize = 0;
+    QByteArray imageData;
+    bool firstRun = true;
+    QString path=Utils::getDir(song.file);
+    while (dataToRead != 0) {
+        Response response=sendCommand("albumart "+encodeName(path)+" "+QByteArray::number(firstRun ? 0 : (imageSize - dataToRead)));
+        if (!response.ok) {
+            DBUG << "albumart query failed";
+            break;
+        }
+
+        static const QByteArray constSize("size: ");
+        static const QByteArray constBinary("binary: ");
+
+        auto sizeStart = strstr(response.data.constData(), constSize.constData());
+        if (!sizeStart) {
+            DBUG << "Failed to get size start";
+            break;
+        }
+        auto sizeEnd = strchr(sizeStart, '\n');
+        if (!sizeEnd) {
+            DBUG << "Failed to get size end";
+            break;
+        }
+
+        auto chunkSizeStart = strstr(sizeEnd, constBinary.constData());
+        if (!chunkSizeStart) {
+            DBUG << "Failed to get chunk size start";
+            break;
+        }
+        auto chunkSizeEnd = strchr(chunkSizeStart, '\n');
+        if (!chunkSizeEnd) {
+            DBUG << "Failed to chunk size end";
+            break;
+        }
+
+        if (firstRun) {
+            imageSize = QByteArray(sizeStart+constSize.length(), sizeEnd-(sizeStart+constSize.length())).toUInt();
+            imageData.reserve(imageSize);
+            dataToRead = imageSize;
+            firstRun = false;
+            DBUG << "image size" << imageSize;
+        }
+
+        int chunkSize = QByteArray(chunkSizeStart+constBinary.length(), chunkSizeEnd-(chunkSizeStart+constBinary.length())).toUInt();
+        DBUG << "chunk size" << chunkSize;
+
+        int startOfChunk=(chunkSizeEnd+1)-response.data.constData();
+        if (startOfChunk+chunkSize > response.data.length()) {
+            DBUG << "Invalid chunk size";
+            break;
+        }
+
+        imageData.append(chunkSizeEnd+1, chunkSize);
+        dataToRead -= chunkSize;
+    }
+
+    DBUG << dataToRead << imageData.size();
+    emit albumArt(song, 0==dataToRead ? imageData : QByteArray());
+}
 
 /*
  * Data is written during idle.
@@ -2124,9 +2201,7 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
             songs.clear();
         }
         for (const QString &sub: subDirs) {
-            if (!recursivelyListDir(sub, songs)) {
-                return false;
-            }
+            recursivelyListDir(sub, songs);
         }
 
         if (topLevel && !songs.isEmpty()) {
@@ -2522,7 +2597,7 @@ MPDServerInfo::ResponseParameter MPDServerInfo::lsinfoResponseParameters[] = {
     { "OK", false, MPDServerInfo::ForkedDaapd, "forked-daapd" }
 };
 
-void MPDServerInfo::detect(void) {
+void MPDServerInfo::detect() {
     MPDConnection *conn;
 
     if (!isUndetermined()) {
@@ -2593,7 +2668,7 @@ void MPDServerInfo::detect(void) {
     }
 }
 
-void MPDServerInfo::reset(void) {
+void MPDServerInfo::reset() {
     setServerType(MPDServerInfo::Undetermined);
     serverName = "undetermined";
     topLevelLsinfo = "lsinfo";

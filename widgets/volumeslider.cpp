@@ -292,7 +292,6 @@ void VolumeSlider::updateStatus()
     }
     bool wasEnabled=isEnabled();
     setEnabled(volume>=0);
-    setVisible(volume>=0);
     update();
     muteAction->setEnabled(isEnabled());
     StdActions::self()->increaseVolumeAction->setEnabled(isEnabled());

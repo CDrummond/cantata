@@ -137,11 +137,10 @@ void Icons::initSidebarIcons()
     searchTabIcon=MonoIcon::icon(QLatin1String(":sidebar-search"), iconCol);
 }
 
-void Icons::initToolbarIcons(QColor toolbarText)
+void Icons::initToolbarIcons(const QColor &toolbarText)
 {
     bool rtl=QApplication::isRightToLeft();
 
-    toolbarText=Utils::clampColor(toolbarText);
     toolbarPrevIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-next" : ":media-prev"), toolbarText);
     toolbarPlayIcon=MonoIcon::icon(QLatin1String(rtl ? ":media-play-rtl" : ":media-play"), toolbarText);
     toolbarPauseIcon=MonoIcon::icon(QLatin1String(":media-pause"), toolbarText);

@@ -76,7 +76,7 @@ public:
     void Stop() { StdActions::self()->stopPlaybackAction->trigger(); }
     void StopAfterCurrent() { StdActions::self()->stopAfterCurrentTrackAction->trigger(); }
     void Play();
-    void Seek(qlonglong pos) { emit setSeekId(-1, pos/1000000); }
+    void Seek(qlonglong pos) { emit seek(pos/1000000); }
     void SetPosition(const QDBusObjectPath &trackId, qlonglong pos);
     void OpenUri(const QString &) { }
     QString PlaybackStatus() const;
@@ -120,6 +120,7 @@ Q_SIGNALS:
     void setRandom(bool toggle);
     void setRepeat(bool toggle);
     void setSeekId(qint32 songId, quint32 time);
+    void seek(qint32 offset);
     void setVolume(int vol);
 
     void showMainWindow();

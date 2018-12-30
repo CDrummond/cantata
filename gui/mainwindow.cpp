@@ -142,6 +142,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
     , singlePane(false)
+    , shown(false)
     , currentPage(nullptr)
     #ifdef QT_QTDBUS_FOUND
     , mpris(nullptr)
@@ -759,6 +760,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage->mpd(), SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(searchPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
     for (QAction *act: StdActions::self()->setPriorityAction->menu()->actions()) {
         connect(act, SIGNAL(triggered()), this, SLOT(addWithPriority()));
@@ -852,6 +854,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(locateArtistAction, SIGNAL(triggered()), this, SLOT(locateTrack()));
     connect(this, SIGNAL(playNext(QList<quint32>,quint32,quint32)), MPDConnection::self(), SLOT(move(QList<quint32>,quint32,quint32)));
     connect(playNextAction, SIGNAL(triggered()), this, SLOT(moveSelectionAfterCurrentSong()));
+    connect(qApp, SIGNAL(paletteChanged(const QPalette &)), this, SLOT(paletteChanged()));
 
     connect(StdActions::self()->searchAction, SIGNAL(triggered()), SLOT(showSearch()));
     connect(searchPlayQueueAction, SIGNAL(triggered()), this, SLOT(showPlayQueueSearch()));
@@ -1108,6 +1111,11 @@ void MainWindow::showEvent(QShowEvent *event)
     #endif
     QMainWindow::showEvent(event);
     controlView();
+    if (!shown) {
+        shown=true;
+        // Work-around for qt5ct palette issues...
+        QTimer::singleShot(0, this, SLOT(paletteChanged()));
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -1485,6 +1493,27 @@ void MainWindow::toggleMenubar()
         setCollapsedSize();
     }
     #endif
+}
+
+void MainWindow::paletteChanged()
+{
+    QColor before = nowPlaying->textColor();
+    nowPlaying->initColors();
+    if (before == nowPlaying->textColor()) {
+        return;
+    }
+
+    volumeSlider->setColor(nowPlaying->textColor());
+
+    Icons::self()->initToolbarIcons(nowPlaying->textColor());
+    StdActions::self()->prevTrackAction->setIcon(Icons::self()->toolbarPrevIcon);
+    StdActions::self()->nextTrackAction->setIcon(Icons::self()->toolbarNextIcon);
+    StdActions::self()->playPauseTrackAction->setIcon(MPDState_Playing==MPDStatus::self()->state() ? Icons::self()->toolbarPauseIcon : Icons::self()->toolbarPlayIcon);
+    StdActions::self()->stopPlaybackAction->setIcon(Icons::self()->toolbarStopIcon);
+    StdActions::self()->stopAfterCurrentTrackAction->setIcon(Icons::self()->toolbarStopIcon);
+    StdActions::self()->stopAfterTrackAction->setIcon(Icons::self()->toolbarStopIcon);
+    songInfoAction->setIcon(Icons::self()->infoIcon);
+    menuButton->setIcon(Icons::self()->toolbarMenuIcon);
 }
 
 void MainWindow::readSettings()
@@ -2649,7 +2678,7 @@ void MainWindow::controlView(bool forceUpdate)
             stopTrackButton->setVisible(stopEnabled);
         }
 
-        if (responsiveSidebar || forceUpdate) {
+        if (expandInterfaceAction->isChecked() && (responsiveSidebar || forceUpdate)) {
             if (!responsiveSidebar || width()>Utils::scaleForDpi(450)) {
                 if (forceUpdate || singlePane) {
                     int index=tabWidget->currentIndex();
@@ -2734,17 +2763,14 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
     adjustSize();
 
     if (showing) {
-        bool adjustWidth=size().width()!=expandedSize.width();
-        bool adjustHeight=size().height()!=expandedSize.height();
-        if (adjustWidth || adjustHeight) {
-            resize(adjustWidth ? expandedSize.width() : size().width(), adjustHeight ? expandedSize.height() : size().height());
-        }
+        resize(qMax(prevWidth, expandedSize.width()), expandedSize.height());
         if (lastMax) {
             showMaximized();
         }
+        controlView();
     } else {
         // Width also sometimes expands, so make sure this is no larger than it was before...
-        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), calcCollapsedSize());
+        collapsedSize=QSize(collapsedSize.isValid() ? qMin(collapsedSize.width(), prevWidth) : prevWidth, calcCollapsedSize());
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

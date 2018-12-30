@@ -32,15 +32,15 @@
 #endif
 #include <QTimer>
 
-static const int constPlayerCheckPeriod=250;
-static const int constMaxPlayStateChecks=2000/constPlayerCheckPeriod;
+static const int constPlayerCheckPeriod = 250;
+static const int constMaxPlayStateChecks= 2000 / constPlayerCheckPeriod;
 
 #include <QDebug>
-static bool debugEnabled=false;
+static bool debugEnabled = false;
 #define DBUG if (debugEnabled) qWarning() << metaObject()->className() << __FUNCTION__
 void HttpStream::enableDebug()
 {
-    debugEnabled=true;
+    debugEnabled = true;
 }
 
 GLOBAL_STATIC(HttpStream, instance)
@@ -48,8 +48,8 @@ GLOBAL_STATIC(HttpStream, instance)
 HttpStream::HttpStream(QObject *p)
     : QObject(p)
     , enabled(false)
-    , state(MPDState_Inactive)
     , muted(false)
+    , state(MPDState_Inactive)
     , playStateChecks(0)
     , currentVolume(50)
     , unmuteVol(50)
@@ -66,11 +66,11 @@ void HttpStream::save() const
 
 void HttpStream::setEnabled(bool e)
 {
-    if (e==enabled) {
+    if (e == enabled) {
         return;
     }
 
-    enabled=e;
+    enabled = e;
     if (enabled) {
         connect(MPDConnection::self(), SIGNAL(streamUrl(QString)), this, SLOT(streamUrl(QString)));
         connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
@@ -94,7 +94,7 @@ void HttpStream::setVolume(int vol)
 {
     DBUG << vol;
     if (player) {
-        currentVolume=vol;
+        currentVolume = vol;
         #ifdef LIBVLC_FOUND
         libvlc_audio_set_volume(player, vol);
         #else
@@ -106,17 +106,21 @@ void HttpStream::setVolume(int vol)
 
 int HttpStream::volume()
 {
-    int vol=currentVolume;
+    if (!enabled) {
+        return -1;
+    }
+
+    int vol = currentVolume;
     if (player && !isMuted()) {
         #ifdef LIBVLC_FOUND
-        vol=libvlc_audio_get_volume(player);
+        vol = libvlc_audio_get_volume(player);
         #else
-        vol=player->volume();
+        vol = player->volume();
         #endif
-        if (vol<0) {
-            vol=currentVolume;
+        if (vol < 0) {
+            vol = currentVolume;
         } else {
-            currentVolume=vol;
+            currentVolume = vol;
         }
     }
     DBUG << vol;
@@ -127,7 +131,7 @@ void HttpStream::toggleMute()
 {
     DBUG << isMuted();
     if (player) {
-        muted=!muted;
+        muted =! muted;
         #ifdef LIBVLC_FOUND
         libvlc_audio_set_mute(player, muted);
         #else
@@ -139,21 +143,22 @@ void HttpStream::toggleMute()
 
 void HttpStream::streamUrl(const QString &url)
 {
-    MPDStatus * const status = MPDStatus::self();
     DBUG << url;
     #ifdef LIBVLC_FOUND
     if (player) {
         libvlc_media_player_stop(player);
         libvlc_media_player_release(player);
         libvlc_release(instance);
-        player=0;
+        player = 0;
     }
     #else
-    static const char *constUrlProperty="url";
-    if (player && player->property(constUrlProperty).toString()!=url) {
-        player->stop();
-        player->deleteLater();
-        player=nullptr;
+    if (player) {
+        QMediaContent media = player->media();
+        if (media != nullptr && media.canonicalUrl() != url) {
+            player->stop();
+            player->deleteLater();
+            player = nullptr;
+        }
     }
     #endif
     QUrl qUrl(url);
@@ -165,21 +170,35 @@ void HttpStream::streamUrl(const QString &url)
         player = libvlc_media_player_new_from_media(media);
         libvlc_media_release(media);
         #else
-        player=new QMediaPlayer(this);
+        player = new QMediaPlayer(this);
         player->setMedia(qUrl);
-        player->setProperty(constUrlProperty, url);
+        connect(player, &QMediaPlayer::bufferStatusChanged, this, &HttpStream::bufferingProgress);
         #endif
-        muted=false;
+        muted = false;
         setVolume(Configuration(metaObject()->className()).get("volume", currentVolume));
     }
     if (player) {
-        state=0xFFFF; // Force an update...
+        state = 0xFFFF; // Force an update...
         updateStatus();
     } else {
-        state=MPDState_Inactive;
+        state = MPDState_Inactive;
     }
     emit update();
 }
+
+#ifndef LIBVLC_FOUND
+void HttpStream::bufferingProgress(int progress)
+{
+    MPDStatus * const status = MPDStatus::self();
+    if (status->state() == MPDState_Playing) {
+        if (progress == 100) {
+            player->play();
+        } else {
+            player->pause();
+        }
+    }
+}
+#endif
 
 void HttpStream::updateStatus()
 {
@@ -189,63 +208,64 @@ void HttpStream::updateStatus()
 
     MPDStatus * const status = MPDStatus::self();
     DBUG << status->state() << state;
-    if (status->state()==state) {
+
+    // evaluates to true when it is needed to start or restart media player
+    bool playerNeedsToStart = status->state() == MPDState_Playing;
+    #ifdef LIBVLC_FOUND
+    playerNeedsToStart = playerNeedsToStart && libvlc_media_player_get_state(player) != libvlc_Playing;
+    #else
+    playerNeedsToStart = playerNeedsToStart && player->state() == QMediaPlayer::StoppedState;
+    #endif
+
+    if (status->state() == state && !playerNeedsToStart) {
         return;
     }
 
-    state=status->state();
+    state = status->state();
     switch (status->state()) {
     case MPDState_Playing:
         // Only start playback if not aready playing
+        if (playerNeedsToStart) {
         #ifdef LIBVLC_FOUND
-        if (libvlc_Playing!=libvlc_media_player_get_state(player)) {
             libvlc_media_player_play(player);
             startTimer();
-        }
         #else
-        if (QMediaPlayer::PlayingState!=player->state()) {
-            player->play();
-            startTimer();
-        }
+            QUrl url = player->media().canonicalUrl();
+            player->setMedia(url);
         #endif
+        }
         break;
     case MPDState_Paused:
     case MPDState_Inactive:
     case MPDState_Stopped:
         #ifdef LIBVLC_FOUND
         libvlc_media_player_stop(player);
+        stopTimer();
         #else
         player->stop();
         #endif
-        stopTimer();
         break;
     default:
+        #ifdef LIBVLC_FOUND
         stopTimer();
+        #endif
         break;
     }
 }
 
 void HttpStream::checkPlayer()
 {
-    if (0==--playStateChecks) {
+    #ifdef LIBVLC_FOUND
+    if (0 == --playStateChecks) {
         stopTimer();
         DBUG << "Max checks reached";
     }
-    #ifdef LIBVLC_FOUND
-    if (libvlc_Playing==libvlc_media_player_get_state(player)) {
+    if (libvlc_media_player_get_state(player) == libvlc_Playing) {
         DBUG << "Playing";
         stopTimer();
     } else {
         DBUG << "Try again";
         libvlc_media_player_play(player);
-    }
-    #else
-    if (QMediaPlayer::PlayingState==player->state()) {
-        DBUG << "Playing";
-        stopTimer();
-    } else {
-        DBUG << "Try again";
-        player->play();
     }
     #endif
 }
@@ -253,7 +273,7 @@ void HttpStream::checkPlayer()
 void HttpStream::startTimer()
 {
     if (!playStateCheckTimer) {
-        playStateCheckTimer=new QTimer(this);
+        playStateCheckTimer = new QTimer(this);
         playStateCheckTimer->setSingleShot(false);
         playStateCheckTimer->setInterval(constPlayerCheckPeriod);
         connect(playStateCheckTimer, SIGNAL(timeout()), SLOT(checkPlayer()));
@@ -269,7 +289,7 @@ void HttpStream::stopTimer()
         DBUG;
         playStateCheckTimer->stop();
     }
-    playStateChecks=0;
+    playStateChecks = 0;
 }
 
 #include "moc_httpstream.cpp"

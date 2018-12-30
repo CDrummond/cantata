@@ -128,14 +128,26 @@ QString Utils::getDir(const QString &file)
 
 QString Utils::getFile(const QString &file)
 {
-    QString d(file);
-    int slashPos=d.lastIndexOf(constDirSep);
+    QString f(file);
+    int slashPos=f.lastIndexOf(constDirSep);
 
     if (-1!=slashPos) {
-        d.remove(0, slashPos+1);
+        f.remove(0, slashPos+1);
     }
 
-    return d;
+    return f;
+}
+
+QString Utils::getExtension(const QString &file)
+{
+    QString f(file);
+    int dotPos=f.lastIndexOf('.');
+
+    if (-1!=dotPos) {
+        return f.mid(dotPos);
+    }
+
+    return QString();
 }
 
 QString Utils::changeExtension(const QString &file, const QString &extension)

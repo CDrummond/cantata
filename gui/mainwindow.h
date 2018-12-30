@@ -154,7 +154,7 @@ public Q_SLOTS:
     void mpdConnectionName(const QString &name);
     void hideWindow();
     void restoreWindow();
-    void load(const QStringList &urls) { PlayQueueModel::self()->load(urls); }
+    void load(const QStringList &urls) { PlayQueueModel::self()->load(urls, MPDConnection::AppendAndPlay); }
     void showAboutDialog();
     void mpdConnectionStateChanged(bool connected);
     void playQueueItemsSelected(bool s);
@@ -268,6 +268,7 @@ private Q_SLOTS:
     void toggleContext();
     void initMpris();
     void toggleMenubar();
+    void paletteChanged();
 
 private:
     int prevPage;
@@ -276,6 +277,7 @@ private:
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
     bool singlePane;
+    bool shown;
     Action *prefAction;
     Action *refreshDbAction;
     Action *doDbRefreshAction;

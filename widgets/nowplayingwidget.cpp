@@ -491,12 +491,23 @@ void NowPlayingWidget::initColors()
     ensurePolished();
     QToolButton btn(this);
     btn.ensurePolished();
-    track->setPalette(btn.palette());
-    artist->setPalette(btn.palette());
-    time->setPalette(btn.palette());
-    slider->updateStyleSheet(track->palette().windowText().color());
-    ratingWidget->setColor(Utils::clampColor(track->palette().buttonText().color()));
-    infoLabel->setPalette(btn.palette());
+    auto pal = btn.palette();
+    auto col = Utils::clampColor(pal.windowText().color());
+    if (col==textColor()) {
+        return; // No change
+    }
+
+    for (auto group: {QPalette::Inactive, QPalette::Active}) {
+        for (auto role: {QPalette::WindowText, QPalette::ButtonText, QPalette::Text}) {
+            pal.setColor(group, role, col);
+        }
+    }
+    track->setPalette(pal);
+    artist->setPalette(pal);
+    time->setPalette(pal);
+    slider->updateStyleSheet(col);
+    ratingWidget->setColor(col);
+    infoLabel->setPalette(pal);
 }
 
 void NowPlayingWidget::resizeEvent(QResizeEvent *ev)

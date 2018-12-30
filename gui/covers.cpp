@@ -594,6 +594,8 @@ CoverDownloader::CoverDownloader()
     thread=new Thread(metaObject()->className());
     moveToThread(thread);
     thread->start();
+    connect(this, SIGNAL(mpdCover(Song)), MPDConnection::self(), SLOT(getCover(Song)));
+    connect(MPDConnection::self(), SIGNAL(albumArt(Song,QByteArray)), this, SLOT(mpdAlbumArt(Song,QByteArray)));
 }
 
 void CoverDownloader::stop()
@@ -636,13 +638,22 @@ void CoverDownloader::download(const Song &song)
 
     Job job(song, dirName);
 
-    if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
+    if (!song.isArtistImageRequest() && !song.isComposerImageRequest() && MPDConnection::self()->supportsCoverDownload()) {
+        downloadViaMpd(job);
+    } else if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
     } else if (fetchCovers || job.song.isArtistImageRequest()) {
         downloadViaRemote(job);
     } else {
         failed(job);
     }
+}
+
+void CoverDownloader::downloadViaMpd(Job &job)
+{
+    job.type=JobMpd;
+    emit mpdCover(job.song);
+    mpdJobs.insert(job.song.file, job);
 }
 
 bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
@@ -708,6 +719,40 @@ void CoverDownloader::downloadViaRemote(Job &job)
     job.type=JobRemote;
     jobs.insert(j, job);
     DBUG << url.toString();
+}
+
+void CoverDownloader::mpdAlbumArt(const Song &song, const QByteArray &data)
+{
+    QHash<QString, Job>::Iterator it = mpdJobs.find(song.file);
+    if (it!=mpdJobs.end()) {
+        Covers::Image img;
+        img.img= data.isEmpty() ? QImage() : QImage::fromData(data, Covers::imageFormat(data));
+        Job job=it.value();
+
+        if (!img.img.isNull() && img.img.size().width()<32) {
+            img.img = QImage();
+        }
+
+        mpdJobs.remove(it.key());
+        if (img.img.isNull()) {
+            downloadViaHttp(job, JobHttpJpg);
+        } else {
+            if (!img.img.isNull()) {
+                if (img.img.size().width()>Covers::constMaxSize.width() || img.img.size().height()>Covers::constMaxSize.height()) {
+                    img.img=img.img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                }
+                img.fileName=saveImg(job, img.img, data);
+                if (!img.fileName.isEmpty()) {
+                    clearScaledCache(job.song);
+                }
+            }
+
+            DBUG << "got cover image" << img.fileName;
+            emit cover(job.song, img.img, img.fileName);
+        }
+    } else {
+       DBUG << "missing job for " << song.file;
+    }
 }
 
 void CoverDownloader::remoteCallFinished()
@@ -1269,7 +1314,7 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
 
 QPixmap * Covers::get(const Song &song, int size, bool urgent)
 {
-    VERBOSE_DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest() << size << urgent;
+    VERBOSE_DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << song.composer() << song.isArtistImageRequest() << song.isComposerImageRequest() << size << urgent << song.type << song.isStandardStream() << isOnlineServiceImage(song);
     QString key;
     QPixmap *pix=nullptr;
     if (0==size) {
@@ -1299,6 +1344,7 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
                 }
             }
             if (pix) {
+                VERBOSE_DBUG_CLASS("Covers") << "Got standard image";
                 if (size!=origSize) {
                     pix->setDevicePixelRatio(devicePixelRatio);
                     VERBOSE_DBUG << "Set pixel ratio of cover" << devicePixelRatio;
@@ -1597,9 +1643,9 @@ Covers::Image Covers::locateImage(const Song &song)
     QStringList coverFileNames;
     if (song.isArtistImageRequest()) {
         QString basicArtist=song.basicArtist();
-        coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << constArtistImage+".jpg" << constArtistImage+".png";
+        coverFileNames=QStringList() << basicArtist+".jpg" << basicArtist+".png" << basicArtist+".jpeg" << constArtistImage+".jpg" << constArtistImage+".png" << constArtistImage+".jpeg";
     } else if (song.isComposerImageRequest()) {
-        coverFileNames=QStringList() << constComposerImage+".jpg" << constComposerImage+".png";
+        coverFileNames=QStringList() << constComposerImage+".jpg" << constComposerImage+".png" << constComposerImage+".jpeg";
     } else {
         QString mpdCover=albumFileName(song);
         if (!mpdCover.isEmpty()) {
@@ -1875,7 +1921,7 @@ void Covers::cleanCdda()
         QStringList entries=d.entryList(QDir::Files|QDir::NoSymLinks|QDir::NoDotAndDotDot);
 
         for (const QString &f: entries) {
-            if (f.endsWith(".jpg") || f.endsWith(".png")) {
+            if (f.endsWith(".jpg") || f.endsWith(".jpeg") || f.endsWith(".png")) {
                 QFile::remove(dir+f);
             }
         }

@@ -61,9 +61,9 @@ public:
         QColor col=QIcon::Selected==mode ? selectedColor : color;
         if (QIcon::Selected==mode && !col.isValid()) {
             #ifdef Q_OS_MAC
-            col=OSXStyle::self()->viewPalette().highlightedText().color();
+            col=Utils::clampColor(OSXStyle::self()->viewPalette().highlightedText().color());
             #else
-            col=QApplication::palette().highlightedText().color();
+            col=Utils::clampColor(QApplication::palette().highlightedText().color());
             #endif
         }
         QString key=(fileName.isEmpty() ? QString::number(fontAwesomeIcon) : fileName)+

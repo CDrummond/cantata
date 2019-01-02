@@ -2432,76 +2432,76 @@ i18n: ectx: property (text), widget (QTreeWidget, files)
     <message>
         <location filename="../devices/actiondialog.ui" line="86"/>
         <source>Calculating size of files to be copied, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在计算需要复制的文件大小，请稍等……</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="180"/>
         <source>Copy songs from:</source>
-        <translation type="unfinished">从复制歌曲:</translation>
+        <translation>从此处复制:</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="196"/>
         <location filename="../devices/actiondialog.ui" line="249"/>
         <source>Configure</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="211"/>
         <location filename="../devices/actiondialog.ui" line="264"/>
         <source>(Needs configuring)</source>
-        <translation type="unfinished">(需要设置)</translation>
+        <translation>(需要设置)</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="233"/>
         <source>Copy songs to:</source>
-        <translation type="unfinished">复制歌曲到:</translation>
+        <translation>复制歌曲到:</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="296"/>
         <source>Destination format:</source>
-        <translation type="unfinished">目标格式:</translation>
+        <translation>目标格式:</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="310"/>
         <source>Overwrite songs</source>
-        <translation type="unfinished"></translation>
+        <translation>允许覆盖歌曲</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="317"/>
         <source>To copy:</source>
-        <translation type="unfinished"></translation>
+        <translation>要复制的:</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="126"/>
         <source>&lt;b&gt;INVALID&lt;/b&gt;</source>
-        <translation type="unfinished">&lt;b&gt;无效&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;无效&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="140"/>
         <location filename="../devices/actiondialog.cpp" line="143"/>
         <source>&lt;i&gt;(When different)&lt;/i&gt;</source>
-        <translation type="unfinished">&lt;i&gt;(当不同的时候)&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;(当不同的时候)&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="172"/>
         <source>Artists:%1, Albums:%2, Songs:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>艺术家:%1, 专辑:%2, 歌曲:%3</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="240"/>
         <source>%1 free</source>
-        <translation type="unfinished">剩余 %1</translation>
+        <translation>剩余 %1</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="253"/>
         <location filename="../devices/actiondialog.cpp" line="257"/>
         <source>Local Music Library</source>
-        <translation type="unfinished">本地音乐库</translation>
+        <translation>本地音乐库</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="255"/>
         <source>Audio CD</source>
-        <translation type="unfinished">音乐 CD</translation>
+        <translation>音乐 CD</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="279"/>
@@ -2509,163 +2509,172 @@ i18n: ectx: property (text), widget (QTreeWidget, files)
 
 The selected songs consume %1, but there is only %2 left.
 The songs will need to be transcoded to a smaller filesize in order to be successfully copied.</source>
-        <translation type="unfinished"></translation>
+        <translation>目标设备剩余空间不足。
+
+选择的歌曲大小为%1, 但只有%2 剩余空间。
+要成功地复制此歌曲，您可能需要转码来降低文件大小。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="289"/>
         <source>There is insufficient space left on the destination.
 
 The selected songs consume %1, but there is only %2 left.</source>
-        <translation type="unfinished"></translation>
+        <translation>目标设备剩余空间不足。
+
+选择的歌曲大小为%1, 但只有%2 剩余空间。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="303"/>
         <location filename="../devices/actiondialog.cpp" line="323"/>
         <location filename="../devices/actiondialog.cpp" line="555"/>
         <source>Copy Songs To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>复制到音乐库</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="303"/>
         <location filename="../devices/actiondialog.cpp" line="323"/>
         <source>Copy Songs To Device</source>
-        <translation type="unfinished"></translation>
+        <translation>复制到设备</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="387"/>
         <source>Copy Songs</source>
-        <translation type="unfinished">复制歌曲</translation>
+        <translation>复制歌曲</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="387"/>
         <source>Delete Songs</source>
-        <translation type="unfinished">删除歌曲</translation>
+        <translation>删除歌曲</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="424"/>
         <source>You have not configured the destination device.
 
 Continue with the default settings?</source>
-        <translation type="unfinished"></translation>
+        <translation>你还没有配置目标设备.
+
+要采用默认的设置吗?</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="425"/>
         <location filename="../devices/actiondialog.cpp" line="429"/>
         <source>Not Configured</source>
-        <translation type="unfinished"></translation>
+        <translation>设备未配置</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="426"/>
         <location filename="../devices/actiondialog.cpp" line="430"/>
         <source>Use Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>使用默认设置</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="428"/>
         <source>You have not configured the source device.
 
 Continue with the default settings?</source>
-        <translation type="unfinished"></translation>
+        <translation>你还没有配置源设备.
+
+要采用默认的设置吗?</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="480"/>
         <source>Are you sure you wish to stop?</source>
-        <translation type="unfinished"></translation>
+        <translation>确定要终止吗？</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="480"/>
         <source>Stop</source>
-        <translation type="unfinished">停止</translation>
+        <translation>停止</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="525"/>
         <source>Device has been removed!</source>
-        <translation type="unfinished">设备已移除!</translation>
+        <translation>设备已移除!</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="527"/>
         <source>Device is not connected!</source>
-        <translation type="unfinished">设备未连接!</translation>
+        <translation>设备未连接!</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="529"/>
         <source>Device is busy?</source>
-        <translation type="unfinished">设备正忙?</translation>
+        <translation>设备正忙?</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="531"/>
         <source>Device has been changed?</source>
-        <translation type="unfinished">设备已改变?</translation>
+        <translation>设备已改变?</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="606"/>
         <source>Clearing unused folders</source>
-        <translation type="unfinished">清除不用的文件夹</translation>
+        <translation>清除不用的文件夹</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="621"/>
         <source>Calculate ReplayGain for ripped tracks?</source>
-        <translation type="unfinished"></translation>
+        <translation>为翻录的曲目计算播放增益吗?</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="621"/>
         <source>ReplayGain</source>
-        <translation type="unfinished">播放增益</translation>
+        <translation>播放增益</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="622"/>
         <source>Calculate</source>
-        <translation type="unfinished"></translation>
+        <translation>计算</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="675"/>
         <source>The destination filename already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation>目标文件名已经存在！</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="678"/>
         <source>Song already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation>歌曲已存在！</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="681"/>
         <source>Song does not exist!</source>
-        <translation type="unfinished"></translation>
+        <translation>歌曲不存在！</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="684"/>
         <source>Failed to create destination folder!&lt;br/&gt;Please check you have sufficient permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>创建目标文件夹失败！&lt;br/&gt;请确保你拥有足够的权限。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="687"/>
         <source>Source file no longer exists?</source>
-        <translation type="unfinished"></translation>
+        <translation>源文件不存在？</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="690"/>
         <source>Failed to copy.</source>
-        <translation type="unfinished"></translation>
+        <translation>复制失败。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="690"/>
         <source>Failed to delete.</source>
-        <translation type="unfinished"></translation>
+        <translation>删除失败。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="693"/>
         <source>Not connected to device.</source>
-        <translation type="unfinished"></translation>
+        <translation>未连接至设备。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="696"/>
         <source>Selected codec is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>目标解码器不可用。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="699"/>
         <source>Transcoding failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>转码失败。</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.cpp" line="702"/>
@@ -3060,22 +3069,22 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../models/browsemodel.cpp" line="74"/>
         <source>Server Folders</source>
-        <translation type="unfinished"></translation>
+        <translation>服务器</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="79"/>
         <source>MPD virtual file-system</source>
-        <translation type="unfinished"></translation>
+        <translation>MPD虚拟文件系统</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="244"/>
         <source>Cue Sheet</source>
-        <translation type="unfinished">Cue 表</translation>
+        <translation>Cue 表</translation>
     </message>
     <message>
         <location filename="../models/browsemodel.cpp" line="244"/>
         <source>Playlist</source>
-        <translation type="unfinished">播放列表</translation>
+        <translation>播放列表</translation>
     </message>
 </context>
 <context>
@@ -4044,32 +4053,32 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="153"/>
         <source>Dynamic Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>动态队列</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="158"/>
         <source>Dynamically generated playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>动态生成的播放列表</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="214"/>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
-        <translation type="unfinished"></translation>
+        <translation>你需要安装perl以使用Cantata的动态队列功能</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="221"/>
         <source>Failed to locate rules file - %1</source>
-        <translation type="unfinished">无法加载配置 - %1</translation>
+        <translation>无法加载配置 - %1</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="229"/>
         <source>Failed to remove previous rules file - %1</source>
-        <translation type="unfinished">无法删除前一个配置 - %1</translation>
+        <translation>无法删除前一个配置 - %1</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="234"/>
         <source>Failed to install rules file - %1 -&gt; %2</source>
-        <translation type="unfinished">无法安装配置 - %1 到 %2</translation>
+        <translation>无法安装配置 - %1 到 %2</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="385"/>
@@ -4663,17 +4672,17 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="108"/>
         <source>Only show icons, no text</source>
-        <translation type="unfinished"></translation>
+        <translation>只显示图标，不显示文字</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="115"/>
         <source>Auto-hide</source>
-        <translation type="unfinished"></translation>
+        <translation>自动隐藏</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="122"/>
         <source>Automatically change style when insufficient space</source>
-        <translation type="unfinished"></translation>
+        <translation>空间不够时自动更改样式</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="125"/>
@@ -4684,27 +4693,27 @@ This cannot be undone.</source>
         <location filename="../gui/interfacesettings.ui" line="138"/>
         <location filename="../gui/interfacesettings.cpp" line="151"/>
         <source>Play Queue</source>
-        <translation type="unfinished">播放队列</translation>
+        <translation>播放队列</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="160"/>
         <source>Initially collapse albums</source>
-        <translation type="unfinished"></translation>
+        <translation>起始时收起专辑曲目</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="167"/>
         <source>Automatically expand current album</source>
-        <translation type="unfinished"></translation>
+        <translation>自动展开当前播放的专辑</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="174"/>
         <source>Scroll to current track</source>
-        <translation type="unfinished"></translation>
+        <translation>滚动至当前曲目</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="181"/>
         <source>Prompt before clearing</source>
-        <translation type="unfinished"></translation>
+        <translation>清空前询问</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="188"/>
@@ -4714,47 +4723,47 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="217"/>
         <source>Background Image</source>
-        <translation type="unfinished"></translation>
+        <translation>背景图片</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="223"/>
         <source>None</source>
-        <translation type="unfinished">无</translation>
+        <translation>无</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="230"/>
         <source>Current album cover</source>
-        <translation type="unfinished"></translation>
+        <translation>当前专辑封面</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="237"/>
         <source>Custom image:</source>
-        <translation type="unfinished"></translation>
+        <translation>自定义图片：</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="257"/>
         <source>Blur:</source>
-        <translation type="unfinished"></translation>
+        <translation>模糊：</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="303"/>
         <source>10px</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="315"/>
         <source>Opacity:</source>
-        <translation type="unfinished"></translation>
+        <translation>透明度：</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="361"/>
         <source>40%</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="377"/>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>工具栏</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="386"/>
@@ -5252,7 +5261,7 @@ Please choose another one.</source>
         <location filename="../gui/librarypage.cpp" line="68"/>
         <location filename="../gui/librarypage.cpp" line="71"/>
         <source>Sort Albums</source>
-        <translation type="unfinished"></translation>
+        <translation>排序方式</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="68"/>
@@ -5302,7 +5311,7 @@ Please choose another one.</source>
     <message>
         <location filename="../gui/librarypage.cpp" line="86"/>
         <source>Group By</source>
-        <translation type="unfinished"></translation>
+        <translation>分组方式</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="86"/>
@@ -5342,27 +5351,27 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Home目录</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="40"/>
         <source>Browse files in your home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>浏览家目录下的文件</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Root</source>
-        <translation type="unfinished"></translation>
+        <translation>根目录</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="41"/>
         <source>Browse files on your computer</source>
-        <translation type="unfinished"></translation>
+        <translation>浏览计算机上的所有文件</translation>
     </message>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="43"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished">在文件管理器里打开</translation>
+        <translation>在文件管理器里打开</translation>
     </message>
 </context>
 <context>
@@ -5370,7 +5379,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../context/lyricsettings.cpp" line="34"/>
         <source>Choose the websites you want to use when searching for lyrics.</source>
-        <translation type="unfinished">选择歌词搜索网站。</translation>
+        <translation>选择歌词搜索网站。</translation>
     </message>
 </context>
 <context>
@@ -5560,62 +5569,62 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.ui" line="181"/>
         <source>[Dynamic]</source>
-        <translation type="unfinished">[动态]</translation>
+        <translation>[动态]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.ui" line="204"/>
         <source>Exit Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>退出全屏模式</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="253"/>
         <source>Configure Cantata...</source>
-        <translation type="unfinished">设置 Cantata...</translation>
+        <translation>设置 Cantata...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="253"/>
         <source>Preferences...</source>
-        <translation type="unfinished"></translation>
+        <translation>首选项</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="256"/>
         <source>Quit</source>
-        <translation type="unfinished">退出</translation>
+        <translation>退出</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="259"/>
         <source>About Cantata...</source>
-        <translation type="unfinished">关于 Cantata...</translation>
+        <translation>关于 Cantata...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="266"/>
         <source>Show Window</source>
-        <translation type="unfinished">显示窗口</translation>
+        <translation>显示窗口</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="269"/>
         <source>Server information...</source>
-        <translation type="unfinished">服务器信息...</translation>
+        <translation>服务器信息...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="272"/>
         <source>Refresh Database</source>
-        <translation type="unfinished">刷新数据</translation>
+        <translation>刷新数据</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="273"/>
         <source>Refresh</source>
-        <translation type="unfinished">刷新</translation>
+        <translation>刷新</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="275"/>
         <source>Connect</source>
-        <translation type="unfinished">连接</translation>
+        <translation>连接</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="276"/>
         <source>Collection</source>
-        <translation type="unfinished"></translation>
+        <translation>音乐集</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="277"/>
@@ -5623,47 +5632,47 @@ If this search does find new lyrics, these will still be associated with the ori
         <location filename="../gui/mainwindow.cpp" line="1377"/>
         <location filename="../gui/mainwindow.cpp" line="1383"/>
         <source>Outputs</source>
-        <translation type="unfinished">输出</translation>
+        <translation>输出</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="278"/>
         <source>Stop After Track</source>
-        <translation type="unfinished">音轨后停止</translation>
+        <translation>播放完毕后停止</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="284"/>
         <source>Seek forward (%1 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>向前 (%1 秒)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="285"/>
         <source>Seek backward (%1 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>向后 (%1 秒)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="298"/>
         <source>Add To Stored Playlist</source>
-        <translation type="unfinished">添加到已有列表</translation>
+        <translation>添加到已有播放列表</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="303"/>
         <source>Crop Others</source>
-        <translation type="unfinished"></translation>
+        <translation>删除列表中其他曲目</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="304"/>
         <source>Add Stream URL</source>
-        <translation type="unfinished">添加流媒体</translation>
+        <translation>添加流媒体</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="305"/>
         <source>Add Local Files</source>
-        <translation type="unfinished"></translation>
+        <translation>添加本地文件</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="307"/>
         <source>Clear</source>
-        <translation type="unfinished">清除</translation>
+        <translation>清除</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="309"/>
@@ -5673,52 +5682,52 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="310"/>
         <source>Expanded Interface</source>
-        <translation type="unfinished">展开界面</translation>
+        <translation>展开界面</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="312"/>
         <source>Show Current Song Information</source>
-        <translation type="unfinished"></translation>
+        <translation>显示当前曲目的信息</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Full Screen</source>
-        <translation type="unfinished">全屏</translation>
+        <translation>全屏</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="319"/>
         <source>Random</source>
-        <translation type="unfinished">随机</translation>
+        <translation>随机</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="320"/>
         <source>Repeat</source>
-        <translation type="unfinished">重复</translation>
+        <translation>重复</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>Single</source>
-        <translation type="unfinished">单曲</translation>
+        <translation>单曲</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
-        <translation type="unfinished">&apos;单曲&apos;启用时, 将在当前歌曲完成后停止播放. 或者 &apos;重复&apos;启用时, 将反复播放.</translation>
+        <translation>&apos;单曲&apos;启用时, 将在当前歌曲完成后停止播放. 或者 &apos;重复&apos;启用时, 将反复播放.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="322"/>
         <source>Consume</source>
-        <translation type="unfinished">省资源</translation>
+        <translation>播放后删除</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="322"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
-        <translation type="unfinished">当节省资源打开时，播放过的歌曲将被从队列中移除.</translation>
+        <translation>当‘播放后删除’打开时，播放过的歌曲将被从队列中移除.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="323"/>
         <source>Find in Play Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>在播放列表中查找</translation>
     </message>
     <message>
         <source>Play Stream</source>
@@ -5727,167 +5736,167 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation>播放HTTP输出流</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="333"/>
         <source>Locate In Library</source>
-        <translation type="unfinished">在库中定位</translation>
+        <translation>在库中定位</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
         <source>Artist</source>
-        <translation type="unfinished">艺术家</translation>
+        <translation>艺术家</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="335"/>
         <source>Album</source>
-        <translation type="unfinished">专辑</translation>
+        <translation>专辑</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Track</source>
-        <translation type="unfinished">音轨</translation>
+        <translation>音轨</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
         <source>Play Next</source>
-        <translation type="unfinished"></translation>
+        <translation>下一首播放</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="351"/>
         <source>Edit Track Information (Play Queue)</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑音轨信息（播放队列）</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="353"/>
         <source>Expand All</source>
-        <translation type="unfinished">展开所有</translation>
+        <translation>展开所有</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="355"/>
         <source>Collapse All</source>
-        <translation type="unfinished">收起所有</translation>
+        <translation>收起所有</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="357"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="411"/>
         <source>Play Queue</source>
-        <translation type="unfinished">播放队列</translation>
+        <translation>播放队列</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="416"/>
         <source>Library</source>
-        <translation type="unfinished">库</translation>
+        <translation>库</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="421"/>
         <source>Folders</source>
-        <translation type="unfinished">文件夹</translation>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="427"/>
         <source>Playlists</source>
-        <translation type="unfinished">播放列表</translation>
+        <translation>播放列表</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="436"/>
         <source>Internet</source>
-        <translation type="unfinished"></translation>
+        <translation>网络</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="445"/>
         <source>Devices</source>
-        <translation type="unfinished">设备</translation>
+        <translation>设备</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="452"/>
         <source>Search</source>
-        <translation type="unfinished">搜索</translation>
+        <translation>搜索</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="457"/>
         <source>Info</source>
-        <translation type="unfinished">信息</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="492"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;输入字符串以搜索艺术家、专辑、音轨名等。若要以年份过滤搜索结果，可将 &lt;i&gt;#year-range&lt;/i&gt; 添加到搜索串开头，如：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; 返回2000年的曲目&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; 返回八十年代的歌曲&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; 搜索 &lt;i&gt;Blah&lt;/i&gt; 并且只返回2000年的曲目&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="587"/>
         <source>Show Menubar</source>
-        <translation type="unfinished"></translation>
+        <translation>显示菜单栏</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="593"/>
         <source>&amp;Music</source>
-        <translation type="unfinished"></translation>
+        <translation>音乐(&amp;M)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="604"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑(&amp;E)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="616"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>视图(&amp;V)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="628"/>
         <source>&amp;Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>队列(&amp;Q)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="638"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished">设置(&amp;S)</translation>
+        <translation>设置(&amp;S)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="654"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">帮助(&amp;H)</translation>
+        <translation>帮助(&amp;H)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="699"/>
         <source>Set Rating</source>
-        <translation type="unfinished"></translation>
+        <translation>打分</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="704"/>
         <source>No Rating</source>
-        <translation type="unfinished"></translation>
+        <translation>无评分</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1029"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
-        <translation type="unfinished">无法给歌曲匹配动态设置.</translation>
+        <translation>无法给歌曲匹配动态设置.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1154"/>
         <source>Connecting to %1</source>
-        <translation type="unfinished">连接到 %1</translation>
+        <translation>连接到 %1</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1188"/>
         <source>Refresh MPD Database?</source>
-        <translation type="unfinished"></translation>
+        <translation>刷新MPD数据吗？</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1194"/>
         <source>About Cantata</source>
-        <translation type="unfinished">关于 Cantata</translation>
+        <translation>关于 Cantata</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1195"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD 客户端.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;以&lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;发布</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1198"/>
@@ -5919,60 +5928,61 @@ If this search does find new lyrics, these will still be associated with the ori
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
-        <translation type="unfinished"></translation>
+        <translation>正在下载播客
+现在退出会终止下载。</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1211"/>
         <source>Abort download and quit</source>
-        <translation type="unfinished"></translation>
+        <translation>终止并退出</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1239"/>
         <source>Please close other dialogs first.</source>
-        <translation type="unfinished">请先关闭其他对话框.</translation>
+        <translation>请先关闭其他对话框.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1373"/>
         <location filename="../gui/mainwindow.cpp" line="1384"/>
         <source>Enabled: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>启用：%1</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1377"/>
         <location filename="../gui/mainwindow.cpp" line="1385"/>
         <source>Disabled: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>禁用：%1</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1586"/>
         <location filename="../gui/mainwindow.cpp" line="1609"/>
         <source>Server Information</source>
-        <translation type="unfinished">服务器信息</translation>
+        <translation>服务器信息</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1589"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1600"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1753"/>
         <source>Cantata (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1820"/>
         <source>MPD reported the following error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>MPD报告了如下错误: %1</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1891"/>
         <source>Cantata</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1891"/>
@@ -5982,32 +5992,32 @@ Quitting now will abort the download.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1934"/>
         <source>Remove all songs from play queue?</source>
-        <translation type="unfinished"></translation>
+        <translation>删除所有曲目吗？</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1985"/>
         <source>Priority</source>
-        <translation type="unfinished">优先级</translation>
+        <translation>优先级</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1985"/>
         <source>Enter priority (0..255):</source>
-        <translation type="unfinished">输入优先级 (0到255)</translation>
+        <translation>输入优先级 (0到255)</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1986"/>
         <source>Decrease priority for each subsequent track</source>
-        <translation type="unfinished"></translation>
+        <translation>为之后的所有曲目降低优先级</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2013"/>
         <source>Playlist Name</source>
-        <translation type="unfinished">播放列表名称</translation>
+        <translation>播放列表名称</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2013"/>
         <source>Enter a name for the playlist:</source>
-        <translation type="unfinished">输入播放列表名称:</translation>
+        <translation>输入播放列表名称:</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2016"/>
@@ -6019,34 +6029,36 @@ Quitting now will abort the download.</source>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; 已存在！
+
+添加到这个播放列表吗？</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2021"/>
         <source>Existing Playlist</source>
-        <translation type="unfinished">已有同名播放列表</translation>
+        <translation>已有同名播放列表</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Select Music Files</source>
-        <translation type="unfinished"></translation>
+        <translation>选择音乐文件</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2082"/>
         <source>Music Files </source>
-        <translation type="unfinished"></translation>
+        <translation>音乐文件 </translation>
     </message>
     <message numerus="yes">
         <location filename="../gui/mainwindow.cpp" line="2111"/>
         <source>%n Track(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n 音轨</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../gui/mainwindow.cpp" line="2113"/>
         <source>%n Tracks (%1)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n 音轨 (%1)</numerusform>
         </translation>
     </message>
@@ -6056,7 +6068,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../widgets/menubutton.cpp" line="39"/>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>菜单</translation>
     </message>
 </context>
 <context>
@@ -6064,7 +6076,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../widgets/messageoverlay.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -6072,7 +6084,7 @@ Add to that playlist?</source>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="44"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished">在文件管理器里打开</translation>
+        <translation>在文件管理器里打开</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
@@ -6299,7 +6311,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../online/onlinedbwidget.cpp" line="49"/>
         <source>Group By</source>
-        <translation type="unfinished"></translation>
+        <translation>分组方式</translation>
     </message>
     <message>
         <location filename="../online/onlinedbwidget.cpp" line="49"/>
@@ -6594,7 +6606,7 @@ This cannot be undone.</source>
         <location filename="../models/playqueuemodel.cpp" line="369"/>
         <location filename="../models/playqueuemodel.cpp" line="447"/>
         <source>Composer</source>
-        <translation type="unfinished"></translation>
+        <translation>作曲家</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="370"/>
@@ -6620,52 +6632,52 @@ This cannot be undone.</source>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="418"/>
         <source>Remove Duplicates</source>
-        <translation type="unfinished"></translation>
+        <translation>删除重复</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="421"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>撤销</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="423"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>重做</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="429"/>
         <source>Shuffle</source>
-        <translation type="unfinished"></translation>
+        <translation>置乱</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="431"/>
         <source>Tracks</source>
-        <translation type="unfinished">音轨</translation>
+        <translation>音轨</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="432"/>
         <source>Albums</source>
-        <translation type="unfinished">专辑</translation>
+        <translation>专辑</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="438"/>
         <source>Sort By</source>
-        <translation type="unfinished"></translation>
+        <translation>排序方式</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="441"/>
         <source>Album Artist</source>
-        <translation type="unfinished">专辑艺术家</translation>
+        <translation>专辑艺术家</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="443"/>
         <source>Track Title</source>
-        <translation type="unfinished">音轨标题</translation>
+        <translation>音轨标题</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="444"/>
         <source>Track Number</source>
-        <translation type="unfinished"></translation>
+        <translation>音轨号</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="506"/>
@@ -6678,7 +6690,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../widgets/playqueueview.cpp" line="112"/>
         <source>Remove</source>
-        <translation type="unfinished">删除</translation>
+        <translation>删除</translation>
     </message>
 </context>
 <context>
@@ -6686,29 +6698,29 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/playbacksettings.ui" line="29"/>
         <source>Playback</source>
-        <translation type="unfinished">回放</translation>
+        <translation>回放</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
         <source>Fadeout on stop:</source>
-        <translation type="unfinished"></translation>
+        <translation>结束时淡出：</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="48"/>
         <location filename="../gui/playbacksettings.ui" line="122"/>
         <location filename="../gui/playbacksettings.cpp" line="46"/>
         <source>None</source>
-        <translation type="unfinished">无</translation>
+        <translation>无</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="51"/>
         <source> ms</source>
-        <translation type="unfinished"> 毫秒</translation>
+        <translation> 毫秒</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="58"/>
         <source>Stop playback on exit</source>
-        <translation type="unfinished">退出时停止回放</translation>
+        <translation>退出时停止回放</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="65"/>
@@ -6739,7 +6751,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/playbacksettings.ui" line="135"/>
         <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
+        <translation>播放增益:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
@@ -6832,53 +6844,53 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/playlistrule.ui" line="89"/>
         <source>Composer:</source>
-        <translation type="unfinished"></translation>
+        <translation>作曲家：</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="102"/>
         <source>Album:</source>
-        <translation type="unfinished">专辑:</translation>
+        <translation>专辑:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="115"/>
         <source>Title:</source>
-        <translation type="unfinished">标题:</translation>
+        <translation>标题:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="128"/>
         <source>Genre</source>
-        <translation type="unfinished">流派</translation>
+        <translation>流派</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="141"/>
         <source>From Year:</source>
-        <translation type="unfinished">年份:</translation>
+        <translation>年份:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="157"/>
         <location filename="../playlists/playlistrule.ui" line="180"/>
         <source>Any</source>
-        <translation type="unfinished">任意</translation>
+        <translation>任意</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="164"/>
         <source>To Year:</source>
-        <translation type="unfinished">年份:</translation>
+        <translation>年份:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="187"/>
         <source>Comment:</source>
-        <translation type="unfinished"></translation>
+        <translation>注释：</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="200"/>
         <source>Filename / path:</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名/路径：</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="213"/>
         <source>Exact match</source>
-        <translation type="unfinished">精确匹配</translation>
+        <translation>精确匹配</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="241"/>
@@ -6944,12 +6956,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/playlistrules.ui" line="78"/>
         <source>Edit</source>
-        <translation type="unfinished">编辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="85"/>
         <source>Remove</source>
-        <translation type="unfinished">删除</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="107"/>
@@ -7102,30 +7114,30 @@ Overwrite?</source>
     <message>
         <location filename="../models/playlistsmodel.cpp" line="93"/>
         <source>New Playlist...</source>
-        <translation type="unfinished">新播放列表...</translation>
+        <translation>新播放列表...</translation>
     </message>
     <message>
         <location filename="../models/playlistsmodel.cpp" line="116"/>
         <source>Stored Playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>播放队列</translation>
     </message>
     <message>
         <location filename="../models/playlistsmodel.cpp" line="121"/>
         <source>Standard playlists</source>
-        <translation type="unfinished"></translation>
+        <translation>标准的播放列表</translation>
     </message>
     <message numerus="yes">
         <location filename="../models/playlistsmodel.cpp" line="346"/>
         <location filename="../models/playlistsmodel.cpp" line="357"/>
         <source>%n Tracks (%1)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n 音轨 (%1)</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../models/playlistsmodel.cpp" line="355"/>
         <source>Smart Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>智能队列</translation>
     </message>
 </context>
 <context>
@@ -7585,42 +7597,42 @@ Overwrite?</source>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="73"/>
         <source>Collection</source>
-        <translation type="unfinished"></translation>
+        <translation>音乐集</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="73"/>
         <source>Collection Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>音乐集设置</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Playback</source>
-        <translation type="unfinished">回放</translation>
+        <translation>回放</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Playback Settings</source>
-        <translation type="unfinished">回放设置</translation>
+        <translation>回放设置</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Interface</source>
-        <translation type="unfinished">界面</translation>
+        <translation>界面</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="76"/>
         <source>Interface Settings</source>
-        <translation type="unfinished">界面设置</translation>
+        <translation>界面设置</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="77"/>
         <source>Info</source>
-        <translation type="unfinished">信息</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="77"/>
         <source>Info View Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>信息视图设置</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="78"/>
@@ -7675,12 +7687,12 @@ Overwrite?</source>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Custom Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>自定义动作</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Service Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>第三方服务Keys</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="95"/>
@@ -7690,12 +7702,12 @@ Overwrite?</source>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="97"/>
         <source>Cantata Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata首选项</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="100"/>
         <source>Configure</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
 </context>
 <context>
@@ -7703,57 +7715,57 @@ Overwrite?</source>
     <message>
         <location filename="../network/proxysettings.ui" line="26"/>
         <source>Mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>模式：</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.ui" line="39"/>
         <source>Type:</source>
-        <translation type="unfinished">类型:</translation>
+        <translation>类型:</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.ui" line="50"/>
         <source>HTTP Proxy</source>
-        <translation type="unfinished">HTTP 代理</translation>
+        <translation>HTTP 代理</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.ui" line="55"/>
         <source>SOCKS Proxy</source>
-        <translation type="unfinished">SOCKS 代理</translation>
+        <translation>SOCKS 代理</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.ui" line="63"/>
         <source>Host:</source>
-        <translation type="unfinished">主机名:</translation>
+        <translation>主机名:</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.ui" line="76"/>
         <source>Port:</source>
-        <translation type="unfinished">端口:</translation>
+        <translation>端口:</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.ui" line="96"/>
         <source>Username:</source>
-        <translation type="unfinished">用户名:</translation>
+        <translation>用户名:</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.ui" line="109"/>
         <source>Password:</source>
-        <translation type="unfinished">密码:</translation>
+        <translation>密码:</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.cpp" line="32"/>
         <source>No proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>无代理</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.cpp" line="33"/>
         <source>Use the system proxy settings</source>
-        <translation type="unfinished">使用系统代理</translation>
+        <translation>使用系统代理</translation>
     </message>
     <message>
         <location filename="../network/proxysettings.cpp" line="34"/>
         <source>Manual proxy configuration</source>
-        <translation type="unfinished">手动代理设置</translation>
+        <translation>手动代理设置</translation>
     </message>
 </context>
 <context>
@@ -7990,55 +8002,55 @@ Overwrite?</source>
         <location filename="../mpd-interface/song.cpp" line="590"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <source>Composer</source>
-        <translation type="unfinished"></translation>
+        <translation>作曲家</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>注释</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="592"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <source>Album</source>
-        <translation type="unfinished">专辑</translation>
+        <translation>专辑</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="585"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Title</source>
-        <translation type="unfinished">标题</translation>
+        <translation>标题</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="599"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>Genre</source>
-        <translation type="unfinished">流派</translation>
+        <translation>流派</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="85"/>
         <source>Date</source>
-        <translation type="unfinished">日期</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="87"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="99"/>
         <source>Include</source>
-        <translation type="unfinished">包含</translation>
+        <translation>包含</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="106"/>
         <source>Exclude</source>
-        <translation type="unfinished">排除</translation>
+        <translation>排除</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="129"/>
         <source> (Exact)</source>
-        <translation type="unfinished"> (解压)</translation>
+        <translation> (解压)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="118"/>
@@ -8227,57 +8239,57 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="101"/>
         <source>Play Now (And Replace Play Queue)</source>
-        <translation type="unfinished"></translation>
+        <translation>播放（替换播放队列）</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="106"/>
         <source>Add With Priority</source>
-        <translation type="unfinished">添加时设定优先级</translation>
+        <translation>添加时设定优先级</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="107"/>
         <source>Set Priority</source>
-        <translation type="unfinished">设置优先级</translation>
+        <translation>设置优先级</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="142"/>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>放大</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="144"/>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>缩小</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="45"/>
         <source>Highest Priority (255)</source>
-        <translation type="unfinished">最高优先级 (255)</translation>
+        <translation>最高优先级 (255)</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="46"/>
         <source>High Priority (200)</source>
-        <translation type="unfinished">高优先级 (200)</translation>
+        <translation>高优先级 (200)</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="47"/>
         <source>Medium Priority (125)</source>
-        <translation type="unfinished">中等优先级 (125)</translation>
+        <translation>中等优先级 (125)</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="48"/>
         <source>Low Priority (50)</source>
-        <translation type="unfinished">低优先级 (50)</translation>
+        <translation>低优先级 (50)</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="49"/>
         <source>Default Priority (0)</source>
-        <translation type="unfinished">默认优先级 (0)</translation>
+        <translation>默认优先级 (0)</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="50"/>
         <source>Custom Priority...</source>
-        <translation type="unfinished">自定义优先级...</translation>
+        <translation>自定义优先级...</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="111"/>
@@ -8292,12 +8304,12 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="114"/>
         <source>Edit Track Information</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑曲目信息</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="117"/>
         <source>ReplayGain</source>
-        <translation type="unfinished">播放增益</translation>
+        <translation>播放增益</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="120"/>
@@ -8322,7 +8334,7 @@ width x height</comment>
     <message>
         <location filename="../gui/stdactions.cpp" line="126"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>查找</translation>
     </message>
     <message>
         <location filename="../gui/stdactions.cpp" line="132"/>
@@ -9277,37 +9289,37 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="93"/>
         <source>Album Artist</source>
-        <translation type="unfinished">专辑艺术家</translation>
+        <translation>专辑艺术家</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="94"/>
         <source>Artist</source>
-        <translation type="unfinished">艺术家</translation>
+        <translation>艺术家</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="95"/>
         <source>Album</source>
-        <translation type="unfinished">专辑</translation>
+        <translation>专辑</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="96"/>
         <source>Composer</source>
-        <translation type="unfinished"></translation>
+        <translation>作曲家</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="97"/>
         <source>Date</source>
-        <translation type="unfinished">日期</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="98"/>
         <source>Genre</source>
-        <translation type="unfinished">流派</translation>
+        <translation>流派</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="99"/>
         <source>Rating</source>
-        <translation type="unfinished"></translation>
+        <translation>评分</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="100"/>
@@ -9317,12 +9329,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="102"/>
         <source>Random</source>
-        <translation type="unfinished">随机</translation>
+        <translation>随机</translation>
     </message>
     <message numerus="yes">
         <location filename="../playlists/rulesplaylists.cpp" line="169"/>
         <source>%n Rule(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n 规则</numerusform>
         </translation>
     </message>
@@ -9334,12 +9346,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="172"/>
         <source>Ascending</source>
-        <translation type="unfinished"></translation>
+        <translation>增序</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="172"/>
         <source>Descending</source>
-        <translation type="unfinished"></translation>
+        <translation>降序</translation>
     </message>
 </context>
 <context>
@@ -9607,29 +9619,29 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/serversettings.ui" line="35"/>
         <source>Collection:</source>
-        <translation type="unfinished"></translation>
+        <translation>音乐集：</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="63"/>
         <source>Name:</source>
-        <translation type="unfinished">名称:</translation>
+        <translation>名称:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
         <location filename="../gui/serversettings.cpp" line="94"/>
         <source>Host:</source>
-        <translation type="unfinished">主机名:</translation>
+        <translation>主机名:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="109"/>
         <source>Password:</source>
-        <translation type="unfinished">密码:</translation>
+        <translation>密码:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="126"/>
         <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
-        <translation type="unfinished">音乐文件夹:</translation>
+        <translation>音乐文件夹:</translation>
     </message>
     <message>
         <source>Cover filename:</source>
@@ -9638,7 +9650,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP流URL：</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="152"/>
@@ -9658,7 +9670,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
-        <translation type="unfinished"></translation>
+        <translation>自动更新：</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="182"/>
@@ -9837,7 +9849,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../widgets/singlepagewidget.cpp" line="199"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>视图</translation>
     </message>
 </context>
 <context>
@@ -11011,37 +11023,37 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.ui" line="93"/>
         <source>Composer:</source>
-        <translation type="unfinished"></translation>
+        <translation>作曲家：</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="106"/>
         <source>Album:</source>
-        <translation type="unfinished">专辑:</translation>
+        <translation>专辑:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="119"/>
         <source>Track number:</source>
-        <translation type="unfinished">音轨号:</translation>
+        <translation>音轨号:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="132"/>
         <source>Disc number:</source>
-        <translation type="unfinished">碟片序号:</translation>
+        <translation>碟片序号:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="145"/>
         <source>Genre:</source>
-        <translation type="unfinished">流派:</translation>
+        <translation>流派:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="158"/>
         <source>Year:</source>
-        <translation type="unfinished">年份:</translation>
+        <translation>年份:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="171"/>
         <source>Rating:</source>
-        <translation type="unfinished"></translation>
+        <translation>评分：</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="186"/>
@@ -11051,7 +11063,7 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.ui" line="195"/>
         <source>Comment:</source>
-        <translation type="unfinished"></translation>
+        <translation>注释：</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="210"/>
@@ -11066,12 +11078,12 @@ Overwrite?</source>
     <message>
         <location filename="../tags/tageditor.cpp" line="205"/>
         <source>Tags</source>
-        <translation type="unfinished">标签</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="213"/>
         <source>Tools</source>
-        <translation type="unfinished">工具</translation>
+        <translation>工具</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="215"/>

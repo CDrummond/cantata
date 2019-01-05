@@ -313,7 +313,7 @@ void Song::guessTags()
             title=parts.at(2);
             album=parts.at(1);
             artist=parts.at(0);
-        } if (2==parts.length() && parts.at(0).contains(constAlbumArtistSep)) {
+        } else if (2==parts.length() && parts.at(0).contains(constAlbumArtistSep)) {
             title=parts.at(1);
             QStringList albumArtistParts = parts.at(0).split(constAlbumArtistSep, QString::SkipEmptyParts);
             if (2==albumArtistParts.length()) {

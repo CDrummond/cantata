@@ -922,8 +922,8 @@ NetworkJob * CoverDialog::downloadImage(const QString &url, DownloadType dlType)
                     return nullptr;
                 }
                 tmp->remove();
-                delete tmp;
                 tempFiles.removeAll(tmp);
+                delete tmp;
                 break;
             }
         }

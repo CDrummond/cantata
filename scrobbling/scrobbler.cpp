@@ -368,10 +368,7 @@ void Scrobbler::setLoveEnabled(bool e)
 
 void Scrobbler::calcScrobbleIntervals()
 {
-    int elapsed=MPDStatus::self()->timeElapsed()*1000;
-    if (elapsed<0) {
-        elapsed=0;
-    }
+    quint16 elapsed=MPDStatus::self()->timeElapsed()*1000;
     int nowPlayingTimemout=constNowPlayingInterval;
     if (elapsed>4000) {
         nowPlayingTimemout=10;

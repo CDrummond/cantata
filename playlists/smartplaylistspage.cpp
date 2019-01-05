@@ -432,7 +432,7 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
             } else if (RulesPlaylists::constArtistKey==rIt.key() || RulesPlaylists::constAlbumKey==rIt.key() ||
                        RulesPlaylists::constAlbumArtistKey==rIt.key() || RulesPlaylists::constComposerKey==rIt.key() ||
                        RulesPlaylists::constCommentKey==rIt.key() || RulesPlaylists::constTitleKey==rIt.key() ||
-                       RulesPlaylists::constArtistKey==rIt.key() || RulesPlaylists::constGenreKey==rIt.key() ||
+                       RulesPlaylists::constSimilarArtistsKey==rIt.key() || RulesPlaylists::constGenreKey==rIt.key() ||
                        RulesPlaylists::constFileKey==rIt.key()) {
                 baseRule += " " + rIt.key() + " " + MPDConnection::encodeName(rIt.value());
             } else if (RulesPlaylists::constExactKey==rIt.key()) {

@@ -188,7 +188,7 @@ static bool songSort(const Song &a, const Song &b)
         if (0!=cmp) {
             return cmp<0;
         }
-        a.artist.localeAwareCompare(b.artist);
+        cmp=a.artist.localeAwareCompare(b.artist);
         if (0!=cmp) {
             return cmp<0;
         }

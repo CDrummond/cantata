@@ -43,6 +43,7 @@ ApiKeys::ApiKeys()
     queryItems[Dirble]="token";
     queryItems[ShoutCast]="k";
     queryItems[SoundCloud]="client_id";
+    load();
 }
 
 void ApiKeys::load()

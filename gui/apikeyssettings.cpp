@@ -113,6 +113,7 @@ void ApiKeysSettings::save()
     for (int i=0; i<tree->topLevelItemCount(); ++i) {
         ApiKeys::self()->set((ApiKeys::Service)i, tree->topLevelItem(i)->text(2));
     }
+    ApiKeys::self()->save();
 }
 
 void ApiKeysSettings::itemClicked(QTreeWidgetItem *item, int column)

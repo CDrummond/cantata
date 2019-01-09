@@ -51,7 +51,7 @@ public:
 
     struct Details {
         Details(Service s, const QString &n, const QString &k, const QString &u)
-            : name(n), key(k), url(u) { }
+            : srv(s), name(n), key(k), url(u) { }
         Service srv;
         QString name;
         QString key;

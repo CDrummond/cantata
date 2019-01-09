@@ -8,6 +8,7 @@
 6. Add action to export current podcast subscriptions to OPML file.
 7. Add searching for radio stations on Community Radio Browser.
 8. Show bits in technical info.
+9. Fix saving, and loading, of custom API keys.
 
 2.3.3
 -----

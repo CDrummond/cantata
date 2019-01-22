@@ -6,7 +6,7 @@ Cantata
 
 A graphical (Qt5) client for MPD, supporting the following features:
 
-  1. Supports Linux, macOS, and Windows.
+  1. Supports Linux, macOS, Windows, and Haiku. **NOTE:** Only Linux actively supported as of 2.3.3
   2. Multiple MPD collections.
   3. Highly customisable layout.
   4. Songs (optionally) grouped by album in play queue.

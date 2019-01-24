@@ -105,7 +105,10 @@ void Notify::show(const QString &title, const QString &text, const QImage &img)
         id = lastId;
     }
 
-    QDBusPendingReply<uint> reply = iface->Notify(QCoreApplication::applicationName(), id, "cantata", title, text, QStringList(), hints, constTimeout);
+    QDBusPendingReply<uint> reply = iface->Notify(QCoreApplication::applicationName(), id, "cantata",
+                                                  QString(title).replace(QLatin1String("&"), QLatin1String("&amp;")),
+                                                  QString(text).replace(QLatin1String("&"), QLatin1String("&amp;")),
+                                                  QStringList(), hints, constTimeout);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(callFinished(QDBusPendingCallWatcher*)));
 }

@@ -1250,7 +1250,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         }
     }
 
-    if (!destName.startsWith("http://") && QFile::copy(src, destName)) {
+    if (!destName.startsWith("http:/", Qt::CaseInsensitive) && !destName.startsWith("https:/", Qt::CaseInsensitive) && QFile::copy(src, destName)) {
         Utils::setFilePerms(destName);
         if (!existingBackup.isEmpty() && QFile::exists(existingBackup)) {
             QFile::remove(existingBackup);

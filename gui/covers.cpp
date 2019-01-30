@@ -123,7 +123,8 @@ static QImage scale(const Song &song, const QImage &img, int size)
 static bool canSaveTo(const QString &dir)
 {
     QString mpdDir=MPDConnection::self()->getDetails().dir;
-    return !dir.isEmpty() && !mpdDir.isEmpty() && !mpdDir.startsWith(QLatin1String("http://")) && QDir(mpdDir).exists() && dir.startsWith(mpdDir);
+    return !dir.isEmpty() && !mpdDir.isEmpty() && !mpdDir.startsWith(QLatin1String("http://"), Qt::CaseInsensitive) &&
+           !mpdDir.startsWith(QLatin1String("https://"), Qt::CaseInsensitive)  && QDir(mpdDir).exists() && dir.startsWith(mpdDir);
 }
 
 static const QString typeFromRaw(const QByteArray &raw)
@@ -640,7 +641,9 @@ void CoverDownloader::download(const Song &song)
 
     if (!song.isArtistImageRequest() && !song.isComposerImageRequest() && MPDConnection::self()->supportsCoverDownload()) {
         downloadViaMpd(job);
-    } else if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
+    } else if (!MPDConnection::self()->getDetails().dir.isEmpty() &&
+               (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"), Qt::CaseInsensitive) ||
+                MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("https://"), Qt::CaseInsensitive))) {
         downloadViaHttp(job, JobHttpJpg);
     } else if (fetchCovers || job.song.isArtistImageRequest()) {
         downloadViaRemote(job);
@@ -1666,8 +1669,9 @@ Covers::Image Covers::locateImage(const Song &song)
         }
     }
 
-    if (!songFile.isEmpty() && !songFile.startsWith("http:/") && !song.isCdda() &&
-        (haveAbsPath || song.isCantataStream() || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
+    if (!songFile.isEmpty() && !songFile.startsWith("http:/", Qt::CaseInsensitive) && !songFile.startsWith("https:/", Qt::CaseInsensitive) && !song.isCdda() &&
+        (haveAbsPath || song.isCantataStream() || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"), Qt::CaseInsensitive)  &&
+                                                   !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("https://"), Qt::CaseInsensitive)) ) ) {
         dirName=song.isCantataStream() ? Utils::getDir(songFile)
                                        : songFile.endsWith(Utils::constDirSep)
                                             ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
@@ -1695,7 +1699,7 @@ Covers::Image Covers::locateImage(const Song &song)
             if (!song.isComposerImageRequest() && (song.isVariousArtists() || song.isNonMPD())) {
                 QString basicArtist=song.basicArtist();
                 dirName=MPDConnection::self()->getDetails().dirReadable ? MPDConnection::self()->getDetails().dir : QString();
-                if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"))) {
+                if (!dirName.isEmpty() && !dirName.startsWith(QLatin1String("http:/"), Qt::CaseInsensitive) && !dirName.startsWith(QLatin1String("https:/"), Qt::CaseInsensitive)) {
                     dirName+=basicArtist+Utils::constDirSep;
                     for (const QString &fileName: coverFileNames) {
                         DBUG_CLASS("Covers") << "Checking file" << QString(dirName+fileName);
@@ -1935,7 +1939,7 @@ void Covers::gotAlbumCover(const Song &song, const QImage &img, const QString &f
 {
     QString key=albumKey(song);
     currentImageRequests.remove(key);
-//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
+//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/", Qt::CaseInsensitive) && !fileName.startsWith("https:/", Qt::CaseInsensitive)  ) {
         mutex.lock();
         filenames.insert(key, fileName.isEmpty() ? constNoCover : fileName);
         mutex.unlock();
@@ -1956,7 +1960,7 @@ void Covers::gotArtistImage(const Song &song, const QImage &img, const QString &
 {
     QString key=artistKey(song);
     currentImageRequests.remove(key);
-//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
+//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/", Qt::CaseInsensitive) && !fileName.startsWith("https:/", Qt::CaseInsensitive)) {
         mutex.lock();
         filenames.insert(key, fileName.isEmpty() ? constNoCover : fileName);
         mutex.unlock();
@@ -1976,7 +1980,7 @@ void Covers::gotComposerImage(const Song &song, const QImage &img, const QString
 {
     QString key=composerKey(song);
     currentImageRequests.remove(key);
-//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/")) {
+//    if (!img.isNull() && !fileName.isEmpty() && !fileName.startsWith("http:/", Qt::CaseInsensitive) && !fileName.startsWith("https:/", Qt::CaseInsensitive)) {
         mutex.lock();
         filenames.insert(key, fileName.isEmpty() ? constNoCover : fileName);
         mutex.unlock();

@@ -718,11 +718,14 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     }
 
     QString n=MPDConnectionDetails::configGroupName(v.name);
-
     Configuration grp(n);
     grp.set("host", v.hostname);
     grp.set("port", (int)v.port);
-    grp.setDirPath("dir", v.dir);
+    if (v.dir.startsWith("http:", Qt::CaseInsensitive) || v.dir.startsWith("https:", Qt::CaseInsensitive)) {
+        grp.set("dir", v.dir);
+    } else {
+        grp.setDirPath("dir", v.dir);
+    }
     grp.set("passwd", v.password);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     grp.set("streamUrl", v.streamUrl);

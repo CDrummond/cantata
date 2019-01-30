@@ -59,12 +59,13 @@ const QLatin1String Utils::constDirSepStr("/");
 const char * Utils::constDirSepCharStr="/";
 
 static const QLatin1String constHttp("http:");
+static const QLatin1String constHttps("https:");
 
 QString Utils::fixPath(const QString &dir, bool ensureEndsInSlash)
 {
     QString d(dir);
 
-    if (!d.isEmpty() && !d.startsWith(constHttp)) {
+    if (!d.isEmpty() && !d.startsWith(constHttp) && !d.startsWith(constHttps)) {
         #ifdef Q_OS_WIN
         // Windows shares can be \\host\share (which gets converted to //host/share)
         // so if th epath starts with // we need to keep this double slash.
@@ -225,7 +226,7 @@ QString Utils::stripAcceleratorMarkers(QString label)
 
 QString Utils::convertPathForDisplay(const QString &path, bool isFolder)
 {
-    if (path.isEmpty() || path.startsWith(constHttp)) {
+    if (path.isEmpty() || path.startsWith(constHttp) || path.startsWith(constHttps)) {
         return path;
     }
 
@@ -246,7 +247,7 @@ QString Utils::convertPathFromDisplay(const QString &path, bool isFolder)
         return p;
     }
 
-    if (p.startsWith(constHttp)) {
+    if (p.startsWith(constHttp) || p.startsWith(constHttps)) {
         return fixPath(p);
     }
     return tildaToHome(fixPath(QDir::fromNativeSeparators(p), isFolder));

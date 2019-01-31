@@ -10,6 +10,8 @@
  8. Show bits in technical info.
  9. Fix saving, and loading, of custom API keys.
 10. Fix saving, and reading back, https:// as MPD music folder.
+11. Fix crash when double-clicking outside of table-view (when this is set to
+    not stretch columns).
 
 2.3.3
 -----

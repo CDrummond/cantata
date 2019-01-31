@@ -309,8 +309,8 @@ void StoredPlaylistsPage::removeInvalid()
 
 void StoredPlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    if (style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, this)
-        || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
+    if (index.isValid() && (style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, this)
+        || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist())) {
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayList(indexes, QString(), MPDConnection::Append);

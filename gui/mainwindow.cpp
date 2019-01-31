@@ -1962,7 +1962,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
 
 void MainWindow::playQueueItemActivated(const QModelIndex &index)
 {
-    emit startPlayingSongId(PlayQueueModel::self()->getIdByRow(playQueueProxyModel.mapToSource(index).row()));
+    if (index.isValid()) {
+        emit startPlayingSongId(PlayQueueModel::self()->getIdByRow(playQueueProxyModel.mapToSource(index).row()));
+    }
 }
 
 void MainWindow::clearPlayQueue()

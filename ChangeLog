@@ -12,6 +12,7 @@
 10. Fix saving, and reading back, https:// as MPD music folder.
 11. Fix crash when double-clicking outside of table-view (when this is set to
     not stretch columns).
+12. Fix greyscale images in notifications.
 
 2.3.3
 -----

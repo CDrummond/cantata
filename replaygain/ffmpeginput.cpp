@@ -126,7 +126,9 @@ void FfmpegInput::init()
 {
     static int i=false;
     if (!i) {
+        #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 18, 100)
         av_register_all();
+        #endif
         av_log_set_level(AV_LOG_ERROR);
         i=true;
     }

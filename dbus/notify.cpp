@@ -63,7 +63,7 @@ QDBusArgument& operator<< (QDBusArgument &arg, const QImage &image)
     arg << i.height();
     arg << i.bytesPerLine();
     arg << i.hasAlphaChannel();
-    int channels = i.isGrayscale() ? 1 : (i.hasAlphaChannel() ? 4 : 3);
+    int channels = /*i.isGrayscale() ? 1 : */ (i.hasAlphaChannel() ? 4 : 3);
     arg << i.depth() / channels;
     arg << channels;
     arg << QByteArray(reinterpret_cast<const char*>(i.bits()), i.byteCount());

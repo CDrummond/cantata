@@ -153,9 +153,9 @@ void View::clear()
 void View::setHeader(const QString &str)
 {
     #ifdef CONTEXT_CENTERED
-    header->setText("<"+headerTag+" width=\"100%\" align=\"center\">"+str+"</"+headerTag+">");
+    header->setText("<"+headerTag+" width=\"100%\" align=\"center\">"+str.toHtmlEscaped()+"</"+headerTag+">");
     #else
-    header->setText("<"+headerTag+">"+str+"</"+headerTag+">");
+    header->setText("<"+headerTag+">"+str.toHtmlEscaped()+"</"+headerTag+">");
     #endif
 }
 

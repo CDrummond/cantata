@@ -464,9 +464,13 @@ static inline QString fixNewLine(QString s)
     return s.replace(QLatin1String("\n"), QLatin1String("<br/>"));
 }
 
-static QString createRow(const QString &key, const QString &value)
+static QString createRow(const QString &key, const QString &value, bool htmlEscape = true)
 {
-    return value.isEmpty() ? QString() : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(fixNewLine(value));
+    return value.isEmpty()
+            ? QString()
+            : htmlEscape
+                ? QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(fixNewLine(value).toHtmlEscaped())
+                : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(fixNewLine(value));
 }
 
 struct MapEntry {
@@ -633,7 +637,7 @@ void SongView::loadMetadata()
     QString songFile=currentSong.filePath(MPDConnection::self()->getDetails().dir);
     if (QFile::exists(songFile)) {
         tagInfo+=createRow(tr("Filename"), QLatin1String("<a href=\"file://")+songFile+QLatin1String("\">")+
-                                           songFile+QLatin1String("</a>"));
+                                           songFile.toHtmlEscaped()+QLatin1String("</a>"), false);
     } else {
         tagInfo+=createRow(tr("Filename"), songFile);
     }

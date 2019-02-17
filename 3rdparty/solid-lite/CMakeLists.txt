@@ -202,7 +202,7 @@ if(APPLE)
    set(solidlite_OPTIONAL_LIBS ${IOKIT_LIBRARY})
 endif()
 
-add_library(solidlite ${solidlite_LIB_SRCS})
+add_library(solidlite STATIC ${solidlite_LIB_SRCS})
 
 if ( UDEV_FOUND )
    set(solidlite_OPTIONAL_LIBS ${solidlite_OPTIONAL_LIBS} ${UDEV_LIBS})

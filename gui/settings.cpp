@@ -274,6 +274,11 @@ bool Settings::storeCoversInMpdDir()
     return cfg.get("storeCoversInMpdDir", false);
 }
 
+bool Settings::storeLyricsInMpdDir()
+{
+    return cfg.get("storeLyricsInMpdDir", false);
+}
+
 QString Settings::coverFilename()
 {
     QString name=cfg.get("coverFilename", QString());
@@ -804,6 +809,11 @@ void Settings::saveStopOnExit(bool v)
 void Settings::saveStoreCoversInMpdDir(bool v)
 {
     cfg.set("storeCoversInMpdDir", v);
+}
+
+void Settings::saveStoreLyricsInMpdDir(bool v)
+{
+    cfg.set("storeLyricsInMpdDir", v);
 }
 
 void Settings::saveCoverFilename(const QString &v)

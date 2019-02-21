@@ -717,7 +717,9 @@ void SongView::abort()
 
         text->setText(QString());
         // Set lyrics file anyway - so that editing is enabled!
-        lyricsFile=lyricsCacheFileName(currentSong);
+        lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
+                ? mpdLyricsFilePath(currentSong)
+                : lyricsCacheFileName(currentSong);
         setMode(Mode_Display);
     }
     cancelJobAction->setEnabled(false);
@@ -820,7 +822,10 @@ void SongView::lyricsReady(int id, QString lyrics)
         } else {
             text->setText(fixNewLines(plain));
             lyricsFile=QString();
-            saveFile(lyricsCacheFileName(currentSong, true));
+            if (! ( Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD() &&
+                    saveFile(mpdLyricsFilePath(currentSong))) ) {
+                saveFile(lyricsCacheFileName(currentSong, true));
+            }
             setMode(Mode_Display);
         }
     }
@@ -867,7 +872,9 @@ void SongView::getLyrics()
         text->setText(QString());
         currentProvider=-1;
         // Set lyrics file anyway - so that editing is enabled!
-        lyricsFile=lyricsCacheFileName(currentSong);
+        lyricsFile=Settings::self()->storeLyricsInMpdDir() && !currentSong.isNonMPD()
+                        ? mpdLyricsFilePath(currentSong)
+                        : lyricsCacheFileName(currentSong);
         setMode(Mode_Display);
     }
 }

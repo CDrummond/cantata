@@ -15,6 +15,7 @@
 12. Fix greyscale images in notifications.
 13. Re-add option to save lyrics in music folder.
 14. Show Original Year in context view metadata.
+15. Add --fullscreen command-line option to start fullscreen.
 
 2.3.3
 -----

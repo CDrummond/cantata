@@ -60,6 +60,7 @@ public:
     bool showPopups();
     bool stopOnExit();
     bool storeCoversInMpdDir();
+    bool storeLyricsInMpdDir();
     QString coverFilename();
     int sidebar();
     QSet<QString> composerGenres();
@@ -164,6 +165,7 @@ public:
     void saveMinimiseOnClose(bool v);
     void saveShowPopups(bool v);
     void saveStoreCoversInMpdDir(bool v);
+    void saveStoreLyricsInMpdDir(bool v);
     void saveCoverFilename(const QString &v);
     void saveLibraryArtistImage(bool v);
     void saveSidebar(int v);

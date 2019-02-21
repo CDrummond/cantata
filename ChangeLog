@@ -13,6 +13,7 @@
 11. Fix crash when double-clicking outside of table-view (when this is set to
     not stretch columns).
 12. Fix greyscale images in notifications.
+13. Re-add option to save lyrics in music folder.
 
 2.3.3
 -----

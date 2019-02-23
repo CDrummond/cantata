@@ -6,13 +6,14 @@
       <item begin="&lt;!-- END OF RINGTONE 1 --&gt;" end="&lt;!-- RINGTONE 2 --&gt;"/>
     </extract>
     <extract> <!-- new -->
-      <item begin="&lt;!-- start of lyrics --&gt;" end="&lt;!-- end of lyrics --&gt;"/>
+      <item begin="&lt;!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. --&gt;" end="&lt;/div&gt;"/>
     </extract>
     <exclude>
       <item tag="&lt;B&gt;"/>
       <item begin="&lt;i&gt;[" end="]&lt;/i&gt;"/>
       <item begin="[" end="]"/>
     </exclude>
+    <invalidIndicator value="&lt;h1&gt;Welcome to AZLyrics!&lt;/h1&gt;"/>
   </provider>
   <provider name="bollywoodlyrics.com (Bollywood songs)" charset="utf-8" url="https://www.bollywoodlyrics.com/lyric/{Title}">
     <urlFormat replace=" _@;\/&quot;'()[]" with="-"/>

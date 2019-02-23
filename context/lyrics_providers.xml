@@ -6,13 +6,14 @@
       <item begin="&lt;!-- END OF RINGTONE 1 --&gt;" end="&lt;!-- RINGTONE 2 --&gt;"/>
     </extract>
     <extract> <!-- new -->
-      <item begin="&lt;!-- start of lyrics --&gt;" end="&lt;!-- end of lyrics --&gt;"/>
+      <item begin="&lt;!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. --&gt;" end="&lt;/div&gt;"/>
     </extract>
     <exclude>
       <item tag="&lt;B&gt;"/>
       <item begin="&lt;i&gt;[" end="]&lt;/i&gt;"/>
       <item begin="[" end="]"/>
     </exclude>
+    <invalidIndicator value="&lt;h1&gt;Welcome to AZLyrics!&lt;/h1&gt;"/>
   </provider>
   <provider name="bollywoodlyrics.com (Bollywood songs)" charset="utf-8" url="https://www.bollywoodlyrics.com/lyric/{Title}">
     <urlFormat replace=" _@;\/&quot;'()[]" with="-"/>
@@ -88,7 +89,7 @@
     <invalidIndicator value="&quot;iTotalRecords&quot;: 0"/>
     <invalidIndicator value="lyrics not available"/>
   </provider>
-  <provider name="letras.mus.br" charset="utf-8" url="http://letras.terra.com.br/winamp.php?musica={title}&amp;artista={artist}">
+  <provider name="letras.mus.br" charset="utf-8" url="https://www.letras.mus.br/winamp.php?musica={title}&amp;artista={artist}">
     <urlFormat replace="_@,;&amp;\/&quot;" with="_"/>
     <urlFormat replace=" " with="+"/>
     <extract> <!-- new -->
@@ -153,6 +154,10 @@
     <extract>
       <item tag="&lt;div id=&quot;lyrics&quot; class=&quot;SCREENONLY&quot;&gt;"/>
     </extract>
+    <exclude>
+      <item begin="&lt;br&gt;&lt;br&gt;&lt;a target='_blank'" end="&gt;&lt;/a&gt;"/>
+    </exclude>
+    <invalidIndicator value="Click to search for the Lyrics on Lyrics.com"/>
     <invalidIndicator value="we do not have the lyric for this song"/>
     <invalidIndicator value="Your name will be printed as part of the credit when your lyric is approved"/>
   </provider>

@@ -270,7 +270,7 @@ void JamendoXmlParser::parseAlbum(Song &song, QList<Song> *songList, QXmlStreamR
     }
 
     if (!id.isEmpty()) {
-        emit coverUrl(song.artistOrComposer(), song.album, id);
+        emit coverUrl(song.albumArtistOrComposer(), song.album, id);
     }
 }
 

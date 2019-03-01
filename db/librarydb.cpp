@@ -649,7 +649,7 @@ void LibraryDb::insertSong(const Song &s)
     QString albumId=s.albumId();
     insertSongQuery->bindValue(":file", s.file);
     insertSongQuery->bindValue(":artist", s.artist);
-    insertSongQuery->bindValue(":artistId", s.artistOrComposer());
+    insertSongQuery->bindValue(":artistId", s.albumArtistOrComposer());
     insertSongQuery->bindValue(":albumArtist", s.albumartist);
     insertSongQuery->bindValue(":artistSort", artistSort(s));
     insertSongQuery->bindValue(":composer", s.composer());
@@ -1122,7 +1122,7 @@ bool LibraryDb::songExists(const Song &song)
         return false;
     }
     SqlQuery query("file", *db);
-    query.addWhere("artistId", song.artistOrComposer());
+    query.addWhere("artistId", song.albumArtistOrComposer());
     query.addWhere("albumId", song.albumId());
     query.addWhere("title", song.title);
     query.addWhere("track", song.track);

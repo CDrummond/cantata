@@ -722,7 +722,7 @@ void MusicLibraryItemRoot::removeSongFromList(const Song &s)
 QString MusicLibraryItemRoot::artistName(const Song &s, bool forceComposer)
 {
     if (Song::Standard==s.type || Song::Cdda==s.type || Song::OnlineSvrTrack==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {
-        return forceComposer && s.hasComposer() ? s.composer() : s.artistOrComposer();
+        return forceComposer && s.hasComposer() ? s.composer() : s.albumArtistOrComposer();
     }
     return Song::variousArtists();
 }

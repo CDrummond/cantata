@@ -240,7 +240,7 @@ int Song::compareTo(const Song &o) const
             }
         }
 
-        int compare=artistOrComposer().localeAwareCompare(o.artistOrComposer());
+        int compare=albumArtistOrComposer().localeAwareCompare(o.albumArtistOrComposer());
         if (0!=compare) {
             return compare;
         }
@@ -522,7 +522,7 @@ QString Song::entryName() const
     return title+constFieldSep+artist+constFieldSep+album;
 }
 
-QString Song::artistOrComposer() const
+QString Song::albumArtistOrComposer() const
 {
     if (useComposer()) {
         QString c=composer();
@@ -531,6 +531,17 @@ QString Song::artistOrComposer() const
         }
     }
     return albumArtist();
+}
+
+QString Song::trackArtistOrComposer() const
+{
+    if (useComposer()) {
+        QString c=composer();
+        if (!c.isEmpty()) {
+            return c;
+        }
+    }
+    return artist;
 }
 
 QString Song::albumName() const
@@ -771,8 +782,15 @@ static QString basic(const QString &str, const QStringList &extraToStrip=QString
     return str;
 }
 
-QString Song::basicArtist() const
+QString Song::basicArtist(bool orComposer) const
 {
+    if (orComposer && useComposer()) {
+        QString c=composer();
+        if (!c.isEmpty()) {
+            return c;
+        }
+    }
+
     if (!albumartist.isEmpty() && (artist.isEmpty() || albumartist==artist || (albumartist.length()<artist.length() && artist.startsWith(albumartist)))) {
         return albumartist;
     }
@@ -844,13 +862,13 @@ QString Song::subText() const
         } else {
             return artist.isEmpty() ? title : artistSong();
         }
-    } else if (album.isEmpty() && artist.isEmpty()) {
+    } else if (album.isEmpty() && artist.isEmpty() && (!useComposer() || composer().isEmpty())) {
         return mainText().isEmpty() ? QString() : Song::unknown();
     } else if (album.isEmpty()) {
-        return artist;
+        return trackArtistOrComposer();
     } else {
-        // Artist here is always artist, and not album artist or composer
-        return artist + QString(" – ")+displayAlbum(false);
+        // Artist here is always artist (or composer), and not album artist
+        return trackArtistOrComposer() + QString(" – ")+displayAlbum(false);
     }
 }
 

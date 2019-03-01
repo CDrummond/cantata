@@ -213,7 +213,7 @@ void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &
     case T_Genre: {
         const Item *genre=root ? root->getChild(song.genres[0]) : nullptr;
         if (genre) {
-            const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
+            const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.albumArtistOrComposer());
             if (artist) {
                 const Item *album=static_cast<const CollectionItem *>(artist)->getChild(song.albumId());
                 if (album) {
@@ -225,7 +225,7 @@ void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &
         break;
     }
     case T_Artist: {
-        const Item *artist=root ? root->getChild(song.artistOrComposer()) : nullptr;
+        const Item *artist=root ? root->getChild(song.albumArtistOrComposer()) : nullptr;
         if (artist) {
             const Item *album=static_cast<const CollectionItem *>(artist)->getChild(song.albumId());
             if (album) {
@@ -236,7 +236,7 @@ void MpdLibraryModel::cover(const Song &song, const QImage &img, const QString &
         break;
     }
     case T_Album: {
-        const Item *album=root ? root->getChild(song.artistOrComposer()+song.albumId()) : nullptr;
+        const Item *album=root ? root->getChild(song.albumArtistOrComposer()+song.albumId()) : nullptr;
         if (album) {
             QModelIndex idx=index(album->getRow(), 0, QModelIndex());
             emit dataChanged(idx, idx);
@@ -265,7 +265,7 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
     case T_Genre: {
         const Item *genre=root ? root->getChild(song.genres[0]) : nullptr;
         if (genre) {
-            const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.artistOrComposer());
+            const Item *artist=static_cast<const CollectionItem *>(genre)->getChild(song.albumArtistOrComposer());
             if (artist) {
                 QModelIndex idx=index(artist->getRow(), 0, index(genre->getRow(), 0, QModelIndex()));
                 emit dataChanged(idx, idx);
@@ -274,7 +274,7 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
         break;
     }
     case T_Artist: {
-        const Item *artist=root ? root->getChild(song.artistOrComposer()) : nullptr;
+        const Item *artist=root ? root->getChild(song.albumArtistOrComposer()) : nullptr;
         if (artist) {
             QModelIndex idx=index(artist->getRow(), 0, QModelIndex());
             emit dataChanged(idx, idx);

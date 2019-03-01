@@ -222,7 +222,7 @@ void TitleWidget::coverRetrieved(const Song &s, const QImage &img, const QString
     if (song.isEmpty() || img.isNull()) {
         return;
     }
-    if (song.artistOrComposer()!=s.artistOrComposer()) {
+    if (song.albumArtistOrComposer()!=s.albumArtistOrComposer()) {
         return;
     }
     if (s.isArtistImageRequest()!=song.isArtistImageRequest()) {

@@ -47,7 +47,7 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
 }
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent)
-    : MusicLibraryItemContainer(song.artistOrComposer(), parent)
+    : MusicLibraryItemContainer(song.albumArtistOrComposer(), parent)
     , m_sortString(song.hasAlbumArtistSort() ? song.albumArtistSort() : QString())
     , m_actualArtist(song.useComposer() ? song.albumArtist() : QString())
 {

@@ -98,13 +98,13 @@ Song MagnatuneXmlParser::parseSong(QXmlStreamReader &xml)
     }
 
     if (!albumImg.isEmpty()) {
-        QString key=s.artistOrComposer()+"-"+s.albumId();
+        QString key=s.albumArtistOrComposer()+"-"+s.albumId();
         if (!albumUrls.contains(key)) {
             albumUrls.insert(key);
-            emit coverUrl(s.artistOrComposer(), s.album, albumImg);
+            emit coverUrl(s.albumArtistOrComposer(), s.album, albumImg);
         }
     }
-    artists.insert(s.artistOrComposer());
+    artists.insert(s.albumArtistOrComposer());
     return s;
 }
 

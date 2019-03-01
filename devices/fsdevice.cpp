@@ -172,7 +172,7 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
                 song.fillEmptyFields();
                 song.populateSorts();
                 song.size=info.size();
-                if (!artistItem || song.artistOrComposer()!=artistItem->data()) {
+                if (!artistItem || song.albumArtistOrComposer()!=artistItem->data()) {
                     artistItem = library->artist(song);
                 }
                 if (!albumItem || albumItem->parentItem()!=artistItem || song.albumName()!=albumItem->data()) {

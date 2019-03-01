@@ -402,7 +402,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
             }
         }
         #endif
-        if (!artistItem || (supprtAlbumArtistTag ? s.artistOrComposer()!=artistItem->data() : s.artist!=artistItem->data())) {
+        if (!artistItem || (supprtAlbumArtistTag ? s.albumArtistOrComposer()!=artistItem->data() : s.artist!=artistItem->data())) {
             artistItem = library->artist(s);
         }
         if (!albumItem || albumItem->parentItem()!=artistItem || s.albumName()!=albumItem->data()) {

@@ -157,7 +157,8 @@ struct Song
     void addGenre(const QString &g);
     quint16 displayYear() const;
     QString entryName() const;
-    QString artistOrComposer() const;
+    QString albumArtistOrComposer() const;
+    QString trackArtistOrComposer() const;
     QString albumName() const;
     QString albumId() const;
     QString artistSong() const;
@@ -223,7 +224,7 @@ struct Song
     QString albumKey() const;
     bool isCueFile() const { return Playlist==type && file.endsWith(QLatin1String(".cue"), Qt::CaseInsensitive); }
     bool isFromCue() const { return CueFile::isCue(file); }
-    QString basicArtist() const;
+    QString basicArtist(bool orComposer=false) const;
     QString basicTitle() const;
     QString filePath(const QString &base=QString()) const;
     QString displayAlbum(bool useComp=true) const { return displayAlbum(useComp ? albumName() : album, displayYear()); }

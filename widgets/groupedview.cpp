@@ -296,13 +296,13 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
             title=Song::unknown();
             track=trackTitle;
         } else if (song.album.isEmpty()) {
-            title=song.artistOrComposer();
+            title=song.albumArtistOrComposer();
             track=song.trackAndTitleStr();
         } else {
             if (song.isFromOnlineService()) {
                 title=Song::displayAlbum(song.albumName(), Song::albumYear(song));
             } else {
-                title=song.artistOrComposer()+QString(" – ")+Song::displayAlbum(song.albumName(), Song::albumYear(song));
+                title=song.albumArtistOrComposer()+QString(" – ")+Song::displayAlbum(song.albumName(), Song::albumYear(song));
             }
             track=song.trackAndTitleStr();
         }

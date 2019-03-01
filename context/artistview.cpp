@@ -156,7 +156,7 @@ void ArtistView::update(const Song &s, bool force)
     }
 
     Song song=s;
-    song.artist=song.basicArtist();
+    song.artist=song.basicArtist(true);
     bool artistChanged=song.artist!=currentSong.artist;
 
     if (artistChanged) {

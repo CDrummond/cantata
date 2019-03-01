@@ -864,11 +864,14 @@ QString Song::subText() const
         }
     } else if (album.isEmpty() && artist.isEmpty() && (!useComposer() || composer().isEmpty())) {
         return mainText().isEmpty() ? QString() : Song::unknown();
-    } else if (album.isEmpty()) {
-        return trackArtistOrComposer();
     } else {
-        // Artist here is always artist (or composer), and not album artist
-        return trackArtistOrComposer() + QString(" – ")+displayAlbum(false);
+        QString comp = useComposer() ? composer() : QString();
+        if (album.isEmpty()) {
+            return artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + QString(" – ")+artist);
+        } else {
+            // Artist here is always artist (or 'composer - artist'), and not album artist
+            return (artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + QString(" – ")+artist)) + QString(" – ")+displayAlbum(false);
+        }
     }
 }
 

@@ -125,7 +125,7 @@ public:
     QList<Song> getTracks(int rowFrom, int count);
     int trackCount();
     QList<Song> songs(const QStringList &files, bool allowPlaylists=false) const;
-    QList<Album> getAlbumsWithArtist(const QString &artist);
+    QList<Album> getAlbumsWithArtistOrComposer(const QString &artist);
     Album getRandomAlbum(const QString &genre, const QString &artist);
     Album getRandomAlbum(const QStringList &genres, const QStringList &artists);
     QSet<QString> get(const QString &type);

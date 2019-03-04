@@ -18,6 +18,8 @@
 15. Add --fullscreen command-line option to start fullscreen.
 16. For genres listed in "Composer Support" tweak, shown composer instead of
     artist in context view and toolbar.
+17. When listing albums in context view, if can't find and for artist, try
+    composer.
 
 2.3.3
 -----

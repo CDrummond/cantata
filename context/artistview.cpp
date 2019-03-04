@@ -199,7 +199,7 @@ void ArtistView::update(const Song &s, bool force)
 const QList<LibraryDb::Album> & ArtistView::getArtistAlbums()
 {
     if (artistAlbums.isEmpty() && !currentSong.isEmpty()) {
-        artistAlbums=MpdLibraryModel::self()->getArtistAlbums(currentSong.artist);
+        artistAlbums=MpdLibraryModel::self()->getArtistOrComposerAlbums(currentSong.artist);
     }
     return artistAlbums;
 }

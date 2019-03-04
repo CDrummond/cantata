@@ -978,12 +978,25 @@ QList<Song> LibraryDb::songs(const QStringList &files, bool allowPlaylists) cons
     return songList;
 }
 
-QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtist(const QString &artist)
+QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtistOrComposer(const QString &artist)
 {
     QList<LibraryDb::Album> albums;
     if (0!=currentVersion && db) {
         SqlQuery query("distinct album, albumId, albumSort", *db);
         query.addWhere("artist", artist);
+        query.exec();
+        DBUG << query.executedQuery();
+        while (query.next()) {
+            QString album=query.value(0).toString();
+            QString albumId=query.value(1).toString();
+            albums.append(Album(album.isEmpty() ? albumId : album, albumId, query.value(2).toString(), artist));
+        }
+    }
+
+    if (albums.isEmpty()) {
+        // No artist albums? Try composer...
+        SqlQuery query("distinct album, albumId, albumSort", *db);
+        query.addWhere("composer", artist);
         query.exec();
         DBUG << query.executedQuery();
         while (query.next()) {

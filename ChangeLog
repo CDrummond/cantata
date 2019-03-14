@@ -20,6 +20,7 @@
     artist in context view and toolbar.
 17. When listing albums in context view, if can't find and for artist, try
     composer.
+18. When downloading podcasts, use whole path for filename.
 
 2.3.3
 -----

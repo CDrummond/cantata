@@ -47,6 +47,20 @@
 #include <QDateTime>
 #include <stdio.h>
 
+static QString encodeName(const QString &name)
+{
+    QString n=name;
+    n=n.replace("/", "_");
+    n=n.replace("\\", "_");
+    n=n.replace(":", "_");
+    return n;
+}
+
+static inline QString episodeFileName(const QUrl &url)
+{
+    return url.path().split('/', QString::SkipEmptyParts).join('_').replace('~', '_');
+}
+
 PodcastService::Proxy::Proxy(QObject *parent)
     : ProxyModel(parent)
     , unplayedOnly(false)
@@ -243,6 +257,8 @@ bool PodcastService::Podcast::load()
 
     QXmlStreamReader reader(&compressor);
     unplayedCount=0;
+
+    QString podPath=Settings::self()->podcastDownloadPath();
     while (!reader.atEnd()) {
         reader.readNext();
         if (!reader.error() && reader.isStartElement()) {
@@ -257,6 +273,9 @@ bool PodcastService::Podcast::load()
                 if (url.isEmpty() || name.isEmpty()) {
                     return false;
                 }
+                if (!podPath.isEmpty()) {
+                    podPath=Utils::fixPath(podPath)+Utils::fixPath(encodeName(name));
+                }
             } else if (constEpisodeTag == element) {
                 QString epName=attributes.value(constNameAttribute).toString();
                 QString epUrl=attributes.value(constUrlAttribute).toString();
@@ -270,6 +289,11 @@ bool PodcastService::Podcast::load()
                     ep->descr=attributes.value(constDescrAttribute).toString();
                     if (QFile::exists(localFile)) {
                         ep->localFile=localFile;
+                    } else if (!podPath.isEmpty()) {
+                        QString localPath=podPath+episodeFileName(ep->url);
+                        if (QFile::exists(localPath)) {
+                            ep->localFile = localPath;
+                        }
                     }
 
                     episodes.append(ep);
@@ -758,10 +782,23 @@ void PodcastService::rssJobFinished()
             podcast->name=ch.name;
             podcast->descr=ch.description;
             podcast->unplayedCount=ch.episodes.count();
+
+            QString podPath=Settings::self()->podcastDownloadPath();
+            if (!podPath.isEmpty()) {
+                podPath=Utils::fixPath(podPath)+Utils::fixPath(encodeName(podcast->name));
+            }
+
             for (const RssParser::Episode &ep: ch.episodes) {
                 Episode *episode=new Episode(ep.publicationDate, ep.name, ep.url, podcast);
                 episode->duration=ep.duration;
                 episode->descr=ep.description;
+                if (!podPath.isEmpty()) {
+                    // Check if we had subscribed to this before, and downloaded episodes...
+                    QString localPath=podPath+episodeFileName(episode->url);
+                    if (QFile::exists(localPath)) {
+                        episode->localFile = localPath;
+                    }
+                }
                 podcast->add(episode);
             }
             podcast->save();
@@ -1007,15 +1044,6 @@ void PodcastService::setPodcastsAsListened(Podcast *pod, const QList<Episode *> 
     }
 }
 
-static QString encodeName(const QString &name)
-{
-    QString n=name;
-    n=n.replace("/", "_");
-    n=n.replace("\\", "_");
-    n=n.replace(":", "_");
-    return n;
-}
-
 void PodcastService::downloadEpisode(const Podcast *podcast, const QUrl &episode)
 {
     QString dest=Settings::self()->podcastDownloadPath();
@@ -1025,7 +1053,7 @@ void PodcastService::downloadEpisode(const Podcast *podcast, const QUrl &episode
     if (downloadingEpisode(episode)) {
         return;
     }
-    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->name))+episode.path().split('/', QString::SkipEmptyParts).join('_').replace('~', '_');
+    dest=Utils::fixPath(dest)+Utils::fixPath(encodeName(podcast->name))+episodeFileName(episode);
     toDownload.append(DownloadEntry(episode, podcast->url, dest));
     updateEpisode(podcast->url, episode, Episode::QueuedForDownload);
     doNextDownload();

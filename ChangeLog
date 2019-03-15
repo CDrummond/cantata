@@ -21,6 +21,8 @@
 17. When listing albums in context view, if can't find and for artist, try
     composer.
 18. When downloading podcasts, use whole path for filename.
+19. When subscribing to a podcast, check if there are any downloaded episodes
+    from a previous subscription.
 
 2.3.3
 -----

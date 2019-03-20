@@ -23,6 +23,7 @@
 18. When downloading podcasts, use whole path for filename.
 19. When subscribing to a podcast, check if there are any downloaded episodes
     from a previous subscription.
+20. Apply 'Single Tracks' tweak to play queue items.
 
 2.3.3
 -----

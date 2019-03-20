@@ -111,18 +111,24 @@ QString Utils::tildaToHome(const QString &s)
 }
 #endif
 
-QString Utils::getDir(const QString &file)
+QString Utils::getDir(const QString &file, bool addSlash)
 {
     bool isCueFile=file.contains("/cue:///") && file.contains("?pos=");
     QString d(file);
     int slashPos(d.lastIndexOf(constDirSep));
 
-    if(slashPos!=-1) {
+    if (slashPos!=-1) {
         d.remove(slashPos+1, d.length());
     }
 
     if (isCueFile) {
         d.remove("cue:///");
+    }
+    if (!addSlash) {
+        if (d.endsWith("/")) {
+            return d.left(d.length()-1);
+        }
+        return d;
     }
     return fixPath(d);
 }

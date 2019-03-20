@@ -424,6 +424,9 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
                         }
                     }
                 }
+            } else if (Loc_PlayQueue==location && Song::Standard==song.type && !singleTracksFolders.isEmpty() && singleTracksFolders.contains(Utils::getDir(song.file, false))) {
+                song.setFromSingleTracks();
+                song.fillEmptyFields();
             } else {
                 song.guessTags();
                 song.fillEmptyFields();
@@ -731,12 +734,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                 }
             } else {
                 if (setSingleTracks) {
-                    currentSong.albumartist=Song::variousArtists();
-                    currentSong.album=Song::singleTracks();
-                    currentSong.type=Song::SingleTracks;
-                    currentSong.setAlbumArtistSort(QString());
-                    currentSong.setAlbumSort(QString());
-                    currentSong.setMbAlbumId(QString());
+                    currentSong.setFromSingleTracks();
                 }
                 currentSong.fillEmptyFields();
                 songs.append(currentSong);

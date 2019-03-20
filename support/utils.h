@@ -63,7 +63,7 @@ namespace Utils
     extern QString tildaToHome(const QString &s);
     #endif
 
-    extern QString getDir(const QString &file);
+    extern QString getDir(const QString &file, bool addSlash=true);
     extern QString getFile(const QString &file);
     extern QString getExtension(const QString &file);
     extern QString changeExtension(const QString &file, const QString &extension);

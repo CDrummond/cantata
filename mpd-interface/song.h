@@ -234,6 +234,7 @@ struct Song
     QString subText() const;
     bool useComposer() const;
     void populateSorts();
+    void setFromSingleTracks();
 //    QString basicDescription() const;
 
     //

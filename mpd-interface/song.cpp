@@ -911,6 +911,16 @@ void Song::populateSorts()
     }
 }
 
+void Song::setFromSingleTracks()
+{
+    albumartist=variousArtists();
+    album=singleTracks();
+    type=SingleTracks;
+    setAlbumArtistSort(QString());
+    setAlbumSort(QString());
+    setMbAlbumId(QString());
+}
+
 //QString Song::basicDescription() const
 //{
 //    return isStandardStream()

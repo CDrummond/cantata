@@ -232,9 +232,9 @@ static const QList<QTextCodec *> & codecList()
     return codecs;
 }
 
-static inline isVariousArtists(const QString &str)
+static inline bool isVariousArtists(const QString &str)
 {
-    return str==Song::variousArtists() || albumComposer.toLower() == "various" || albumComposer.toLower() == "various artists";
+    return str==Song::variousArtists() || str.toLower() == "various" || str.toLower() == "various artists";
 }
 
 // Parse CUE file content
@@ -429,8 +429,9 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 if (albumComposer.isEmpty()) {
                     albumComposer = Song::unknown();
                 }
-                DBUG << "TRACK saving - " "valid?" << validFile << "| index:" << index << "| type:" << trackType;
-                DBUG << "... genre:" << genre << "| albumArtist:" << albumArtist << "| albumComposer:" << albumComposer << "| artist:" << artist << "| performer:" << performer << "| composer:" << composer;
+                DBUG << "TRACK saving - " "valid?" << validFile << "| index:" << index << "| type:" << trackType
+                     << "| genre:" << genre << "| albumArtist:" << albumArtist << "| albumComposer:" << albumComposer << "| artist:" << artist
+                     << "| performer:" << performer << "| composer:" << composer << "| originalDate:" << originalDate;
                 if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
                     entries.append(CueEntry(file, index, trackNo, disc, title, artist, albumArtist, album, performer, composer, albumComposer, genre, date, originalDate));
                 }

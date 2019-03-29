@@ -24,6 +24,7 @@
 19. When subscribing to a podcast, check if there are any downloaded episodes
     from a previous subscription.
 20. Apply 'Single Tracks' tweak to play queue items.
+21. Parse more fields from CUE files.
 
 2.3.3
 -----

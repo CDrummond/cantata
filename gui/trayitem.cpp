@@ -238,7 +238,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 if (!notification) {
                     notification=new Notify(this);
                 }
-                notification->show(song.mainText(), song.subText(), CurrentCover::self()->image());
+                notification->show(song.mainText(), song.subText(), CurrentCover::self()->image(), Notify::LowUrgency);
             }
             #endif
         } else if (trayItem) {

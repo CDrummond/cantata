@@ -43,7 +43,14 @@ public:
     Notify(QObject *p);
     ~Notify() override { }
 
-    void show(const QString &title, const QString &text, const QImage &img);
+    enum Urgency {
+        DefaultUrgency = -1,
+        LowUrgency,
+        NormalUrgency,
+        CriticalUrgency
+    };
+
+    void show(const QString &title, const QString &text, const QImage &img, Urgency urgency = DefaultUrgency);
     
 private Q_SLOTS:
     void callFinished(QDBusPendingCallWatcher *watcher);

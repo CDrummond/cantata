@@ -25,7 +25,7 @@
 #include "notificationsinterface.h"
 #include <QDBusPendingReply>
 #include <QDBusPendingCallWatcher>
-#include <QCoreApplication>
+#include <QGuiApplication>
 #include <QPixmap>
 #include <QImage>
 
@@ -90,12 +90,18 @@ Notify::Notify(QObject *p)
                                                    "/org/freedesktop/Notifications", QDBusConnection::sessionBus());
 }
 
-void Notify::show(const QString &title, const QString &text, const QImage &img)
+void Notify::show(const QString &title, const QString &text, const QImage &img, Notify::Urgency urgency)
 {
     QVariantMap hints;
     if (!img.isNull()) {
         hints["image_data"] = QVariant(img);
     }
+
+    if (urgency != DefaultUrgency) {
+        hints["urgency"] = static_cast<int>(urgency);
+    }
+
+    hints["desktop-entry"] = QGuiApplication::desktopFileName();
 
     int id = 0;
     if (lastTime.secsTo(QDateTime::currentDateTime()) * 1000 < constTimeout) {
@@ -105,7 +111,7 @@ void Notify::show(const QString &title, const QString &text, const QImage &img)
         id = lastId;
     }
 
-    QDBusPendingReply<uint> reply = iface->Notify(QCoreApplication::applicationName(), id, "cantata",
+    QDBusPendingReply<uint> reply = iface->Notify(QGuiApplication::applicationDisplayName(), id, "cantata",
                                                   QString(title).replace(QLatin1String("&"), QLatin1String("&amp;")),
                                                   QString(text).replace(QLatin1String("&"), QLatin1String("&amp;")),
                                                   QStringList(), hints, constTimeout);

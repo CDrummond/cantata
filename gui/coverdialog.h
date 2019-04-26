@@ -151,6 +151,7 @@ private:
     CoverPreview *preview;
     bool saving;
     bool isArtist;
+    bool isComposer;
     int iSize;
     Spinner *spinner;
     MessageOverlay *msgOverlay;

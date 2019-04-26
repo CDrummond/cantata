@@ -175,8 +175,12 @@ Song LibraryPage::coverRequest() const
         if (!songs.isEmpty()) {
             Song s=songs.at(0);
 
-            if (SqlLibraryModel::T_Artist==static_cast<SqlLibraryModel::Item *>(selected.first().internalPointer())->getType() && !s.useComposer()) {
-                s.setArtistImageRequest();
+            if (SqlLibraryModel::T_Artist==static_cast<SqlLibraryModel::Item *>(selected.first().internalPointer())->getType()) {
+                if (s.useComposer()) {
+                    s.setComposerImageRequest();
+                } else {
+                    s.setArtistImageRequest();
+                }
             }
             return s;
         }

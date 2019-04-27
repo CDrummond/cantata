@@ -26,6 +26,7 @@
 20. Apply 'Single Tracks' tweak to play queue items.
 21. Parse more fields from CUE files.
 22. Fix image requests when using composers.
+23. Load Various Artist image, if found.
 
 2.3.3
 -----

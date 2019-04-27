@@ -37,7 +37,6 @@
 #include <QUrl>
 #include <QUrlQuery>
 
-
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << "CueFile"
@@ -50,6 +49,7 @@ static const QString constFileLineRegExp = QLatin1String("(\\S+)\\s+(?:\"([^\"]+
 static const QString constIndexRegExp = QLatin1String("(\\d{1,3}):(\\d{2}):(\\d{2})");
 static const QString constPerformer = QLatin1String("performer");
 static const QString constTitle = QLatin1String("title");
+static const QString constSongWriter = QLatin1String("songwriter");
 static const QString constComposer = QLatin1String("composer");
 static const QString constFile = QLatin1String("file");
 static const QString constTrack = QLatin1String("track");
@@ -61,7 +61,6 @@ static const QString constGenre = QLatin1String("genre");
 static const QString constDate = QLatin1String("date");
 static const QString constOriginalDate = QLatin1String("originaldate");
 static const QString constCueProtocol = QLatin1String("cue:///");
-
 
 bool CueFile::isCue(const QString &str)
 {
@@ -265,7 +264,6 @@ static inline bool isVariousArtists(const QString &str)
 bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &songList, QSet<QString> &files, double &lastTrackIndex)
 {
     DBUG << fileName;
-
     QScopedPointer<QTextStream> textStream;
     QString decoded;
     QFile f(dir+fileName);
@@ -328,6 +326,8 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 albumArtist = lineValue;
             } else if (lineName == constComposer) {
                 // this is to handle e relaxed CUE syntax for COMPOSER (which is: COMPOSER "composer")
+                albumComposer = lineValue;
+            } else if (lineName == constSongWriter && albumComposer.isEmpty()) {
                 albumComposer = lineValue;
             } else if (lineName == constTitle) {
                 album = lineValue;
@@ -400,34 +400,16 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 //
                 // please note that the same code is repeated just after this 'do-while' loop
                 // before saving, set artist/albumArtist for the track...
-                if (isGenreInComposerSupport) {
-                    if (!albumComposer.isEmpty() && !isVariousArtists(albumComposer)) {
-                        artist = albumComposer;
-                    } else {
-                        artist = composer;
-                    }
-                    albumArtist = artist;
-                } else {
+               
+                if (artist.isEmpty()) {
                     if (!albumArtist.isEmpty() && !isVariousArtists(albumArtist)) {
                         artist = albumArtist;
-                    } else {
+                    } else if (!performer.isEmpty()) {
                         artist = performer;
                     }
                 }
-                if (artist.isEmpty()) {
-                    artist = Song::unknown();
-                }
-                if (performer.isEmpty() && !albumArtist.isEmpty() && !isVariousArtists(albumArtist)) {
-                    performer = albumArtist;
-                }
                 if (composer.isEmpty() && !albumComposer.isEmpty() && !isVariousArtists(albumComposer)) {
                     composer = albumComposer;
-                }
-                if (albumArtist.isEmpty()) {
-                    albumArtist = Song::unknown();
-                }
-                if (albumComposer.isEmpty()) {
-                    albumComposer = Song::unknown();
                 }
                 DBUG << "TRACK saving - " "valid?" << validFile << "| index:" << index << "| type:" << trackType
                      << "| genre:" << genre << "| albumArtist:" << albumArtist << "| albumComposer:" << albumComposer << "| artist:" << artist
@@ -464,6 +446,10 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 if (!lineValue.isEmpty()) {
                     composer = lineValue;
                 }
+            } else if (lineName == constSongWriter && composer.isEmpty()) {
+                if (!lineValue.isEmpty()) {
+                    composer = lineValue;
+                }
             } else if (lineName == constRem) {
                 // strict CUE syntax (REM COMPOSER "composer")
                 lineName = splitted[1].toLower();
@@ -482,39 +468,20 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
         } while (!(line = textStream->readLine()).isNull());
 
         // we didn't add the last song yet... (repeating code)
-        if (isGenreInComposerSupport) {
-            if (!albumComposer.isEmpty() && !albumComposer.isEmpty() && !isVariousArtists(albumComposer)) {
-                artist = albumComposer;
-            } else {
-                artist = composer;
-            }
-            albumArtist = artist;
-        } else {
-            if (!albumArtist.isEmpty() && !albumArtist.isEmpty() && !isVariousArtists(albumArtist)) {
+        if (artist.isEmpty()) {
+            if (!albumArtist.isEmpty() && !isVariousArtists(albumArtist)) {
                 artist = albumArtist;
-            } else {
+            } else if (!performer.isEmpty()) {
                 artist = performer;
             }
-        }
-        if (artist.isEmpty()) {
-            artist = Song::unknown();
-        }
-        if (performer.isEmpty() && !albumArtist.isEmpty() && !isVariousArtists(albumArtist)) {
-            performer = albumArtist;
         }
         if (composer.isEmpty() && !albumComposer.isEmpty() && !isVariousArtists(albumComposer)) {
             composer = albumComposer;
         }
-        if (albumArtist.isEmpty()) {
-            albumArtist = Song::unknown();
-        }
-        if (albumComposer.isEmpty()) {
-            albumComposer = Song::unknown();
-        }
         DBUG << "TRACK saving - " "valid?" << validFile << "| index:" << index << "| type:" << trackType;
         DBUG << "... genre:" << genre << "| albumArtist:" << albumArtist << "| albumComposer:" << albumComposer << "| artist:" << artist << "| performer:" << performer << "| composer:" << composer;
         if (validFile && !index.isEmpty() && (trackType.isEmpty() || trackType == constAudioTrackType)) {
-                    entries.append(CueEntry(file, index, trackNo, disc, title, artist, albumArtist, album, performer, composer, albumComposer, genre, date, originalDate));
+            entries.append(CueEntry(file, index, trackNo, disc, title, artist, albumArtist, album, performer, composer, albumComposer, genre, date, originalDate));
         }
     }
 

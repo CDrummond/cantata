@@ -1333,10 +1333,10 @@ QPixmap * Covers::get(const Song &song, int size, bool urgent)
         pix=cache.object(key);
 
         if (!pix) {
-            if (song.isArtistImageRequest() && song.isVariousArtists()) {
+            /*if (song.isArtistImageRequest() && song.isVariousArtists()) {
                 // Load artist image...
                 pix=new QPixmap(Icons::self()->artistIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-            } else if (Song::SingleTracks==song.type) {
+            } else*/ if (Song::SingleTracks==song.type) {
                 pix=new QPixmap(Icons::self()->albumIcon(size).pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else if (song.isStandardStream()) {
                 pix=new QPixmap(Icons::self()->streamIcon.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));

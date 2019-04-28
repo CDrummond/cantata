@@ -209,6 +209,16 @@ void SongView::search()
 
 void SongView::edit()
 {
+    if (lyricsFile.isEmpty()) {
+        lyricsFile=lyricsCacheFileName(currentSong, true);
+    }
+    if (!QFile::exists(lyricsFile)) {
+        QFile file(lyricsFile);
+        if (file.open(QIODevice::ReadWrite|QIODevice::Text)) {
+            QTextStream stream(&file);
+            stream << tr("Failed to locate lyrics") << endl;
+        }
+    }
     QDesktopServices::openUrl(QUrl::fromLocalFile(lyricsFile));
 }
 

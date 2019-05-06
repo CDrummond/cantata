@@ -37,12 +37,16 @@ GLOBAL_STATIC(MpdLibraryModel, instance)
 
 MpdLibraryModel::MpdLibraryModel()
     : SqlLibraryModel(new MpdLibraryDb(nullptr), nullptr)
+    #ifdef ARTIST_IMAGE_SUPPORT
     , showArtistImages(false)
+    #endif
 {
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(cover(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), this, SLOT(coverUpdated(Song,QImage,QString)));
+    #ifdef ARTIST_IMAGE_SUPPORT
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), this, SLOT(artistImage(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(composerImage(Song,QImage,QString)), this, SLOT(artistImage(Song,QImage,QString)));
+    #endif
     if (MPDConnection::self()->isConnected()) {
         static_cast<MpdLibraryDb *>(db)->connectionChanged(MPDConnection::self()->getDetails());
     }
@@ -57,7 +61,11 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case Cantata::Role_ListImage: {
         Item *item = static_cast<Item *>(index.internalPointer());
+        #ifdef ARTIST_IMAGE_SUPPORT
         return T_Album==item->getType() || (T_Artist==item->getType() && useArtistImages());
+        #else
+        return T_Album==item->getType();
+        #endif
     }
     case Cantata::Role_GridCoverSong:
     case Cantata::Role_CoverSong: {
@@ -81,6 +89,7 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
             v.setValue<Song>(item->getSong());
             break;
         case T_Artist:
+            #ifdef ARTIST_IMAGE_SUPPORT
             if (!showArtistImages && Cantata::Role_CoverSong==role) {
                 COVERS_DBUG << "Not showing artist images";
                 return QVariant();
@@ -103,6 +112,9 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
                 item->setSong(song);
             }
             v.setValue<Song>(item->getSong());
+            #else
+            return QVariant();
+            #endif
             break;
         default:
             break;
@@ -128,6 +140,7 @@ QVariant MpdLibraryModel::data(const QModelIndex &index, int role) const
     return SqlLibraryModel::data(index, role);
 }
 
+#ifdef ARTIST_IMAGE_SUPPORT
 void MpdLibraryModel::setUseArtistImages(bool u)
 {
     if (u!=showArtistImages) {
@@ -155,16 +168,21 @@ void MpdLibraryModel::setUseArtistImages(bool u)
 }
 
 static QLatin1String constUseArtistImagesKey("artistImages");
+#endif
 
 void MpdLibraryModel::load(Configuration &config)
 {
+    #ifdef ARTIST_IMAGE_SUPPORT
     showArtistImages=config.get(constUseArtistImagesKey, showArtistImages);
+    #endif
     SqlLibraryModel::load(config);
 }
 
 void MpdLibraryModel::save(Configuration &config)
 {
+    #ifdef ARTIST_IMAGE_SUPPORT
     config.set(constUseArtistImagesKey, showArtistImages);
+    #endif
     SqlLibraryModel::save(config);
 }
 
@@ -256,6 +274,7 @@ void MpdLibraryModel::coverUpdated(const Song &song, const QImage &img, const QS
     cover(song, img, file);
 }
 
+#ifdef ARTIST_IMAGE_SUPPORT
 void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QString &file)
 {
     if (file.isEmpty() || img.isNull() || T_Album==topLevel()) {
@@ -285,5 +304,6 @@ void MpdLibraryModel::artistImage(const Song &song, const QImage &img, const QSt
         break;
     }
 }
+#endif
 
 #include "moc_mpdlibrarymodel.cpp"

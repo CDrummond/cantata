@@ -63,8 +63,10 @@ LibraryPage::LibraryPage(QWidget *p)
                               "<li><b><i>Blah #2000</i></b> to search for string <i>Blah</i> and only return tracks from 2000</li>"
                               "</ul></p>"));
 
+    #ifdef ARTIST_IMAGE_SUPPORT
     showArtistImagesAction=new QAction(tr("Show Artist Images"), this);
     showArtistImagesAction->setCheckable(true);
+    #endif
     libraryAlbumSortAction=createMenuGroup(tr("Sort Albums"), QList<MenuItem>() << MenuItem(tr("Name"), LibraryDb::AS_AlArYr)
                                                                                   << MenuItem(tr("Year"), LibraryDb::AS_YrAlAr),
                                            MpdLibraryModel::self()->libraryAlbumSort(), this, SLOT(libraryAlbumSortChanged()));
@@ -91,12 +93,14 @@ LibraryPage::LibraryPage(QWidget *p)
 
     menu->addAction(libraryAlbumSortAction);
     menu->addAction(albumAlbumSortAction);
+    #ifdef ARTIST_IMAGE_SUPPORT
     showArtistImagesAction->setChecked(MpdLibraryModel::self()->useArtistImages());
     menu->addAction(showArtistImagesAction);
     connect(showArtistImagesAction, SIGNAL(toggled(bool)), this, SLOT(showArtistImagesChanged(bool)));
+    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
+    #endif
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
-    showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
     genreCombo->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     init(ReplacePlayQueue|AppendToPlayQueue, QList<QWidget *>() << menu << genreCombo);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(doSearch()));
@@ -175,6 +179,7 @@ Song LibraryPage::coverRequest() const
         if (!songs.isEmpty()) {
             Song s=songs.at(0);
 
+            #ifdef ARTIST_IMAGE_SUPPORT
             if (SqlLibraryModel::T_Artist==static_cast<SqlLibraryModel::Item *>(selected.first().internalPointer())->getType()) {
                 if (s.useComposer()) {
                     s.setComposerImageRequest();
@@ -182,6 +187,7 @@ Song LibraryPage::coverRequest() const
                     s.setArtistImageRequest();
                 }
             }
+            #endif
             return s;
         }
     }
@@ -291,7 +297,9 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
 void LibraryPage::setView(int v)
 {
     SinglePageWidget::setView(v);
+    #ifdef ARTIST_IMAGE_SUPPORT
     showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
+    #endif
 }
 
 void LibraryPage::modelReset()
@@ -316,7 +324,9 @@ void LibraryPage::groupByChanged()
     MpdLibraryModel::self()->setTopLevel((SqlLibraryModel::Type)mode);
     albumAlbumSortAction->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
     libraryAlbumSortAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
+    #ifdef ARTIST_IMAGE_SUPPORT
     showArtistImagesAction->setVisible(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel() && ItemView::Mode_IconTop!=view->viewMode());
+    #endif
     genreCombo->setVisible(SqlLibraryModel::T_Genre!=MpdLibraryModel::self()->topLevel());
 
     config.endGroup();
@@ -333,6 +343,15 @@ void LibraryPage::groupByChanged()
         if (ItemView::Mode_Categorized==viewMode) {
             act->setVisible(SqlLibraryModel::T_Album==MpdLibraryModel::self()->topLevel());
         }
+        #ifdef ARTIST_IMAGE_SUPPORT
+        if (ItemView::Mode_IconTop==viewMode) {
+            act->setVisible(SqlLibraryModel::T_Genre!=MpdLibraryModel::self()->topLevel());
+        }
+        #else
+        if (ItemView::Mode_IconTop==viewMode) {
+            act->setVisible(SqlLibraryModel::T_Genre!=MpdLibraryModel::self()->topLevel() && SqlLibraryModel::T_Artist!=MpdLibraryModel::self()->topLevel());
+        }
+        #endif
     }
     view->setOpenAfterSearch(SqlLibraryModel::T_Album!=MpdLibraryModel::self()->topLevel());
 }
@@ -353,10 +372,12 @@ void LibraryPage::albumAlbumSortChanged()
     }
 }
 
+#ifdef ARTIST_IMAGE_SUPPORT
 void LibraryPage::showArtistImagesChanged(bool u)
 {
     MpdLibraryModel::self()->setUseArtistImages(u);
 }
+#endif
 
 void LibraryPage::updateToPlayQueue(const QModelIndex &idx, bool replace)
 {
@@ -465,8 +486,12 @@ void LibraryPage::controlActions()
     if (1==selected.count()) {
         SqlLibraryModel::Item *item=static_cast<SqlLibraryModel::Item *>(selected.at(0).internalPointer());
         SqlLibraryModel::Type type=item->getType();
+        #ifdef ARTIST_IMAGE_SUPPORT
         StdActions::self()->setCoverAction->setEnabled((SqlLibraryModel::T_Artist==type/* && !static_cast<MusicLibraryItemArtist *>(item)->isComposer()*/) ||
                                                         SqlLibraryModel::T_Album==type);
+        #else
+        StdActions::self()->setCoverAction->setEnabled(SqlLibraryModel::T_Album==type);
+        #endif
     } else {
         StdActions::self()->setCoverAction->setEnabled(false);
     }

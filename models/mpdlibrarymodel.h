@@ -33,8 +33,10 @@ public:
     static MpdLibraryModel * self();
     MpdLibraryModel();
     QVariant data(const QModelIndex &index, int role) const override;
+    #ifdef ARTIST_IMAGE_SUPPORT
     void setUseArtistImages(bool u);
     bool useArtistImages() const { return showArtistImages; }
+    #endif
     void load(Configuration &config) override;
     void save(Configuration &config) override;
     void listSongs();
@@ -47,10 +49,14 @@ private Q_SLOTS:
     void listNextChunk();
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
+    #ifdef ARTIST_IMAGE_SUPPORT
     void artistImage(const Song &song, const QImage &img, const QString &file);
+    #endif
 
 private:
+    #ifdef ARTIST_IMAGE_SUPPORT
     bool showArtistImages;
+    #endif
     int listingTotal;
     int listingCurrent;
 };

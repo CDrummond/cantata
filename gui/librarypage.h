@@ -64,7 +64,9 @@ private Q_SLOTS:
     void groupByChanged();
     void libraryAlbumSortChanged();
     void albumAlbumSortChanged();
+    #ifdef ARTIST_IMAGE_SUPPORT
     void showArtistImagesChanged(bool u);
+    #endif
     void updateToPlayQueue(const QModelIndex &idx, bool replace);
     void addRandomAlbum();
 
@@ -76,7 +78,9 @@ private:
 private:
     GenreCombo *genreCombo;
     QAction *viewAction;
+    #ifdef ARTIST_IMAGE_SUPPORT
     QAction *showArtistImagesAction;
+    #endif
     QAction *libraryAlbumSortAction;
     QAction *albumAlbumSortAction;
 };

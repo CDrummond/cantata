@@ -696,6 +696,7 @@ void CoverDownloader::downloadViaRemote(Job &job)
 {
     QUrl url;
     if (job.song.isArtistImageRequest()) {
+        #ifdef ARTIST_IMAGE_SUPPORT
         url=QUrl("https://ws.audioscrobbler.com/2.0/");
         QUrlQuery query;
 
@@ -703,10 +704,11 @@ void CoverDownloader::downloadViaRemote(Job &job)
         ApiKeys::self()->addKey(query, ApiKeys::LastFm);
         query.addQueryItem("autocorrect", "1");
         query.addQueryItem("artist", Covers::fixArtist(job.song.albumArtist()));
-        if (!job.song.isArtistImageRequest()) {
-            query.addQueryItem("album", job.song.album);
-        }
         url.setQuery(query);
+        #else
+        failed(job);
+        return;
+        #endif
     } else {
         url=QUrl("http://itunes.apple.com/search");
         QUrlQuery query;

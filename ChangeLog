@@ -28,6 +28,8 @@
 22. Fix image requests when using composers.
 23. Load Various Artist image, if found.
 24. If no lyrics found, create initial file when asked to edit.
+25. Due to Last.fm changes, artist images are no longer supported. See
+    ARTIST_IMAGE_SUPPORT sections for removed code.
 
 2.3.3
 -----

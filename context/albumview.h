@@ -50,8 +50,10 @@ Q_SIGNALS:
     void playSong(const QString &file);
 
 public Q_SLOTS:
+    #ifdef ARTIST_IMAGE_SUPPORT
     void coverRetrieved(const Song &s, const QImage &img, const QString &file);
     void coverUpdated(const Song &s, const QImage &img, const QString &file);
+    #endif
     void playSong(const QUrl &u);
 
 private Q_SLOTS:
@@ -70,8 +72,10 @@ private:
 private:
     QString currentArtist;
     Action *refreshAction;
+    #ifdef ARTIST_IMAGE_SUPPORT
     #ifndef Q_OS_WIN
     Action *fullWidthCoverAction;
+    #endif
     #endif
     ContextEngine *engine;
     int detailsReceived;

@@ -896,6 +896,9 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
 
 void PlayQueueModel::load(const QStringList &urls, int action, quint8 priority, bool decreasePriority)
 {
+    if (-1==action) {
+        action = songs.isEmpty() ? MPDConnection::AppendAndPlay : MPDConnection::Append;
+    }
     QStringList useable=parseUrls(urls);
     if (useable.count()) {
         addItems(useable, songs.count(), action, priority, decreasePriority);

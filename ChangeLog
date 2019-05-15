@@ -32,6 +32,7 @@
     ARTIST_IMAGE_SUPPORT sections for removed code.
 26. When adding tracks via commandline, only play if queue is currently empty,
     otherwise just append new tracks.
+27. If hostname starts with a at (@) treat as local socket.
 
 2.3.3
 -----

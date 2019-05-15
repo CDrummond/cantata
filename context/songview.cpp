@@ -92,7 +92,7 @@ static inline QString mpdLyricsFilePath(const Song &song)
 
 static inline QString fixNewLines(const QString &o)
 {
-    return QString(o).replace(QLatin1String("\n\n\n"), QLatin1String("\n\n")).replace("\n", "<br/>");
+    return QString(o).replace("\\n", "\n").replace("\\t", " ").replace("\t", " ").replace(QLatin1String("\n\n\n"), QLatin1String("\n\n")).replace("\n", "<br/>");
 }
 
 SongView::SongView(QWidget *p)
@@ -500,10 +500,10 @@ static QString clean(QString v)
 }
 #endif
 
-static void addIfNotEmty(QMultiMap<int, QString> &tags, int pos, const QString &key, const QString &val)
+static void addIfNotEmpty(QMultiMap<int, QString> &tags, int pos, const QString &key, const QString &val)
 {
     if (!val.isEmpty()) {
-        tags.insert(pos++, createRow(key, val));
+        tags.insert(pos, createRow(key, val));
     }
 }
 
@@ -608,18 +608,18 @@ void SongView::loadMetadata()
 
     if (tags.isEmpty()) {
         int pos=0;
-        addIfNotEmty(tags, pos, tr("Artist"), currentSong.artist);
-        addIfNotEmty(tags, pos, tr("Album artist"), currentSong.albumartist);
-        addIfNotEmty(tags, pos, tr("Composer"), currentSong.composer());
-        addIfNotEmty(tags, pos, tr("Performer"), currentSong.performer());
-        addIfNotEmty(tags, pos, tr("Album"), currentSong.album);
-        addIfNotEmty(tags, pos, tr("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track));
-        addIfNotEmty(tags, pos, tr("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc));
-        addIfNotEmty(tags, pos, tr("Duration"), 0==currentSong.time ? QString() : Utils::formatTime(currentSong.time));
-        addIfNotEmty(tags, pos, tr("Genre"), currentSong.displayGenre());
-        addIfNotEmty(tags, pos, tr("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year));
-        addIfNotEmty(tags, pos, tr("Original Year"), 0==currentSong.origYear ? QString() : QString::number(currentSong.origYear));
-        addIfNotEmty(tags, pos, tr("Comment"), fixNewLine(currentSong.comment()));
+        addIfNotEmpty(tags, pos++, tr("Artist"), currentSong.artist);
+        addIfNotEmpty(tags, pos++, tr("Album artist"), currentSong.albumartist);
+        addIfNotEmpty(tags, pos++, tr("Composer"), currentSong.composer());
+        addIfNotEmpty(tags, pos++, tr("Performer"), currentSong.performer());
+        addIfNotEmpty(tags, pos++, tr("Album"), currentSong.album);
+        addIfNotEmpty(tags, pos++, tr("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track));
+        addIfNotEmpty(tags, pos++, tr("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc));
+        addIfNotEmpty(tags, pos++, tr("Duration"), 0==currentSong.time ? QString() : Utils::formatTime(currentSong.time));
+        addIfNotEmpty(tags, pos++, tr("Genre"), currentSong.displayGenre());
+        addIfNotEmpty(tags, pos++, tr("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year));
+        addIfNotEmpty(tags, pos++, tr("Original Year"), 0==currentSong.origYear ? QString() : QString::number(currentSong.origYear));
+        addIfNotEmpty(tags, pos++, tr("Comment"), fixNewLine(currentSong.comment()));
     }
 
     QString tagInfo;

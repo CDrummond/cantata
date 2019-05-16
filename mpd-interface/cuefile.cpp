@@ -281,7 +281,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
     QString fileDir=fileName.contains("/") ? Utils::getDir(fileName) : QString();
 
     // vars to store the current values from the lines in the FILE (header) section of the CUE file
-    QString genre;
+    QStringList genre;
     QString album;
     QString albumArtist;
     QString date;
@@ -373,7 +373,10 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                 continue;
             // continue parsing the FILE section (header of the CUE file)...
             } else if (cmdCmd == constGenre) {
-                genre = cmdVal;
+                // if GENRE is a list (separated by one of: , ; | \t), then split
+                for (const auto &g: cmdVal.split(QRegExp("(,|;|\\t|\\|)"))) {
+                    genre.append(g.trimmed());
+                }
             } else if (cmdCmd == constTitle) {
                 album = cmdVal;
             } else if (cmdCmd == constDate) {
@@ -569,7 +572,13 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
             }
         }
         // now finalize remaining tags...
-        song.addGenre(genre);
+        if (genre.isEmpty()) {
+            song.addGenre(Song::unknown());
+        } else {
+            for (const auto &g: genre) {
+                song.addGenre(g);
+            }
+        }
         song.album=album;
         song.albumartist=albumArtist;
         song.year=static_cast<quint16>(date.toUInt());

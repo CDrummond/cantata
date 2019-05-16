@@ -2541,15 +2541,15 @@ MpdSocket::~MpdSocket()
 
 void MpdSocket::connectToHost(const QString &hostName, quint16 port, QIODevice::OpenMode mode)
 {
-//     qWarning() << "connectToHost" << hostName << port;
-    if (hostName.startsWith('/') || hostName.startsWith('~')) {
+    DBUG << "connectToHost" << hostName << port;
+    if (hostName.startsWith('/') || hostName.startsWith('~') || hostName.startsWith('@')) {
         deleteTcp();
         if (!local) {
             local = new QLocalSocket(this);
             connect(local, SIGNAL(stateChanged(QLocalSocket::LocalSocketState)), this, SLOT(localStateChanged(QLocalSocket::LocalSocketState)));
             connect(local, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
         }
-//         qWarning() << "Connecting to LOCAL socket";
+        DBUG << "Connecting to LOCAL socket";
         local->connectToServer(Utils::tildaToHome(hostName), mode);
     } else {
         deleteLocal();
@@ -2558,7 +2558,7 @@ void MpdSocket::connectToHost(const QString &hostName, quint16 port, QIODevice::
             connect(tcp, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SIGNAL(stateChanged(QAbstractSocket::SocketState)));
             connect(tcp, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
         }
-//         qWarning() << "Connecting to TCP socket";
+        DBUG << "Connecting to TCP socket";
         tcp->connectToHost(hostName, port, mode);
     }
 }

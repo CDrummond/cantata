@@ -475,7 +475,7 @@ void NowPlayingWidget::updateInfo()
     if (pos>1) {
         QString ext = currentSongFile.mid(pos+1).toUpper();
 
-        if (ext.length>2 && ext.length()<5) {
+        if (ext.length()>2 && ext.length()<5) {
             if (!info.isEmpty()) {
                 info+=", ";
             }

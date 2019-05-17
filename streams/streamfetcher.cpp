@@ -153,11 +153,16 @@ static QString parse(const QByteArray &data)
                 (-1!=data.indexOf("#EXTM3U")) ) { // m3u with comments?
         DBUG << "ext3mu/2";
         return parseExt3Mu(data, handlers);
-    } else if (data.startsWith("http://")) {
-        QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
-        if (!lines.isEmpty()) {
-            DBUG << "http";
-            return lines.first();
+    } else {
+        for (const auto &h: handlers) {
+            DBUG << h;
+            if (data.startsWith(h.toLatin1()+"://")) {
+                QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
+                if (!lines.isEmpty()) {
+                    DBUG << h;
+                    return lines.first();
+                }
+            }
         }
     }
 

@@ -34,6 +34,7 @@
     otherwise just append new tracks.
 27. If hostname starts with a at (@) treat as local socket.
 28. Support multiple genres in CUE files.
+29. Handle more TuneIn responses that are just stream URLs.
 
 2.3.3
 -----

@@ -130,7 +130,7 @@ void AlbumView::refresh()
         return;
     }
     for (const QString &lang: engine->getLangs()) {
-        QFile::remove(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, engine->getPrefix(lang), false));
+        QFile::remove(cacheFileName(Covers::fixArtist(currentSong.albumArtistOrComposer()), currentSong.album, engine->getPrefix(lang), false));
     }
     update(currentSong, true);
 }
@@ -150,14 +150,14 @@ void AlbumView::update(const Song &song, bool force)
         return;
     }
 
-    if (song.isEmpty() || song.albumArtist().isEmpty() || song.album.isEmpty()) {
+    if (song.isEmpty() || song.albumArtistOrComposer().isEmpty() || song.album.isEmpty()) {
         currentSong=song;
         clearDetails();
         abort();
         return;
     }
 
-    if (force || song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album) {
+    if (force || song.albumArtistOrComposer()!=currentSong.albumArtistOrComposer() || song.album!=currentSong.album) {
         currentSong=song;
         currentArtist=currentSong.basicArtist();
         abort();
@@ -271,7 +271,7 @@ void AlbumView::getDetails()
             }
         }
     }
-    engine->search(QStringList() << currentSong.albumArtist() << currentSong.album, ContextEngine::Album);
+    engine->search(QStringList() << currentSong.albumArtistOrComposer() << currentSong.album, ContextEngine::Album);
 }
 
 #ifdef ARTIST_IMAGE_SUPPORT
@@ -314,7 +314,7 @@ void AlbumView::searchResponse(const QString &resp, const QString &lang)
     if (!resp.isEmpty()) {
         details=engine->translateLinks(resp);
         if (!lang.isEmpty()) {
-            QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, lang, true));
+            QFile f(cacheFileName(Covers::fixArtist(currentSong.albumArtistOrComposer()), currentSong.album, lang, true));
             QtIOCompressor compressor(&f);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
             if (compressor.open(QIODevice::WriteOnly)) {

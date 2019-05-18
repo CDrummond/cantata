@@ -255,7 +255,7 @@ void AlbumView::getDetails()
     engine->cancel();
     for (const QString &lang: engine->getLangs()) {
         QString prefix=engine->getPrefix(lang);
-        QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtist()), currentSong.album, prefix, false);
+        QString cachedFile=cacheFileName(Covers::fixArtist(currentSong.albumArtistOrComposer()), currentSong.album, prefix, false);
         if (QFile::exists(cachedFile)) {
             QFile f(cachedFile);
             QtIOCompressor compressor(&f);

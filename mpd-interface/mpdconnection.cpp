@@ -2550,7 +2550,11 @@ void MpdSocket::connectToHost(const QString &hostName, quint16 port, QIODevice::
             connect(local, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
         }
         DBUG << "Connecting to LOCAL socket";
-        local->connectToServer(Utils::tildaToHome(hostName), mode);
+        QString host = Utils::tildaToHome(hostName);
+        if ('@'==host[0]) {
+            host[0]='\0';
+        }
+        local->connectToServer(host, mode);
     } else {
         deleteLocal();
         if (!tcp) {

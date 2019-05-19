@@ -87,6 +87,7 @@ private:
 private Q_SLOTS:
     void mpdAlbumArt(const Song &song, const QByteArray &data);
     void remoteCallFinished();
+    void lastFmArtistCallFinished();
     void jobFinished();
     void onlineJobFinished();
 

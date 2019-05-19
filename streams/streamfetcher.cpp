@@ -29,6 +29,8 @@
 #include <QRegExp>
 #include <QUrl>
 #include <QXmlStreamReader>
+#include <QJsonParseError>
+#include <QJsonDocument>
 
 #ifdef _MSC_VER 
 #define strncasecmp _strnicmp
@@ -46,6 +48,7 @@ void StreamFetcher::enableDebug()
 static const int constMaxRedirects = 3;
 static const int constMaxData = 1024;
 static const int constTimeout = 3*1000;
+static const QString constTuneIn = QLatin1String("opml.radiotime.com");
 
 static QString parsePlaylist(const QByteArray &data, const QString &key, const QSet<QString> &handlers)
 {
@@ -131,8 +134,25 @@ static QString parseXml(const QByteArray &data, const QSet<QString> &handlers)
     return QString();
 }
 
-static QString parse(const QByteArray &data)
+static QString parse(const QByteArray &data, const QString &host)
 {
+    if (host==constTuneIn) {
+        QJsonParseError jsonParseError;
+        QVariantMap parsed=QJsonDocument::fromJson(data, &jsonParseError).toVariant().toMap();
+        bool ok=QJsonParseError::NoError==jsonParseError.error;
+
+        if (ok && !parsed.isEmpty() && parsed.contains("body")) {
+            QVariantList body = parsed["body"].toList();
+            for (const auto &e: body) {
+                QVariantMap em = e.toMap();
+
+                if (em.contains("url")) {
+                    return em["url"].toString();
+                }
+            }
+        }
+    }
+
     QSet<QString> handlers=MPDConnection::self()->urlHandlers();
     if (data.length()>10 && !strncasecmp(data.constData(), "[playlist]", 10)) {
         DBUG << "playlist";
@@ -227,6 +247,12 @@ void StreamFetcher::doNext()
         } else if (u.scheme().startsWith(StreamsModel::constPrefix)) {
             data.clear();
             u.setScheme("http");
+            if (u.host()==constTuneIn) {
+                QString query=u.query();
+                query+=query.isEmpty() ? "?" : "&";
+                u.setQuery(query+"render=json&formats=mp3,aac,ogg,hls");
+            }
+
             job=NetworkAccessManager::self()->get(u, constTimeout);
             DBUG << "Check" << u.toString();
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
@@ -289,7 +315,7 @@ void StreamFetcher::jobFinished(NetworkJob *reply)
     if (reply==job) {
         bool redirected=false;
         if (!reply->error()) {
-            QString u=parse(data);
+            QString u=parse(data, reply->origUrl().host());
             if (u.isEmpty() || u==current) {
                 DBUG << "use (empty/current)" << current;
                 done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));

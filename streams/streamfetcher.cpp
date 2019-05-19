@@ -49,6 +49,8 @@ static const int constMaxRedirects = 3;
 static const int constMaxData = 1024;
 static const int constTimeout = 3*1000;
 static const QString constTuneIn = QLatin1String("opml.radiotime.com");
+static const QString constTuneInFmt = QLatin1String("render=json&formats=mp3,aac,ogg,hls");
+static const QString constTuneInNotCompat = QLatin1String("service/Audio/notcompatible");
 
 static QString parsePlaylist(const QByteArray &data, const QString &key, const QSet<QString> &handlers)
 {
@@ -136,6 +138,7 @@ static QString parseXml(const QByteArray &data, const QSet<QString> &handlers)
 
 static QString parse(const QByteArray &data, const QString &host)
 {
+    DBUG << host;
     if (host==constTuneIn) {
         QJsonParseError jsonParseError;
         QVariantMap parsed=QJsonDocument::fromJson(data, &jsonParseError).toVariant().toMap();
@@ -152,7 +155,6 @@ static QString parse(const QByteArray &data, const QString &host)
             }
         }
     }
-
     QSet<QString> handlers=MPDConnection::self()->urlHandlers();
     if (data.length()>10 && !strncasecmp(data.constData(), "[playlist]", 10)) {
         DBUG << "playlist";
@@ -250,11 +252,11 @@ void StreamFetcher::doNext()
             if (u.host()==constTuneIn) {
                 QString query=u.query();
                 query+=query.isEmpty() ? "?" : "&";
-                u.setQuery(query+"render=json&formats=mp3,aac,ogg,hls");
+                u.setQuery(query+constTuneInFmt);
             }
 
             job=NetworkAccessManager::self()->get(u, constTimeout);
-            DBUG << "Check" << u.toString();
+            DBUG << "Check" << u.toString() << static_cast<void*>(job);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             return;
@@ -312,13 +314,35 @@ void StreamFetcher::jobFinished()
 void StreamFetcher::jobFinished(NetworkJob *reply)
 {
     // We only handle 1 job at a time!
+    DBUG << static_cast<void*>(reply);
     if (reply==job) {
+        disconnect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+        disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         bool redirected=false;
         if (!reply->error()) {
             QString u=parse(data, reply->origUrl().host());
-            if (u.isEmpty() || u==current) {
-                DBUG << "use (empty/current)" << current;
-                done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
+            QUrl orig = reply->origUrl();
+
+            if (u.isEmpty() || u==current || (orig.host()==constTuneIn && u.contains(constTuneInNotCompat))) {
+                QString query = orig.query();
+                if (orig.host()==constTuneIn && query.contains(constTuneInFmt)) {
+                    // With formats failed (Issue #1491), so try without
+                    query = query.replace(constTuneInFmt, "");
+                    if (query.endsWith("?") || query.endsWith("&")) {
+                        query = query.left(query.length()-1);
+                    }
+                    orig.setQuery(query);
+                    job=NetworkAccessManager::self()->get(orig, constTimeout);
+                    DBUG << "Check plain" << orig.toString() << static_cast<void*>(job);
+                    connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+                    connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+                    redirected=true;
+                    data.clear();
+                } else {
+                    DBUG << "use (empty/current)" << current;
+                    done.append(MPDParseUtils::addStreamName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
+                }
+
             } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
                 // Redirect...
                 current=u;

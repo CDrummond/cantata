@@ -144,7 +144,7 @@ struct MPDConnectionDetails {
     MPDConnectionDetails(const MPDConnectionDetails &o) { *this=o; }
     QString getName() const;
     QString description() const;
-    bool isLocal() const { return hostname.startsWith('/') || hostname.startsWith('@'); }
+    bool isLocal() const { return hostname.startsWith('/') /*|| hostname.startsWith('@')*/; }
     bool isEmpty() const { return hostname.isEmpty() || (!isLocal() && 0==port); }
     MPDConnectionDetails & operator=(const MPDConnectionDetails &o);
     bool operator==(const MPDConnectionDetails &o) const { return hostname==o.hostname && isLocal()==o.isLocal() && (isLocal() || port==o.port) && password==o.password; }

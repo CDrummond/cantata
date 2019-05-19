@@ -28,8 +28,7 @@
 22. Fix image requests when using composers.
 23. Load Various Artist image, if found.
 24. If no lyrics found, create initial file when asked to edit.
-25. Due to Last.fm changes, artist images are no longer supported. See
-    ARTIST_IMAGE_SUPPORT sections for removed code.
+25. Due to Last.fm changes, use FanArt.tv to obtain artist images.
 26. When adding tracks via commandline, only play if queue is currently empty,
     otherwise just append new tracks.
 27. If hostname starts with a at (@) treat as local socket.

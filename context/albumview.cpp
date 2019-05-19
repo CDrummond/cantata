@@ -66,7 +66,6 @@ AlbumView::AlbumView(QWidget *p)
     , detailsReceived(0)
 {
     engine=ContextEngine::create(this);
-    #ifdef ARTIST_IMAGE_SUPPORT
     #ifndef Q_OS_WIN
     // Full width covers not working under windows. Issue #1252
     fullWidthCoverAction = new Action(tr("Full Width Cover"), this);
@@ -74,14 +73,11 @@ AlbumView::AlbumView(QWidget *p)
     connect(fullWidthCoverAction, SIGNAL(toggled(bool)), this, SLOT(setScaleImage(bool)));
     fullWidthCoverAction->setChecked(Configuration(metaObject()->className()).get("fullWidthCover", false));
     #endif
-    #endif
     refreshAction = ActionCollection::get()->createAction("refreshalbum", tr("Refresh Album Information"), Icons::self()->refreshIcon);
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refresh()));
     connect(engine, SIGNAL(searchResult(QString,QString)), this, SLOT(searchResponse(QString,QString)));
-    #ifdef ARTIST_IMAGE_SUPPORT
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), SLOT(coverRetrieved(Song,QImage,QString)));
     connect(Covers::self(), SIGNAL(coverUpdated(Song,QImage,QString)), SLOT(coverUpdated(Song,QImage,QString)));
-    #endif
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(playSong(QUrl)));
     text->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(text, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
@@ -99,10 +95,8 @@ AlbumView::AlbumView(QWidget *p)
 
 AlbumView::~AlbumView()
 {
-    #ifdef ARTIST_IMAGE_SUPPORT
     #ifndef Q_OS_WIN
     Configuration(metaObject()->className()).set("fullWidthCover", fullWidthCoverAction->isChecked());
-    #endif
     #endif
 }
 
@@ -115,10 +109,8 @@ void AlbumView::showContextMenu(const QPoint &pos)
     } else {
         menu->addAction(refreshAction);
     }
-    #ifdef ARTIST_IMAGE_SUPPORT
     #ifndef Q_OS_WIN
     menu->addAction(fullWidthCoverAction);
-    #endif
     #endif
     menu->exec(text->mapToGlobal(pos));
     delete menu;
@@ -167,15 +159,11 @@ void AlbumView::update(const Song &song, bool force)
         }
         clearDetails();
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
-        #ifdef ARTIST_IMAGE_SUPPORT
         Covers::Image cImg=Covers::self()->requestImage(song, true);
         if (!cImg.img.isNull()) {
             detailsReceived|=Cover;
             pic=createPicTag(cImg.img, cImg.fileName);
         }
-        #else
-        detailsReceived|=Cover;
-        #endif
         getTrackListing();
         getDetails();
 
@@ -274,7 +262,6 @@ void AlbumView::getDetails()
     engine->search(QStringList() << currentSong.albumArtistOrComposer() << currentSong.album, ContextEngine::Album);
 }
 
-#ifdef ARTIST_IMAGE_SUPPORT
 void AlbumView::coverRetrieved(const Song &s, const QImage &img, const QString &file)
 {
     if (!s.isArtistImageRequest() && (s==currentSong && pic.isEmpty())) {
@@ -302,7 +289,6 @@ void AlbumView::coverUpdated(const Song &s, const QImage &img, const QString &fi
         }
     }
 }
-#endif
 
 void AlbumView::searchResponse(const QString &resp, const QString &lang)
 {

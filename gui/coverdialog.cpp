@@ -980,7 +980,7 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
     QXmlStreamReader doc(resp);
     SizeMap urls;
     QList<SizeMap> entries;
-    QStringList musibBrainzIds;
+    QStringList musicBrainzIds;
 
     doc.setNamespaceProcessing(false);
     while (!doc.atEnd()) {
@@ -999,7 +999,7 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
             } else if (inSection && QLatin1String("mbid")==doc.name()) {
                 QString id=doc.readElementText();
                 if (id.length()>4) {
-                    musibBrainzIds.append(id);
+                    musicBrainzIds.append(id);
                 }
             }
         } else if (doc.isEndElement() && inSection && QLatin1String(isArtist||isComposer ? "artist" : "album")==doc.name()) {
@@ -1035,7 +1035,7 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
     }
 
     if (enabledProviders&Prov_CoverArt) {
-        for (const QString &id: musibBrainzIds) {
+        for (const QString &id: musicBrainzIds) {
             QUrl coverartUrl;
             coverartUrl.setScheme("http");
             coverartUrl.setHost(constCoverArtArchiveHost);

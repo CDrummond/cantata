@@ -31,9 +31,9 @@
 25. Due to Last.fm changes, use FanArt.tv to obtain artist images.
 26. When adding tracks via commandline, only play if queue is currently empty,
     otherwise just append new tracks.
-27. If hostname starts with a at (@) treat as local socket.
-28. Support multiple genres in CUE files.
-29. Handle more TuneIn responses that are just stream URLs.
+27. Support multiple genres in CUE files.
+28. Handle more TuneIn responses that are just stream URLs.
+29. Add "originaldate" to Cantata local mpd config.
 
 2.3.3
 -----

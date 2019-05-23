@@ -497,6 +497,7 @@ void Song::clear()
 }
 
 const QLatin1Char Song::constFieldSep('\001');
+const QString Song::constSep=QString::fromUtf8(" \u2022 ");
 
 void Song::addGenre(const QString &g)
 {
@@ -563,8 +564,8 @@ QString Song::albumId() const
 
 QString Song::artistSong() const
 {
-    //return artist+QString(" – ")+title;
-    return title+QString(" – ")+artist;
+    //return artist+constSep+title;
+    return title+constSep+artist;
 }
 
 QString Song::trackAndTitleStr(bool showArtistIfDifferent) const
@@ -867,10 +868,10 @@ QString Song::subText() const
     } else {
         QString comp = useComposer() ? composer() : QString();
         if (album.isEmpty()) {
-            return artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + QString(" – ")+artist);
+            return artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + constSep + artist);
         } else {
             // Artist here is always artist (or 'composer - artist'), and not album artist
-            return (artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + QString(" – ")+artist)) + QString(" – ")+displayAlbum(false);
+            return (artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + constSep + artist)) + constSep+displayAlbum(false);
         }
     }
 }

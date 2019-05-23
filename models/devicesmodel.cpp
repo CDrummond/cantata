@@ -341,7 +341,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             }
             if (!dev->isConnected()) {
                 QString sub=dev->subText();
-                return tr("Not Connected")+(sub.isEmpty() ? QString() : (QString(" – ")+sub));
+                return tr("Not Connected")+(sub.isEmpty() ? QString() : (Song::constSep+sub));
             }
             if (Device::AudioCd==dev->devType()) {
                 return dev->subText();

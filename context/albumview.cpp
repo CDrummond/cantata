@@ -223,7 +223,7 @@ void AlbumView::getTrackListing()
 
                 trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+
                            QLatin1String("</td><td><a href=\"")+u.toString()+QLatin1String("\">") +
-                           (s.sameMetadata(currentSong) ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+
+                           ((s.albumartist==currentSong.albumartist && s.album==currentSong.album && s.title==currentSong.title) ? "<b>"+s.displayTitle()+"</b>" : s.displayTitle())+
                            QLatin1String("</a></td></tr>");
             } else {
                 trackList+=QLatin1String("<tr><td align='right'>")+QString::number(s.track)+

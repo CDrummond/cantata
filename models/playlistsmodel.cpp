@@ -476,8 +476,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Cantata::Role_MainText:
             return s->title.isEmpty() ? s->name().isEmpty() ? s->file : s->name() : s->title;
         case Cantata::Role_SubText:
-            return (s->artist.isEmpty() ? QString() : (s->artist+QString(" – ")))+
-                   (s->displayAlbum().isEmpty() ? QString() : (s->displayAlbum()+QString(" – ")))+
+            return (s->artist.isEmpty() ? QString() : (s->artist+Song::constSep))+
+                   (s->displayAlbum().isEmpty() ? QString() : (s->displayAlbum()+Song::constSep))+
                    (s->time>0 ? Utils::formatTime(s->time) : QString());
         case Cantata::Role_TextColor:
             if (s->isInvalid()) {

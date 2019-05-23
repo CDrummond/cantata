@@ -491,7 +491,7 @@ void NowPlayingWidget::updateInfo()
 
 void NowPlayingWidget::copyInfo()
 {
-    QApplication::clipboard()->setText(track->text()+QLatin1Char(' ')+artist->text().replace(QString(" – "), QLatin1String(" ")));
+    QApplication::clipboard()->setText(track->text()+QLatin1Char(' ')+artist->text().replace(Song::constSep, QLatin1String(" ")));
 }
 
 void NowPlayingWidget::initColors()

@@ -49,6 +49,7 @@ struct Song
 
     static const int constNumGenres = 4;
     static const QLatin1Char constFieldSep;
+    static const QString constSep;
 
     static const QSet<QString> & composerGenres();
     static void setComposerGenres(const QSet<QString> &g);

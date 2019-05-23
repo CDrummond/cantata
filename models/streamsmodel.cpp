@@ -122,7 +122,7 @@ QString StreamsModel::Item::modifiedName() const
     if (!cat || !cat->addCatToModifiedName || name.startsWith(cat->name)) {
         return name;
     }
-    return cat->name+QString(" – ")+name;
+    return cat->name+Song::constSep+name;
 }
 
 StreamsModel::CategoryItem * StreamsModel::Item::getTopLevelCategory() const

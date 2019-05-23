@@ -572,7 +572,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     }
     case Cantata::Role_SubText: {
         const Song &s=songs.at(index.row());
-        return s.artist+QString(" – ")+s.displayAlbum();
+        return s.artist+Song::constSep+s.displayAlbum();
     }
     case Cantata::Role_Time: {
         const Song &s=songs.at(index.row());

@@ -590,7 +590,7 @@ public:
             if (text.count()>1) {
                 int mainWidth=textMetrics.width(str);
                 text.takeFirst();
-                str=text.join(QString(" – "));
+                str=text.join(Song::constSep);
                 textRect=QRect(r.x()+(mainWidth+8), r.y()+((r.height()-textHeight)/2), r.width()-(mainWidth+8), textHeight);
                 if (textRect.width()>4) {
                     str = textMetrics.elidedText(str, Qt::ElideRight, textRect.width(), QPalette::WindowText);

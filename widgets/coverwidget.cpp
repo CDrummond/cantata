@@ -82,7 +82,7 @@ void CoverLabel::updateToolTip(bool isEvent)
     }
     toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
                 "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.albumArtist()).arg(current.album).arg(QString::number(current.year));
+                "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.albumArtist()).arg(current.albumName()).arg(QString::number(current.year));
     toolTip+="</table>";
     if (!img.isNull()) {
         if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {

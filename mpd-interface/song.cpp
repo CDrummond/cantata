@@ -608,7 +608,7 @@ QString Song::toolTip() const
     }
     addField(QObject::tr("Composer"), composer(), toolTip);
     addField(QObject::tr("Performer"), performer(), toolTip);
-    addField(QObject::tr("Album"), album, toolTip);
+    addField(QObject::tr("Album"), albumName(), toolTip);
     if (track>0) {
         addField(QObject::tr("Track number"), QString::number(track), toolTip);
     }
@@ -871,7 +871,7 @@ QString Song::subText() const
             return artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + constSep + artist);
         } else {
             // Artist here is always artist (or 'composer - artist'), and not album artist
-            return (artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + constSep + artist)) + constSep+displayAlbum(false);
+            return (artist.isEmpty() ? comp : comp.isEmpty() ? artist : (comp + constSep + artist)) + constSep+displayAlbum(!comp.isEmpty());
         }
     }
 }

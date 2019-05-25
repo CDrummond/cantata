@@ -763,7 +763,7 @@ QString Song::albumKey() const
         return onlineService();
     }
     #endif
-    return albumArtist()+QLatin1Char(':')+albumId(); //+QLatin1Char(':')+QString::number(disc);
+    return albumArtistOrComposer()+QLatin1Char(':')+albumId(); //+QLatin1Char(':')+QString::number(disc);
 }
 
 static QString basic(const QString &str, const QStringList &extraToStrip=QStringList())

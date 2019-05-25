@@ -32,3 +32,10 @@ For more detailed information, please refer to the main [README](https://raw.git
 ---
 
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/craigd)
+
+## Donations
+
+I develop Cantata purely for fun, so no donations are required. However, seeing as I have been asked about this a few times, here is a link...
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2X2CTDUH27V9L&source=url)
+

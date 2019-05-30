@@ -34,6 +34,7 @@
 27. Support multiple genres in CUE files.
 28. Handle more TuneIn responses that are just stream URLs.
 29. Add "originaldate" to Cantata local mpd config.
+30. Add Finnish translation - thanks to Tommi Nieminen.
 
 2.3.3
 -----

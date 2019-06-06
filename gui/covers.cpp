@@ -1249,16 +1249,15 @@ Covers::Covers()
 {
     devicePixelRatio=qApp->devicePixelRatio();
 
-    int maxCost = 15*1024*1024*devicePixelRatio;
-
-    // USe screen size to calculate max cost - Issue #1498    
+    // Use screen size to calculate max cost - Issue #1498
+    int maxCost = 0;
     QDesktopWidget *dw=QApplication::desktop();
     if (dw) {
         QWidget w;
         QSize sz = dw->availableGeometry(&w).size();
-        maxCost = sz.width() * sz.height() * 4 * 2;
+        maxCost = sz.width() * sz.height() * 5; // *5 as 32-bit pixmap (so 4 bytes), + some wiggle rooom :-)
     }
-    cache.setMaxCost(maxCost);
+    cache.setMaxCost(qMax(static_cast<int>(15*1024*1024*devicePixelRatio), maxCost)); // Ensure at least 15M
 }
 
 void Covers::readConfig()

@@ -57,6 +57,7 @@
 #include <QApplication>
 #include <QJsonParseError>
 #include <QJsonDocument>
+#include <QDesktopWidget>
 
 GLOBAL_STATIC(Covers, instance)
 
@@ -1247,7 +1248,17 @@ Covers::Covers()
     , loader(nullptr)
 {
     devicePixelRatio=qApp->devicePixelRatio();
-    cache.setMaxCost(15*1024*1024*devicePixelRatio);
+
+    int maxCost = 15*1024*1024*devicePixelRatio;
+
+    // USe screen size to calculate max cost - Issue #1498    
+    QDesktopWidget *dw=QApplication::desktop();
+    if (dw) {
+        QWidget w;
+        QSize sz = dw->availableGeometry(&w).size();
+        maxCost = sz.width() * sz.height() * 4 * 2;
+    }
+    cache.setMaxCost(maxCost);
 }
 
 void Covers::readConfig()

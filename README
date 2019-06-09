@@ -75,6 +75,9 @@ Cantata requires the following Qt libraries:
 5. QtSql
 6. QtDBus (Only for Linux builds)
 7. QtWidgets (Qt5 builds - where widgets are now separated from QtGui)
+8. QtMultimedia / libVLC - depends on ENABLE_HTTP_STREAM_PLAYBACK and
+   ENABLE_LIBVLC
+9. QtSvg
 
 Cantata may also use the following optional libraries:
 

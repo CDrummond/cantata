@@ -778,7 +778,6 @@ following passed to cmake:
 17. Mac OSX
 ===========
 
-Icon created under OSX using the createicon.sh in the mac folder.
 
 The following steps are used to compile Cantata, and create the OS X application
 bundle.
@@ -791,30 +790,35 @@ These steps assume the following structure:
 
 1. Install HomeBrew
 
-2. brew install cmake taglib ffmpeg openssl qt5
+2. brew install cmake taglib ffmpeg openssl qt
 
-3. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
-     ../src -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt5/5.9.1/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+3. Create the icon
 
-4. Build via QtCreator
+    cd src/mac
+    ./createicon.sh
 
-5. Create an 'install' project in QtCreator
+From here you have a couple of options:
+
+Build via QtCreator
+---------------------
+
+1. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
+     ../src -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+
+2. Create an 'install' project in QtCreator
   - Projects
   - Add/Clone Selected
   - Expand Build Steps, and select install
 
-6. Build 'install' project via QtCreator
+3. Build 'install' project via QtCreator
 
+Build via commandline 
+-----------------------
 
-If Qt Creator is not installed, or calling CMake from the commandline, you may
-need to set CMAKE_PREFIX_PATH e.g.
-
-    export CMAKE_PREFIX_PATH=/usr/local/Cellar/qt/5.9.1/lib/cmake/:${CMAKE_PREFIX_PATH}
-
-Ensure 'lrelease' (required to build Cantata translations) is in PATH, e.g.
-
-    export PATH=/usr/local/Cellar/qt/5.9.1/bin/:${PATH}
-
+    cd build
+    cmake ../src -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(pwd)/../install
+    make
+    make install
 
 Create Installer
 ----------------

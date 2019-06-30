@@ -73,10 +73,10 @@ void StretchHeaderView::UpdateWidths(const QList<int>& sections) {
     return;
 
   ColumnWidthType total_w = 0.0;
-
+  int totalUsed = 0;
   for (int i=0 ; i<column_widths_.count() ; ++i) {
     const ColumnWidthType w = column_widths_[i];
-    int pixels = w * width();
+    int pixels = static_cast<int>(w * width());
 
     if (pixels != 0 && total_w - int(total_w) > 0.5)
       pixels ++;
@@ -92,9 +92,13 @@ void StretchHeaderView::UpdateWidths(const QList<int>& sections) {
       showSection(i);
       AssertMinimalColumnWidth(i);
     }
-
-    if (pixels != 0)
+    if (pixels != 0) {
+      if (totalUsed+pixels>width()) {
+        pixels--;
+      }
+      totalUsed+=pixels;
       resizeSection(i, pixels);
+    }
   }
 }
 

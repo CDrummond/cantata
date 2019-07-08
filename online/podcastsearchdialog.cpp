@@ -573,7 +573,6 @@ void PodcastUrlPage::parseResonse(QIODevice *dev)
         emit error(tr("Failed to fetch podcast!"));
         return;
     }
-    auto data = dev->readAll();
     parse(dev);
 }
 
@@ -581,6 +580,7 @@ void PodcastUrlPage::parse(QIODevice *dev)
 {
     auto data = dev->readAll();
     QBuffer buf(&data);
+    buf.open(QIODevice::ReadOnly|QIODevice::Text);
     RssParser::Channel ch=RssParser::parse(&buf, false, true);
     if (ch.isValid()) {
         if (ch.video) {

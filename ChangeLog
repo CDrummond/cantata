@@ -37,6 +37,7 @@
 30. Add Finnish translation - thanks to Tommi Nieminen.
 31. Alter behavour of 'previous' button; if played 5 seconds or more, then go
     to start of track, else go to previous track.
+32. Added Dutch translaiton - thnaks to Heimen Stoffels.
 
 2.3.3
 -----

@@ -59,6 +59,7 @@ private Q_SLOTS:
     void remove();
     void showAbout();
     void setOrder();
+    void ratingChanged(int value);
 
 private:
     RulesPlaylists *rules;

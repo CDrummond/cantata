@@ -256,6 +256,7 @@ $ratingFrom=0;
 $ratingTo=0;
 $lastRatingFrom=0;
 $lastRatingTo=0;
+$includeUnrated=0;
 
 $minDuration=0;
 $maxDuration=0;
@@ -420,6 +421,7 @@ sub readRules() {
             @excludeRules=();
             $ratingFrom=0;
             $ratingTo=0;
+            $includeUnrated=0;
             $minDuration=0;
             $maxDuration=0;
             $playQueueDesiredLength=$DEFAULT_PLAY_QUEUE_DESIRED_LENGTH;
@@ -459,8 +461,12 @@ sub readRules() {
                             # Check id we have a rating range of 0..MAX - if so, then we need to include
                             # all songs => cant't filter on rating. Issue #1334
                             if ($ratingFrom == 0 && $ratingTo == 10) {
-                                $ratingTo = 0
+                                $ratingTo = 0;
                             }
+                        }
+                    } elsif ($key=~ m/^(IncludeUnrated)/) {
+                        if ($val > 0) {
+                            $includeUnrated = $val eq "true";
                         }
                     } elsif ($key=~ m/^(Duration)/) {
                         my @vals = split("-", $val);
@@ -570,7 +576,7 @@ sub readRules() {
                     print "${rule}\n";
                 }
                 print "---------------------\n";
-                print "RATING: ${ratingFrom} -> ${ratingTo}\n";
+                print "RATING: ${ratingFrom} -> ${ratingTo}  (unrated:${includeUnrated})\n";
                 print "DURATION: ${minDuration} -> ${maxDuration}\n";
             }
 
@@ -622,7 +628,7 @@ sub songRatingInRange() {
     my @parts = split("=", $stickerEntry);
      if (2==scalar(@parts)) {
         my $rating=scalar($parts[1]);
-        if ($rating >= $ratingFrom && $rating <= $ratingTo) {
+        if (($rating >= $ratingFrom && $rating <= $ratingTo) || ($rating==0 && $includeUnrated==1)) {
             return 1;
         }
     }

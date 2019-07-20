@@ -206,7 +206,7 @@ void SmartPlaylistsPage::filterCommand()
         }
     }
 
-    if (command.filterRating || command.fetchRatings) {
+    if (command.filterRating || command.fetchRatings || command.includeUnrated) {
         if (command.toCheck.isEmpty()) {
             for (const auto &s: command.songs) {
                 command.toCheck.append(s.file);
@@ -228,7 +228,8 @@ void SmartPlaylistsPage::rating(const QString &file, quint8 val)
     for (auto &s: command.songs) {
         if (s.file==file) {
             s.rating=val;
-            if (command.filterRating && (val<command.ratingFrom || val>command.ratingTo)) {
+            if (command.filterRating && (val<command.ratingFrom || val>command.ratingTo) &&
+                !(command.includeUnrated && val==0)) {
                 command.songs.remove(s);
             }
             break;

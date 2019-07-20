@@ -51,6 +51,7 @@ const QString RulesPlaylists::constTitleKey=QLatin1String("Title");
 const QString RulesPlaylists::constGenreKey=QLatin1String("Genre");
 const QString RulesPlaylists::constDateKey=QLatin1String("Date");
 const QString RulesPlaylists::constRatingKey=QLatin1String("Rating");
+const QString RulesPlaylists::constIncludeUnratedKey=QLatin1String("IncludeUnrated");
 const QString RulesPlaylists::constDurationKey=QLatin1String("Duration");
 const QString RulesPlaylists::constNumTracksKey=QLatin1String("NumTracks");
 const QString RulesPlaylists::constMaxAgeKey=QLatin1String("MaxAge");
@@ -214,6 +215,7 @@ bool RulesPlaylists::save(const Entry &e)
     }
     if (0!=e.ratingFrom || 0!=e.ratingTo) {
         str << constRatingKey << constKeyValSep << e.ratingFrom << constRangeSep << e.ratingTo << '\n';
+        str << constIncludeUnratedKey << constKeyValSep << (e.includeUnrated ? "true" : "false") << '\n';
     }
     if (0!=e.minDuration || 0!=e.maxDuration) {
         str << constDurationKey << constKeyValSep << e.minDuration << constRangeSep << e.maxDuration << '\n';
@@ -340,6 +342,8 @@ void RulesPlaylists::loadLocal()
                             e.ratingFrom=vals.at(0).toUInt();
                             e.ratingTo=vals.at(1).toUInt();
                         }
+                    } else if (str.startsWith(constIncludeUnratedKey+constKeyValSep)) {
+                        e.includeUnrated="true"==str.mid(constIncludeUnratedKey.length()+1);
                     } else if (str.startsWith(constDurationKey+constKeyValSep)) {
                         QStringList vals=str.mid(constDurationKey.length()+1).split(constRangeSep);
                         if (2==vals.count()) {

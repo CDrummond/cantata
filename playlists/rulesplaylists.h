@@ -62,6 +62,7 @@ public:
         bool haveRating() const { return ratingFrom>=0 && ratingTo>0; }
         QString name;
         QList<Rule> rules;
+        bool includeUnrated = false;
         int ratingFrom = 0;
         int ratingTo = 0;
         int minDuration = 0;
@@ -84,6 +85,7 @@ public:
     static const QString constGenreKey;
     static const QString constDateKey;
     static const QString constRatingKey;
+    static const QString constIncludeUnratedKey;
     static const QString constDurationKey;
     static const QString constNumTracksKey;
     static const QString constMaxAgeKey;

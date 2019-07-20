@@ -37,7 +37,8 @@ class SmartPlaylistsPage : public SinglePageWidget
 
     struct Command {
         Command(const RulesPlaylists::Entry &e=RulesPlaylists::Entry(), int a=0, quint8 prio=0, bool dec=false, quint32 i=0)
-            : playlist(e.name), action(a), priority(prio), decreasePriority(dec), ratingFrom(e.ratingFrom), ratingTo(e.ratingTo),
+            : playlist(e.name), action(a), priority(prio), decreasePriority(dec), includeUnrated(e.includeUnrated),
+              ratingFrom(e.ratingFrom), ratingTo(e.ratingTo),
               minDuration(e.minDuration), maxDuration(e.maxDuration), maxAge(e.maxAge), numTracks(e.numTracks), order(e.order),
               orderAscending(e.orderAscending), id(i) { }
         bool isEmpty() const { return playlist.isEmpty(); }
@@ -56,6 +57,7 @@ class SmartPlaylistsPage : public SinglePageWidget
         bool filterRating = false;
         bool fetchRatings = false;
 
+        bool includeUnrated = false;
         int ratingFrom = 0;
         int ratingTo = 0;
         int minDuration = 0;

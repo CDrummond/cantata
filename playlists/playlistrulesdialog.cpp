@@ -154,6 +154,8 @@ PlaylistRulesDialog::PlaylistRulesDialog(QWidget *parent, RulesPlaylists *m)
     connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));
     connect(nameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(aboutLabel, SIGNAL(leftClickedUrl()), this, SLOT(showAbout()));
+    connect(ratingFrom, SIGNAL(valueChanged(int)), SLOT(ratingChanged(int)));
+    connect(ratingTo, SIGNAL(valueChanged(int)), SLOT(ratingChanged(int)));
     if (rules->isDynamic()) {
         connect(rules, SIGNAL(saved(bool)), SLOT(saved(bool)));
     }
@@ -236,6 +238,8 @@ void PlaylistRulesDialog::edit(const QString &name)
     origName=name;
     ratingFrom->setValue(e.ratingFrom);
     ratingTo->setValue(e.ratingTo);
+    includeUnrated->setChecked(e.includeUnrated);
+    ratingChanged(0);
     minDuration->setValue(e.minDuration);
     maxDuration->setValue(e.maxDuration);
     numTracks->setValue(e.numTracks);
@@ -390,6 +394,12 @@ void PlaylistRulesDialog::setOrder()
     }
 }
 
+void PlaylistRulesDialog::ratingChanged(int value)
+{
+    Q_UNUSED(value);
+    includeUnrated->setEnabled(ratingFrom->value()>0 || ratingTo->value()>0);
+}
+
 void PlaylistRulesDialog::saved(bool s)
 {
     if (s) {
@@ -424,6 +434,7 @@ bool PlaylistRulesDialog::save()
     int to=ratingTo->value();
     entry.ratingFrom=qMin(from, to);
     entry.ratingTo=qMax(from, to);
+    entry.includeUnrated=includeUnrated->isChecked();
     if (order) {
         entry.order=(RulesPlaylists::Order)order->currentData().toInt();
         entry.orderAscending=0==orderAscending->currentIndex();

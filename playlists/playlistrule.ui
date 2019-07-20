@@ -243,6 +243,13 @@
     </widget>
    </item>
    <item>
+    <widget class="NoteLabel" name="label_7y">
+     <property name="text">
+      <string>If 'Exact match' is checked, then string values will be matched for exact values. Otherwise partial matches will also be inclued. e.g. 'AB' would match 'ABBA'.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="NoteLabel" name="label_7x">
      <property name="text">
       <string>For genre, end string with an asterisk to match various genres. e.g 'rock*' matches 'Hard Rock' and 'Rock and Roll'.</string>

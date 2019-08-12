@@ -425,10 +425,14 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
                         mpdGenres = MpdLibraryModel::self()->getGenres();
                     }
                     for (const QString &g: mpdGenres) {
-                        if (g.startsWith(find)) {
+                        if (g.startsWith(find, Qt::CaseInsensitive)) {
                             genres.append(g);
                         }
                     }
+                }
+                if (genres.isEmpty()) {
+                    // No genres matching pattern - add dummy genre, so that no tracks will be found
+                    genres.append("XXXXXXXXX");
                 }
             } else if (RulesPlaylists::constArtistKey==rIt.key() || RulesPlaylists::constAlbumKey==rIt.key() ||
                        RulesPlaylists::constAlbumArtistKey==rIt.key() || RulesPlaylists::constComposerKey==rIt.key() ||

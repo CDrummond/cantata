@@ -520,6 +520,10 @@ sub readRules() {
                                     $pos++;
                                 }
                             }
+                            if ($pos == 0) {
+                                # No genres matching pattern - add dummy genre, so that no tracks will be found
+                                $genres[$pos]="XXXXXXXX";
+                            }
                         } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Composer" || $key eq "Comment" || $key eq "Title" || $key eq "Genre"  || $key eq "File") {
                             $currentRule="${currentRule} ${key} \"${val}\"";
                         } elsif ($key eq "SimilarArtists") {

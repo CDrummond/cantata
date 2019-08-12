@@ -90,6 +90,7 @@ TitleWidget::TitleWidget(QWidget *p)
     mainText->setAttribute(Qt::WA_TransparentForMouseEvents);
     subText->setAttribute(Qt::WA_TransparentForMouseEvents);
     image->setAttribute(Qt::WA_TransparentForMouseEvents);
+    chevron->setAttribute(Qt::WA_TransparentForMouseEvents);
     viewport()->installEventFilter(this);
     viewport()->setAttribute(Qt::WA_Hover);
     connect(Covers::self(), SIGNAL(cover(Song,QImage,QString)), this, SLOT(coverRetrieved(Song,QImage,QString)));

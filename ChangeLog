@@ -40,6 +40,9 @@
 32. Added Dutch translaiton - thnaks to Heimen Stoffels.
 33. In dynamic/smart playlists, when specify a rating also allow to specify
     unrated tracks.
+34. When matching wildcard genres, look case-insensitively for smart playlists.
+35. When matching wildcard genres, if no matches found then use a fake dummy
+    genre so that no tracks will match rules.
 
 2.3.3
 -----

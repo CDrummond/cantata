@@ -39,6 +39,7 @@ PlaylistsPage::PlaylistsPage(QWidget *p)
     dynamic=new DynamicPlaylistsPage(this);
     addPage(DynamicPlaylists::self()->name(), DynamicPlaylists::self()->icon(), DynamicPlaylists::self()->title(), DynamicPlaylists::self()->descr(), dynamic);
     smart=new SmartPlaylistsPage(this);
+    connect(smart, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
     addPage(SmartPlaylists::self()->name(), SmartPlaylists::self()->icon(), SmartPlaylists::self()->title(), SmartPlaylists::self()->descr(), smart);
     connect(stored, SIGNAL(addToDevice(QString,QString,QList<Song>)), SIGNAL(addToDevice(QString,QString,QList<Song>)));
     Configuration config(metaObject()->className());

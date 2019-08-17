@@ -82,6 +82,7 @@ public:
 Q_SIGNALS:
     void search(const QByteArray &query, const QString &id);
     void getRating(const QString &file);
+    void error(const QString &str);
 
 private Q_SLOTS:
     void addNew();

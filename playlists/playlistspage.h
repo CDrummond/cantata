@@ -44,6 +44,7 @@ public:
 
 Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void error(const QString &str);
 
 private:
     StoredPlaylistsPage *stored;

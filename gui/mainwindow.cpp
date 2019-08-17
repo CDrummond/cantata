@@ -428,6 +428,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction->setShortcut(Qt::ControlModifier+Qt::ShiftModifier+nextKey(sidebarPageShortcutKey));
     tabWidget->addTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     connect(playlistsTabAction, SIGNAL(triggered()), this, SLOT(showPlaylistsTab()));
+    connect(playlistsPage, SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(DynamicPlaylists::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(DynamicPlaylists::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(DynamicPlaylists::self(), SIGNAL(running(bool)), this, SLOT(controlDynamicButton()));

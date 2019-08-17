@@ -169,7 +169,7 @@ void SmartPlaylistsPage::searchResponse(const QString &id, const QList<Song> &so
     if (command.includeRules.isEmpty()) {
         if (command.songs.isEmpty()) {
             command.clear();
-            MessageBox::error(this, tr("Failed to locate any matching songs"));
+            emit error(tr("Failed to locate any matching songs"));
             return;
         }
         if (command.excludeRules.isEmpty()) {
@@ -201,7 +201,7 @@ void SmartPlaylistsPage::filterCommand()
         command.songs.subtract(toRemove);
         if (command.songs.isEmpty()) {
             command.clear();
-            MessageBox::error(this, tr("Failed to locate any matching songs"));
+            emit error(tr("Failed to locate any matching songs"));
             return;
         }
     }
@@ -313,7 +313,7 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
 {
     if (command.songs.isEmpty()) {
         command.clear();
-        MessageBox::error(this, tr("Failed to locate any matching songs"));
+        emit error(tr("Failed to locate any matching songs"));
         return;
     }
 

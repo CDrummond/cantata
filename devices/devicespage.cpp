@@ -574,7 +574,7 @@ void DevicesPage::cdMatches(const QString &udi, const QList<CdAlbum> &albums)
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     int chosen=0;
     Device *dev=DevicesModel::self()->device(udi);
-    if (dev && Device::AudioCd==dev->devType()) {
+    if (dev) {
         if (Device::AudioCd==dev->devType()) {
             CddbSelectionDialog *dlg=new CddbSelectionDialog(this);
             chosen=dlg->select(albums);
@@ -586,7 +586,7 @@ void DevicesPage::cdMatches(const QString &udi, const QList<CdAlbum> &albums)
 
     // Need to get device again, as it may have been removed!
     dev=DevicesModel::self()->device(udi);
-    if (dev && Device::AudioCd==dev->devType()) {
+    if (dev) {
         if (Device::AudioCd==dev->devType()) {
             static_cast<AudioCdDevice *>(dev)->setDetails(albums.at(chosen));
         }

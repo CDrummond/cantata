@@ -2586,7 +2586,7 @@ void MainWindow::updateNextTrack(int nextTrackId)
     } else if (nextTrackId!=StdActions::self()->nextTrackAction->property("trackid").toInt()) {
         Song s=PlayQueueModel::self()->getSongByRow(PlayQueueModel::self()->getRowById(nextTrackId));
         if (!s.artist.isEmpty() && !s.title.isEmpty()) {
-            tt+=QLatin1String("<br/><i><small>")+s.artistSong()+QLatin1String("<small></i>");
+            tt+=QLatin1String("<br/><i><small>")+s.artistSong()+QLatin1String("</small></i>");
         } else {
             nextTrackId=-1;
         }

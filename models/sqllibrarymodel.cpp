@@ -574,7 +574,7 @@ QModelIndex SqlLibraryModel::findArtistIndex(const QString &artist)
                     }
                 }
             }
-        } if (T_Artist==tl) {
+        } else if (T_Artist==tl) {
             for (Item *a: root->getChildren()) {
                 if (a->getId()==artist) {
                     return index(a->getRow(), 0, QModelIndex());

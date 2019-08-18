@@ -556,7 +556,7 @@ void GroupedView::updateRows(qint32 row, quint16 curAlbum, bool scroll, const QM
         return;
     }
 
-    if (filterActive && model() && MPDState_Playing==MPDStatus::self()->state()) {
+    if (filterActive && MPDState_Playing==MPDStatus::self()->state()) {
         if (scroll) {
             scrollTo(model()->index(row, 0, parent), QAbstractItemView::PositionAtCenter);
         }

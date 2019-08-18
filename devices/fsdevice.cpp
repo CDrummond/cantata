@@ -289,7 +289,7 @@ void FsDevice::writeOpts(const QString &fileName, const DeviceOptions &opts, boo
             if (opts.scheme!=def.scheme) {
                 out << constMusicFilenameSchemeKey << '=' << opts.scheme << '\n';
             }
-            if (opts.scheme!=def.scheme) {
+            if (opts.vfatSafe!=def.vfatSafe) {
                 out << constVfatSafeKey << '=' << toString(opts.vfatSafe) << '\n';
             }
             if (opts.asciiOnly!=def.asciiOnly) {

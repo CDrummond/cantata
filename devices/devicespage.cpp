@@ -575,21 +575,17 @@ void DevicesPage::cdMatches(const QString &udi, const QList<CdAlbum> &albums)
     int chosen=0;
     Device *dev=DevicesModel::self()->device(udi);
     if (dev && Device::AudioCd==dev->devType()) {
-        if (Device::AudioCd==dev->devType()) {
-            CddbSelectionDialog *dlg=new CddbSelectionDialog(this);
-            chosen=dlg->select(albums);
-            if (chosen<0 || chosen>=albums.count()) {
-                chosen=0;
-            }
+        CddbSelectionDialog *dlg=new CddbSelectionDialog(this);
+        chosen=dlg->select(albums);
+        if (chosen<0 || chosen>=albums.count()) {
+            chosen=0;
         }
     }
 
     // Need to get device again, as it may have been removed!
     dev=DevicesModel::self()->device(udi);
     if (dev && Device::AudioCd==dev->devType()) {
-        if (Device::AudioCd==dev->devType()) {
-            static_cast<AudioCdDevice *>(dev)->setDetails(albums.at(chosen));
-        }
+        static_cast<AudioCdDevice *>(dev)->setDetails(albums.at(chosen));
     }
     #else
     Q_UNUSED(udi)

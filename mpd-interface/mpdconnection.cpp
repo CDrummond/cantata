@@ -195,6 +195,7 @@ QString MPDConnection::Response::getError(const QByteArray &command)
 MPDConnectionDetails::MPDConnectionDetails()
     : port(6600)
     , dirReadable(false)
+    , applyReplayGain(true)
     , allowLocalStreaming(true)
     , autoUpdate(false)
 {
@@ -232,6 +233,7 @@ MPDConnectionDetails & MPDConnectionDetails::operator=(const MPDConnectionDetail
     streamUrl=o.streamUrl;
     #endif
     replayGain=o.replayGain;
+    applyReplayGain=o.applyReplayGain;
     allowLocalStreaming=o.allowLocalStreaming;
     autoUpdate=o.autoUpdate;
     return *this;
@@ -517,7 +519,7 @@ void MPDConnection::reconnect()
     switch (status) {
     case Success:        
         // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
-        if (replaygainSupported() && !details.replayGain.isEmpty()) {
+        if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
             sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
         }
         getStatus();
@@ -609,7 +611,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         switch (status) {
         case Success:
             // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
-            if (replaygainSupported() && !details.replayGain.isEmpty()) {
+            if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
                 sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
             }
             serverInfo.detect();

@@ -84,6 +84,7 @@ void PlaybackSettings::load()
     if (MPDConnection::self()->isConnected()) {
         emit getReplayGain();
         emit outputs();
+        applyReplayGain->setChecked(MPDConnection::self()->getDetails().applyReplayGain);
     }
 }
 
@@ -105,6 +106,11 @@ void PlaybackSettings::save()
         if (rgSetting!=rg) {
             rgSetting=rg;
             emit setReplayGain(rg);
+        }
+        MPDConnectionDetails det=MPDConnection::self()->getDetails();
+        if (det.applyReplayGain!=applyReplayGain->isChecked()) {
+            det.applyReplayGain=applyReplayGain->isChecked();
+            Settings::self()->saveConnectionDetails(det);
         }
         if (outputsView->isVisible()) {
             for (int i=0; i<outputsView->count(); ++i) {
@@ -161,6 +167,7 @@ void PlaybackSettings::mpdConnectionStateChanged(bool c)
     crossfadingLabel->setEnabled(c);
     replayGainLabel->setEnabled(rgSupported);
     replayGain->setEnabled(rgSupported);
+    applyReplayGain->setChecked(MPDConnection::self()->getDetails().applyReplayGain);
     messageIcon->setPixmap(style()->standardIcon(c ? QStyle::SP_MessageBoxInformation : QStyle::SP_MessageBoxWarning).pixmap(messageIcon->minimumSize()));
     if (c) {
         messageLabel->setText(tr("<i>Connected to %1<br/>The entries below apply to the currently connected MPD collection.</i>")

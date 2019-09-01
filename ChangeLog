@@ -43,6 +43,8 @@
 34. When matching wildcard genres, look case-insensitively for smart playlists.
 35. When matching wildcard genres, if no matches found then use a fake dummy
     genre so that no tracks will match rules.
+36. Add a checkbox controlling whether Cantata should apply its replaygain
+    setting each time it connects to MPD. Issue #1531
 
 2.3.3
 -----

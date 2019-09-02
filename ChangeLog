@@ -33,7 +33,8 @@
     otherwise just append new tracks.
 27. Support multiple genres in CUE files.
 28. Handle more TuneIn responses that are just stream URLs.
-29. Add "originaldate" to Cantata local mpd config.
+29. Add 'originaldate,albumartistsort,artistsort,albumsort" to Cantata local
+    mpd config.
 30. Add Finnish translation - thanks to Tommi Nieminen.
 31. Alter behavour of 'previous' button; if played 5 seconds or more, then go
     to start of track, else go to previous track.

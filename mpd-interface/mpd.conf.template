@@ -7,7 +7,7 @@ pid_file "${CACHE_DIR}/pid"
 state_file "${CACHE_DIR}/state"
 log_file "/dev/null"
 zeroconf_enabled "no"
-metadata_to_use	"artist,album,title,track,name,genre,date,disc,albumartist,composer,musicbrainz_albumid,originaldate"
+metadata_to_use	"artist,album,title,track,name,genre,date,disc,albumartist,composer,musicbrainz_albumid,originaldate,albumartistsort,artistsort,albumsort"
 audio_output { 
   type "pulse"
   name "Output"

@@ -6331,39 +6331,39 @@ Proszę sprawdzić czy urządzenie nadal jest podłączone.</translation>
         <translation>Do skopiowania:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="126"/>
+        <location filename="../devices/actiondialog.cpp" line="127"/>
         <source>&lt;b&gt;INVALID&lt;/b&gt;</source>
         <translation>&lt;b&gt;NIEWŁAŚCIWY&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="140"/>
-        <location filename="../devices/actiondialog.cpp" line="143"/>
+        <location filename="../devices/actiondialog.cpp" line="141"/>
+        <location filename="../devices/actiondialog.cpp" line="144"/>
         <source>&lt;i&gt;(When different)&lt;/i&gt;</source>
         <translation>&lt;i&gt;(Gdy różne)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="172"/>
+        <location filename="../devices/actiondialog.cpp" line="173"/>
         <source>Artists:%1, Albums:%2, Songs:%3</source>
         <translation>Artyści:%1, Albumy:%2, Utwory:%3</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="240"/>
+        <location filename="../devices/actiondialog.cpp" line="241"/>
         <source>%1 free</source>
         <translation>%1 wolnego miejsca</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="253"/>
-        <location filename="../devices/actiondialog.cpp" line="257"/>
+        <location filename="../devices/actiondialog.cpp" line="254"/>
+        <location filename="../devices/actiondialog.cpp" line="258"/>
         <source>Local Music Library</source>
         <translation>Lokalna biblioteka muzyki</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="255"/>
+        <location filename="../devices/actiondialog.cpp" line="256"/>
         <source>Audio CD</source>
         <translation>Płyta audio</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="279"/>
+        <location filename="../devices/actiondialog.cpp" line="280"/>
         <source>There is insufficient space left on the destination device.
 
 The selected songs consume %1, but there is only %2 left.
@@ -6374,7 +6374,7 @@ Zaznaczone utwory zajmują %1, jednak wolnego miejsca zostało jedynie %2.
 Utwory musiałyby zostać transkodowane do mniejszego rozmiary aby je skopiować z powodzeniem.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="289"/>
+        <location filename="../devices/actiondialog.cpp" line="290"/>
         <source>There is insufficient space left on the destination.
 
 The selected songs consume %1, but there is only %2 left.</source>
@@ -6383,30 +6383,30 @@ The selected songs consume %1, but there is only %2 left.</source>
 Zaznaczone utwory zajmują %1, jednak wolnego miejsca zostało jedynie %2.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="303"/>
-        <location filename="../devices/actiondialog.cpp" line="323"/>
-        <location filename="../devices/actiondialog.cpp" line="555"/>
+        <location filename="../devices/actiondialog.cpp" line="304"/>
+        <location filename="../devices/actiondialog.cpp" line="324"/>
+        <location filename="../devices/actiondialog.cpp" line="556"/>
         <source>Copy Songs To Library</source>
         <translation>Kopiuj utwory do biblioteki</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="303"/>
-        <location filename="../devices/actiondialog.cpp" line="323"/>
+        <location filename="../devices/actiondialog.cpp" line="304"/>
+        <location filename="../devices/actiondialog.cpp" line="324"/>
         <source>Copy Songs To Device</source>
         <translation>Skopiuj utwory do urządzenia</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="387"/>
+        <location filename="../devices/actiondialog.cpp" line="388"/>
         <source>Copy Songs</source>
         <translation>Skopiuj utwory</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="387"/>
+        <location filename="../devices/actiondialog.cpp" line="388"/>
         <source>Delete Songs</source>
         <translation>Usuń utwory</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="424"/>
+        <location filename="../devices/actiondialog.cpp" line="425"/>
         <source>You have not configured the destination device.
 
 Continue with the default settings?</source>
@@ -6415,19 +6415,19 @@ Continue with the default settings?</source>
 Kontynuować z ustawieniami domyślnymi?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="425"/>
-        <location filename="../devices/actiondialog.cpp" line="429"/>
+        <location filename="../devices/actiondialog.cpp" line="426"/>
+        <location filename="../devices/actiondialog.cpp" line="430"/>
         <source>Not Configured</source>
         <translation>Nie skonfigurowano</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="426"/>
-        <location filename="../devices/actiondialog.cpp" line="430"/>
+        <location filename="../devices/actiondialog.cpp" line="427"/>
+        <location filename="../devices/actiondialog.cpp" line="431"/>
         <source>Use Defaults</source>
         <translation>Użyj domyślnych</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="428"/>
+        <location filename="../devices/actiondialog.cpp" line="429"/>
         <source>You have not configured the source device.
 
 Continue with the default settings?</source>
@@ -6436,199 +6436,199 @@ Continue with the default settings?</source>
 Kontynuować z ustawieniami domyślnymi?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="480"/>
+        <location filename="../devices/actiondialog.cpp" line="481"/>
         <source>Are you sure you wish to stop?</source>
         <translation>Czy na pewno zatrzymać?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="480"/>
+        <location filename="../devices/actiondialog.cpp" line="481"/>
         <source>Stop</source>
         <translation>Zatrzymaj</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="525"/>
+        <location filename="../devices/actiondialog.cpp" line="526"/>
         <source>Device has been removed!</source>
         <translation>Urządzenie zostało usunięte!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="527"/>
+        <location filename="../devices/actiondialog.cpp" line="528"/>
         <source>Device is not connected!</source>
         <translation>Urządzenie nie jest podłączone!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="529"/>
+        <location filename="../devices/actiondialog.cpp" line="530"/>
         <source>Device is busy?</source>
         <translation>Urządzenie jest zajęte?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="531"/>
+        <location filename="../devices/actiondialog.cpp" line="532"/>
         <source>Device has been changed?</source>
         <translation>Urządzenie zostało zmienione?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="606"/>
+        <location filename="../devices/actiondialog.cpp" line="607"/>
         <source>Clearing unused folders</source>
         <translation>Czyszczenie nieużywanych katalogów</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="621"/>
+        <location filename="../devices/actiondialog.cpp" line="622"/>
         <source>Calculate ReplayGain for ripped tracks?</source>
         <translation>Obliczyć ReplayGain zgranych utworów?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="621"/>
+        <location filename="../devices/actiondialog.cpp" line="622"/>
         <source>ReplayGain</source>
         <translation>ReplayGain</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="622"/>
+        <location filename="../devices/actiondialog.cpp" line="623"/>
         <source>Calculate</source>
         <translation>Oblicz</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="675"/>
+        <location filename="../devices/actiondialog.cpp" line="676"/>
         <source>The destination filename already exists!</source>
         <translation>Istnieje plik o nazwie docelowej!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="678"/>
+        <location filename="../devices/actiondialog.cpp" line="679"/>
         <source>Song already exists!</source>
         <translation>Utwór już istnieje!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="681"/>
+        <location filename="../devices/actiondialog.cpp" line="682"/>
         <source>Song does not exist!</source>
         <translation>Utwór nie istnieje!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="684"/>
+        <location filename="../devices/actiondialog.cpp" line="685"/>
         <source>Failed to create destination folder!&lt;br/&gt;Please check you have sufficient permissions.</source>
         <translation>Tworzenie katalogu docelowego nie powiodło się!&lt;br/&gt;Proszę upewnić się, że ustawione są odpowiednie prawa dostępu.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="687"/>
+        <location filename="../devices/actiondialog.cpp" line="688"/>
         <source>Source file no longer exists?</source>
         <translation>Plik źródłowy już nie istnieje?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="690"/>
+        <location filename="../devices/actiondialog.cpp" line="691"/>
         <source>Failed to copy.</source>
         <translation>Kopiowanie nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="690"/>
+        <location filename="../devices/actiondialog.cpp" line="691"/>
         <source>Failed to delete.</source>
         <translation>Usuwanie nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="693"/>
+        <location filename="../devices/actiondialog.cpp" line="694"/>
         <source>Not connected to device.</source>
         <translation>Brak połączenia z urządzeniem.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="696"/>
+        <location filename="../devices/actiondialog.cpp" line="697"/>
         <source>Selected codec is not available.</source>
         <translation>Wybrany kodek nie jest dostępny.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="699"/>
+        <location filename="../devices/actiondialog.cpp" line="700"/>
         <source>Transcoding failed.</source>
         <translation>Konwertowanie nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="702"/>
+        <location filename="../devices/actiondialog.cpp" line="703"/>
         <source>Failed to create temporary file.&lt;br/&gt;(Required for transcoding to MTP devices.)</source>
         <translation>Stworzenie pliku tymczasowego nie powiodło się.&lt;br/&gt;(Wymagane przy konwertowaniu do urządzeń MTP.)</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="705"/>
+        <location filename="../devices/actiondialog.cpp" line="706"/>
         <source>Failed to read source file.</source>
         <translation>Odczyt pliku źródłowego nie powiódł się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="708"/>
+        <location filename="../devices/actiondialog.cpp" line="709"/>
         <source>Failed to write to destination file.</source>
         <translation>Zapis do pliku docelowego nie powiódł się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="711"/>
+        <location filename="../devices/actiondialog.cpp" line="712"/>
         <source>No space left on device.</source>
         <translation>Brak miejsca na urządzeniu.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="714"/>
+        <location filename="../devices/actiondialog.cpp" line="715"/>
         <source>Failed to update metadata.</source>
         <translation>Uaktualnienie metadanych nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="717"/>
+        <location filename="../devices/actiondialog.cpp" line="718"/>
         <source>Failed to download track.</source>
         <translation>Pobieranie utworu nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="720"/>
+        <location filename="../devices/actiondialog.cpp" line="721"/>
         <source>Failed to lock device.</source>
         <translation>Zablokowanie urządzenia nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="749"/>
+        <location filename="../devices/actiondialog.cpp" line="750"/>
         <source>Local Music Library Properties</source>
         <translation>Ustawienia lokalnej biblioteki muzyki</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="801"/>
-        <location filename="../devices/actiondialog.cpp" line="815"/>
+        <location filename="../devices/actiondialog.cpp" line="802"/>
+        <location filename="../devices/actiondialog.cpp" line="816"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="805"/>
+        <location filename="../devices/actiondialog.cpp" line="806"/>
         <source>Skip</source>
         <translation>Pomiń</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="806"/>
+        <location filename="../devices/actiondialog.cpp" line="807"/>
         <source>Auto Skip</source>
         <translation>Automatycznie pomiń</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="810"/>
+        <location filename="../devices/actiondialog.cpp" line="811"/>
         <source>Retry</source>
         <translation>Spróbuj ponownie</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="825"/>
+        <location filename="../devices/actiondialog.cpp" line="826"/>
         <source>Artist:</source>
         <translation>Artysta:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="826"/>
+        <location filename="../devices/actiondialog.cpp" line="827"/>
         <source>Album:</source>
         <translation>Album:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="827"/>
+        <location filename="../devices/actiondialog.cpp" line="828"/>
         <source>Track:</source>
         <translation>Utwór:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="831"/>
+        <location filename="../devices/actiondialog.cpp" line="832"/>
         <source>Source file:</source>
         <translation>Plik źródłowy:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="832"/>
+        <location filename="../devices/actiondialog.cpp" line="833"/>
         <source>Destination file:</source>
         <translation>Plik docelowy:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="834"/>
+        <location filename="../devices/actiondialog.cpp" line="835"/>
         <source>File:</source>
         <translation>Plik:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="852"/>
-        <location filename="../devices/actiondialog.cpp" line="868"/>
+        <location filename="../devices/actiondialog.cpp" line="853"/>
+        <location filename="../devices/actiondialog.cpp" line="869"/>
         <source>Saving cache</source>
         <translation>Zapisywanie pamięci podręcznej</translation>
     </message>
@@ -6781,22 +6781,22 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
 <context>
     <name>AlbumView</name>
     <message>
-        <location filename="../context/albumview.cpp" line="69"/>
+        <location filename="../context/albumview.cpp" line="76"/>
         <source>Refresh Album Information</source>
         <translation>Odśwież informacje o albumie</translation>
     </message>
     <message>
-        <location filename="../context/albumview.cpp" line="70"/>
+        <location filename="../context/albumview.cpp" line="71"/>
         <source>Full Width Cover</source>
         <translation>Okładka pełnej szerokości</translation>
     </message>
     <message>
-        <location filename="../context/albumview.cpp" line="80"/>
+        <location filename="../context/albumview.cpp" line="84"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../context/albumview.cpp" line="200"/>
+        <location filename="../context/albumview.cpp" line="207"/>
         <source>Tracks</source>
         <translation>Utwory</translation>
     </message>
@@ -6804,7 +6804,7 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
 <context>
     <name>ApiKeys</name>
     <message>
-        <location filename="../gui/apikeys.cpp" line="155"/>
+        <location filename="../gui/apikeys.cpp" line="160"/>
         <source>The API call limit has been exceeded for %1, please try again later or register for your own API key.</source>
         <translation>Przekroczono limit zapytań API dla %1, spróbuj ponownie później lub użyj własnego klucza API.</translation>
     </message>
@@ -6817,17 +6817,17 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
         <translation>Cantata używa wielu serwisów internetowych aby dostarczać okładki, listy strumieni radiowych itp. Większość z nich wymaga, aby twórca aplikacji zarejestrował się w tym serwisie w celu pozyskania klucza API. Cantata zawiera klucze potrzebne do odpytywania tych serwisów. Niestety, część z tych serwisów narzuca ograniczenia na liczbę zapytań związanych z danym kluczem. Dlatego część z funkcji programu Cantata może przestać działać jeśli dany klucz (który jest współdzielony między wszystkimi instalacjami programu) osiągnie miesięczny limit zapytań. Aby obejść to ograniczenie, możliwe jest samodzielne zarejestrowanie się w serwisie i skonfigurowanie, aby program Cantata używał osobistego klucza API. Ten klucz można wpisać poniżej. Dla pól, które nie zostały wypełnione, domyślna wartość klucza zostanie użyta.</translation>
     </message>
     <message>
-        <location filename="../gui/apikeyssettings.cpp" line="85"/>
+        <location filename="../gui/apikeyssettings.cpp" line="88"/>
         <source>Service</source>
         <translation>Serwis</translation>
     </message>
     <message>
-        <location filename="../gui/apikeyssettings.cpp" line="85"/>
+        <location filename="../gui/apikeyssettings.cpp" line="88"/>
         <source>Service URL</source>
         <translation>URL serwisu</translation>
     </message>
     <message>
-        <location filename="../gui/apikeyssettings.cpp" line="85"/>
+        <location filename="../gui/apikeyssettings.cpp" line="88"/>
         <source>API Key</source>
         <translation>Klucz API</translation>
     </message>
@@ -6845,17 +6845,17 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
         <translation>Artysta</translation>
     </message>
     <message>
-        <location filename="../context/artistview.cpp" line="319"/>
+        <location filename="../context/artistview.cpp" line="323"/>
         <source>Albums</source>
         <translation>Albumy</translation>
     </message>
     <message>
-        <location filename="../context/artistview.cpp" line="345"/>
+        <location filename="../context/artistview.cpp" line="349"/>
         <source>Web Links</source>
         <translation>Linki sieciowe</translation>
     </message>
     <message>
-        <location filename="../context/artistview.cpp" line="426"/>
+        <location filename="../context/artistview.cpp" line="430"/>
         <source>Similar Artists</source>
         <translation>Podobni Artyści</translation>
     </message>
@@ -6863,12 +6863,12 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
 <context>
     <name>AudioCdDevice</name>
     <message>
-        <location filename="../devices/audiocddevice.cpp" line="118"/>
+        <location filename="../devices/audiocddevice.cpp" line="119"/>
         <source>Reading disc</source>
         <translation>Odczyt płyty</translation>
     </message>
     <message numerus="yes">
-        <location filename="../devices/audiocddevice.cpp" line="356"/>
+        <location filename="../devices/audiocddevice.cpp" line="357"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n Utwór (%1)</numerusform>
@@ -6910,14 +6910,24 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
         <translation>Zgrywanie audio</translation>
     </message>
     <message>
-        <location filename="../devices/audiocdsettings.ui" line="100"/>
+        <location filename="../devices/audiocdsettings.ui" line="103"/>
         <source>Full paranoia mode (best quality)</source>
         <translation>Tryb full paranoia mode (najlepsza jakość)</translation>
     </message>
     <message>
-        <location filename="../devices/audiocdsettings.ui" line="107"/>
+        <location filename="../devices/audiocdsettings.ui" line="110"/>
         <source>Never skip on read error</source>
         <translation>Nigdy nie pomijaj przy błędach odczytu</translation>
+    </message>
+    <message>
+        <location filename="../devices/audiocdsettings.ui" line="117"/>
+        <source>Read offset:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/audiocdsettings.ui" line="137"/>
+        <source>&apos;Read offset&apos; is used so that cdparanoia knows what offset to use to rip complete tracks, and not lose the beginning or end of tracks. A comprehensive list of offset values for most CD-ROM and DVD drives is available at &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.cpp" line="37"/>
@@ -6933,22 +6943,22 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
 <context>
     <name>BrowseModel</name>
     <message>
-        <location filename="../models/browsemodel.cpp" line="74"/>
+        <location filename="../models/browsemodel.cpp" line="76"/>
         <source>Server Folders</source>
         <translation>Katalogi serwera</translation>
     </message>
     <message>
-        <location filename="../models/browsemodel.cpp" line="79"/>
+        <location filename="../models/browsemodel.cpp" line="81"/>
         <source>MPD virtual file-system</source>
         <translation>Wirtualny system plików MPD</translation>
     </message>
     <message>
-        <location filename="../models/browsemodel.cpp" line="244"/>
+        <location filename="../models/browsemodel.cpp" line="246"/>
         <source>Cue Sheet</source>
         <translation>Plik .cue</translation>
     </message>
     <message>
-        <location filename="../models/browsemodel.cpp" line="244"/>
+        <location filename="../models/browsemodel.cpp" line="246"/>
         <source>Playlist</source>
         <translation>Playlista</translation>
     </message>
@@ -6974,78 +6984,78 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
         <translation>Cantata przechowuje w pamięci podręcznej różne informacje (okładki, teksty itp.). Poniżej przedstawiono podsumowanie użycia pamięci podręcznej programu Cantata.</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="260"/>
+        <location filename="../gui/cachesettings.cpp" line="263"/>
         <source>Covers</source>
         <translation>Okładki</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="262"/>
+        <location filename="../gui/cachesettings.cpp" line="265"/>
         <source>Scaled Covers</source>
         <translation>Przeskalowane okładki</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="264"/>
+        <location filename="../gui/cachesettings.cpp" line="267"/>
         <source>Backdrops</source>
         <translation>Tła</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="265"/>
+        <location filename="../gui/cachesettings.cpp" line="268"/>
         <source>Lyrics</source>
         <translation>Teksty</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="266"/>
+        <location filename="../gui/cachesettings.cpp" line="269"/>
         <source>Artist Information</source>
         <translation>Informacje o artyście</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="268"/>
+        <location filename="../gui/cachesettings.cpp" line="271"/>
         <source>Album Information</source>
         <translation>Informacje o albumie</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="269"/>
+        <location filename="../gui/cachesettings.cpp" line="272"/>
         <source>Track Information</source>
         <translation>Informacje o utworze</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="270"/>
+        <location filename="../gui/cachesettings.cpp" line="273"/>
         <source>Stream Listings</source>
         <translation>Listy strumieni</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="271"/>
+        <location filename="../gui/cachesettings.cpp" line="274"/>
         <source>Podcast Directories</source>
         <translation>Katalogi podcastów</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="272"/>
+        <location filename="../gui/cachesettings.cpp" line="275"/>
         <source>Wikipedia Languages</source>
         <translation>Języki Wikipedii</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="273"/>
+        <location filename="../gui/cachesettings.cpp" line="276"/>
         <source>Scrobble Tracks</source>
         <translation>Scrobbluj utwory</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="280"/>
+        <location filename="../gui/cachesettings.cpp" line="283"/>
         <source>Delete All</source>
         <translation>Usuń wszystko</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="319"/>
+        <location filename="../gui/cachesettings.cpp" line="322"/>
         <source>Delete all &apos;%1&apos; items?</source>
         <translation>Czy usunąć wszystkie &apos;%1&apos; elementów?</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="320"/>
-        <location filename="../gui/cachesettings.cpp" line="332"/>
+        <location filename="../gui/cachesettings.cpp" line="323"/>
+        <location filename="../gui/cachesettings.cpp" line="335"/>
         <source>Delete Cache Items</source>
         <translation>Usuń elementy pamięci podręcznej</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="331"/>
+        <location filename="../gui/cachesettings.cpp" line="334"/>
         <source>Delete items from all selected categories?</source>
         <translation>Usunąć elementy ze wszystkich zaznaczonych kategorii?</translation>
     </message>
@@ -7164,17 +7174,17 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
 <context>
     <name>ContextWidget</name>
     <message>
-        <location filename="../context/contextwidget.cpp" line="355"/>
+        <location filename="../context/contextwidget.cpp" line="358"/>
         <source>&amp;Artist</source>
         <translation>&amp;Artysta</translation>
     </message>
     <message>
-        <location filename="../context/contextwidget.cpp" line="356"/>
+        <location filename="../context/contextwidget.cpp" line="359"/>
         <source>Al&amp;bum</source>
         <translation>Al&amp;bum</translation>
     </message>
     <message>
-        <location filename="../context/contextwidget.cpp" line="357"/>
+        <location filename="../context/contextwidget.cpp" line="360"/>
         <source>&amp;Track</source>
         <translation>U&amp;twór</translation>
     </message>
@@ -7202,33 +7212,43 @@ Jeśli &apos;Tytuł&apos; to &quot;Wibble - Wobble&quot;, to &apos;Artysta&apos;
         <translation>Opcja ta może być użyta tylko do zmiany pliku używanego jako okładka, nie zmieni to okładek osadzonych w plikach utworów.</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="393"/>
+        <location filename="../gui/coverdialog.cpp" line="394"/>
         <source>CoverArt Archive</source>
         <translation>Archiwum okładek</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="422"/>
+        <location filename="../gui/coverdialog.cpp" line="424"/>
         <source>An image already exists for this artist, and the file is not writeable.</source>
         <translation>Istnieje już obraz dla danego artysty, a plik nie może być nadpisany.</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="423"/>
+        <location filename="../gui/coverdialog.cpp" line="426"/>
+        <source>An image already exists for this composer, and the file is not writeable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/coverdialog.cpp" line="427"/>
         <source>A cover already exists for this album, and the file is not writeable.</source>
         <translation>Istnieje już okładka dla danego albumu, a plik nie może być nadpisany.</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="430"/>
+        <location filename="../gui/coverdialog.cpp" line="434"/>
         <source>&apos;%1&apos; Artist Image</source>
         <translation>&apos;%1&apos; Obraz artysty</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="432"/>
+        <location filename="../gui/coverdialog.cpp" line="436"/>
+        <source>&apos;%1&apos; Composer Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/coverdialog.cpp" line="438"/>
         <source>&apos;%1 - %2&apos; Album Cover</source>
         <comment>&apos;Artist - Album&apos; Album Cover</comment>
         <translation>&apos;%1 - %2&apos; Okładka albumu</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="575"/>
+        <location filename="../gui/coverdialog.cpp" line="581"/>
         <source>Failed to set cover!
 
 Could not download to temporary file!</source>
@@ -7237,42 +7257,46 @@ Could not download to temporary file!</source>
 Nie można pobrać do tymczasowego pliku!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="606"/>
+        <location filename="../gui/coverdialog.cpp" line="612"/>
         <source>Failed to download image!</source>
         <translation>Pobieranie obrazu nie powiodło się!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="806"/>
+        <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Load Local Cover</source>
         <translation>Załaduj okładkę lokalną</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="806"/>
-        <source>Images (*.png *.jpg)</source>
-        <translation>Obrazy (*.png *.jpg)</translation>
+        <location filename="../gui/coverdialog.cpp" line="812"/>
+        <source>Images (*.png *.jpg *.jpeg)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="810"/>
+        <source>Images (*.png *.jpg)</source>
+        <translation type="vanished">Obrazy (*.png *.jpg)</translation>
+    </message>
+    <message>
+        <location filename="../gui/coverdialog.cpp" line="816"/>
         <source>File is already in list!</source>
         <translation>Plik istnieje już na liście!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="814"/>
+        <location filename="../gui/coverdialog.cpp" line="820"/>
         <source>Failed to read image!</source>
         <translation>Odczyt obrazu nie powiódł się!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="827"/>
+        <location filename="../gui/coverdialog.cpp" line="833"/>
         <source>Display</source>
         <translation>Wyświetl</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="828"/>
+        <location filename="../gui/coverdialog.cpp" line="834"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1203"/>
+        <location filename="../gui/coverdialog.cpp" line="1213"/>
         <source>Failed to set cover!
 
 Could not make copy!</source>
@@ -7281,7 +7305,7 @@ Could not make copy!</source>
 Nie można stworzyć kopii!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1212"/>
+        <location filename="../gui/coverdialog.cpp" line="1222"/>
         <source>Failed to set cover!
 
 Could not backup original!</source>
@@ -7290,7 +7314,7 @@ Could not backup original!</source>
 Nie można stworzyć kopii zapasowej oryginału!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1260"/>
+        <location filename="../gui/coverdialog.cpp" line="1278"/>
         <source>Failed to set cover!
 
 Could not copy file to &apos;%1&apos;!</source>
@@ -7299,7 +7323,7 @@ Could not copy file to &apos;%1&apos;!</source>
 Nie można skopiować pliku do &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1314"/>
+        <location filename="../gui/coverdialog.cpp" line="1332"/>
         <source>Searching...</source>
         <translation>Szukanie...</translation>
     </message>
@@ -7307,19 +7331,38 @@ Nie można skopiować pliku do &apos;%1&apos;!</translation>
 <context>
     <name>CoverLabel</name>
     <message>
-        <location filename="../widgets/coverwidget.cpp" line="78"/>
+        <location filename="../widgets/coverwidget.cpp" line="77"/>
+        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/coverwidget.cpp" line="79"/>
+        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/coverwidget.cpp" line="82"/>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Kompozytor:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../widgets/coverwidget.cpp" line="81"/>
+        <location filename="../widgets/coverwidget.cpp" line="85"/>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Wykonawca:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../widgets/coverwidget.cpp" line="83"/>
+        <location filename="../widgets/coverwidget.cpp" line="87"/>
+        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/coverwidget.cpp" line="88"/>
+        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artysta:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Rok:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
+        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artysta:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Rok:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -7386,33 +7429,33 @@ Nie można skopiować pliku do &apos;%1&apos;!</translation>
         <translation>Aby program Cantata wykonywał zewnętrzne polecenia (np. w celu edycji tagów poprzez inną aplikację), należy poniżej dodać wpis dla tego polecenia. Jeżeli chociaż jedno polecenie jest  zdefiniowane, do menu kontekstowego dla Biblioteki, Katalogów i Playlist zostaje dodane menu &apos;Własne akcje&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="101"/>
+        <location filename="../gui/customactionssettings.cpp" line="104"/>
         <source>Add</source>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="102"/>
+        <location filename="../gui/customactionssettings.cpp" line="105"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="103"/>
-        <location filename="../gui/customactionssettings.cpp" line="179"/>
+        <location filename="../gui/customactionssettings.cpp" line="106"/>
+        <location filename="../gui/customactionssettings.cpp" line="182"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="107"/>
+        <location filename="../gui/customactionssettings.cpp" line="110"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="107"/>
+        <location filename="../gui/customactionssettings.cpp" line="110"/>
         <source>Command</source>
         <translation>Polecenie</translation>
     </message>
     <message>
-        <location filename="../gui/customactionssettings.cpp" line="179"/>
+        <location filename="../gui/customactionssettings.cpp" line="182"/>
         <source>Remove the selected commands?</source>
         <translation>Usunąć zaznaczone polecenia?</translation>
     </message>
@@ -7420,12 +7463,12 @@ Nie można skopiować pliku do &apos;%1&apos;!</translation>
 <context>
     <name>Device</name>
     <message>
-        <location filename="../devices/device.cpp" line="396"/>
+        <location filename="../devices/device.cpp" line="378"/>
         <source>Updating (%1)...</source>
         <translation>Uaktualnianie (%1)...</translation>
     </message>
     <message>
-        <location filename="../devices/device.cpp" line="401"/>
+        <location filename="../devices/device.cpp" line="383"/>
         <source>Updating (%1%)...</source>
         <translation>Uaktualnianie (%1%)...</translation>
     </message>
@@ -7933,88 +7976,88 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>DynamicPlaylists</name>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="142"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="143"/>
         <source>Start Dynamic Playlist</source>
         <translation>Uruchom playlistę dynamiczną</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="143"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="144"/>
         <source>Stop Dynamic Mode</source>
         <translation>Zatrzymaj tryb dynamiczny</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="153"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="154"/>
         <source>Dynamic Playlists</source>
         <translation>Dynamiczne playlisty</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="158"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="159"/>
         <source>Dynamically generated playlists</source>
         <translation>Dynamicznie generowane playlisty</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="214"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="215"/>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
         <translation>Należy w systemie zainstalować narzędzie &quot;perl&quot; aby tryb dynamiczny Cantaty mógł działać.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="221"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="222"/>
         <source>Failed to locate rules file - %1</source>
         <translation>Odnalezienie pliku z regułami nie powiodło się - %1</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="229"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="230"/>
         <source>Failed to remove previous rules file - %1</source>
         <translation>Usunięcie poprzedniego pliku z regułami nie powiodło się - %1</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="234"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="235"/>
         <source>Failed to install rules file - %1 -&gt; %2</source>
         <translation>Instalacja pliku z regułami nie powiodła się - %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="385"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="386"/>
         <source>Could not start dynamic helper. Please check all &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;dependencies&lt;/a&gt; are installed.</source>
         <translation>Wystartowanie pomocniczej aplikacji do trybu dynamicznego nie powiodło się. Należy sprawdzić czy wszystkie &lt;a href=&quot;https://github.com/CDrummond/cantata/wiki/Dynamic-Palylists-Helper&quot;&gt;zależności&lt;/a&gt; zostały zainstalowane.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="496"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="497"/>
         <source>Dynamizer has been terminated.</source>
         <translation>Dynamizer został wyłączony.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="542"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="543"/>
         <source>Awaiting response for previous command. (%1)</source>
         <translation>Oczekiwanie na odpowiedź dla poprzedniej komendy. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="542"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="543"/>
         <source>Saving rule</source>
         <translation>Zapisywanie reguły</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="542"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="543"/>
         <source>Deleting rule</source>
         <translation>Usuwanie reguły</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="649"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="650"/>
         <source>Failed to save %1. (%2)</source>
         <translation>Zapisywanie nie powiodło się %1. (%2)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="663"/>
-        <location filename="../playlists/dynamicplaylists.cpp" line="666"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="664"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="667"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation>Usunięcie pliku z regułami nie powiodło się. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="673"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="674"/>
         <source>Failed to control dynamizer state. (%1)</source>
         <translation>Kontrola stanu dynamizera nie powiodła się. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="680"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="681"/>
         <source>Failed to set the current dynamic rules. (%1)</source>
         <translation>Ustawianie dynamicznych reguł nie powiodło się. (%1)</translation>
     </message>
@@ -8022,32 +8065,32 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>DynamicPlaylistsPage</name>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="37"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="38"/>
         <source>Add</source>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="38"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="39"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="39"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="40"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="87"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="88"/>
         <source>A &apos;dynamic&apos; playlist contains a set of rules to select tracks from your music library to play. The play queue is filled with random tracks matching your criteria, and the play queue will be dynamically updated after tracks are played.</source>
         <translation>&apos;Dynamiczna&apos; playlista zawiera zestaw reguł do wyboru utwórów z biblioteki. Kolejka odtwarzania jest wypełniana losowymi utowrami pasującymi do podanych reguł i dynamicznie uzupełniana gdy utwory zostaną odtworzone.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="91"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="92"/>
         <source>Use the + icon (below) to create a new &apos;dynamic&apos; playlist.</source>
         <translation>W celu utworzenia nowej &apos;dynamicznej&apos; playlisty należy użyć przycisku + poniżej.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="125"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="126"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
         <translation>Zdalne narzędzie do dynamicznych playlist nie jest uruchomione. W celu obsługi &apos;dynamicznych&apos; playlist w systemie Windows, program Cantata wymaga, aby skrypt &apos;cantata-dynamic&apos; był uruchomiony na serwerze MPD.</translation>
     </message>
@@ -8056,7 +8099,7 @@ Ta operacja nie może być cofnięta.</translation>
         <translation type="vanished">Zdalny dynamizer nie działa.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="156"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="160"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
@@ -8065,7 +8108,7 @@ This cannot be undone.</source>
 Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylistspage.cpp" line="157"/>
+        <location filename="../playlists/dynamicplaylistspage.cpp" line="161"/>
         <source>Remove Dynamic Rules</source>
         <translation>Usuń dynamiczne reguły</translation>
     </message>
@@ -8554,32 +8597,31 @@ Ta operacja nie może być cofnięta.</translation>
         <translation>Cantata grupuje utwory w albumy przy użyciu tagu &apos;ArtystaAlbumu&apos;, jeśli jest on ustawiony. W przeciwnym wypadku wykorzystywany jest tag &apos;Artysta&apos;. Jeśli w kolekcji znajdują się albumy posiadające wiele artystów, to tag &apos;ArtystaAlbumu&apos; &lt;b&gt;musi&lt;/b&gt; w nich być ustawiony aby grupowanie działało poprawnie. W takim przypadku sugeruje się użycie &apos;Various Artists&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.ui" line="809"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation>&lt;b&gt;UWAGA:&lt;/b&gt; Nie jesteś obecnie użytkownikiem należącym do grupy &quot;users&quot;. Cantata będzie działać znacznie lepiej (zapisywanie okładek albumów, tekstów, etc. z odpowiednimi uprawnieniami), jeśli zostaniesz dodany do tej grupy. Po dodaniu się do grupy należy się wylogować i zalogować ponownie, aby te ustawienia zadziałały.</translation>
+        <translation type="vanished">&lt;b&gt;UWAGA:&lt;/b&gt; Nie jesteś obecnie użytkownikiem należącym do grupy &quot;users&quot;. Cantata będzie działać znacznie lepiej (zapisywanie okładek albumów, tekstów, etc. z odpowiednimi uprawnieniami), jeśli zostaniesz dodany do tej grupy. Po dodaniu się do grupy należy się wylogować i zalogować ponownie, aby te ustawienia zadziałały.</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="60"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="61"/>
         <source>Not Connected</source>
         <translation>Nie połączono</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="120"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="112"/>
         <source>Discover...</source>
         <translation>Odkryj...</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="161"/>
         <source>Connection Established</source>
         <translation>Nawiązano połączenie</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="169"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="161"/>
         <source>Connection Failed</source>
         <translation>Połączenie nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="182"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="174"/>
         <source>Cantata will now terminate</source>
         <translation>Program Cantata zostanie teraz zamknięty</translation>
     </message>
@@ -9081,33 +9123,41 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation>Jeżeli nie podano ustawienia &apos;Nazwa pliku&apos;, to Cantata użyje domyślnej wartości &lt;code&gt;cover&lt;/code&gt;. Ta nazwa pliku zostanie użyta do zapisu pobranych okładek, lub przy dodawaniu muzyki do biblioteki z urządzeń zewnętrznych.</translation>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="223"/>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation>Jeżeli nie podano ustawienia &apos;Nazwa pliku&apos;, to Cantata użyje domyślnej wartości &lt;code&gt;cover&lt;/code&gt;. Ta nazwa pliku zostanie użyta do zapisu pobranych okładek.</translation>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="431"/>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
+        <translation type="vanished">Jeżeli nie podano ustawienia &apos;Nazwa pliku&apos;, to Cantata użyje domyślnej wartości &lt;code&gt;cover&lt;/code&gt;. Ta nazwa pliku zostanie użyta do zapisu pobranych okładek, lub przy dodawaniu muzyki do biblioteki z urządzeń zewnętrznych.</translation>
+    </message>
+    <message>
+        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
+        <translation type="vanished">Jeżeli nie podano ustawienia &apos;Nazwa pliku&apos;, to Cantata użyje domyślnej wartości &lt;code&gt;cover&lt;/code&gt;. Ta nazwa pliku zostanie użyta do zapisu pobranych okładek.</translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.cpp" line="437"/>
         <source>English (en)</source>
         <translation>English (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="436"/>
-        <location filename="../gui/interfacesettings.cpp" line="453"/>
+        <location filename="../gui/interfacesettings.cpp" line="442"/>
+        <location filename="../gui/interfacesettings.cpp" line="459"/>
         <source>System default</source>
         <translation>Domyślne systemowe</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="559"/>
+        <location filename="../gui/interfacesettings.cpp" line="565"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="564"/>
+        <location filename="../gui/interfacesettings.cpp" line="570"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -9116,12 +9166,12 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>ItemView</name>
     <message>
-        <location filename="../widgets/itemview.cpp" line="692"/>
+        <location filename="../widgets/itemview.cpp" line="700"/>
         <source>Go Back</source>
         <translation>Idź wstecz</translation>
     </message>
     <message>
-        <location filename="../widgets/itemview.cpp" line="1496"/>
+        <location filename="../widgets/itemview.cpp" line="1504"/>
         <source>Updating...</source>
         <translation>Uaktualnianie....</translation>
     </message>
@@ -9129,7 +9179,7 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>JamendoService</name>
     <message>
-        <location filename="../online/jamendoservice.cpp" line="373"/>
+        <location filename="../online/jamendoservice.cpp" line="375"/>
         <source>The world&apos;s largest digital service for free music</source>
         <translation>Największszy na świecie cyfrowy serwis darmowej muzyki</translation>
     </message>
@@ -9160,12 +9210,12 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>KeySequenceButton</name>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="80"/>
+        <location filename="../support/keysequencewidget.cpp" line="81"/>
         <source>The key you just pressed is not supported by Qt.</source>
         <translation>Wciśnięty klawisz nie jest wspierany przez Qt.</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="81"/>
+        <location filename="../support/keysequencewidget.cpp" line="82"/>
         <source>Unsupported Key</source>
         <translation>Niewspierany klawisz</translation>
     </message>
@@ -9180,66 +9230,66 @@ Example for Ctrl+a: hold the Ctrl key and press a.</source>
 Na przykład dla skrótu Ctrl+a należy przytrzymać klawisz Ctrl i wcisnąć klawisz a.</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="274"/>
+        <location filename="../support/keysequencewidget.cpp" line="271"/>
         <source>Meta</source>
         <comment>Meta key</comment>
         <translation>Meta</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="275"/>
+        <location filename="../support/keysequencewidget.cpp" line="272"/>
         <source>Ctrl</source>
         <comment>Ctrl key</comment>
         <translation>Ctrl</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="276"/>
+        <location filename="../support/keysequencewidget.cpp" line="273"/>
         <source>Alt</source>
         <comment>Alt key</comment>
         <translation>Alt</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="277"/>
+        <location filename="../support/keysequencewidget.cpp" line="274"/>
         <source>Shift</source>
         <comment>Shift key</comment>
         <translation>Shift</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="281"/>
+        <location filename="../support/keysequencewidget.cpp" line="278"/>
         <source>Input</source>
         <comment>What the user inputs now will be taken as the new shortcut</comment>
         <translation>Wejście</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="288"/>
+        <location filename="../support/keysequencewidget.cpp" line="285"/>
         <source>None</source>
         <comment>No shortcut defined</comment>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="383"/>
-        <location filename="../support/keysequencewidget.cpp" line="389"/>
+        <location filename="../support/keysequencewidget.cpp" line="380"/>
+        <location filename="../support/keysequencewidget.cpp" line="386"/>
         <source>Shortcut Conflict</source>
         <translation>Konflikt skrótów</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="384"/>
+        <location filename="../support/keysequencewidget.cpp" line="381"/>
         <source>The &quot;%1&quot; shortcut is already in use, and cannot be configured.
 Please choose another one.</source>
         <translation>Skrót &quot;%1&quot; jest już używany i nie może zostać skonfigurowany.
 Proszę wybrać inny skrót.</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="390"/>
+        <location filename="../support/keysequencewidget.cpp" line="387"/>
         <source>The &quot;%1&quot; shortcut is ambiguous with the shortcut for the following action:</source>
         <translation>Skrót &quot;%1&quot; jest wieloznaczny ze skrótem dla następującej akcji:</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="392"/>
+        <location filename="../support/keysequencewidget.cpp" line="389"/>
         <source>Do you want to reassign this shortcut to the selected action?</source>
         <translation>Czy przypisać ten skrót do zaznaczonej akcji?</translation>
     </message>
     <message>
-        <location filename="../support/keysequencewidget.cpp" line="395"/>
+        <location filename="../support/keysequencewidget.cpp" line="392"/>
         <source>Reassign</source>
         <translation>Przypisz</translation>
     </message>
@@ -9349,7 +9399,7 @@ Proszę wybrać inny skrót.</translation>
         <translation>Brak muzyki? Wygląda na to że MPD nie jest skonfigurowany poprawnie.</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="203"/>
+        <location filename="../gui/librarypage.cpp" line="207"/>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
@@ -9358,7 +9408,7 @@ This cannot be undone.</source>
 Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
-        <location filename="../gui/librarypage.cpp" line="204"/>
+        <location filename="../gui/librarypage.cpp" line="208"/>
         <source>Delete Songs</source>
         <translation>Usuń utwory</translation>
     </message>
@@ -9366,27 +9416,27 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>LocalFolderBrowsePage</name>
     <message>
-        <location filename="../gui/localfolderpage.cpp" line="40"/>
+        <location filename="../gui/localfolderpage.cpp" line="43"/>
         <source>Home</source>
         <translation>Katalog domowy</translation>
     </message>
     <message>
-        <location filename="../gui/localfolderpage.cpp" line="40"/>
+        <location filename="../gui/localfolderpage.cpp" line="43"/>
         <source>Browse files in your home folder</source>
         <translation>Przeglądaj pliki z katalogu domowego</translation>
     </message>
     <message>
-        <location filename="../gui/localfolderpage.cpp" line="41"/>
+        <location filename="../gui/localfolderpage.cpp" line="44"/>
         <source>Root</source>
         <translation>Root</translation>
     </message>
     <message>
-        <location filename="../gui/localfolderpage.cpp" line="41"/>
+        <location filename="../gui/localfolderpage.cpp" line="44"/>
         <source>Browse files on your computer</source>
         <translation>Przeglądaj pliki z komputera</translation>
     </message>
     <message>
-        <location filename="../gui/localfolderpage.cpp" line="43"/>
+        <location filename="../gui/localfolderpage.cpp" line="46"/>
         <source>Open In File Manager</source>
         <translation>Otwórz w menedżerze plików</translation>
     </message>
@@ -9402,7 +9452,7 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>LyricsDialog</name>
     <message>
-        <location filename="../context/lyricsdialog.cpp" line="38"/>
+        <location filename="../context/lyricsdialog.cpp" line="39"/>
         <source>If Cantata has failed to find lyrics, or has found the wrong ones, use this dialog to enter new search details. For example, the current song may actually be a cover-version - if so, then searching for lyrics by the original artist might help.
 
 If this search does find new lyrics, these will still be associated with the original song title and artist as displayed in Cantata.</source>
@@ -9411,17 +9461,17 @@ If this search does find new lyrics, these will still be associated with the ori
 Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządkowany w Cantacie oryginalnemu utworowi i artyście.</translation>
     </message>
     <message>
-        <location filename="../context/lyricsdialog.cpp" line="59"/>
+        <location filename="../context/lyricsdialog.cpp" line="60"/>
         <source>Title:</source>
         <translation>Tytuł:</translation>
     </message>
     <message>
-        <location filename="../context/lyricsdialog.cpp" line="61"/>
+        <location filename="../context/lyricsdialog.cpp" line="62"/>
         <source>Artist:</source>
         <translation>Artysta:</translation>
     </message>
     <message>
-        <location filename="../context/lyricsdialog.cpp" line="63"/>
+        <location filename="../context/lyricsdialog.cpp" line="64"/>
         <source>Search For Lyrics</source>
         <translation>Szukaj tekstów</translation>
     </message>
@@ -9434,80 +9484,80 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
         <translation>Nieznany</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="418"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="437"/>
         <source>Connection to %1 failed</source>
         <translation>Połączenie z %1 nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="419"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="438"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation>Połączenie z %1 nie powiodło się - proszę sprawdzić ustawienia proxy</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="420"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="439"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation>Połączenie z %1 nie powiodło się - nieprawidłowe hasło</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="528"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="547"/>
         <source>Connecting to %1</source>
         <translation>Łączenie z %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="646"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="665"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation>Nie powiodło się wysyłanie komendy do %1 - nie połączono</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="702"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="733"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation>Załadowanie nie powiodło się. Proszę upewnić się, że użytkownik &quot;mpd&quot; ma prawa odczytu.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="704"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="735"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation>Załadowanie nie powiodło się. MPD może odtwarzać lokalne pliki tylko gdy jest połączony poprzez lokalne gniazdo.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="706"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="713"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="737"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="744"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD zgłosił następujący błąd: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="710"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="721"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="741"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="752"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation>Wysyłanie komendy nie powiodło się. Rozłączono z %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1695"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1801"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Zmiana nazwy z &lt;b&gt;%1&lt;/b&gt; na &lt;b&gt;%2&lt;/b&gt; nie powiodła się</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1710"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1816"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Zapisanie &lt;b&gt;%1&lt;/b&gt; nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1723"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1829"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation>Nie można dodać części pliku cue do playlisty!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1726"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1832"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation>Nie można dodać playlisty do innej playlisty!</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1957"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2083"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation>Wysłanie &apos;%1&apos; do %2 nie powiodło się. Należy sprawdzić, czy %2 jest zarejestrowany w MPD.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2240"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2267"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2364"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2391"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>Nie można przechowywać ocen ponieważ komenda MPD &apos;sticker&apos; nie jest obsługiwana.</translation>
     </message>
@@ -9515,42 +9565,42 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
 <context>
     <name>MagnatuneService</name>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="119"/>
+        <location filename="../online/magnatuneservice.cpp" line="120"/>
         <source>None</source>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="120"/>
+        <location filename="../online/magnatuneservice.cpp" line="121"/>
         <source>Streaming</source>
         <translation>Strumieniowanie</translation>
     </message>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="139"/>
+        <location filename="../online/magnatuneservice.cpp" line="140"/>
         <source>MP3 128k</source>
         <translation>MP3 128k</translation>
     </message>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="140"/>
+        <location filename="../online/magnatuneservice.cpp" line="141"/>
         <source>MP3 VBR</source>
         <translation>MP3 VBR</translation>
     </message>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="141"/>
+        <location filename="../online/magnatuneservice.cpp" line="142"/>
         <source>Ogg Vorbis</source>
         <translation>Ogg Vorbis</translation>
     </message>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="142"/>
+        <location filename="../online/magnatuneservice.cpp" line="143"/>
         <source>FLAC</source>
         <translation>FLAC</translation>
     </message>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="143"/>
+        <location filename="../online/magnatuneservice.cpp" line="144"/>
         <source>WAV</source>
         <translation>WAV</translation>
     </message>
     <message>
-        <location filename="../online/magnatuneservice.cpp" line="214"/>
+        <location filename="../online/magnatuneservice.cpp" line="215"/>
         <source>Online music from magnatune.com</source>
         <translation>Muzyka online z magnatune.com</translation>
     </message>
@@ -9651,9 +9701,9 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="277"/>
-        <location filename="../gui/mainwindow.cpp" line="1373"/>
-        <location filename="../gui/mainwindow.cpp" line="1377"/>
-        <location filename="../gui/mainwindow.cpp" line="1383"/>
+        <location filename="../gui/mainwindow.cpp" line="1390"/>
+        <location filename="../gui/mainwindow.cpp" line="1394"/>
+        <location filename="../gui/mainwindow.cpp" line="1400"/>
         <source>Outputs</source>
         <translation>Wyjścia</translation>
     </message>
@@ -9827,127 +9877,127 @@ Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie przyporządk
         <translation>Playlisty</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="436"/>
+        <location filename="../gui/mainwindow.cpp" line="437"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="445"/>
+        <location filename="../gui/mainwindow.cpp" line="446"/>
         <source>Devices</source>
         <translation>Urządzenia</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="452"/>
+        <location filename="../gui/mainwindow.cpp" line="453"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="457"/>
+        <location filename="../gui/mainwindow.cpp" line="458"/>
         <source>Info</source>
         <translation>Informacje</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="492"/>
+        <location filename="../gui/mainwindow.cpp" line="493"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wprowadź tekst by wyszukać artystę, album, tytuł, itp. Aby wyszukać po roku, należy dodać &lt;i&gt;#zakres-dat&lt;/i&gt; do wyszukiwanej frazy - np.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; wyszuka utworów z roku 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; zwóci utwory z lat 80tych&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; wyszuka utwory z frazą &lt;i&gt;Blah&lt;/i&gt; i zwróci wyniki tylko z roku 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="587"/>
+        <location filename="../gui/mainwindow.cpp" line="595"/>
         <source>Show Menubar</source>
         <translation>Pokaż pasek menu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="593"/>
+        <location filename="../gui/mainwindow.cpp" line="601"/>
         <source>&amp;Music</source>
         <translation>&amp;Muzyka</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="604"/>
+        <location filename="../gui/mainwindow.cpp" line="612"/>
         <source>&amp;Edit</source>
         <translation>&amp;Edytuj</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="616"/>
+        <location filename="../gui/mainwindow.cpp" line="624"/>
         <source>&amp;View</source>
         <translation>&amp;Widok</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="628"/>
+        <location filename="../gui/mainwindow.cpp" line="636"/>
         <source>&amp;Queue</source>
         <translation>&amp;Kolejka</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="638"/>
+        <location filename="../gui/mainwindow.cpp" line="646"/>
         <source>&amp;Settings</source>
         <translation>&amp;Ustawienia</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="654"/>
+        <location filename="../gui/mainwindow.cpp" line="662"/>
         <source>&amp;Help</source>
         <translation>&amp;Pomoc</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="699"/>
+        <location filename="../gui/mainwindow.cpp" line="707"/>
         <source>Set Rating</source>
         <translation>Ustaw ocenę</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="704"/>
+        <location filename="../gui/mainwindow.cpp" line="712"/>
         <source>No Rating</source>
         <translation>Brak oceny</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1029"/>
+        <location filename="../gui/mainwindow.cpp" line="1040"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation>Nie udało się znaleźć żadnych utworów pasujących do reguł dynamicznej playlisty.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1154"/>
+        <location filename="../gui/mainwindow.cpp" line="1171"/>
         <source>Connecting to %1</source>
         <translation>Łączenie z %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1188"/>
+        <location filename="../gui/mainwindow.cpp" line="1205"/>
         <source>Refresh MPD Database?</source>
         <translation>Odświeżyć bazę danych MPD?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1194"/>
+        <location filename="../gui/mainwindow.cpp" line="1211"/>
         <source>About Cantata</source>
         <translation>O programie Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1195"/>
+        <location filename="../gui/mainwindow.cpp" line="1212"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;klient MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Program wydany na licencji &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1198"/>
+        <location filename="../gui/mainwindow.cpp" line="1215"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
         <translation>Na stronie &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;listy problemów programu Cantata&lt;/a&gt; można znaleźć znane błędy oraz zgłosić nowe problemy.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1200"/>
+        <location filename="../gui/mainwindow.cpp" line="1217"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation>Na podstawie &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 Autorzy QtMPC&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1201"/>
+        <location filename="../gui/mainwindow.cpp" line="1218"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Tło widoku kontekstowego za uprzejmością &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1202"/>
+        <location filename="../gui/mainwindow.cpp" line="1219"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation>Metadane widoku kontekstowego za uprzejmością &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedii&lt;/a&gt; i &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1203"/>
+        <location filename="../gui/mainwindow.cpp" line="1220"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>Proszę rozpatrzeć przesłanie własnych obrazów na &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1210"/>
+        <location filename="../gui/mainwindow.cpp" line="1227"/>
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
@@ -9956,100 +10006,100 @@ Quitting now will abort the download.</source>
 Wyjście z programu spowoduje przerwanie pobierania.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1211"/>
+        <location filename="../gui/mainwindow.cpp" line="1228"/>
         <source>Abort download and quit</source>
         <translation>Przerwij pobieranie i zakończ</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1239"/>
+        <location filename="../gui/mainwindow.cpp" line="1256"/>
         <source>Please close other dialogs first.</source>
         <translation>Proszę najpierw zamknąć inne okna dialogowe.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1373"/>
-        <location filename="../gui/mainwindow.cpp" line="1384"/>
+        <location filename="../gui/mainwindow.cpp" line="1390"/>
+        <location filename="../gui/mainwindow.cpp" line="1401"/>
         <source>Enabled: %1</source>
         <translation>Włączone: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1377"/>
-        <location filename="../gui/mainwindow.cpp" line="1385"/>
+        <location filename="../gui/mainwindow.cpp" line="1394"/>
+        <location filename="../gui/mainwindow.cpp" line="1402"/>
         <source>Disabled: %1</source>
         <translation>Wyłączone: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1586"/>
-        <location filename="../gui/mainwindow.cpp" line="1609"/>
+        <location filename="../gui/mainwindow.cpp" line="1624"/>
+        <location filename="../gui/mainwindow.cpp" line="1647"/>
         <source>Server Information</source>
         <translation>Informacje serwera</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1589"/>
+        <location filename="../gui/mainwindow.cpp" line="1627"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Serwer&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protokół:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Czas pracy:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Odtwarzanie:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Obsługa URL:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tagi:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1600"/>
+        <location filename="../gui/mainwindow.cpp" line="1638"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Baza danych&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artyści:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albumy:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Utwory:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Czas trwania:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Aktualizacja:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1753"/>
+        <location filename="../gui/mainwindow.cpp" line="1791"/>
         <source>Cantata (%1)</source>
         <translation>Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1820"/>
+        <location filename="../gui/mainwindow.cpp" line="1858"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD zgłosił następujący błąd: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1891"/>
+        <location filename="../gui/mainwindow.cpp" line="1929"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1891"/>
+        <location filename="../gui/mainwindow.cpp" line="1929"/>
         <source>Playback stopped</source>
         <translation>Odtwarzanie zatrzymane</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1934"/>
+        <location filename="../gui/mainwindow.cpp" line="1974"/>
         <source>Remove all songs from play queue?</source>
         <translation>Usunąć wszystkie utwory z kolejki odtwarzania?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1985"/>
+        <location filename="../gui/mainwindow.cpp" line="2025"/>
         <source>Priority</source>
         <translation>Priorytet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1985"/>
+        <location filename="../gui/mainwindow.cpp" line="2025"/>
         <source>Enter priority (0..255):</source>
         <translation>Wpisz priorytet (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1986"/>
+        <location filename="../gui/mainwindow.cpp" line="2026"/>
         <source>Decrease priority for each subsequent track</source>
         <translation>Zmniejsz priorytet dla każdego kolejnego utowru</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2013"/>
+        <location filename="../gui/mainwindow.cpp" line="2053"/>
         <source>Playlist Name</source>
         <translation>Nazwa playlisty</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2013"/>
+        <location filename="../gui/mainwindow.cpp" line="2053"/>
         <source>Enter a name for the playlist:</source>
         <translation>Proszę wpisać nazwę dla playlisty:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2016"/>
+        <location filename="../gui/mainwindow.cpp" line="2056"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation>&apos;%1&apos; jest używane do przechowywania ulubionych strumieni, proszę wybrać inną nazwę.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2020"/>
+        <location filename="../gui/mainwindow.cpp" line="2060"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -10058,22 +10108,22 @@ Add to that playlist?</source>
 Dodać do tej playlisty?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2021"/>
+        <location filename="../gui/mainwindow.cpp" line="2061"/>
         <source>Existing Playlist</source>
         <translation>Istniejąca playlista</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2082"/>
+        <location filename="../gui/mainwindow.cpp" line="2122"/>
         <source>Select Music Files</source>
         <translation>Wybierz pliki z muzyką</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2082"/>
+        <location filename="../gui/mainwindow.cpp" line="2122"/>
         <source>Music Files </source>
         <translation>Pliki z muzyką </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2111"/>
+        <location filename="../gui/mainwindow.cpp" line="2151"/>
         <source>%n Track(s)</source>
         <translation>
             <numerusform>%n Utwór</numerusform>
@@ -10082,7 +10132,7 @@ Dodać do tej playlisty?</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2113"/>
+        <location filename="../gui/mainwindow.cpp" line="2153"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n Utwór (%1)</numerusform>
@@ -10094,7 +10144,7 @@ Dodać do tej playlisty?</translation>
 <context>
     <name>MenuButton</name>
     <message>
-        <location filename="../widgets/menubutton.cpp" line="39"/>
+        <location filename="../widgets/menubutton.cpp" line="47"/>
         <source>Menu</source>
         <translation>Menu</translation>
     </message>
@@ -10137,7 +10187,7 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>Mpris</name>
     <message>
-        <location filename="../dbus/mpris.cpp" line="165"/>
+        <location filename="../dbus/mpris.cpp" line="166"/>
         <source>(Stream)</source>
         <translation>(Strumień)</translation>
     </message>
@@ -10145,28 +10195,28 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>MtpConnection</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="155"/>
+        <location filename="../devices/mtpdevice.cpp" line="156"/>
         <source>Connecting to device...</source>
         <translation>Łączenie się z urządzeniem...</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="157"/>
-        <location filename="../devices/mtpdevice.cpp" line="194"/>
+        <location filename="../devices/mtpdevice.cpp" line="158"/>
+        <location filename="../devices/mtpdevice.cpp" line="195"/>
         <source>No devices found</source>
         <translation>Nie znaleziono urządzeń</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="209"/>
+        <location filename="../devices/mtpdevice.cpp" line="210"/>
         <source>Connected to device</source>
         <translation>Połączono z urządzeniem</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="222"/>
+        <location filename="../devices/mtpdevice.cpp" line="223"/>
         <source>Disconnected from device</source>
         <translation>Rozłączono urządzenie</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="295"/>
+        <location filename="../devices/mtpdevice.cpp" line="296"/>
         <source>Updating folders...</source>
         <translation>Wysyłanie katalogów...</translation>
     </message>
@@ -10175,7 +10225,7 @@ Ta operacja nie może być cofnięta.</translation>
         <translation type="obsolete">Uaktualniania plików...</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="316"/>
+        <location filename="../devices/mtpdevice.cpp" line="317"/>
         <source>Updating tracks...</source>
         <translation>Uaktualnianie utworów...</translation>
     </message>
@@ -10183,12 +10233,12 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>MtpDevice</name>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1562"/>
+        <location filename="../devices/mtpdevice.cpp" line="1569"/>
         <source>Not Connected</source>
         <translation>Nie połączono</translation>
     </message>
     <message>
-        <location filename="../devices/mtpdevice.cpp" line="1565"/>
+        <location filename="../devices/mtpdevice.cpp" line="1572"/>
         <source>%1 free</source>
         <translation>%1 wolnego miejsca</translation>
     </message>
@@ -10206,12 +10256,12 @@ Ta operacja nie może być cofnięta.</translation>
         <translation>Utwór %1</translation>
     </message>
     <message>
-        <location filename="../devices/musicbrainz.cpp" line="300"/>
+        <location filename="../devices/musicbrainz.cpp" line="301"/>
         <source>%1 (Disc %2)</source>
         <translation>%1 (Płyta %2)</translation>
     </message>
     <message>
-        <location filename="../devices/musicbrainz.cpp" line="382"/>
+        <location filename="../devices/musicbrainz.cpp" line="383"/>
         <source>No matches found in MusicBrainz</source>
         <translation>Nie znaleziono pasujących wyników w MusicBrainz</translation>
     </message>
@@ -10282,14 +10332,23 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="312"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
         <source>Copy To Clipboard</source>
         <translation>Skopiuj do schowka</translation>
     </message>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="313"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
         <source>Now Playing</source>
         <translation>Teraz odtwarzane</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
+        <source>%n bit</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <source>(Stream)</source>
@@ -10369,23 +10428,23 @@ Ta operacja nie może być cofnięta.</translation>
         <translation>Konfiguruj</translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="115"/>
+        <location filename="../online/onlinedbwidget.cpp" line="116"/>
         <source>The music listing needs to be downloaded, this can consume over %1Mb of disk space</source>
         <translation>Listing muzyki musi zostać pobrany, to może zająć ponad %1Mb miejsca na dysku</translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="116"/>
+        <location filename="../online/onlinedbwidget.cpp" line="117"/>
         <source>Dowload music listing?</source>
         <translation>Pobrać listing muzyki?</translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="117"/>
-        <location filename="../online/onlinedbwidget.cpp" line="188"/>
+        <location filename="../online/onlinedbwidget.cpp" line="118"/>
+        <location filename="../online/onlinedbwidget.cpp" line="189"/>
         <source>Download</source>
         <translation>Pobierz</translation>
     </message>
     <message>
-        <location filename="../online/onlinedbwidget.cpp" line="188"/>
+        <location filename="../online/onlinedbwidget.cpp" line="189"/>
         <source>Re-download music listing?</source>
         <translation>Pobrać ponownie listing muzyki?</translation>
     </message>
@@ -10448,17 +10507,17 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>OpmlBrowsePage</name>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="397"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="424"/>
         <source>Reload</source>
         <translation>Odśwież</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="440"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="467"/>
         <source>Failed to download directory listing</source>
         <translation>Pobranie listingu katalogów nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="448"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="475"/>
         <source>Failed to parse directory listing</source>
         <translation>Parsowanie listingu katalogów nie powiodło się</translation>
     </message>
@@ -10532,21 +10591,26 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="203"/>
+        <source>Save downloaded lyrics into music folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../context/othersettings.ui" line="210"/>
         <source>Always collapse into a single pane</source>
         <translation>Zawsze zwiń do pojedynczego panelu</translation>
     </message>
     <message>
-        <location filename="../context/othersettings.ui" line="206"/>
+        <location filename="../context/othersettings.ui" line="213"/>
         <source>Only show &apos;Artist&apos;, &apos;Album&apos;, or &apos;Track&apos; even if sufficient width to show all three.</source>
         <translation>Pokazuj wyłącznie &quot;Artystę&quot;, &quot;Album&quot; lub &quot;Tekst&quot;, nawet jeśli jest wystarczająco miejsca na pokazanie wszystkich trzech.</translation>
     </message>
     <message>
-        <location filename="../context/othersettings.ui" line="213"/>
+        <location filename="../context/othersettings.ui" line="220"/>
         <source>Only show basic wikipedia text</source>
         <translation>Pokazuj tylko podstawowy tekst z Wikipedii</translation>
     </message>
     <message>
-        <location filename="../context/othersettings.ui" line="220"/>
+        <location filename="../context/othersettings.ui" line="227"/>
         <source>Cantata only shows a trimmed down version of wikipedia pages (no images, links, etc). This trimming is not always 100% accurate, which is why Cantata defaults to only showing the introduction. If you elect to show the full article, then there may be parsing errors. You will also need to remove any currently cached articles (using the &apos;Cache&apos; page).</source>
         <translation>Cantata pokazuje jedynie skrócone wersje stron wikipedii (bez obrazków, linków itp.). Skracanie stron nie zawsze jest poprawne w 100%, dlatego domyślnie Cantata pokazuje jedynie wstęp. Przy wybraniu opcji pokazania pełnego artykułu może dojść do błędów parsowania. W takim wypadku konieczne będzie również usunięcie artykułów obecnie przechowywanych w pamięci podręcznej (używając strony &apos;Pamięć podręczna&apos;).</translation>
     </message>
@@ -10562,13 +10626,13 @@ Ta operacja nie może być cofnięta.</translation>
         <translation>10px</translation>
     </message>
     <message>
-        <location filename="../context/othersettings.cpp" line="99"/>
+        <location filename="../context/othersettings.cpp" line="101"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../context/othersettings.cpp" line="104"/>
+        <location filename="../context/othersettings.cpp" line="106"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -10590,139 +10654,154 @@ Ta operacja nie może być cofnięta.</translation>
 <context>
     <name>PlayQueueModel</name>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="359"/>
+        <location filename="../models/playqueuemodel.cpp" line="297"/>
+        <source>Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/playqueuemodel.cpp" line="299"/>
+        <source>Cannot add local files. Please configure MPD for local file playback.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/playqueuemodel.cpp" line="314"/>
+        <source>Unable to add local files. No suitable files found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/playqueuemodel.cpp" line="370"/>
         <source>Title</source>
         <translation>Tytuł</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="360"/>
-        <location filename="../models/playqueuemodel.cpp" line="440"/>
+        <location filename="../models/playqueuemodel.cpp" line="371"/>
+        <location filename="../models/playqueuemodel.cpp" line="451"/>
         <source>Artist</source>
         <translation>Artysta</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="361"/>
-        <location filename="../models/playqueuemodel.cpp" line="442"/>
+        <location filename="../models/playqueuemodel.cpp" line="372"/>
+        <location filename="../models/playqueuemodel.cpp" line="453"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="362"/>
+        <location filename="../models/playqueuemodel.cpp" line="373"/>
         <source>#</source>
         <comment>Track number</comment>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="363"/>
+        <location filename="../models/playqueuemodel.cpp" line="374"/>
         <source>Length</source>
         <translation>Długość</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="364"/>
+        <location filename="../models/playqueuemodel.cpp" line="375"/>
         <source>Disc</source>
         <translation>Płyta</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="365"/>
-        <location filename="../models/playqueuemodel.cpp" line="446"/>
+        <location filename="../models/playqueuemodel.cpp" line="376"/>
+        <location filename="../models/playqueuemodel.cpp" line="457"/>
         <source>Year</source>
         <translation>Rok</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="366"/>
+        <location filename="../models/playqueuemodel.cpp" line="377"/>
         <source>Original Year</source>
         <translation>Rok oryginału</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="367"/>
-        <location filename="../models/playqueuemodel.cpp" line="445"/>
+        <location filename="../models/playqueuemodel.cpp" line="378"/>
+        <location filename="../models/playqueuemodel.cpp" line="456"/>
         <source>Genre</source>
         <translation>Gatunek</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="368"/>
+        <location filename="../models/playqueuemodel.cpp" line="379"/>
         <source>Priority</source>
         <translation>Priorytet</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="369"/>
-        <location filename="../models/playqueuemodel.cpp" line="447"/>
+        <location filename="../models/playqueuemodel.cpp" line="380"/>
+        <location filename="../models/playqueuemodel.cpp" line="458"/>
         <source>Composer</source>
         <translation>Kompozytor</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="370"/>
-        <location filename="../models/playqueuemodel.cpp" line="448"/>
+        <location filename="../models/playqueuemodel.cpp" line="381"/>
+        <location filename="../models/playqueuemodel.cpp" line="459"/>
         <source>Performer</source>
         <translation>Wykonawca</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="371"/>
+        <location filename="../models/playqueuemodel.cpp" line="382"/>
         <source>Rating</source>
         <translation>Ocena</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="372"/>
+        <location filename="../models/playqueuemodel.cpp" line="383"/>
         <source>Filename</source>
         <translation>Nazwa pliku</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="373"/>
+        <location filename="../models/playqueuemodel.cpp" line="384"/>
         <source>Path</source>
         <translation>Ścieżka</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="418"/>
+        <location filename="../models/playqueuemodel.cpp" line="429"/>
         <source>Remove Duplicates</source>
         <translation>Usuń duplikaty</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="421"/>
+        <location filename="../models/playqueuemodel.cpp" line="432"/>
         <source>Undo</source>
         <translation>Cofnij</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="423"/>
+        <location filename="../models/playqueuemodel.cpp" line="434"/>
         <source>Redo</source>
         <translation>Ponów</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="429"/>
+        <location filename="../models/playqueuemodel.cpp" line="440"/>
         <source>Shuffle</source>
         <translation>Wymieszaj</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="431"/>
+        <location filename="../models/playqueuemodel.cpp" line="442"/>
         <source>Tracks</source>
         <translation>Utwory</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="432"/>
+        <location filename="../models/playqueuemodel.cpp" line="443"/>
         <source>Albums</source>
         <translation>Albumy</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="438"/>
+        <location filename="../models/playqueuemodel.cpp" line="449"/>
         <source>Sort By</source>
         <translation>Sortuj przy użyciu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="441"/>
+        <location filename="../models/playqueuemodel.cpp" line="452"/>
         <source>Album Artist</source>
         <translation>Artysta albumu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="443"/>
+        <location filename="../models/playqueuemodel.cpp" line="454"/>
         <source>Track Title</source>
         <translation>Tytuł utworu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="444"/>
+        <location filename="../models/playqueuemodel.cpp" line="455"/>
         <source>Track Number</source>
         <translation>Numer utworu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="506"/>
+        <location filename="../models/playqueuemodel.cpp" line="517"/>
         <source># (Track Number)</source>
         <translation># (Numer utworu)</translation>
     </message>
@@ -10785,7 +10864,7 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="94"/>
-        <location filename="../gui/playbacksettings.cpp" line="168"/>
+        <location filename="../gui/playbacksettings.cpp" line="176"/>
         <source>&lt;i&gt;Not Connected!&lt;br/&gt;The entries below cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</source>
         <translation>&lt;i&gt;Brak połączenia.&lt;br/&gt;Poniższe ustawienia nie mogą być modyfikowane, ponieważ Cantata nie jest połączona z MPD.&lt;/i&gt;</translation>
     </message>
@@ -10819,21 +10898,31 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
+        <source>Apply setting on connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="190"/>
+        <source>&lt;p&gt;MPD resets (to the value in its config file) the replaygain mode setting each time it is restarted. Cantata can work-around this by setting MPD to use the value defined here each time Cantata connects to MPD.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="197"/>
         <source>Volume step:</source>
         <translation>Krok głośności:</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="193"/>
+        <location filename="../gui/playbacksettings.ui" line="203"/>
         <source>&lt;p&gt;Amount to change volume by when using either the volume control keyboard shortcuts, or the mouse wheel over the toolbar volume control.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wartość, o jaką zmieniana będzie glośność przy użyciu skrótów klawiszowych, kółka myszy lub kontrol głośności paska narzędziowego.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="200"/>
+        <location filename="../gui/playbacksettings.ui" line="210"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="213"/>
+        <location filename="../gui/playbacksettings.ui" line="223"/>
         <source>Use the checkboxes below to control the active outputs.</source>
         <translation>Użyj poniższych pól wyboru aby kontrolować aktywne wyjścia.</translation>
     </message>
@@ -10853,12 +10942,12 @@ Ta operacja nie może być cofnięta.</translation>
         <translation>Automatycznie</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.cpp" line="165"/>
+        <location filename="../gui/playbacksettings.cpp" line="173"/>
         <source>&lt;i&gt;Connected to %1&lt;br/&gt;The entries below apply to the currently connected MPD collection.&lt;/i&gt;</source>
         <translation>&lt;i&gt;Połączono z %1&lt;br/&gt;Poniższe ustawienia dotyczą aktualnie połączonej kolekcji MPD.&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.cpp" line="175"/>
+        <location filename="../gui/playbacksettings.cpp" line="183"/>
         <source>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a growing number of players.&lt;br/&gt;&lt;br/&gt;The following ReplayGain settings may be used:&lt;ul&gt;&lt;li&gt;&lt;i&gt;None&lt;/i&gt; - No ReplayGain is applied.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Track&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Volume will be adjusted using the albums&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags if random play is activated, otherwise the album&apos;s tags will be used.&lt;/li&gt;&lt;/ul&gt;</source>
         <translation>ReplayGain jest propozycją standardu opublikowaną w 2001 mającą na celu znormalizowanie odczuwanej głośności komputerowych formatów dźwięku takich jak MP3 albo Ogg Vorbis. ReplayGain operuje na utworach i całych albumach i jest obsługiwany na rosnącej liczbie odtwarzaczy.&lt;br/&gt;&lt;br/&gt;Następujące ustawienia ReplayGain mogą być użyte:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Brak&lt;/i&gt; - Informacja ReplayGain nie jest używana.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Utwór&lt;/i&gt; - Głośność jest dostosowywana na podstawie tagu ReplayGain utworu.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Głośność jest dostosowywana na podstawie tagu ReplayGain albumu.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Automatycznie&lt;/i&gt; - Głośność jest dostosowywana na podstawie tagu ReplayGain utworu jeśli włączone jest odtwarzanie losowe, w przeciwnym wypadku używany jest tag ReplayGain albumu.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
@@ -10953,6 +11042,11 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="248"/>
+        <source>If &apos;Exact match&apos; is checked, then string values will be matched for exact values. Otherwise partial matches will also be inclued. e.g. &apos;AB&apos; would match &apos;ABBA&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrule.ui" line="255"/>
         <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
         <translation>Dla gatunku, zakończenie tekstu przy użyciu gwiazdki dopasuje wiele gatunków, np. &apos;rock*&apos; dopasuje zarówno &apos;Hard Rock&apos; jak i &apos;Rock and Roll&apos;.</translation>
     </message>
@@ -11024,48 +11118,53 @@ Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="119"/>
-        <location filename="../playlists/playlistrules.ui" line="166"/>
+        <location filename="../playlists/playlistrules.ui" line="173"/>
         <source> - </source>
         <translation> - </translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="144"/>
+        <source>Include unrated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrules.ui" line="151"/>
         <source>Songs with duration between:</source>
         <translation>Utwory o długości pomiędzy:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="153"/>
-        <location filename="../playlists/playlistrules.ui" line="173"/>
+        <location filename="../playlists/playlistrules.ui" line="160"/>
+        <location filename="../playlists/playlistrules.ui" line="180"/>
         <source> seconds</source>
         <translation> sekund</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="201"/>
+        <location filename="../playlists/playlistrules.ui" line="208"/>
         <source>Number of songs in play queue:</source>
         <translation>Ilość utworów w kolejce:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="215"/>
+        <location filename="../playlists/playlistrules.ui" line="222"/>
         <source>Files added in the last:</source>
         <translation>Pliki dodane przez ostatnie:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="225"/>
+        <location filename="../playlists/playlistrules.ui" line="232"/>
         <source> days</source>
         <translation> dni</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="228"/>
+        <location filename="../playlists/playlistrules.ui" line="235"/>
         <source>No Limit</source>
         <translation>Brak limitu</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="235"/>
+        <location filename="../playlists/playlistrules.ui" line="242"/>
         <source>Order songs:</source>
         <translation>Kolejność utworów:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrules.ui" line="260"/>
+        <location filename="../playlists/playlistrules.ui" line="267"/>
         <source>About Rules</source>
         <translation>O regułach</translation>
     </message>
@@ -11081,13 +11180,13 @@ Ta operacja nie może być cofnięta.</translation>
         <translation type="obsolete">Brak</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="173"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="174"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="182"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
         <source>No Limit</source>
         <translation>Brak limitu</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="346"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="355"/>
         <source>About dynamic rules</source>
         <translation>Informacje o dynamicznych regułach</translation>
     </message>
@@ -11100,7 +11199,7 @@ Ta operacja nie może być cofnięta.</translation>
         <translation type="vanished">Inteligentne reguły</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="159"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="168"/>
         <source>Each playlist requires a unique name, enter that above.
 
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
@@ -11113,12 +11212,12 @@ W celu ustawienia, którzy artyści, gatunki itp. mają być dodane do playlisty
 Aby zawęzić zakres utworów do dodania należy użyć poniższych ustawień.</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="192"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="201"/>
         <source>Ascending</source>
         <translation>Rosnąco</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="193"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
         <source>Descending</source>
         <translation>Malejąco</translation>
     </message>
@@ -11127,42 +11226,42 @@ Aby zawęzić zakres utworów do dodania należy użyć poniższych ustawień.</
         <translation type="vanished">Nazwa inteligentnych reguł</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="149"/>
         <source>Dynamic Playlist</source>
         <translation>Dynamiczna playlista</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="147"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="149"/>
         <source>Smart Playlist</source>
         <translation>Inteligentna playlista</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="212"/>
         <source>Number of songs:</source>
         <translation>Ilość utworów:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="348"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="357"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Program Cantata będzie odpytywać bibliotekę przy użyciu podanych reguł. Lista reguł oznaczona jako &lt;i&gt;Zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które mogą zostać dodane. Lista reguł oznaczona jako &lt;i&gt;Nie zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które nie mogą zostać dodane. Jeśli nie ma reguł oznaczonych jako &lt;i&gt;Zawiera&lt;/i&gt;, program Cantata założy że wszystkie utwory (z wyłączeniem utworów ze zbioru &lt;i&gt;Nie zawiera&lt;/i&gt;) mogą zostać dodane.&lt;/p&gt;&lt;p&gt;Np. aby wyszukać utwory &apos;z gatunku Rock w wykonaniu Wibble ALBO utwory w wykonaniu Various Artists&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble Gatunek=Rock&lt;/li&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Various Artists&lt;/li&gt;&lt;/ul&gt; Aby wyszukać utwory &apos;w wykonaniu Wibble ale nie z albumu Abc&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble&lt;/li&gt;&lt;li&gt;Nie zawiera ArtystaAlbumu=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po utworzeniu zbioru uworów program Cantata losowo wybierze z niego utwory tak aby kolejka odtwarzania miała określoną liczbę elementów (domyślnie 10). Jeżeli zakres ocen zostanie ustawiony, to tylko utwory o takich ocenach będą dodane. Analogicznie można ustawić zakres długości.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="363"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="372"/>
         <source>About smart rules</source>
         <translation>O inteligentnych regułach</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="365"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="374"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Program Cantata będzie odpytywać bibliotekę przy użyciu podanych reguł. Lista reguł oznaczona jako &lt;i&gt;Zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które mogą zostać dodane. Lista reguł oznaczona jako &lt;i&gt;Nie zawiera&lt;/i&gt; zostanie użyta do zbudowania zbioru utworów, które nie mogą zostać dodane. Jeśli nie ma reguł oznaczonych jako &lt;i&gt;Zawiera&lt;/i&gt;, program Cantata założy że wszystkie utwory (z wyłączeniem utworów ze zbioru &lt;i&gt;Nie zawiera&lt;/i&gt;) mogą zostać dodane.&lt;/p&gt;&lt;p&gt;Np. aby wyszukać utwory &apos;z gatunku Rock w wykonaniu Wibble ALBO utwory w wykonaniu Various Artists&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble Gatunek=Rock&lt;/li&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Various Artists&lt;/li&gt;&lt;/ul&gt; Aby wyszukać utwory &apos;w wykonaniu Wibble ale nie z albumu Abc&apos;, należy użyć następujących reguł: &lt;ul&gt;&lt;li&gt;Zawiera ArtystaAlbumu=Wibble&lt;/li&gt;&lt;li&gt;Nie zawiera ArtystaAlbumu=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Po utworzeniu zbioru uworów program Cantata doda określoną ilość utworów do kolejki. Jeżeli zakres ocen zostanie ustawiony, to tylko utwory o takich ocenach będą dodane. Analogicznie można ustawić zakres długości.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="393"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="408"/>
         <source>Failed to save %1</source>
         <translation>Nie powiodło się zapisywanie %1</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="411"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="426"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -11171,12 +11270,12 @@ Overwrite?</source>
 Nadpisać?</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="412"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="427"/>
         <source>Overwrite Rules</source>
         <translation>Nadpisz reguły</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="458"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="472"/>
         <source>Saving %1</source>
         <translation>Zapisywanie %1</translation>
     </message>
@@ -11300,22 +11399,22 @@ Nadpisać?</translation>
 <context>
     <name>PodcastPage</name>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="253"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="280"/>
         <source>RSS:</source>
         <translation>RSS:</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="255"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="282"/>
         <source>Website:</source>
         <translation>Strona:</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="262"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="289"/>
         <source>Podcast details</source>
         <translation>Szczegóły podcastu</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="262"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="289"/>
         <source>Select a podcast to display its details</source>
         <translation>Zaznacz podcast aby wyświetlić jego szczegóły</translation>
     </message>
@@ -11323,54 +11422,54 @@ Nadpisać?</translation>
 <context>
     <name>PodcastSearchDialog</name>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="580"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="622"/>
         <source>Subscribe</source>
         <translation>Subskrybuj</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="598"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="640"/>
         <source>Enter URL</source>
         <translation>Wprowadź URL</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="598"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="640"/>
         <source>Manual podcast URL</source>
         <translation>Ręczny URL podcastu</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="602"/>
-        <location filename="../online/podcastsearchdialog.cpp" line="606"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="644"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="648"/>
         <source>Search %1</source>
         <translation>Szukaj %1</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="602"/>
-        <location filename="../online/podcastsearchdialog.cpp" line="606"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="644"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="648"/>
         <source>Search for podcasts on %1</source>
         <translation>Szukaj podcastów na %1</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="618"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="660"/>
         <source>Add Podcast Subscription</source>
         <translation>Dodaj subskrypcję podcastu</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="692"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="745"/>
         <source>Browse %1</source>
         <translation>Przeglądaj %1</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="692"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="745"/>
         <source>Browse %1 podcasts</source>
         <translation>Przeglądaj %1 podcastów</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="708"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="761"/>
         <source>You are already subscribed to this podcast!</source>
         <translation>Subskrypcja do danego podcastu już istnieje!</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="711"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="764"/>
         <source>Subscription added</source>
         <translation>Dodano subskrypcję</translation>
     </message>
@@ -11378,22 +11477,22 @@ Nadpisać?</translation>
 <context>
     <name>PodcastSearchPage</name>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="333"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="360"/>
         <source>Enter search term...</source>
         <translation>Wprowadź termin do wyszukiwania...</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="334"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="361"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="377"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="404"/>
         <source>Failed to fetch podcasts from %1</source>
         <translation>Pobieranie podcastów z %1 nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="382"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="409"/>
         <source>There was a problem parsing the response from %1</source>
         <translation>Wystąpił problem podczas parsowania odpowiedzi z %1</translation>
     </message>
@@ -11401,12 +11500,12 @@ Nadpisać?</translation>
 <context>
     <name>PodcastService</name>
     <message>
-        <location filename="../online/podcastservice.cpp" line="411"/>
+        <location filename="../online/podcastservice.cpp" line="437"/>
         <source>Subscribe to RSS feeds</source>
         <translation>Zasubskrybuj kanał RSS</translation>
     </message>
     <message numerus="yes">
-        <location filename="../online/podcastservice.cpp" line="494"/>
+        <location filename="../online/podcastservice.cpp" line="520"/>
         <source>%n Podcast(s)</source>
         <translation>
             <numerusform>%n Podcast</numerusform>
@@ -11415,14 +11514,14 @@ Nadpisać?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../online/podcastservice.cpp" line="520"/>
+        <location filename="../online/podcastservice.cpp" line="546"/>
         <source>%1 (%2)</source>
         <comment>podcast name (num unplayed episodes)</comment>
         <translation>%1 (%2)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../online/podcastservice.cpp" line="522"/>
-        <location filename="../online/podcastservice.cpp" line="527"/>
+        <location filename="../online/podcastservice.cpp" line="548"/>
+        <location filename="../online/podcastservice.cpp" line="553"/>
         <source>%n Episode(s)</source>
         <translation>
             <numerusform>%n Odcinek</numerusform>
@@ -11431,25 +11530,25 @@ Nadpisać?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../online/podcastservice.cpp" line="559"/>
+        <location filename="../online/podcastservice.cpp" line="585"/>
         <source>(Downloading: %1%)</source>
         <translation>(Pobieranie: %1%)</translation>
     </message>
     <message>
-        <location filename="../online/podcastservice.cpp" line="733"/>
-        <location filename="../online/podcastservice.cpp" line="735"/>
+        <location filename="../online/podcastservice.cpp" line="758"/>
+        <location filename="../online/podcastservice.cpp" line="760"/>
         <source>Failed to parse %1</source>
         <translation>Parsowanie %1 nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../online/podcastservice.cpp" line="742"/>
-        <location filename="../online/podcastservice.cpp" line="744"/>
+        <location filename="../online/podcastservice.cpp" line="767"/>
+        <location filename="../online/podcastservice.cpp" line="769"/>
         <source>Cantata only supports audio podcasts! %1 contains only video podcasts.</source>
         <translation>Cantata obsługuje jedynie podcasty audio! %1 zawiera wyłącznie podcasty wideo.</translation>
     </message>
     <message>
-        <location filename="../online/podcastservice.cpp" line="834"/>
-        <location filename="../online/podcastservice.cpp" line="836"/>
+        <location filename="../online/podcastservice.cpp" line="872"/>
+        <location filename="../online/podcastservice.cpp" line="874"/>
         <source>Failed to download %1</source>
         <translation>Pobieranie %1 nie powiodło się</translation>
     </message>
@@ -11550,42 +11649,61 @@ Nadpisać?</translation>
 <context>
     <name>PodcastUrlPage</name>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="498"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="501"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="507"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="510"/>
         <source>Enter podcast URL...</source>
         <translation>Podaj adres URL podcastu...</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="508"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="511"/>
         <source>Load</source>
         <translation>Załaduj</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="515"/>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation>Wprowadź poniżej URL podcastu i wciśnij przycisk &apos;Załaduj&apos;</translation>
+        <location filename="../online/podcastsearchdialog.cpp" line="514"/>
+        <source>Load local podcast file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="542"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="522"/>
+        <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
+        <translation type="vanished">Wprowadź poniżej URL podcastu i wciśnij przycisk &apos;Załaduj&apos;</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastsearchdialog.cpp" line="550"/>
         <source>Invalid URL!</source>
         <translation>Nieprawidłowy URL!</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="552"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="559"/>
+        <source>Podcasts (*.xml, *.rss, *.opml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastsearchdialog.cpp" line="566"/>
+        <source>Failed to read file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastsearchdialog.cpp" line="573"/>
         <source>Failed to fetch podcast!</source>
         <translation>Pobieranie podcastu nie powiodło się!</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="557"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="594"/>
         <source>Failed to parse podcast.</source>
         <translation>Parsowanie podcastu nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../online/podcastsearchdialog.cpp" line="561"/>
+        <location filename="../online/podcastsearchdialog.cpp" line="587"/>
         <source>Cantata only supports audio podcasts! The URL entered contains only video podcasts.</source>
         <translation>Cantata obsługuje jedynie podcasty audio! Podany URL zawiera wyłącznie podcasty wideo.</translation>
     </message>
@@ -11593,109 +11711,117 @@ Nadpisać?</translation>
 <context>
     <name>PodcastWidget</name>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="43"/>
+        <location filename="../online/podcastwidget.cpp" line="45"/>
         <source>Add Subscription</source>
         <translation>Dodaj subskrypcję</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="44"/>
+        <location filename="../online/podcastwidget.cpp" line="46"/>
         <source>Remove Subscription</source>
         <translation>Usuń subskrypcję</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="45"/>
+        <location filename="../online/podcastwidget.cpp" line="47"/>
         <source>Download Episodes</source>
         <translation>Pobierz odcinki</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="46"/>
+        <location filename="../online/podcastwidget.cpp" line="48"/>
         <source>Delete Downloaded Episodes</source>
         <translation>Usuń pobrane odcinki</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="47"/>
+        <location filename="../online/podcastwidget.cpp" line="49"/>
         <source>Cancel Download</source>
         <translation>Anuluj pobieranie</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="48"/>
+        <location filename="../online/podcastwidget.cpp" line="50"/>
         <source>Mark Episodes As New</source>
         <translation>Oznacz odcinek jako nowy</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="49"/>
+        <location filename="../online/podcastwidget.cpp" line="51"/>
         <source>Mark Episodes As Listened</source>
         <translation>Oznacz odcinek jako odsłuchany</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="50"/>
+        <location filename="../online/podcastwidget.cpp" line="52"/>
         <source>Show Unplayed Only</source>
         <translation>Pokaż tylko nieodtworzone</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="79"/>
+        <location filename="../online/podcastwidget.cpp" line="54"/>
+        <source>Export Current Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="83"/>
         <source>Configure</source>
         <translation>Konfiguruj</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="93"/>
+        <location filename="../online/podcastwidget.cpp" line="98"/>
         <source>Use the + icon (below) to add podcast subscriptions.</source>
         <translation>Użyj ikony + (poniżej) aby dodać subskrypcję podcastu.</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="147"/>
+        <location filename="../online/podcastwidget.cpp" line="152"/>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation>Wypisać się z &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="193"/>
+        <location filename="../online/podcastwidget.cpp" line="309"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="315"/>
+        <source>Export failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Do you wish to download the selected podcast episodes?</source>
-        <translation>Czy pobrać zaznaczone odcinki podcastu?</translation>
+        <translation type="vanished">Czy pobrać zaznaczone odcinki podcastu?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="207"/>
         <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation>Anulować pobieranie odcinków podcastu (zarówno obecnych jak i zakolejnowanych)?</translation>
+        <translation type="vanished">Anulować pobieranie odcinków podcastu (zarówno obecnych jak i zakolejnowanych)?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="217"/>
+        <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Czy usunąć pobrane pliki zaznaczonych odcinków podcastu?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="233"/>
         <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation>Czy oznaczyć zaznaczone odcinki podcastu jako nowe?</translation>
+        <translation type="vanished">Czy oznaczyć zaznaczone odcinki podcastu jako nowe?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="249"/>
         <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation>Czy oznaczyć zaznaczone odcinki podcastu jako wysłuchane?</translation>
+        <translation type="vanished">Czy oznaczyć zaznaczone odcinki podcastu jako wysłuchane?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
         <source>Refresh all subscriptions?</source>
-        <translation>Odświeżyć wszystkie subskrypcje?</translation>
+        <translation type="vanished">Odświeżyć wszystkie subskrypcje?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
-        <location filename="../online/podcastwidget.cpp" line="290"/>
+        <location filename="../online/podcastwidget.cpp" line="286"/>
         <source>Refresh</source>
         <translation>Odśwież</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="285"/>
-        <location filename="../online/podcastwidget.cpp" line="290"/>
+        <location filename="../online/podcastwidget.cpp" line="286"/>
         <source>Refresh All</source>
         <translation>Odśwież wszystkie</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="290"/>
+        <location filename="../online/podcastwidget.cpp" line="286"/>
         <source>Refresh all subscriptions, or only those selected?</source>
         <translation>Odświeżyć wszystkie subskrypcje, czy tylko zaznaczone?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="290"/>
+        <location filename="../online/podcastwidget.cpp" line="286"/>
         <source>Refresh Selected</source>
         <translation>Odśwież zaznaczone</translation>
     </message>
@@ -11711,22 +11837,22 @@ Nadpisać?</translation>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Collection</source>
         <translation>Kolekcja</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="73"/>
+        <location filename="../gui/preferencesdialog.cpp" line="74"/>
         <source>Collection Settings</source>
         <translation>Ustawienia kolekcji</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Playback</source>
         <translation>Odtwarzanie</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Playback Settings</source>
         <translation>Ustawienia odtwarzania</translation>
     </message>
@@ -11794,42 +11920,42 @@ Nadpisać?</translation>
         <translation>Skróty</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="91"/>
+        <location filename="../gui/preferencesdialog.cpp" line="90"/>
         <source>Keyboard Shortcut Settings</source>
         <translation>Ustawienia skrótów klawiszowych</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="92"/>
         <source>Cache</source>
         <translation>Pamięć podręczna</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="92"/>
         <source>Cached Items</source>
         <translation>Elementy w pamięci podręcznej</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="93"/>
         <source>Custom Actions</source>
         <translation>Własne akcje</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="95"/>
+        <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Service Keys</source>
         <translation>Klucze serwisu</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="95"/>
+        <location filename="../gui/preferencesdialog.cpp" line="94"/>
         <source>Service API Keys</source>
         <translation>Klucze API serwisu</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="97"/>
+        <location filename="../gui/preferencesdialog.cpp" line="96"/>
         <source>Cantata Preferences</source>
         <translation>Ustawienia Cantaty</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="100"/>
+        <location filename="../gui/preferencesdialog.cpp" line="99"/>
         <source>Configure</source>
         <translation>Konfiguruj</translation>
     </message>
@@ -12050,133 +12176,133 @@ Nadpisać?</translation>
         <translation>Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki muzycznej.&lt;br&gt;W związku z ograniczeniami zamkniętego formatu &lt;b&gt;WMA&lt;/b&gt; oraz z trudnościami związanymi z analizą działania zamkniętego enkodera, używany przez program Cantata enkoder WMA używa opcji &lt;a https://pl.wikipedia.org/wiki/Stała_przepływność&gt;stały bitrate (CBR)&lt;/a&gt;.&lt;br&gt;Z tego powodu wyświetlana wartość bitrate jest dosyć dokładnym oszacowaniem bitrate&apos;u pliku wynikowego.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; jest dobrym wyborem dla użytku w odtwarzaczach przenośnych.&lt;br/&gt;Wartości poniżej &lt;b&gt;112kb/s&lt;/b&gt; mogą nie być satysfakcjonujące dla muzyki, a wszystko powyżej &lt;b&gt;182kb/s&lt;/b&gt; jest prawdopodobnie przesadzone.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="68"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="69"/>
         <source>Empty filename.</source>
         <translation>Pusta nazwa pliku.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="69"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="70"/>
         <source>Invalid filename. (%1)</source>
         <translation>Nieprawidłowa nazwa pliku. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="70"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="71"/>
         <source>Failed to save %1.</source>
         <translation>Zapisywanie nie powiodło się %1.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="71"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="72"/>
         <source>Failed to delete rules file. (%1)</source>
         <translation>Usunięcie pliku z regułami nie powiodło się. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="72"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="73"/>
         <source>Invalid command. (%1)</source>
         <translation>Nieprawidłowa komenda. (%1)</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="73"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="74"/>
         <source>Could not remove active rules link.</source>
         <translation>Nie można usunąć powiązania dla aktywnej reguły.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="74"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="75"/>
         <source>Active rules is not a link.</source>
         <translation>Aktywna reguła nie jest powiązaniem.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="75"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="76"/>
         <source>Could not create active rules link.</source>
         <translation>Nie można stworzyć powiązania aktywnej reguły.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="76"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="77"/>
         <source>Rules file, %1, does not exist.</source>
         <translation>Plik reguł, %1, nie istnieje.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="77"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="78"/>
         <source>Incorrect arguments supplied.</source>
         <translation>Podano nieprawidłowe argumenty.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="78"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="79"/>
         <source>Unknown method called.</source>
         <translation>Wywołano nieznaną metodę.</translation>
     </message>
     <message>
-        <location filename="../playlists/dynamicplaylists.cpp" line="81"/>
+        <location filename="../playlists/dynamicplaylists.cpp" line="82"/>
         <location filename="../scrobbling/scrobbler.cpp" line="104"/>
         <source>Unknown error</source>
         <translation>Nieznany błąd</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="586"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="69"/>
+        <location filename="../mpd-interface/song.cpp" line="605"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="71"/>
         <source>Artist</source>
         <translation>Artysta</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="71"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="73"/>
         <source>SimilarArtists</source>
         <translation>PodobniArtyści</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="73"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
         <source>AlbumArtist</source>
         <translation>ArtystaAlbumu</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="590"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
+        <location filename="../mpd-interface/song.cpp" line="609"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
         <source>Composer</source>
         <translation>Kompozytor</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
         <source>Comment</source>
         <translation>Komentarz</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="592"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
+        <location filename="../mpd-interface/song.cpp" line="611"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="585"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
+        <location filename="../mpd-interface/song.cpp" line="604"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
         <source>Title</source>
         <translation>Tytuł</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="599"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
+        <location filename="../mpd-interface/song.cpp" line="618"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="85"/>
         <source>Genre</source>
         <translation>Gatunek</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="85"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="87"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="87"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="89"/>
         <source>File</source>
         <translation>Plik</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="99"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="101"/>
         <source>Include</source>
         <translation>Zawiera</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="106"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="108"/>
         <source>Exclude</source>
         <translation>Nie zawiera</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="129"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="131"/>
         <source> (Exact)</source>
         <translation> (Dokładnie)</translation>
     </message>
@@ -12481,14 +12607,14 @@ width x height</comment>
         <translation>Błąd przetwarzania podczas ładowania plików pamięci podręcznej, zaleca się sprawdzenie tagów utworów.</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1295"/>
-        <location filename="../models/streamsmodel.cpp" line="1302"/>
+        <location filename="../models/streamsmodel.cpp" line="1286"/>
+        <location filename="../models/streamsmodel.cpp" line="1293"/>
         <source>Other</source>
         <translation>Inne</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="206"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="208"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="209"/>
         <source>Default</source>
         <translation>Domyślne</translation>
     </message>
@@ -12498,13 +12624,13 @@ width x height</comment>
         <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="219"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="220"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation>&quot;%1&quot; (%2:%3)</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="70"/>
+        <location filename="../mpd-interface/song.cpp" line="72"/>
         <source>Single Tracks</source>
         <translation>Pojedyncze utwory</translation>
     </message>
@@ -12514,65 +12640,65 @@ width x height</comment>
         <translation>Osobiste</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="68"/>
-        <location filename="../support/utils.cpp" line="650"/>
+        <location filename="../mpd-interface/song.cpp" line="70"/>
+        <location filename="../support/utils.cpp" line="669"/>
         <source>Unknown</source>
         <translation>Nieznany</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="69"/>
+        <location filename="../mpd-interface/song.cpp" line="71"/>
         <source>Various Artists</source>
         <translation>Various Artists</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="588"/>
+        <location filename="../mpd-interface/song.cpp" line="607"/>
         <source>Album artist</source>
         <translation>Artysta albumu</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="591"/>
+        <location filename="../mpd-interface/song.cpp" line="610"/>
         <source>Performer</source>
         <translation>Wykonawca</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="594"/>
+        <location filename="../mpd-interface/song.cpp" line="613"/>
         <source>Track number</source>
         <translation>Numer utworu</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="597"/>
+        <location filename="../mpd-interface/song.cpp" line="616"/>
         <source>Disc number</source>
         <translation>Numer płyty</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="601"/>
+        <location filename="../mpd-interface/song.cpp" line="620"/>
         <source>Year</source>
         <translation>Rok</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="604"/>
+        <location filename="../mpd-interface/song.cpp" line="623"/>
         <source>Original Year</source>
         <translation>Rok oryginału</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="607"/>
+        <location filename="../mpd-interface/song.cpp" line="626"/>
         <source>Length</source>
         <translation>Długość</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="796"/>
+        <location filename="../mpd-interface/song.cpp" line="834"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; na &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="797"/>
+        <location filename="../mpd-interface/song.cpp" line="835"/>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; w wykonaniu &lt;b&gt;%2&lt;/b&gt; na &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="824"/>
+        <location filename="../mpd-interface/song.cpp" line="862"/>
         <source>(Stream)</source>
         <translation>(Strumień)</translation>
     </message>
@@ -12770,38 +12896,38 @@ width x height</comment>
         <translation>Pytanie</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="435"/>
-        <location filename="../support/utils.cpp" line="443"/>
+        <location filename="../support/utils.cpp" line="454"/>
+        <location filename="../support/utils.cpp" line="462"/>
         <source>%1 B</source>
         <translation>%1 B</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="436"/>
+        <location filename="../support/utils.cpp" line="455"/>
         <source>%1 kB</source>
         <translation>%1 kB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="437"/>
+        <location filename="../support/utils.cpp" line="456"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="439"/>
+        <location filename="../support/utils.cpp" line="458"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="444"/>
+        <location filename="../support/utils.cpp" line="463"/>
         <source>%1 KiB</source>
         <translation>%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="445"/>
+        <location filename="../support/utils.cpp" line="464"/>
         <source>%1 MiB</source>
         <translation>%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="447"/>
+        <location filename="../support/utils.cpp" line="466"/>
         <source>%1 GiB</source>
         <translation>%1 GiB</translation>
     </message>
@@ -12916,136 +13042,156 @@ width x height</comment>
         </translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="137"/>
+        <location filename="../gui/main.cpp" line="138"/>
         <source>mpd - MPD communication</source>
         <translation>mpd - komunikacja MPD</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="138"/>
+        <location filename="../gui/main.cpp" line="139"/>
         <source>mpdparse - Parsing of MPD response</source>
         <translation>mpdparse - Przetwarzanie odpowiedzi MPD</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="139"/>
+        <location filename="../gui/main.cpp" line="140"/>
+        <source>cue - Cue file parsing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="141"/>
         <source>covers - Cover fetching, and loading</source>
         <translation>covers - Pobieranie i ładowanie okładek</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="140"/>
+        <location filename="../gui/main.cpp" line="142"/>
         <source>covers-verbose - Cover fetching, and loading (verbose) </source>
         <translation>covers-verbose - Pobieranie i ładowanie okładek (verbose)</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="141"/>
+        <location filename="../gui/main.cpp" line="143"/>
         <source>context-wikipedia - Wikipedia info in context view</source>
         <translation>context-wikipedia - Informacie z Wikipedii w widoku kontekstowym</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="142"/>
+        <location filename="../gui/main.cpp" line="144"/>
         <source>context-lastfm - Last.fm info in context view</source>
         <translation>context-lastfm - Informacje z last.fm w widoku kontekstowym</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="143"/>
+        <location filename="../gui/main.cpp" line="145"/>
         <source>context-widget - General debug in context view</source>
         <translation>context-widget - Informacje debug w widoku kontekstowym</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="144"/>
+        <location filename="../gui/main.cpp" line="146"/>
         <source>context-lyrics - Lyrics in context view</source>
         <translation>context-lyrics - Teksty utworów w widoku kontekstowym</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="145"/>
+        <location filename="../gui/main.cpp" line="147"/>
         <source>dynamic - Dynamic playlists</source>
         <translation>dynamic - Dynamiczne playlisty</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="146"/>
+        <location filename="../gui/main.cpp" line="148"/>
         <source>stream-fetcher - Fetching of stream URLs</source>
         <translation>stream-fetcher - Pobieranie adresów URL strumieni</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="147"/>
+        <location filename="../gui/main.cpp" line="149"/>
         <source>http-server - Built-in HTTP server</source>
         <translation>http-server - Wbudowany serwer HTTP</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="148"/>
+        <location filename="../gui/main.cpp" line="150"/>
         <source>song-dialog - Song dialogs (tags, replaygain, organiser)</source>
         <translation>song-dialog - Okna dialogowe utworów (tagi, replaygain, organizator)</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="149"/>
+        <location filename="../gui/main.cpp" line="151"/>
         <source>network-access - Network access</source>
         <translation>network-access - Dostęp do sieci</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="150"/>
+        <location filename="../gui/main.cpp" line="152"/>
         <source>threads - Threads</source>
         <translation>threads - Wątki</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="151"/>
+        <location filename="../gui/main.cpp" line="153"/>
         <source>scrobbler - Scrobbling</source>
         <translation>scrobbler - Scrobbling</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="152"/>
+        <location filename="../gui/main.cpp" line="154"/>
         <source>sql - SQL access</source>
         <translation>sql - dostęp do bazy SQL</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="153"/>
+        <location filename="../gui/main.cpp" line="155"/>
         <source>media-keys - Media-keys</source>
         <translation>media-keys - Klawisze multimedialne</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="154"/>
+        <location filename="../gui/main.cpp" line="156"/>
         <source>custom-actions - Custom actions</source>
         <translation>custom-actions - Własne akcje</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="156"/>
+        <location filename="../gui/main.cpp" line="158"/>
         <source>tags - Tag reading/writing</source>
         <translation>tags - Czytanie/zapis tagów</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="159"/>
+        <location filename="../gui/main.cpp" line="161"/>
         <source>devices - Device support</source>
         <translation>devices - Obsługa urządzeń</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="162"/>
+        <location filename="../gui/main.cpp" line="164"/>
         <source>http-stream - Playback of MPD output streams</source>
         <translation>http-stream - Odtwarzanie strumieni wyjściowych MPD</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="165"/>
+        <location filename="../gui/main.cpp" line="167"/>
         <source>avahi - Auto-discovery of MPD servers</source>
         <translation>avahi - Automatyczne wykrywanie serwerów MPD</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="253"/>
+        <location filename="../gui/main.cpp" line="169"/>
+        <source>all - Enable all debug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="360"/>
         <source>MPD Client</source>
         <translation>Klient MPD</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="256"/>
+        <location filename="../gui/main.cpp" line="363"/>
         <source>Comma-separated list of debug areas - possible values:
 </source>
         <translation>Oddzielana przecinkami lista obszarów debugowania - dostępne wartości:
 </translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="257"/>
+        <location filename="../gui/main.cpp" line="364"/>
         <source>Log debug messages to %1</source>
         <translation>Loguj informacje debugowania do %1</translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="258"/>
+        <location filename="../gui/main.cpp" line="365"/>
         <source>Disable network access</source>
         <translation>Wyłącz dostęp sieciowy</translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="366"/>
+        <source>Collection name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main.cpp" line="367"/>
+        <source>Start full screen</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13104,80 +13250,67 @@ Proszę wybrać inną nazwę.</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="72"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="289"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="85"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="302"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="102"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="199"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="319"/>
         <source>User:</source>
         <translation>Użytkownik:</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="212"/>
         <source>Domain:</source>
-        <translation>Domena:</translation>
+        <translation type="vanished">Domena:</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="128"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="225"/>
         <source>Password:</source>
-        <translation>Hasło:</translation>
+        <translation type="vanished">Hasło:</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="145"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="242"/>
         <source>Share:</source>
-        <translation>Udział:</translation>
+        <translation type="vanished">Udział:</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="160"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="257"/>
         <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation>Jeżeli hasło zostanie wpisane tutaj, to będzie ono przechowywane w postaci &lt;b&gt;niezaszyfrowanej&lt;/b&gt; w pliku konfiguracyjnym Cantaty. Aby program Cantata za każdym razem pytał o hasło podczas dostępu do udziału należy hasło ustawić na &apos;-&apos;</translation>
+        <translation type="vanished">Jeżeli hasło zostanie wpisane tutaj, to będzie ono przechowywane w postaci &lt;b&gt;niezaszyfrowanej&lt;/b&gt; w pliku konfiguracyjnym Cantaty. Aby program Cantata za każdym razem pytał o hasło podczas dostępu do udziału należy hasło ustawić na &apos;-&apos;</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="186"/>
         <source>Service name:</source>
-        <translation>Nazwa serwisu:</translation>
+        <translation type="vanished">Nazwa serwisu:</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="332"/>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="390"/>
+        <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
+        <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
         <translation>Katalog:</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="345"/>
+        <location filename="../devices/remotedevicepropertieswidget.ui" line="128"/>
         <source>Extra Options:</source>
         <translation>Opcje dodatkowe:</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="360"/>
+        <location filename="../devices/remotedevicepropertieswidget.ui" line="143"/>
         <source>Due to the way sshfs works, a suitable ssh-askpass application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter the password.</source>
         <translation>W związku z mechanizmem działania sshfs, odpowiednia aplikacja typu ssh-askpass (ksshaskpass, ssh-askpass-gnome, itp.) konieczna jest do wpisania hasła.</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.ui" line="410"/>
+        <location filename="../devices/remotedevicepropertieswidget.ui" line="193"/>
         <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
         <translation>To okno dialogowe jest używane jedynie do dodawania zdalnych urządzeń (np. za pomocą protokołu sshfs) albo w celu dostępu do lokalnie zamontowanych katalogów. W przypadku normalnych odtwarzaczy mediów podłączonych przez USB Cantata automatycznie wyświetli urządzenie gdy będzie ono podłączone.</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="51"/>
+        <location filename="../devices/remotedevicepropertieswidget.cpp" line="47"/>
         <source>Secure Shell (sshfs)</source>
         <translation>Bezpieczna powłoka (sshfs)</translation>
     </message>
     <message>
-        <location filename="../devices/remotedevicepropertieswidget.cpp" line="52"/>
+        <location filename="../devices/remotedevicepropertieswidget.cpp" line="48"/>
         <source>Locally Mounted Folder</source>
         <translation>Katalog zamontowany lokalnie</translation>
     </message>
@@ -13185,90 +13318,82 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="172"/>
-        <location filename="../devices/remotefsdevice.cpp" line="570"/>
         <source>Available</source>
-        <translation>Dostępny</translation>
+        <translation type="vanished">Dostępny</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="180"/>
-        <location filename="../devices/remotefsdevice.cpp" line="568"/>
         <source>Not Available</source>
-        <translation>Niedostępny</translation>
+        <translation type="vanished">Niedostępny</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="281"/>
         <source>Failed to resolve connection details for %1</source>
-        <translation>Nie powiodło się pobranie szczegółów połączenia dla %1</translation>
+        <translation type="vanished">Nie powiodło się pobranie szczegółów połączenia dla %1</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="296"/>
-        <location filename="../devices/remotefsdevice.cpp" line="311"/>
-        <location filename="../devices/remotefsdevice.cpp" line="367"/>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
         <source>Connecting...</source>
         <translation>Łączenie...</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="324"/>
         <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation>Pytanie o hasło nie działa, jeśli Cantata uruchomiana została z wiersza poleceń.</translation>
+        <translation type="vanished">Pytanie o hasło nie działa, jeśli Cantata uruchomiana została z wiersza poleceń.</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="343"/>
+        <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation>Nie znaleziono odpowiedniej aplikacji ssh-askpass! Jest ona wymagana do wprowadzania haseł.</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="350"/>
+        <location filename="../devices/remotefsdevice.cpp" line="282"/>
         <source>Mount point (&quot;%1&quot;) is not empty!</source>
         <translation>Punkt montowania (&quot;%1&quot;) nie jest pusty!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="362"/>
+        <location filename="../devices/remotefsdevice.cpp" line="272"/>
+        <location filename="../devices/remotefsdevice.cpp" line="294"/>
         <source>&quot;sshfs&quot; is not installed!</source>
         <translation>&quot;sshfs&quot; nie jest zainstalowane!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="390"/>
-        <location filename="../devices/remotefsdevice.cpp" line="410"/>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
         <source>Disconnecting...</source>
         <translation>Rozłączanie...</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="404"/>
+        <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation>&quot;fusermount&quot; nie jest zainstalowane!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="425"/>
-        <location filename="../devices/remotefsdevice.cpp" line="446"/>
+        <location filename="../devices/remotefsdevice.cpp" line="357"/>
+        <location filename="../devices/remotefsdevice.cpp" line="378"/>
         <source>Failed to connect to &quot;%1&quot;</source>
         <translation>Nie powiodło się łączenie z &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="426"/>
-        <location filename="../devices/remotefsdevice.cpp" line="461"/>
+        <location filename="../devices/remotefsdevice.cpp" line="358"/>
+        <location filename="../devices/remotefsdevice.cpp" line="393"/>
         <source>Failed to disconnect from &quot;%1&quot;</source>
         <translation>Nie powiodło się rozłączanie z &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="429"/>
-        <location filename="../devices/remotefsdevice.cpp" line="449"/>
+        <location filename="../devices/remotefsdevice.cpp" line="361"/>
+        <location filename="../devices/remotefsdevice.cpp" line="381"/>
         <source>Updating tracks...</source>
         <translation>Uaktualnianie utworów...</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="532"/>
+        <location filename="../devices/remotefsdevice.cpp" line="464"/>
         <source>Not Connected</source>
         <translation>Nie połączono</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="537"/>
+        <location filename="../devices/remotefsdevice.cpp" line="469"/>
         <source>Capacity Unknown</source>
         <translation>Pojemność nieznana</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="539"/>
+        <location filename="../devices/remotefsdevice.cpp" line="471"/>
         <source>%1 free</source>
         <translation>%1 wolnego miejsca</translation>
     </message>
@@ -13332,134 +13457,131 @@ Proszę wybrać inną nazwę.</translation>
     </message>
     <message>
         <location filename="../replaygain/rgdialog.cpp" line="129"/>
-        <location filename="../replaygain/rgdialog.cpp" line="261"/>
+        <location filename="../replaygain/rgdialog.cpp" line="268"/>
         <source>Scan</source>
         <translation>Skanuj</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="211"/>
         <source>Update ReplayGain tags in tracks?</source>
-        <translation>Uaktualnić tagi ReplayGain w utworach?</translation>
+        <translation type="vanished">Uaktualnić tagi ReplayGain w utworach?</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="211"/>
-        <location filename="../replaygain/rgdialog.cpp" line="212"/>
         <source>Update Tags</source>
-        <translation>Uaktualnij tagi</translation>
+        <translation type="vanished">Uaktualnij tagi</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="225"/>
+        <location filename="../replaygain/rgdialog.cpp" line="232"/>
         <source>Abort scanning of tracks?</source>
         <translation>Przerwać skanowanie plików?</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="225"/>
-        <location filename="../replaygain/rgdialog.cpp" line="226"/>
-        <location filename="../replaygain/rgdialog.cpp" line="234"/>
-        <location filename="../replaygain/rgdialog.cpp" line="235"/>
+        <location filename="../replaygain/rgdialog.cpp" line="232"/>
+        <location filename="../replaygain/rgdialog.cpp" line="233"/>
+        <location filename="../replaygain/rgdialog.cpp" line="241"/>
+        <location filename="../replaygain/rgdialog.cpp" line="242"/>
         <source>Abort</source>
         <translation>Przerwij</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="234"/>
+        <location filename="../replaygain/rgdialog.cpp" line="241"/>
         <source>Abort reading of existing tags?</source>
         <translation>Przerwać czytanie istniejących tagów?</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="260"/>
+        <location filename="../replaygain/rgdialog.cpp" line="267"/>
         <source>Scan &lt;b&gt;all&lt;/b&gt; tracks?&lt;br/&gt;&lt;br/&gt;&lt;i&gt;All tracks have existing ReplayGain tags.&lt;/i&gt;</source>
         <translation>Skanować &lt;b&gt;wszystkie&lt;/b&gt; utwory?&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Wszystkie utwory mają już istniejące tagi ReplayGain.&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="262"/>
+        <location filename="../replaygain/rgdialog.cpp" line="269"/>
         <source>Do you wish to scan all tracks, or only tracks without existing tags?</source>
         <translation>Czy przeskanować wszystkie utwory, czy tylko te bez istniejących tagów?</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="263"/>
+        <location filename="../replaygain/rgdialog.cpp" line="270"/>
         <source>Untagged Tracks</source>
         <translation>Utwory bez tagów</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="263"/>
+        <location filename="../replaygain/rgdialog.cpp" line="270"/>
         <source>All Tracks</source>
         <translation>Wszystkie utwory</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="273"/>
+        <location filename="../replaygain/rgdialog.cpp" line="280"/>
         <source>Scanning tracks...</source>
         <translation>Skanowanie utworów...</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="340"/>
+        <location filename="../replaygain/rgdialog.cpp" line="349"/>
         <source>Reading existing tags...</source>
         <translation>Czytanie istniejących tagów...</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="391"/>
+        <location filename="../replaygain/rgdialog.cpp" line="400"/>
         <source>%1 (Corrupt tags?)</source>
         <comment>filename (Corrupt tags?)</comment>
         <translation>%1 (Uszkodzone tagi?)</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="404"/>
+        <location filename="../replaygain/rgdialog.cpp" line="413"/>
         <source>Failed to update the tags of the following tracks:</source>
         <translation>Uaktualnianie tagów następujących utworów nie powiodło się:</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="440"/>
+        <location filename="../replaygain/rgdialog.cpp" line="449"/>
         <source>Device has been removed!</source>
         <translation>Urządzenie zostało usunięte!</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="445"/>
+        <location filename="../replaygain/rgdialog.cpp" line="454"/>
         <source>Device is not connected.</source>
         <translation>Urządzenie nie jest podłączone.</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="450"/>
+        <location filename="../replaygain/rgdialog.cpp" line="459"/>
         <source>Device is busy?</source>
         <translation>Urządzenie jest zajęte?</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="485"/>
-        <location filename="../replaygain/rgdialog.cpp" line="492"/>
-        <location filename="../replaygain/rgdialog.cpp" line="575"/>
-        <location filename="../replaygain/rgdialog.cpp" line="577"/>
+        <location filename="../replaygain/rgdialog.cpp" line="494"/>
+        <location filename="../replaygain/rgdialog.cpp" line="503"/>
+        <location filename="../replaygain/rgdialog.cpp" line="588"/>
+        <location filename="../replaygain/rgdialog.cpp" line="592"/>
         <source>%1 dB</source>
         <translation>%1 dB</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="488"/>
-        <location filename="../replaygain/rgdialog.cpp" line="489"/>
-        <location filename="../replaygain/rgdialog.cpp" line="495"/>
-        <location filename="../replaygain/rgdialog.cpp" line="496"/>
-        <location filename="../replaygain/rgdialog.cpp" line="551"/>
-        <location filename="../replaygain/rgdialog.cpp" line="552"/>
-        <location filename="../replaygain/rgdialog.cpp" line="553"/>
-        <location filename="../replaygain/rgdialog.cpp" line="554"/>
+        <location filename="../replaygain/rgdialog.cpp" line="499"/>
+        <location filename="../replaygain/rgdialog.cpp" line="500"/>
+        <location filename="../replaygain/rgdialog.cpp" line="508"/>
+        <location filename="../replaygain/rgdialog.cpp" line="509"/>
+        <location filename="../replaygain/rgdialog.cpp" line="564"/>
+        <location filename="../replaygain/rgdialog.cpp" line="565"/>
+        <location filename="../replaygain/rgdialog.cpp" line="566"/>
+        <location filename="../replaygain/rgdialog.cpp" line="567"/>
         <source>Failed</source>
         <translation>Nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="505"/>
-        <location filename="../replaygain/rgdialog.cpp" line="515"/>
+        <location filename="../replaygain/rgdialog.cpp" line="518"/>
+        <location filename="../replaygain/rgdialog.cpp" line="528"/>
         <source>Original: %1 dB</source>
         <translation>Oryginał: %1 dB</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="510"/>
-        <location filename="../replaygain/rgdialog.cpp" line="520"/>
+        <location filename="../replaygain/rgdialog.cpp" line="523"/>
+        <location filename="../replaygain/rgdialog.cpp" line="533"/>
         <source>Original: %1</source>
         <translation>Oryginał: %1</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="627"/>
+        <location filename="../replaygain/rgdialog.cpp" line="644"/>
         <source>Remove the selected tracks from the list?</source>
         <translation>Usunąć zaznaczone utwory z listy?</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="628"/>
+        <location filename="../replaygain/rgdialog.cpp" line="645"/>
         <source>Remove Tracks</source>
         <translation>Usuń utwory</translation>
     </message>
@@ -13467,52 +13589,57 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>RulesPlaylists</name>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="93"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="96"/>
         <source>Album Artist</source>
         <translation>Artysta albumu</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="94"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="97"/>
         <source>Artist</source>
         <translation>Artysta</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="95"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="98"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="96"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="99"/>
         <source>Composer</source>
         <translation>Kompozytor</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="97"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="100"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="98"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="101"/>
         <source>Genre</source>
         <translation>Gatunek</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="99"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="102"/>
         <source>Rating</source>
         <translation>Ocena</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="100"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="103"/>
+        <source>Title</source>
+        <translation type="unfinished">Tytuł</translation>
+    </message>
+    <message>
+        <location filename="../playlists/rulesplaylists.cpp" line="104"/>
         <source>File Age</source>
         <translation>Wiek pliku</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="102"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="106"/>
         <source>Random</source>
         <translation>Losowo</translation>
     </message>
     <message numerus="yes">
-        <location filename="../playlists/rulesplaylists.cpp" line="169"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="173"/>
         <source>%n Rule(s)</source>
         <translation>
             <numerusform>%n reguła</numerusform>
@@ -13521,17 +13648,17 @@ Proszę wybrać inną nazwę.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="169"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="173"/>
         <source>, Rating: %1..%2</source>
         <translation>, ocena: %1..%2</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="172"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="176"/>
         <source>Ascending</source>
         <translation>Rosnąco</translation>
     </message>
     <message>
-        <location filename="../playlists/rulesplaylists.cpp" line="172"/>
+        <location filename="../playlists/rulesplaylists.cpp" line="176"/>
         <source>Descending</source>
         <translation>Malejąco</translation>
     </message>
@@ -13539,8 +13666,8 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>Scrobbler</name>
     <message>
-        <location filename="../scrobbling/scrobbler.cpp" line="553"/>
-        <location filename="../scrobbling/scrobbler.cpp" line="673"/>
+        <location filename="../scrobbling/scrobbler.cpp" line="557"/>
+        <location filename="../scrobbling/scrobbler.cpp" line="677"/>
         <source>%1 error: %2</source>
         <translation>%1 błąd: %2</translation>
     </message>
@@ -13548,12 +13675,12 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>ScrobblingLove</name>
     <message>
-        <location filename="../scrobbling/scrobblinglove.cpp" line="56"/>
+        <location filename="../scrobbling/scrobblinglove.cpp" line="59"/>
         <source>%1: Loved Current Track</source>
         <translation>%1: Polubiono obecny utwór</translation>
     </message>
     <message>
-        <location filename="../scrobbling/scrobblinglove.cpp" line="57"/>
+        <location filename="../scrobbling/scrobblinglove.cpp" line="60"/>
         <source>%1: Love Current Track</source>
         <translation>%1: Polub obecny utwór</translation>
     </message>
@@ -13625,9 +13752,8 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>ScrobblingStatus</name>
     <message>
-        <location filename="../scrobbling/scrobblingstatus.cpp" line="52"/>
         <source>%1: Scrobble Tracks</source>
-        <translation>%1: Scrobbluj utwory</translation>
+        <translation type="vanished">%1: Scrobbluj utwory</translation>
     </message>
 </context>
 <context>
@@ -13641,142 +13767,156 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>SearchPage</name>
     <message>
-        <location filename="../gui/searchpage.cpp" line="55"/>
+        <location filename="../gui/searchpage.cpp" line="56"/>
         <source>Locate In Library</source>
         <translation>Znajdź w bibliotece</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="87"/>
+        <location filename="../gui/searchpage.cpp" line="97"/>
         <source>Use the text field above to search for music in your library via MPD&apos;s search mechanism. Clicking the label next to the field will produce a menu allowing you to control the search area.</source>
         <translation>Powyższe pole tekstowe służy do wyszukiwania muzyki w bibliotece przy użyciu mechanizmu MPD. Kliknięcie na etykietę przy polu otworzy menu pozwalające na kontrolę obszaru wyszukiwania.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="212"/>
+        <location filename="../gui/searchpage.cpp" line="175"/>
+        <source>Are you sure you wish to delete the selected songs?
+
+This cannot be undone.</source>
+        <translation type="unfinished">Czy na pewno usunąć zaznaczone utwory?
+
+Ta operacja nie może być cofnięta.</translation>
+    </message>
+    <message>
+        <location filename="../gui/searchpage.cpp" line="176"/>
+        <source>Delete Songs</source>
+        <translation type="unfinished">Usuń utwory</translation>
+    </message>
+    <message>
+        <location filename="../gui/searchpage.cpp" line="248"/>
         <source>Artist:</source>
         <translation>Artysta:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="212"/>
+        <location filename="../gui/searchpage.cpp" line="248"/>
         <source>Search for songs by artist.</source>
         <translation>Szukaj utworów według artysty.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="215"/>
+        <location filename="../gui/searchpage.cpp" line="251"/>
         <source>Composer:</source>
         <translation>Kompozytor:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="215"/>
+        <location filename="../gui/searchpage.cpp" line="251"/>
         <source>Search for songs by composer.</source>
         <translation>Szukaj utworów według kompozytora.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="218"/>
+        <location filename="../gui/searchpage.cpp" line="254"/>
         <source>Performer:</source>
         <translation>Wykonawca:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="218"/>
+        <location filename="../gui/searchpage.cpp" line="254"/>
         <source>Search for songs by performer.</source>
         <translation>Szukaj utworów według wykonawcy.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="220"/>
+        <location filename="../gui/searchpage.cpp" line="256"/>
         <source>Album:</source>
         <translation>Album:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="220"/>
+        <location filename="../gui/searchpage.cpp" line="256"/>
         <source>Search for songs by album.</source>
         <translation>Szukaj utworów według albumu.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="221"/>
+        <location filename="../gui/searchpage.cpp" line="257"/>
         <source>Title:</source>
         <translation>Tytuł:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="221"/>
+        <location filename="../gui/searchpage.cpp" line="257"/>
         <source>Search for songs by title.</source>
         <translation>Szukaj utworów według tytułu.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="222"/>
+        <location filename="../gui/searchpage.cpp" line="258"/>
         <source>Genre:</source>
         <translation>Gatunek:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="222"/>
+        <location filename="../gui/searchpage.cpp" line="258"/>
         <source>Search for songs by genre.</source>
         <translation>Szukaj utworów według gatunku.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="224"/>
+        <location filename="../gui/searchpage.cpp" line="260"/>
         <source>Comment:</source>
         <translation>Komentarz:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="224"/>
+        <location filename="../gui/searchpage.cpp" line="260"/>
         <source>Search for songs containing comment.</source>
         <translation>Szukaj utworów zawierających komentarz.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="226"/>
+        <location filename="../gui/searchpage.cpp" line="262"/>
         <source>Date:</source>
         <translation>Data:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="227"/>
+        <location filename="../gui/searchpage.cpp" line="263"/>
         <source>Find songs be searching the &apos;Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
         <translation>Wyszukiwanie utworów będzie brało pod uwagę tag &apos;Data&apos;.&lt;br/&gt;&lt;br/&gt;Zazwyczaj podanie samego roku powinno wystarczyć.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="229"/>
+        <location filename="../gui/searchpage.cpp" line="265"/>
         <source>Original Date:</source>
         <translation>Rok oryginału:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="230"/>
+        <location filename="../gui/searchpage.cpp" line="266"/>
         <source>Find songs be searching the &apos;Original Date&apos; tag.&lt;br/&gt;&lt;br/&gt;Usually just entering the year should suffice.</source>
         <translation>Wyszukiwanie utworów będzie brało pod uwagę tag &apos;Data oryginału&apos;.&lt;br/&gt;&lt;br/&gt;Zazwyczaj podanie samego roku powinno wystarczyć.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="233"/>
+        <location filename="../gui/searchpage.cpp" line="269"/>
         <source>Modified:</source>
         <translation>Zmodyfikowano:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="234"/>
+        <location filename="../gui/searchpage.cpp" line="270"/>
         <source>Enter date (YYYY/MM/DD - e.g. 2015/01/31) to search for files modified since that date.&lt;br/&gt;&lt;br&gt;Or enter a number of days to find files that were modified in the previous number of days.</source>
         <translation>Aby wyszukać pliki zmienione od daty należy wprowadzić datę w formacie YYYY/MM/DD - np. 2015/01/31.&lt;br/&gt;&lt;br&gt;Wprowadzenie liczby spowoduje wyszukanie plików zmienionych od podanej liczby dni.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="237"/>
+        <location filename="../gui/searchpage.cpp" line="273"/>
         <source>File:</source>
         <translation>Plik:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="237"/>
+        <location filename="../gui/searchpage.cpp" line="273"/>
         <source>Search for songs by filename or path.</source>
         <translation>Szukaj utworów według nazwy pliku lub ścieżki.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="238"/>
+        <location filename="../gui/searchpage.cpp" line="274"/>
         <source>Any:</source>
         <translation>Dowolne:</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="238"/>
+        <location filename="../gui/searchpage.cpp" line="274"/>
         <source>Search for songs by any matching metadata.</source>
         <translation>Szukaj utworów według dowolnych pasujących metadanych.</translation>
     </message>
     <message>
-        <location filename="../gui/searchpage.cpp" line="244"/>
+        <location filename="../gui/searchpage.cpp" line="280"/>
         <source>No tracks found.</source>
         <translation>Nie znaleziono utworów.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/searchpage.cpp" line="244"/>
+        <location filename="../gui/searchpage.cpp" line="280"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n Utwór (%1)</numerusform>
@@ -13812,7 +13952,7 @@ Proszę wybrać inną nazwę.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="94"/>
+        <location filename="../gui/serversettings.cpp" line="98"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
@@ -13895,82 +14035,82 @@ Proszę wybrać inną nazwę.</translation>
         <translation>Jeśli ustawienie &apos;Katalog z muzyką&apos; zostanie zmienione, należy ręcznie uaktualnić bazę danych muzyki. Można to zrobić używając akcji &apos;Odśwież bazę danych&apos; w widokach &apos;Artyści&apos; lub &apos;Albumy&apos;.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="74"/>
+        <location filename="../gui/serversettings.cpp" line="78"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation>Ten katalog zostanie będzie również używany do wyszukiwania plików do edycji tagów, skanowania ReplayGain, oraz do transferu do i z urządzeń.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="77"/>
+        <location filename="../gui/serversettings.cpp" line="81"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation>Ten katalog zostanie będzie również używany do wyszukiwania plików do edycji tagów, skanowania ReplayGain, itp.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="81"/>
+        <location filename="../gui/serversettings.cpp" line="85"/>
         <source>More information</source>
         <translation>Więcej informacji</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="119"/>
+        <location filename="../gui/serversettings.cpp" line="121"/>
         <source>Discover...</source>
         <translation>Odkryj...</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="259"/>
+        <location filename="../gui/serversettings.cpp" line="261"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>Do jakiego typu kolekcji program ma się połączyć?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="260"/>
+        <location filename="../gui/serversettings.cpp" line="262"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Standardowy - kolekcja muzyki może być współdzielona, znajduje się na innej maszynie, jest już skonfigurowa albo ma być używana z innymi klientami (np. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="263"/>
+        <location filename="../gui/serversettings.cpp" line="265"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Podstawowy - kolekcja muzyki nie jest współdzielona a program Cantata skonfiguruje i będzie kontrolować program MPD. Taka konfiguracja będzie dostępna wyłącznie dla programu Cantata i &lt;b&gt;nie&lt;/b&gt; będzie można jej używać z innymi klientami MPD.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;UWAGA:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="267"/>
+        <location filename="../gui/serversettings.cpp" line="269"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Jeżeli mają być używane zaawansowane ustawienia MPD (np. wiele wyjść audio, pełne wsparcie DSD, itp.) wtedy &lt;b&gt;trzeba&lt;/b&gt; wybrać opcję &apos;Standardowy&apos;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="269"/>
+        <location filename="../gui/serversettings.cpp" line="271"/>
         <source>Add Collection</source>
         <translation>Dodaj kolekcję</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="269"/>
+        <location filename="../gui/serversettings.cpp" line="271"/>
         <source>Standard</source>
         <translation>Standardowa</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="269"/>
+        <location filename="../gui/serversettings.cpp" line="271"/>
         <source>Basic</source>
         <translation>Podstawowa</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="317"/>
+        <location filename="../gui/serversettings.cpp" line="318"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Usunąć &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="318"/>
+        <location filename="../gui/serversettings.cpp" line="319"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="371"/>
+        <location filename="../gui/serversettings.cpp" line="372"/>
         <source>New Collection %1</source>
         <translation>Nowa kolekcja %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="388"/>
+        <location filename="../gui/serversettings.cpp" line="389"/>
         <source>Default</source>
         <translation>Domyślne</translation>
     </message>
@@ -14034,12 +14174,12 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>SinglePageWidget</name>
     <message>
-        <location filename="../widgets/singlepagewidget.cpp" line="105"/>
+        <location filename="../widgets/singlepagewidget.cpp" line="106"/>
         <source>Refresh</source>
         <translation>Odśwież</translation>
     </message>
     <message>
-        <location filename="../widgets/singlepagewidget.cpp" line="199"/>
+        <location filename="../widgets/singlepagewidget.cpp" line="206"/>
         <source>View</source>
         <translation>Widok</translation>
     </message>
@@ -14047,12 +14187,12 @@ Proszę wybrać inną nazwę.</translation>
 <context>
     <name>SmartPlaylists</name>
     <message>
-        <location filename="../playlists/smartplaylists.cpp" line="44"/>
+        <location filename="../playlists/smartplaylists.cpp" line="43"/>
         <source>Smart Playlists</source>
         <translation>Inteligentne listy odtwarzania</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylists.cpp" line="49"/>
+        <location filename="../playlists/smartplaylists.cpp" line="48"/>
         <source>Rules based playlists</source>
         <translation>Listy odtwarzania bazujące na regułach</translation>
     </message>
@@ -14101,7 +14241,7 @@ Ta operacja nie może być cofnięta.</translation>
     <message>
         <location filename="../playlists/smartplaylistspage.cpp" line="172"/>
         <location filename="../playlists/smartplaylistspage.cpp" line="204"/>
-        <location filename="../playlists/smartplaylistspage.cpp" line="307"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="316"/>
         <source>Failed to locate any matching songs</source>
         <translation>Znalezienie pasujących utworów nie powiodło się</translation>
     </message>
@@ -14219,209 +14359,224 @@ Załadować z dysku, czy usunąć z dysku i pobrać?</translation>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="217"/>
+        <location filename="../context/songview.cpp" line="219"/>
+        <source>Failed to locate lyrics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../context/songview.cpp" line="227"/>
         <source>Delete lyrics file?</source>
         <translation>Usunąć plik z tekstami?</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="217"/>
+        <location filename="../context/songview.cpp" line="227"/>
         <source>Delete File</source>
         <translation>Usuń plik</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="500"/>
-        <location filename="../context/songview.cpp" line="580"/>
+        <location filename="../context/songview.cpp" line="531"/>
+        <location filename="../context/songview.cpp" line="611"/>
         <source>Artist</source>
         <translation>Artysta</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="501"/>
-        <location filename="../context/songview.cpp" line="581"/>
+        <location filename="../context/songview.cpp" line="532"/>
+        <location filename="../context/songview.cpp" line="612"/>
         <source>Album artist</source>
         <translation>Artysta albumu</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="502"/>
-        <location filename="../context/songview.cpp" line="582"/>
+        <location filename="../context/songview.cpp" line="533"/>
+        <location filename="../context/songview.cpp" line="613"/>
         <source>Composer</source>
         <translation>Kompozytor</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="504"/>
+        <location filename="../context/songview.cpp" line="535"/>
         <source>Lyricist</source>
         <translation>Twórca tekstu</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="505"/>
+        <location filename="../context/songview.cpp" line="536"/>
         <source>Conductor</source>
         <translation>Dyrygent</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="506"/>
+        <location filename="../context/songview.cpp" line="537"/>
         <source>Remixer</source>
         <translation>Twórca remixu</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="507"/>
-        <location filename="../context/songview.cpp" line="584"/>
+        <location filename="../context/songview.cpp" line="538"/>
+        <location filename="../context/songview.cpp" line="615"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="508"/>
+        <location filename="../context/songview.cpp" line="539"/>
         <source>Subtitle</source>
         <translation>Podtytuł</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="509"/>
-        <location filename="../context/songview.cpp" line="585"/>
+        <location filename="../context/songview.cpp" line="540"/>
+        <location filename="../context/songview.cpp" line="616"/>
         <source>Track number</source>
         <translation>Numer utworu</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="510"/>
-        <location filename="../context/songview.cpp" line="586"/>
+        <location filename="../context/songview.cpp" line="541"/>
+        <location filename="../context/songview.cpp" line="617"/>
         <source>Disc number</source>
         <translation>Numer płyty</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="511"/>
-        <location filename="../context/songview.cpp" line="587"/>
+        <location filename="../context/songview.cpp" line="542"/>
+        <location filename="../context/songview.cpp" line="619"/>
         <source>Genre</source>
         <translation>Gatunek</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="512"/>
+        <location filename="../context/songview.cpp" line="543"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="513"/>
+        <location filename="../context/songview.cpp" line="544"/>
         <source>Original date</source>
         <translation>Oryginalna data</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="514"/>
-        <location filename="../context/songview.cpp" line="589"/>
+        <location filename="../context/songview.cpp" line="545"/>
+        <location filename="../context/songview.cpp" line="622"/>
         <source>Comment</source>
         <translation>Komentarz</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="515"/>
+        <location filename="../context/songview.cpp" line="546"/>
         <source>Copyright</source>
         <translation>Prawa autorskie</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="516"/>
+        <location filename="../context/songview.cpp" line="547"/>
         <source>Label</source>
         <translation>Wytwórnia muzyczna</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="517"/>
+        <location filename="../context/songview.cpp" line="548"/>
         <source>Catalogue number</source>
         <translation>Numer katalogowy</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="518"/>
+        <location filename="../context/songview.cpp" line="549"/>
         <source>Title sort</source>
         <translation>Tytuł (sortowanie)</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="519"/>
+        <location filename="../context/songview.cpp" line="550"/>
         <source>Artist sort</source>
         <translation>Artysta (sortowanie)</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="520"/>
+        <location filename="../context/songview.cpp" line="551"/>
         <source>Album artist sort</source>
         <translation>Artysta albumu (sortowanie)</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="521"/>
+        <location filename="../context/songview.cpp" line="552"/>
         <source>Album sort</source>
         <translation>Album (sortowanie)</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="522"/>
+        <location filename="../context/songview.cpp" line="553"/>
         <source>Encoded by</source>
         <translation>Enkodowane przez</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="523"/>
+        <location filename="../context/songview.cpp" line="554"/>
         <source>Encoder</source>
         <translation>Enkoder</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="524"/>
+        <location filename="../context/songview.cpp" line="555"/>
         <source>Mood</source>
         <translation>Nastrój</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="525"/>
+        <location filename="../context/songview.cpp" line="556"/>
         <source>Media</source>
         <translation>Nośnik</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="526"/>
-        <location filename="../context/songview.cpp" line="565"/>
+        <location filename="../context/songview.cpp" line="557"/>
+        <location filename="../context/songview.cpp" line="596"/>
         <source>Bitrate</source>
         <translation>Bitrate</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="527"/>
-        <location filename="../context/songview.cpp" line="568"/>
+        <location filename="../context/songview.cpp" line="558"/>
+        <location filename="../context/songview.cpp" line="599"/>
         <source>Sample rate</source>
         <translation>Częstość próbkowania</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="528"/>
-        <location filename="../context/songview.cpp" line="571"/>
+        <location filename="../context/songview.cpp" line="559"/>
+        <location filename="../context/songview.cpp" line="602"/>
         <source>Channels</source>
         <translation>Kanały</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="530"/>
+        <location filename="../context/songview.cpp" line="561"/>
         <source>Tagging time</source>
         <translation>Czas tagowania</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="552"/>
+        <location filename="../context/songview.cpp" line="583"/>
         <source>Performer (%1)</source>
         <translation>Wykonawca (%1)</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="565"/>
+        <location filename="../context/songview.cpp" line="596"/>
         <source>%1 kb/s</source>
         <translation>%1 kb/s</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="568"/>
+        <location filename="../context/songview.cpp" line="599"/>
         <source>%1 Hz</source>
         <translation>%1 Hz</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="575"/>
+        <location filename="../context/songview.cpp" line="606"/>
         <source>Bits</source>
         <translation>Bity</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="583"/>
+        <location filename="../context/songview.cpp" line="614"/>
         <source>Performer</source>
         <translation>Wykonawca</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="588"/>
+        <location filename="../context/songview.cpp" line="618"/>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../context/songview.cpp" line="620"/>
         <source>Year</source>
         <translation>Rok</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="625"/>
-        <location filename="../context/songview.cpp" line="628"/>
+        <location filename="../context/songview.cpp" line="621"/>
+        <source>Original Year</source>
+        <translation type="unfinished">Rok oryginału</translation>
+    </message>
+    <message>
+        <location filename="../context/songview.cpp" line="658"/>
+        <location filename="../context/songview.cpp" line="661"/>
         <source>Filename</source>
         <translation>Nazwa pliku</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="844"/>
+        <location filename="../context/songview.cpp" line="887"/>
         <source>Fetching lyrics via %1</source>
         <translation>Pobieranie tekstów z %1</translation>
     </message>
@@ -14429,7 +14584,7 @@ Załadować z dysku, czy usunąć z dysku i pobrać?</translation>
 <context>
     <name>SoundCloudService</name>
     <message>
-        <location filename="../online/soundcloudservice.cpp" line="53"/>
+        <location filename="../online/soundcloudservice.cpp" line="55"/>
         <source>Search for tracks from soundcloud.com</source>
         <translation>Szukaj utworów na soundcloud.com</translation>
     </message>
@@ -14460,7 +14615,7 @@ Załadować z dysku, czy usunąć z dysku i pobrać?</translation>
     </message>
     <message numerus="yes">
         <location filename="../models/sqllibrarymodel.cpp" line="172"/>
-        <location filename="../models/sqllibrarymodel.cpp" line="345"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="346"/>
         <source>%n Album(s)</source>
         <translation>
             <numerusform>%n Album</numerusform>
@@ -14469,53 +14624,53 @@ Załadować z dysku, czy usunąć z dysku i pobrać?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="210"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="211"/>
         <source>Modified in the last week</source>
         <translation>Zmodyfikowane w ostatnim tygodniu</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="212"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="213"/>
         <source>Modified in the last 2 weeks</source>
         <translation>Zmodyfikowane w ostatnich 2 tygodniach</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="214"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="215"/>
         <source>Modified in the last 30 days</source>
         <translation>Zmodyfikowane w ostatnich 30 dniach</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="216"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="217"/>
         <source>Modified in the last 60 days</source>
         <translation>Zmodyfikowane w ostatnich 60 dniach</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="218"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="219"/>
         <source>Modified in the last 90 days</source>
         <translation>Zmodyfikowane w ostatnich 90 dniach</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="220"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="221"/>
         <source>Modified in the last year</source>
         <translation>Zmodyfikowane w ostatnim roku</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="222"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="223"/>
         <source>Modified in the last 2 years</source>
         <translation>Zmodyfikowane w ostatnich 2 latach</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="224"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="225"/>
         <source>Modified in the last 3 years</source>
         <translation>Zmodyfikowane w ostatnich 3 latach</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="226"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="227"/>
         <source>Modified more than 3 years ago</source>
         <translation>Zmodyfikowane więcej niż 3 lata temu</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/sqllibrarymodel.cpp" line="243"/>
-        <location filename="../models/sqllibrarymodel.cpp" line="357"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="244"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="358"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n Utwór (%1)</numerusform>
@@ -14524,17 +14679,17 @@ Załadować z dysku, czy usunąć z dysku i pobrać?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="419"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="420"/>
         <source>Cue Sheet</source>
         <translation>Plik .cue</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="419"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="420"/>
         <source>Playlist</source>
         <translation>Playlista</translation>
     </message>
     <message>
-        <location filename="../models/sqllibrarymodel.cpp" line="444"/>
+        <location filename="../models/sqllibrarymodel.cpp" line="445"/>
         <source>%1 by %2</source>
         <translation>%1 w wykonaniu %2</translation>
     </message>
@@ -14552,17 +14707,22 @@ Załadować z dysku, czy usunąć z dysku i pobrać?</translation>
         <translation>Usuń duplikaty</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="84"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="60"/>
+        <source>Remove Invalid Tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/storedplaylistspage.cpp" line="87"/>
         <source>Initially Collapse Albums</source>
         <translation>Wstępnie zwiń albumy</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="107"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="111"/>
         <source>Either save the play queue, or use the context menu in the library, to create new playlists.</source>
         <translation>Zapisz kolejkę odtwarzania, lub użyj menu kontekstowego w bibliotece aby stworzyć nową playlistę.</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="189"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="193"/>
         <source>Are you sure you wish to remove the selected playlists?
 
 This cannot be undone.</source>
@@ -14571,22 +14731,22 @@ This cannot be undone.</source>
 Ta operacja nie może być cofnięta.</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="190"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="194"/>
         <source>Remove Playlists</source>
         <translation>Usuń playlisty</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="211"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="215"/>
         <source>Playlist Name</source>
         <translation>Nazwa playlisty</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="211"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="215"/>
         <source>Enter a name for the playlist:</source>
         <translation>Proszę wpisać nazwę dla playlisty:</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="233"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="237"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Overwrite?</source>
@@ -14595,22 +14755,22 @@ Overwrite?</source>
 Nadpisać?</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="234"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="238"/>
         <source>Overwrite Playlist</source>
         <translation>Nadpisz playlisty</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="229"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="233"/>
         <source>Rename Playlist</source>
         <translation>Zmiana nazwy playlisty</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="229"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="233"/>
         <source>Enter new name for playlist:</source>
         <translation>Proszę wpisać nową nazwę dla playlisty:</translation>
     </message>
     <message>
-        <location filename="../playlists/storedplaylistspage.cpp" line="317"/>
+        <location filename="../playlists/storedplaylistspage.cpp" line="346"/>
         <source>Cannot add songs from &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Nie można dodać utworów z &apos;%1&apos; do &apos;%2&apos;</translation>
     </message>
@@ -14651,7 +14811,7 @@ Nadpisać?</translation>
 <context>
     <name>StreamFetcher</name>
     <message>
-        <location filename="../streams/streamfetcher.cpp" line="214"/>
+        <location filename="../streams/streamfetcher.cpp" line="241"/>
         <source>Loading %1</source>
         <translation>Ładowanie %1</translation>
     </message>
@@ -14684,7 +14844,7 @@ Nadpisać?</translation>
         <translation>Pobieranie listy...</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="237"/>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="238"/>
         <source>Failed to download list of stream providers!</source>
         <translation>Pobieranie listy dostawców strumieni nie powiodło się!</translation>
     </message>
@@ -14704,38 +14864,34 @@ Nadpisać?</translation>
         <translation>Pobieranie &apos;%1&apos; nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="358"/>
         <source>Install/update the selected stream providers?</source>
-        <translation>Zainstalować/zaktualizować zaznaczonych dostawców strumieni?</translation>
+        <translation type="vanished">Zainstalować/zaktualizować zaznaczonych dostawców strumieni?</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="360"/>
         <source>Install the selected stream providers?</source>
-        <translation>Zainstalować zaznaczonych dostawców strumieni?</translation>
+        <translation type="vanished">Zainstalować zaznaczonych dostawców strumieni?</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="362"/>
         <source>Update the selected stream providers?</source>
-        <translation>Zaktualizować zaznaczonych dostawców strumieni?</translation>
+        <translation type="vanished">Zaktualizować zaznaczonych dostawców strumieni?</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="365"/>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="447"/>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
         <source>Install/Update</source>
         <translation>Instaluj/aktualizuj</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="372"/>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation>Przerwać instalację/aktualizację?</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="372"/>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort</source>
         <translation>Przerwij</translation>
     </message>
     <message numerus="yes">
-        <location filename="../streams/streamproviderlistdialog.cpp" line="420"/>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="412"/>
         <source>%n Update(s) available</source>
         <translation>
             <numerusform>%n Dostępna aktualizacja</numerusform>
@@ -14744,12 +14900,12 @@ Nadpisać?</translation>
         </translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="430"/>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation>Pobieranie %1</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="449"/>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>
         <source>Update all updateable providers</source>
         <translation>Zaktualizuj wszystkich dostawców</translation>
     </message>
@@ -14757,47 +14913,52 @@ Nadpisać?</translation>
 <context>
     <name>StreamSearchModel</name>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="51"/>
+        <location filename="../models/streamsearchmodel.cpp" line="46"/>
         <source>TuneIn</source>
         <translation>TuneIn</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="52"/>
+        <location filename="../models/streamsearchmodel.cpp" line="47"/>
         <source>ShoutCast</source>
         <translation>ShoutCast</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="53"/>
+        <location filename="../models/streamsearchmodel.cpp" line="48"/>
         <source>Dirble</source>
         <translation>Dirble</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="111"/>
+        <location filename="../models/streamsearchmodel.cpp" line="49"/>
+        <source>Community Radio Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/streamsearchmodel.cpp" line="108"/>
         <source>Stream Search</source>
         <translation>Szukaj strumienia</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="113"/>
+        <location filename="../models/streamsearchmodel.cpp" line="110"/>
         <source>Search for radio streams</source>
         <translation>Szukaj strumieni radiowych</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="140"/>
+        <location filename="../models/streamsearchmodel.cpp" line="137"/>
         <source>Enter string to search</source>
         <translation>Wprowadź termin do wyszukiwania</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="140"/>
+        <location filename="../models/streamsearchmodel.cpp" line="137"/>
         <source>Not Loaded</source>
         <translation>Nie załadowano</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="142"/>
+        <location filename="../models/streamsearchmodel.cpp" line="139"/>
         <source>Loading...</source>
         <translation>Ładowanie...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/streamsearchmodel.cpp" line="144"/>
+        <location filename="../models/streamsearchmodel.cpp" line="141"/>
         <source>%n Entry(s)</source>
         <translation>
             <numerusform>%n Element</numerusform>
@@ -14939,77 +15100,77 @@ Nadpisać?</translation>
 <context>
     <name>StreamsModel</name>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="238"/>
+        <location filename="../models/streamsmodel.cpp" line="228"/>
         <source>Bookmarks</source>
         <translation>Zakładki</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="502"/>
+        <location filename="../models/streamsmodel.cpp" line="493"/>
         <source>TuneIn</source>
         <translation>TuneIn</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="505"/>
+        <location filename="../models/streamsmodel.cpp" line="496"/>
         <source>IceCast</source>
         <translation>IceCast</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="506"/>
+        <location filename="../models/streamsmodel.cpp" line="497"/>
         <source>ShoutCast</source>
         <translation>ShoutCast</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="509"/>
+        <location filename="../models/streamsmodel.cpp" line="500"/>
         <source>Dirble</source>
         <translation>Dirble</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="512"/>
+        <location filename="../models/streamsmodel.cpp" line="503"/>
         <source>Favorites</source>
         <translation>Ulubione</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="515"/>
+        <location filename="../models/streamsmodel.cpp" line="506"/>
         <source>Bookmark Category</source>
         <translation>Kategoria zakładek</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="516"/>
+        <location filename="../models/streamsmodel.cpp" line="507"/>
         <source>Add Stream To Favorites</source>
         <translation>Dodaj strumień do ulubionych</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="517"/>
+        <location filename="../models/streamsmodel.cpp" line="508"/>
         <source>Configure Digitally Imported</source>
         <translation>Skonfiguruj Digitally Imported</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="518"/>
+        <location filename="../models/streamsmodel.cpp" line="509"/>
         <source>Reload</source>
         <translation>Odśwież</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="553"/>
+        <location filename="../models/streamsmodel.cpp" line="544"/>
         <source>Streams</source>
         <translation>Strumienie</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="558"/>
+        <location filename="../models/streamsmodel.cpp" line="549"/>
         <source>Radio stations</source>
         <translation>Stacje radiowe</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="643"/>
+        <location filename="../models/streamsmodel.cpp" line="634"/>
         <source>Not Loaded</source>
         <translation>Nie załadowano</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="645"/>
+        <location filename="../models/streamsmodel.cpp" line="636"/>
         <source>Loading...</source>
         <translation>Ładowanie...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/streamsmodel.cpp" line="647"/>
+        <location filename="../models/streamsmodel.cpp" line="638"/>
         <source>%n Entry(s)</source>
         <translation>
             <numerusform>%n Element</numerusform>
@@ -15570,17 +15731,17 @@ Nadpisać?</translation>
 <context>
     <name>TitleWidget</name>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="74"/>
+        <location filename="../widgets/titlewidget.cpp" line="80"/>
         <source>Click to go back</source>
         <translation>Kliknij aby pójść wstecz</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="129"/>
+        <location filename="../widgets/titlewidget.cpp" line="136"/>
         <source>Add All To Play Queue</source>
         <translation>Dodaj wszystko do kolejki odtwarzania</translation>
     </message>
     <message>
-        <location filename="../widgets/titlewidget.cpp" line="130"/>
+        <location filename="../widgets/titlewidget.cpp" line="137"/>
         <source>Add All And Replace Play Queue</source>
         <translation>Dodaj wszystko i zamień kolejkę odtwarzania</translation>
     </message>
@@ -15707,17 +15868,17 @@ Nadpisać?</translation>
         <translation>Zmiana nazwy pliku z &apos;%1&apos; na &apos;%2&apos; nie powiodła się</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="473"/>
+        <location filename="../tags/trackorganiser.cpp" line="474"/>
         <source>Remove the selected tracks from the list?</source>
         <translation>Usunąć zaznaczone utwory z listy?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="474"/>
+        <location filename="../tags/trackorganiser.cpp" line="475"/>
         <source>Remove Tracks</source>
         <translation>Usuń utwory</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="489"/>
+        <location filename="../tags/trackorganiser.cpp" line="490"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
@@ -15726,17 +15887,17 @@ If you rename a file (or the folder it is within), then the rating associated wi
 Jeśli nazwa pliku zostanie zmieniona (albo nazwa folderu, który zawiera ten plik), to ocena związana z utworem zostanie utracona.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="549"/>
+        <location filename="../tags/trackorganiser.cpp" line="550"/>
         <source>Device has been removed!</source>
         <translation>Urządzenie zostało usunięte!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="554"/>
+        <location filename="../tags/trackorganiser.cpp" line="555"/>
         <source>Device is not connected.</source>
         <translation>Urządzenie nie jest podłączone.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="559"/>
+        <location filename="../tags/trackorganiser.cpp" line="560"/>
         <source>Device is busy?</source>
         <translation>Urządzenie jest zajęte?</translation>
     </message>
@@ -15744,7 +15905,7 @@ Jeśli nazwa pliku zostanie zmieniona (albo nazwa folderu, który zawiera ten pl
 <context>
     <name>TrayItem</name>
     <message>
-        <location filename="../gui/trayitem.cpp" line="179"/>
+        <location filename="../gui/trayitem.cpp" line="182"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
     </message>

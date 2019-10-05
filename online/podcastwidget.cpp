@@ -49,8 +49,8 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     cancelDownloadAction = new Action(Icons::self()->cancelIcon, tr("Cancel Download"), this);
     markAsNewAction = new Action(newIcon, tr("Mark Episodes As New"), this);
     markAsListenedAction = new Action(tr("Mark Episodes As Listened"), this);
-    unplayedOnlyAction = new Action(newIcon, tr("Show Unplayed Only"), this);
-    unplayedOnlyAction->setCheckable(true);
+    //unplayedOnlyAction = new Action(newIcon, tr("Show Unplayed Only"), this);
+    //unplayedOnlyAction->setCheckable(true);
     exportAction = new Action(tr("Export Current Subscriptions"), this);
 
     proxy.setSourceModel(srv);
@@ -66,7 +66,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     connect(cancelDownloadAction, SIGNAL(triggered()), this, SLOT(cancelDownload()));
     connect(markAsNewAction, SIGNAL(triggered()), this, SLOT(markAsNew()));
     connect(markAsListenedAction, SIGNAL(triggered()), this, SLOT(markAsListened()));
-    connect(unplayedOnlyAction, SIGNAL(toggled(bool)), this, SLOT(showUnplayedOnly(bool)));
+    //connect(unplayedOnlyAction, SIGNAL(toggled(bool)), this, SLOT(showUnplayedOnly(bool)));
     connect(exportAction, SIGNAL(triggered()), SLOT(exportSubscriptions()));
 
     view->setMode(ItemView::Mode_DetailedTree);
@@ -74,9 +74,9 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     view->load(config);
     MenuButton *menu=new MenuButton(this);
     ToolButton *addSub=new ToolButton(this);
-    ToolButton *unplayedOnlyBtn=new ToolButton(this);
+    //ToolButton *unplayedOnlyBtn=new ToolButton(this);
     addSub->setDefaultAction(subscribeAction);
-    unplayedOnlyBtn->setDefaultAction(unplayedOnlyAction);
+    //unplayedOnlyBtn->setDefaultAction(unplayedOnlyAction);
     menu->addAction(createViewMenu(QList<ItemView::Mode>() << ItemView::Mode_BasicTree << ItemView::Mode_SimpleTree
                                                            << ItemView::Mode_DetailedTree << ItemView::Mode_List));
 
@@ -84,7 +84,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     connect(configureAction, SIGNAL(triggered()), SLOT(configure()));
     menu->addAction(configureAction);
     menu->addAction(exportAction);
-    init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu << unplayedOnlyBtn, QList<QWidget *>() << addSub);
+    init(ReplacePlayQueue|AppendToPlayQueue|Refresh, QList<QWidget *>() << menu/* << unplayedOnlyBtn*/, QList<QWidget *>() << addSub);
 
     view->addAction(subscribeAction);
     view->addAction(unSubscribeAction);
@@ -194,7 +194,7 @@ static QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > getEpis
 
 void PodcastWidget::download()
 {
-    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(true), GetEp_NotDownloaded|(unplayedOnlyAction->isChecked() ? GetEp_NotListened : 0));
+    QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> > urls=getEpisodes(proxy, view->selectedIndexes(true), GetEp_NotDownloaded/*|(unplayedOnlyAction->isChecked() ? GetEp_NotListened : 0)*/);
 
     if (!urls.isEmpty()) {
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
@@ -254,11 +254,13 @@ void PodcastWidget::markAsListened()
     }
 }
 
+/*
 void PodcastWidget::showUnplayedOnly(bool on)
 {
     view->goToTop();
     proxy.showUnplayedOnly(on);
 }
+*/
 
 void PodcastWidget::doSearch()
 {

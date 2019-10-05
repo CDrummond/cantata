@@ -46,6 +46,8 @@
     genre so that no tracks will match rules.
 36. Add a checkbox controlling whether Cantata should apply its replaygain
     setting each time it connects to MPD. Issue #1531
+37. Remove 'Show Unplayed Only' podcasts action, reported to cause crash when
+    refreshing lists.
 
 2.3.3
 -----

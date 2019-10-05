@@ -69,6 +69,7 @@ public:
     void hideEvent(QHideEvent *e) override;
     QList<QAction *> createViewActions(QList<ItemView::Mode> modes);
     Action * createViewMenu(QList<ItemView::Mode> modes);
+    Action * refreshAct() { return refreshAction; }
 
 public Q_SLOTS:
     virtual void doSearch() { }

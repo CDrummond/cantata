@@ -279,18 +279,7 @@ ContextWidget::ContextWidget(QWidget *parent)
     connect(artist, SIGNAL(findAlbum(QString,QString)), this, SIGNAL(findAlbum(QString,QString)));
     connect(album, SIGNAL(playSong(QString)), this, SIGNAL(playSong(QString)));
     readConfig();
-    setZoom();
     setWide(true);
-}
-
-void ContextWidget::setZoom()
-{
-    int zoom=Settings::self()->contextZoom();
-    if (zoom) {
-        artist->setZoom(zoom);
-        album->setZoom(zoom);
-        song->setZoom(zoom);
-    }
 }
 
 void ContextWidget::setWide(bool w)
@@ -440,7 +429,6 @@ void ContextWidget::readConfig()
 
 void ContextWidget::saveConfig()
 {
-    Settings::self()->saveContextZoom(artist->getZoom());
     if (viewSelector) {
         Settings::self()->saveContextSlimPage(viewSelector->itemData(viewSelector->currentIndex()).toString());
     }
@@ -660,22 +648,6 @@ void ContextWidget::update(const Song &s)
     if (isVisible() && PlayQueueView::BI_Cover==backdropType) {
         updateBackdrop();
     }
-}
-
-bool ContextWidget::eventFilter(QObject *o, QEvent *e)
-{
-    if (QEvent::Wheel==e->type()) {
-        QWheelEvent *we=static_cast<QWheelEvent *>(e);
-        if (Qt::ControlModifier==we->modifiers()) {
-            int numDegrees = static_cast<QWheelEvent *>(e)->delta() / 8;
-            int numSteps = numDegrees / 15;
-            artist->setZoom(numSteps);
-            album->setZoom(numSteps);
-            song->setZoom(numSteps);
-            return true;
-        }
-    }
-    return QObject::eventFilter(o, e);
 }
 
 void ContextWidget::cancel()

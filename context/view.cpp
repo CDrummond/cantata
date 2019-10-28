@@ -258,27 +258,6 @@ void View::addEventFilter(QObject *obj)
     header->installEventFilter(obj);
 }
 
-void View::setZoom(int z)
-{
-    for (TextBrowser *t: texts) {
-        t->setZoom(z);
-    }
-    QFont f=header->font();
-    f.setPointSize(f.pointSize()+z);
-    header->setFont(f);
-
-    if (selector) {
-        QFont f=selector->font();
-        f.setPointSize(f.pointSize()+z);
-        selector->setFont(f);
-    }
-}
-
-int View::getZoom()
-{
-    return text->zoom();
-}
-
 void View::setHtml(const QString &h, int index)
 {
     texts.at(index)->setText(QLatin1String("<html><head><style type=text/css>a:link {color:")+text->palette().link().color().name()+

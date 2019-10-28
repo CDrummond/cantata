@@ -64,8 +64,6 @@ public:
     void setEditable(bool e, int index=0);
     void setPal(const QPalette &pal, const QColor &linkColor, const QColor &prevLinkColor);
     void addEventFilter(QObject *obj);
-    void setZoom(int z);
-    int getZoom();
     virtual void update(const Song &s, bool force)=0;
     void setHtml(const QString &h, int index=0);
     int currentView() const { return selector ? selector->currentIndex() : -1; }

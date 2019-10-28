@@ -35,8 +35,6 @@ public:
     TextBrowser(QWidget *p);
     QVariant loadResource(int type, const QUrl &name) override;
 
-    void setZoom(int diff) { if (diff) zoomIn(diff);  }
-    int zoom() const { return font().pointSize()-origZoomValue; }
     void setPicSize(const QSize &p) { pSize=p; }
     QSize picSize() const { return pSize; }
     void setFullWidthImage(bool s);
@@ -57,7 +55,6 @@ private:
 
 private:
     QTimer *timer;
-    int origZoomValue;
     int lastImageSize;
     bool fullWidthImg;
     bool haveImg;

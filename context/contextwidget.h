@@ -122,10 +122,8 @@ private Q_SLOTS:
     void downloadResponse();
 
 private:
-    void setZoom();
     void setWide(bool w);
     void resizeEvent(QResizeEvent *e) override;
-    bool eventFilter(QObject *o, QEvent *e) override;
     void cancel();
     void updateBackdrop(bool force=false);
     void getBackdrop();

@@ -48,6 +48,7 @@
     setting each time it connects to MPD. Issue #1531
 37. Remove 'Show Unplayed Only' podcasts action, reported to cause crash when
     refreshing lists.
+38. Remove zooming from context view.
 
 2.3.3
 -----

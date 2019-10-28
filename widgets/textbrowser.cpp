@@ -35,7 +35,6 @@ TextBrowser::TextBrowser(QWidget *p)
     , fullWidthImg(false)
     , haveImg(false)
 {
-    origZoomValue=font().pointSize();
 }
 
 // QTextEdit/QTextBrowser seems to do FastTransformation when scaling images, and this looks bad.

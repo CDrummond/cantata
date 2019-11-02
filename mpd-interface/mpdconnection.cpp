@@ -2034,7 +2034,7 @@ void MPDConnection::listStreams()
 
 void MPDConnection::saveStream(const QString &url, const QString &name)
 {
-    if (sendCommand("playlistadd "+encodeName(constStreamsPlayListName)+" "+encodeName(MPDParseUtils::addStreamName(url, name))).ok) {
+    if (sendCommand("playlistadd "+encodeName(constStreamsPlayListName)+" "+encodeName(MPDParseUtils::addStreamName(url, name, true))).ok) {
         emit savedStream(url, name);
     }
 }

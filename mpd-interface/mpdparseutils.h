@@ -91,9 +91,11 @@ namespace MPDParseUtils
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);
     extern QList<Sticker> parseStickers(const QByteArray &data, const QByteArray &sticker);
-    extern QString addStreamName(const QString &url, const QString &name);
+    // Single hash when saving streams to [Radio Streams] - for compatability
+    extern QString addStreamName(const QString &url, const QString &name, bool singleHash=false);
     extern QString getStreamName(const QString &url);
-    extern QString getAndRemoveStreamName(QString &url);
+    // checkSingleHash - check for #<Name> as well as #StreamName:<Name>
+    extern QString getAndRemoveStreamName(QString &url, bool checkSingleHash=false);
 };
 
 #endif

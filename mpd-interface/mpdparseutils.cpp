@@ -372,7 +372,7 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         song.guessTags();
         song.fillEmptyFields();
     } else if (Loc_Streams==location) {
-        song.setName(getAndRemoveStreamName(song.file));
+        song.setName(getAndRemoveStreamName(song.file, true));
     } else {
         QString origFile=song.file;
         bool modifiedFile=false;
@@ -825,11 +825,12 @@ QList<MPDParseUtils::Sticker> MPDParseUtils::parseStickers(const QByteArray &dat
     return stickers;
 }
 
-QString MPDParseUtils::addStreamName(const QString &url, const QString &name)
+static const QString constStreamNameHash("#StreamName:");
+QString MPDParseUtils::addStreamName(const QString &url, const QString &name, bool singleHash)
 {
     return name.isEmpty()
             ? url
-            : (url+(QUrl(url).path().isEmpty() ? "/#" : "#")+name);
+            : (url+(QUrl(url).path().isEmpty() ? "/" : "")+(singleHash ? QLatin1String("#") : constStreamNameHash)+name);
 }
 
 // Previous versions replaced '#' in a stream's name with ${hash}.
@@ -839,21 +840,27 @@ static const QString constHashReplacement=QLatin1String("${hash}");
 
 QString MPDParseUtils::getStreamName(const QString &url)
 {
-    int idx=url.indexOf('#');
-    QString name=-1==idx ? QString() : url.mid(idx+1);
+    int idx=url.indexOf(constStreamNameHash);
+    QString name=-1==idx ? QString() : url.mid(idx+constStreamNameHash.length());
     while (name.contains(constHashReplacement)) {
         name.replace(constHashReplacement, "#");
     }
     return name;
 }
 
-QString MPDParseUtils::getAndRemoveStreamName(QString &url)
+QString MPDParseUtils::getAndRemoveStreamName(QString &url, bool checkSingleHash)
 {
-    int idx=url.indexOf('#');
+    int idx=url.indexOf(constStreamNameHash);
+    int len=constStreamNameHash.length();
+    if (-1==idx && checkSingleHash) {
+        idx=url.indexOf('#');
+        len=1;
+    }
     if (-1==idx) {
         return QString();
     }
-    QString name=url.mid(idx+1);
+
+    QString name=url.mid(idx+len);
     while (name.contains(constHashReplacement)) {
         name.replace(constHashReplacement, "#");
     }

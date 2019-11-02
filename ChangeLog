@@ -49,6 +49,8 @@
 37. Remove 'Show Unplayed Only' podcasts action, reported to cause crash when
     refreshing lists.
 38. Remove zooming from context view.
+39. When adding a stream to the play queue, encode name using #StreamName:name
+    and not just #name - as MPD 0.22 uses this for #icy-metadata
 
 2.3.3
 -----

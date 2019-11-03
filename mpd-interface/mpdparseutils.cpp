@@ -826,11 +826,17 @@ QList<MPDParseUtils::Sticker> MPDParseUtils::parseStickers(const QByteArray &dat
 }
 
 static const QString constStreamNameHash("#StreamName:");
+static const QString constStreamNameAmpersand("&StreamName:");
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name, bool singleHash)
 {
-    return name.isEmpty()
-            ? url
-            : (url+(QUrl(url).path().isEmpty() ? "/" : "")+(singleHash ? QLatin1String("#") : constStreamNameHash)+name);
+    if (name.isEmpty()) {
+        return url;
+    }
+
+    if (url.contains('#')) {
+        return url+(singleHash ? QLatin1String("&") : constStreamNameAmpersand)+name;
+    }
+    return url+(QUrl(url).path().isEmpty() ? "/" : "")+(singleHash ? QLatin1String("#") : constStreamNameHash)+name;
 }
 
 // Previous versions replaced '#' in a stream's name with ${hash}.
@@ -841,6 +847,9 @@ static const QString constHashReplacement=QLatin1String("${hash}");
 QString MPDParseUtils::getStreamName(const QString &url)
 {
     int idx=url.indexOf(constStreamNameHash);
+    if (-1==idx) {
+        url.indexOf(constStreamNameAmpersand);
+    }
     QString name=-1==idx ? QString() : url.mid(idx+constStreamNameHash.length());
     while (name.contains(constHashReplacement)) {
         name.replace(constHashReplacement, "#");
@@ -852,8 +861,11 @@ QString MPDParseUtils::getAndRemoveStreamName(QString &url, bool checkSingleHash
 {
     int idx=url.indexOf(constStreamNameHash);
     int len=constStreamNameHash.length();
+    if (-1==idx) {
+        idx=url.indexOf(constStreamNameAmpersand);
+    }
     if (-1==idx && checkSingleHash) {
-        idx=url.indexOf('#');
+        idx=url.lastIndexOf('#');
         len=1;
     }
     if (-1==idx) {

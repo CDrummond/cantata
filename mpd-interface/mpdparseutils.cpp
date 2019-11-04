@@ -825,57 +825,39 @@ QList<MPDParseUtils::Sticker> MPDParseUtils::parseStickers(const QByteArray &dat
     return stickers;
 }
 
-static const QString constStreamNameHash("#StreamName:");
-static const QString constStreamNameAmpersand("&StreamName:");
+static const QString constStreamName("StreamName");
+
 QString MPDParseUtils::addStreamName(const QString &url, const QString &name, bool singleHash)
 {
-    if (name.isEmpty()) {
-        return url;
-    }
-
-    if (url.contains('#')) {
-        return url+(singleHash ? QLatin1String("&") : constStreamNameAmpersand)+name;
-    }
-    return url+(QUrl(url).path().isEmpty() ? "/" : "")+(singleHash ? QLatin1String("#") : constStreamNameHash)+name;
+    return Utils::addHashParam(url, singleHash ? QString() : constStreamName, name);
 }
-
-// Previous versions replaced '#' in a stream's name with ${hash}.
-// This no longer occurs, but we need to do the replacement here,
-// just in case the stream name was saved this way.
-static const QString constHashReplacement=QLatin1String("${hash}");
 
 QString MPDParseUtils::getStreamName(const QString &url)
 {
-    int idx=url.indexOf(constStreamNameHash);
-    if (-1==idx) {
-        url.indexOf(constStreamNameAmpersand);
+    DBUG << url;
+    QMap<QString, QString> kv = Utils::hashParams(url);
+    QMap<QString, QString>::ConstIterator name = kv.constFind(constStreamName);
+    if (kv.constEnd()!=name) {
+        DBUG << "name" << name.value();
+        return name.value();
     }
-    QString name=-1==idx ? QString() : url.mid(idx+constStreamNameHash.length());
-    while (name.contains(constHashReplacement)) {
-        name.replace(constHashReplacement, "#");
-    }
-    return name;
+    return QString();
 }
 
 QString MPDParseUtils::getAndRemoveStreamName(QString &url, bool checkSingleHash)
 {
-    int idx=url.indexOf(constStreamNameHash);
-    int len=constStreamNameHash.length();
-    if (-1==idx) {
-        idx=url.indexOf(constStreamNameAmpersand);
+    DBUG << url;
+    QMap<QString, QString> kv = Utils::hashParams(url);
+    QMap<QString, QString>::ConstIterator name = kv.constFind(constStreamName);
+    if (kv.constEnd()==name && checkSingleHash) {
+        DBUG << "check single";
+        name = kv.find("-");
     }
-    if (-1==idx && checkSingleHash) {
-        idx=url.lastIndexOf('#');
-        len=1;
-    }
-    if (-1==idx) {
+    if (kv.constEnd()==name) {
+        DBUG << "no name found";
         return QString();
     }
-
-    QString name=url.mid(idx+len);
-    while (name.contains(constHashReplacement)) {
-        name.replace(constHashReplacement, "#");
-    }
-    url=url.left(idx);
-    return name;
+    url=Utils::removeHash(url);
+    DBUG << "name" << name.value();
+    return name.value();
 }

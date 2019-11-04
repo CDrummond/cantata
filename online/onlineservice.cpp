@@ -26,14 +26,9 @@
 #include <QUrl>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QMap>
 
-static const QString constUrlGuard=QLatin1String("#{SONG_DETAILS}");
-static const QString constDeliminator=QLatin1String("<@>");
-
-static inline QString fixString(QString str)
-{
-    return str.replace(constDeliminator, " ").replace("\n", "");
-}
+static const QString constSongDetails=QLatin1String("SongDetails");
 
 static inline void add(QJsonObject &json, const QString &key, const QString &val)
 {
@@ -62,7 +57,7 @@ Song & OnlineService::encode(Song &song)
     add(json, "track", song.track);
     add(json, "disc", song.disc);
     add(json, "service", song.onlineService());
-    song.file=QUrl(song.file).toEncoded()+"#"+QJsonDocument(json).toJson(QJsonDocument::Compact);
+    song.file=Utils::addHashParam(QUrl(song.file).toEncoded(), constSongDetails, QJsonDocument(json).toJson(QJsonDocument::Compact));
     return song;
 }
 
@@ -72,45 +67,26 @@ bool OnlineService::decode(Song &song)
         return false;
     }
 
-    int pos=song.file.indexOf(constUrlGuard);
+    QMap<QString, QString> kv = Utils::hashParams(song.file);
+    QMap<QString, QString>::ConstIterator details = kv.constFind(constSongDetails);
 
-    if (pos>0) { // Old (pre 2.3.1) style
-        QStringList parts=song.file.mid(pos+constUrlGuard.length()).split(constDeliminator);
-        if (parts.length()>=10) {
-            song.artist=parts.at(0);
-            song.albumartist=parts.at(1);
-            song.album=parts.at(2);
-            song.title=parts.at(3);
-            song.genres[0]=parts.at(4);
-            song.time=parts.at(5).toUInt();
-            song.year=parts.at(6).toUInt();
-            song.track=parts.at(7).toUInt();
-            song.disc=parts.at(8).toUInt();
+    if (kv.constEnd()!=details) {
+        QJsonDocument doc = QJsonDocument::fromJson(details.value().toUtf8());
+        if (!doc.isNull()) {
+            QJsonObject obj = doc.object();
+            song.artist=obj["artist"].toString();
+            song.albumartist=obj["albumartist"].toString();
+            song.album=obj["album"].toString();
+            song.title=obj["title"].toString();
+            song.genres[0]=obj["genre"].toString();
+            if (obj.contains("time")) song.track=obj["time"].toInt();
+            if (obj.contains("year")) song.track=obj["year"].toInt();
+            if (obj.contains("track")) song.track=obj["track"].toInt();
+            if (obj.contains("disc")) song.track=obj["disc"].toInt();
+            song.setIsFromOnlineService(obj["service"].toString());
             song.type=Song::OnlineSvrTrack;
-            song.setIsFromOnlineService(parts.at(9));
-            song.file=song.file.left(pos);
+            song.file=Utils::removeHash(song.file);
             return true;
-        }
-    } else {
-        pos = song.file.indexOf("#{");
-        if (pos>0) {
-            QJsonDocument doc = QJsonDocument::fromJson(song.file.mid(pos+1).toUtf8());
-            if (!doc.isNull()) {
-                QJsonObject obj = doc.object();
-                song.artist=obj["artist"].toString();
-                song.albumartist=obj["albumartist"].toString();
-                song.album=obj["album"].toString();
-                song.title=obj["title"].toString();
-                song.genres[0]=obj["genre"].toString();
-                if (obj.contains("time")) song.track=obj["time"].toInt();
-                if (obj.contains("year")) song.track=obj["year"].toInt();
-                if (obj.contains("track")) song.track=obj["track"].toInt();
-                if (obj.contains("disc")) song.track=obj["disc"].toInt();
-                song.setIsFromOnlineService(obj["service"].toString());
-                song.type=Song::OnlineSvrTrack;
-                song.file=song.file.left(pos);
-                return true;
-            }
         }
     }
     return false;

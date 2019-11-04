@@ -74,6 +74,9 @@ namespace Utils
 
     extern QString strippedText(QString s);
     extern QString stripAcceleratorMarkers(QString label);
+    extern QMap<QString, QString> hashParams(const QString &url);
+    extern QString addHashParam(const QString &url, const QString &key, const QString &val);
+    extern QString removeHash(const QString &url);
 
     // Convert path to a format suitable fo rUI - e.g. use native separators, and remove any trailing separator
     extern QString convertPathForDisplay(const QString &dir, bool isFolder=true);

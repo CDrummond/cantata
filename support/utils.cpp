@@ -36,6 +36,7 @@
 #include <QEventLoop>
 #include <QStandardPaths>
 #include <QSet>
+#include <QUrl>
 #ifndef _MSC_VER 
 #include <unistd.h>
 #include <utime.h>
@@ -228,6 +229,41 @@ QString Utils::stripAcceleratorMarkers(QString label)
         ++p;
     }
     return label;
+}
+
+QMap<QString, QString> Utils::hashParams(const QString &url)
+{
+    QMap<QString, QString> map;
+    int start=url.indexOf("#");
+    if (start>0) {
+        QStringList parts = url.mid(start+1).split("&");
+        for (const QString &p: parts) {
+            QStringList kv = p.split("=");
+            if (kv.length()>=2) {
+                QString key = kv[0];
+                kv.removeAt(0);
+                map.insert(key, QUrl::fromPercentEncoding(kv.join("=").toLatin1()));
+            } else {
+                map.insert(QString("-"), QUrl::fromPercentEncoding(p.toLatin1()));
+            }
+        }
+    }
+    return map;
+}
+
+QString Utils::addHashParam(const QString &url, const QString &key, const QString &val)
+{
+    if (val.isEmpty()) {
+        return url;
+    }
+
+    return url+(url.contains('#') ? "&" : "#")+(key.isEmpty() ? "" : (key+"="))+QUrl::toPercentEncoding(val);
+}
+
+QString Utils::removeHash(const QString &url)
+{
+    int hash=url.indexOf('#');
+    return hash<0 ? url : url.left(hash);
 }
 
 QString Utils::convertPathForDisplay(const QString &path, bool isFolder)

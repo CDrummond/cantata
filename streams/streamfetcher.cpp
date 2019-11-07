@@ -239,9 +239,7 @@ void StreamFetcher::doNext()
             }
         }
         emit status(tr("Loading %1").arg(report));
-        if (!currentName.isEmpty()) {
-            current=current.left(current.length()-(currentName.length()+1));
-        }
+        current=Utils::removeHash(current);
         // MPD 0.19.2 can handle m3u8
         if (u.path().endsWith(QLatin1String(".m3u8"))) {
             DBUG << "use orig (m3u8)" << current;

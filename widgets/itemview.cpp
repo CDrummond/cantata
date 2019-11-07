@@ -24,7 +24,9 @@
 #include "itemview.h"
 #include "groupedview.h"
 #include "tableview.h"
+#ifdef ENABLE_CATEGORIZED_VIEW
 #include "categorizedview.h"
+#endif
 #include "messageoverlay.h"
 #include "models/roles.h"
 #include "gui/covers.h"
@@ -148,8 +150,10 @@ static int zoomedSize(QListView *view, int size) {
     return view
             ? qobject_cast<ListView *>(view)
               ? static_cast<ListView *>(view)->zoom()*size
+            #ifdef ENABLE_CATEGORIZED_VIEW
               : qobject_cast<CategorizedView *>(view)
                 ? static_cast<CategorizedView *>(view)->zoom()*size
+            #endif
                 : size
             : size;
 }
@@ -158,8 +162,10 @@ static QSize zoomedSize(QListView *view, QSize size) {
     return view
             ? qobject_cast<ListView *>(view)
               ? static_cast<ListView *>(view)->zoom()*size
+            #ifdef ENABLE_CATEGORIZED_VIEW
               : qobject_cast<CategorizedView *>(view)
                 ? static_cast<CategorizedView *>(view)->zoom()*size
+            #endif
                 : size
             : size;
 }
@@ -173,7 +179,11 @@ public:
         #ifdef RESPONSIVE_LAYOUT
         , viewGap(Utils::scaleForDpi(8))
         #endif
+        #ifdef ENABLE_CATEGORIZED_VIEW
         , isCategorizedView(v && qobject_cast<CategorizedView *>(v))
+        #else
+        , isCategorizedView(false)
+        #endif
     {
     }
 
@@ -660,7 +670,9 @@ QString ItemView::modeStr(Mode m)
     case Mode_IconTop:      return QLatin1String("icontop");
     case Mode_GroupedTree:  return QLatin1String("grouped");
     case Mode_Table:        return QLatin1String("table");
+    #ifdef ENABLE_CATEGORIZED_VIEW
     case Mode_Categorized:  return QLatin1String("categorized");
+    #endif
     }
 }
 
@@ -686,7 +698,9 @@ ItemView::ItemView(QWidget *p)
     , mode(Mode_SimpleTree)
     , groupedView(nullptr)
     , tableView(nullptr)
+    #ifdef ENABLE_CATEGORIZED_VIEW
     , categorizedView(nullptr)
+    #endif
     , spinner(nullptr)
     , msgOverlay(nullptr)
     , performedSearch(false)
@@ -837,6 +851,7 @@ void ItemView::allowTableView(TableView *v)
 
 void ItemView::allowCategorized()
 {
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (!categorizedView) {
         categorizedView=new CategorizedView(stackedWidget);
         categorizedView->setParent(stackedWidget);
@@ -855,6 +870,7 @@ void ItemView::allowCategorized()
         #endif
         categorizedView->setItemDelegate(new ListDelegate(categorizedView, categorizedView));
     }
+    #endif
 }
 
 void ItemView::addAction(QAction *act)
@@ -867,9 +883,11 @@ void ItemView::addAction(QAction *act)
     if (tableView) {
         tableView->addAction(act);
     }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (categorizedView) {
         categorizedView->addAction(act);
     }
+    #endif
 }
 
 void ItemView::addSeparator()
@@ -882,7 +900,11 @@ void ItemView::addSeparator()
 void ItemView::setMode(Mode m)
 {
     initialised=true;
-    if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView) || (Mode_Table==m && !tableView) || (Mode_Categorized==m && !categorizedView)) {
+    if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView) || (Mode_Table==m && !tableView) 
+        #ifdef ENABLE_CATEGORIZED_VIEW
+        || (Mode_Categorized==m && !categorizedView)
+        #endif
+        ) {
         m=Mode_SimpleTree;
     }
 
@@ -913,9 +935,11 @@ void ItemView::setMode(Mode m)
             tableView->saveHeader();
             tableView->setModel(nullptr);
         }
+        #ifdef ENABLE_CATEGORIZED_VIEW
         if (categorizedView) {
             categorizedView->setModel(nullptr);
         }
+        #endif
         treeView->setModel(itemModel);
         treeView->setHidden(false);
         static_cast<TreeDelegate *>(treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode || Mode_BasicTree==mode);
@@ -931,9 +955,11 @@ void ItemView::setMode(Mode m)
             tableView->saveHeader();
             tableView->setModel(nullptr);
         }
+        #ifdef ENABLE_CATEGORIZED_VIEW
         if (categorizedView) {
             categorizedView->setModel(nullptr);
         }
+        #endif
         groupedView->setHidden(false);
         treeView->setHidden(true);
         groupedView->setModel(itemModel);
@@ -948,9 +974,11 @@ void ItemView::setMode(Mode m)
         if (groupedView) {
             groupedView->setModel(nullptr);
         }
+        #ifdef ENABLE_CATEGORIZED_VIEW
         if (categorizedView) {
             categorizedView->setModel(nullptr);
         }
+        #endif
         tableView->setHidden(false);
         treeView->setHidden(true);
         tableView->setModel(itemModel);
@@ -960,6 +988,7 @@ void ItemView::setMode(Mode m)
         }
         tableView->resize(w, tableView->height());
         stackIndex=tableView->property(constPageProp).toInt();
+    #ifdef ENABLE_CATEGORIZED_VIEW
     } else if (Mode_Categorized==mode) {
         //int w=view()->width();
         treeView->setModel(nullptr);
@@ -975,6 +1004,7 @@ void ItemView::setMode(Mode m)
         categorizedView->setModel(itemModel);
         stackIndex=categorizedView->property(constPageProp).toInt();
         categorizedView->setGridSize(zoomedSize(listView, iconGridSize));
+    #endif
     } else {
         stackIndex=1;
         treeView->setModel(nullptr);
@@ -985,9 +1015,11 @@ void ItemView::setMode(Mode m)
             tableView->saveHeader();
             tableView->setModel(nullptr);
         }
+        #ifdef ENABLE_CATEGORIZED_VIEW
         if (categorizedView) {
             categorizedView->setModel(nullptr);
         }
+        #endif
         listView->setModel(itemModel);
         goToTop();
         if (Mode_IconTop!=mode) {
@@ -1027,9 +1059,12 @@ QModelIndexList ItemView::selectedIndexes(bool sorted) const
         return groupedView->selectedIndexes(sorted);
     } else if (Mode_Table==mode) {
         return tableView->selectedIndexes(sorted);
-    } else if (Mode_Categorized==mode) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (Mode_Categorized==mode) {
         return categorizedView->selectedIndexes(sorted);
     }
+    #endif
     return listView->selectedIndexes(sorted);
 }
 
@@ -1042,13 +1077,16 @@ void ItemView::goToTop()
             static_cast<ProxyModel *>(itemModel)->setRootIndex(QModelIndex());
         }
         listView->setRootIndex(QModelIndex());
-    } else if (Mode_Categorized==mode) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (Mode_Categorized==mode) {
         categorizedView->setRootIndex(QModelIndex());
         categorizedView->setPlain(false);
         // Setting grid size causes categorizedview to re-lyout items. If we don't do this
         // then items are all messed up!
         categorizedView->setGridSizeOwn(categorizedView->gridSize());
     }
+    #endif
     setTitle();
     emit rootIndexSet(QModelIndex());
 }
@@ -1067,9 +1105,11 @@ void ItemView::setEnabled(bool en)
     if (listView) {
         listView->setEnabled(en);
     }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (categorizedView) {
         categorizedView->setEnabled(en);
     }
+    #endif
 }
 
 void ItemView::setInfoText(const QString &info)
@@ -1082,9 +1122,11 @@ void ItemView::setInfoText(const QString &info)
     if (tableView) {
         tableView->setInfoText(info);
     }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (categorizedView) {
         categorizedView->setInfoText(info);
     }
+    #endif
 }
 
 void ItemView::setLevel(int l, bool haveChildren)
@@ -1132,9 +1174,13 @@ QAbstractItemView * ItemView::view() const
         return groupedView;
     } else if(Mode_Table==mode) {
         return tableView;
-    } else if(Mode_Categorized==mode) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if(Mode_Categorized==mode) {
         return categorizedView;
-    } else {
+    }
+    #endif
+    else {
         return listView;
     }
 }
@@ -1200,9 +1246,11 @@ void ItemView::setAcceptDrops(bool v)
     if (tableView) {
         tableView->setAcceptDrops(v);
     }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (categorizedView) {
         categorizedView->setAcceptDrops(v);
     }
+    #endif
 }
 
 void ItemView::setDragDropOverwriteMode(bool v)
@@ -1215,9 +1263,11 @@ void ItemView::setDragDropOverwriteMode(bool v)
     if (tableView) {
         tableView->setDragDropOverwriteMode(v);
     }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (categorizedView) {
         categorizedView->setDragDropOverwriteMode(v);
     }
+    #endif
 }
 
 void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
@@ -1230,9 +1280,11 @@ void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
     if (tableView) {
         tableView->setDragDropMode(v);
     }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (categorizedView) {
         categorizedView->setDragDropMode(v);
     }
+    #endif
 }
 
 void ItemView::update()
@@ -1266,6 +1318,7 @@ void ItemView::setDeleteAction(QAction *act)
             static_cast<KeyEventHandler *>(tableView->filter())->setDeleteAction(act);
         }
     }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     if (categorizedView) {
         if (!categorizedView->filter() || !qobject_cast<KeyEventHandler *>(categorizedView->filter())) {
             categorizedView->installEventFilter(new KeyEventHandler(categorizedView, act));
@@ -1273,6 +1326,7 @@ void ItemView::setDeleteAction(QAction *act)
             static_cast<KeyEventHandler *>(categorizedView->filter())->setDeleteAction(act);
         }
     }
+    #endif
 }
 
 void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
@@ -1287,9 +1341,13 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
         if (scrollTo) {
             v->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
-    } else if (Mode_Categorized==mode) {
+    } 
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (Mode_Categorized==mode) {
         // TODO
-    } else {
+    }
+    #endif
+    else {
         if (idx.parent().isValid()) {
             QList<QModelIndex> indexes;
             QModelIndex i=idx.parent();
@@ -1424,9 +1482,13 @@ void ItemView::setBackgroundImage(const QIcon &icon)
         groupedView->setBackgroundImage(bgndIcon);
     } else if (Mode_Table==mode && tableView) {
         tableView->setBackgroundImage(bgndIcon);
-    } else if (Mode_Categorized==mode && categorizedView) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (Mode_Categorized==mode && categorizedView) {
         categorizedView->setBackgroundImage(bgndIcon);
-    } else if (Mode_List==mode || Mode_IconTop==mode) {
+    }
+    #endif
+    else if (Mode_List==mode || Mode_IconTop==mode) {
         listView->setBackgroundImage(bgndIcon);
     }
 }
@@ -1536,7 +1598,9 @@ void ItemView::backActivated()
         }
         listView->setRootIndex(listView->rootIndex().parent());
         emit rootIndexSet(listView->rootIndex().parent());
-    } else {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else {
         categorizedView->setRootIndex(categorizedView->rootIndex().parent());
         categorizedView->setPlain(false);
         // Setting grid size causes categorizedview to re-lyout items. If we don't do this
@@ -1544,6 +1608,7 @@ void ItemView::backActivated()
         categorizedView->setGridSizeOwn(categorizedView->gridSize());
         emit rootIndexSet(categorizedView->rootIndex().parent());
     }
+    #endif
     setTitle();
 
     if (prevTopIndex.isEmpty()) {
@@ -1560,9 +1625,12 @@ void ItemView::backActivated()
         } else {
             listView->scrollTo(prevTop, QAbstractItemView::PositionAtTop);
         }
-    } else {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else {
         categorizedView->scrollTo(prevTop, QAbstractItemView::PositionAtTop);
     }
+    #endif
 }
 
 void ItemView::setExpanded(const QModelIndex &idx, bool exp)
@@ -1574,7 +1642,11 @@ void ItemView::setExpanded(const QModelIndex &idx, bool exp)
 
 QAction * ItemView::getAction(const QModelIndex &index)
 {
-    QModelIndex idx = Mode_Categorized==mode ? categorizedView->mapFromSource(index) : index;
+    QModelIndex idx = 
+    #ifdef ENABLE_CATEGORIZED_VIEW
+        Mode_Categorized==mode ? categorizedView->mapFromSource(index) :
+    #endif
+        index;
     QAbstractItemDelegate *abs=view()->itemDelegate();
     ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : nullptr;
     #ifdef RESPONSIVE_LAYOUT
@@ -1621,6 +1693,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (!index.parent().isValid()) {
             tableView->setExpanded(index, !tableView->TreeView::isExpanded(index));
         }
+    #ifdef ENABLE_CATEGORIZED_VIEW
     } else if (Mode_Categorized==mode) {
         if (index == categorizedView->rootIndex()) {
             return;
@@ -1651,6 +1724,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             emit rootIndexSet(index);
         }
         categorizedView->scrollToTop();
+    #endif
     } else if (usingListView() && (index.isValid() && (index.child(0, 0).isValid() || itemModel->canFetchMore(index)) && index!=listView->rootIndex())) {
         if (itemModel->canFetchMore(index)) {
             itemModel->fetchMore(index);
@@ -1701,18 +1775,24 @@ void ItemView::addTitleButtonClicked()
 {
     if ((Mode_List==mode || Mode_IconTop==mode) && view()->rootIndex().isValid()) {
         emit updateToPlayQueue(view()->rootIndex(), false);
-    } else if (Mode_Categorized==mode && categorizedView->rootIndex().isValid()) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (Mode_Categorized==mode && categorizedView->rootIndex().isValid()) {
         emit updateToPlayQueue(categorizedView->rootIndex(), false);
     }
+    #endif
 }
 
 void ItemView::replaceTitleButtonClicked()
 {
     if ((Mode_List==mode || Mode_IconTop==mode) && view()->rootIndex().isValid()) {
         emit updateToPlayQueue(view()->rootIndex(), true);
-    } else if (Mode_Categorized==mode && categorizedView->rootIndex().isValid()) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (Mode_Categorized==mode && categorizedView->rootIndex().isValid()) {
         emit updateToPlayQueue(categorizedView->rootIndex(), true);
     }
+    #endif
 }
 
 void ItemView::coverLoaded(const Song &song, int size)
@@ -1720,7 +1800,11 @@ void ItemView::coverLoaded(const Song &song, int size)
     Q_UNUSED(song)
 
     if (Mode_BasicTree==mode || Mode_GroupedTree==mode || !isVisible() || (Mode_IconTop==mode && size!=zoomedSize(listView, gridCoverSize)) ||
-        (Mode_IconTop!=mode && Mode_Categorized!=mode && size!=listCoverSize) || (Mode_Categorized==mode && size!=zoomedSize(categorizedView, gridCoverSize))) {
+        (Mode_IconTop!=mode && Mode_Categorized!=mode && size!=listCoverSize) 
+        #ifdef ENABLE_CATEGORIZED_VIEW
+        || (Mode_Categorized==mode && size!=zoomedSize(categorizedView, gridCoverSize))
+        #endif
+        ) {
         return;
     }
     view()->viewport()->update();
@@ -1733,12 +1817,15 @@ void ItemView::zoomIn()
             listView->setZoom(listView->zoom()+constZoomStep);
             listView->setGridSize(zoomedSize(listView, iconGridSize));
         }
-    } else if (categorizedView && categorizedView->isVisible()) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (categorizedView && categorizedView->isVisible()) {
         if (categorizedView->zoom()+constZoomStep<=constMaxZoom) {
             categorizedView->setZoom(categorizedView->zoom()+constZoomStep);
             categorizedView->setGridSize(zoomedSize(categorizedView, iconGridSize));
         }
     }
+    #endif
 }
 
 void ItemView::zoomOut()
@@ -1748,12 +1835,15 @@ void ItemView::zoomOut()
             listView->setZoom(listView->zoom()-constZoomStep);
             listView->setGridSize(zoomedSize(listView, iconGridSize));
         }
-    } else if (categorizedView && categorizedView->isVisible()) {
+    }
+    #ifdef ENABLE_CATEGORIZED_VIEW
+    else if (categorizedView && categorizedView->isVisible()) {
         if (categorizedView->zoom()-constZoomStep>=constMinZoom) {
             categorizedView->setZoom(categorizedView->zoom()-constZoomStep);
             categorizedView->setGridSize(zoomedSize(categorizedView, iconGridSize));
         }
     }
+    #endif
 }
 
 void ItemView::delaySearchItems()

@@ -53,6 +53,7 @@
     and not just #name - as MPD 0.22 uses this for #icy-metadata
 40. Categorized view is reported to crash (#1530), so disable by default. Pass
     -DENABLE_CATEGORIZED_VIEW=ON to cmake to re-enable.
+41. Add 'aac' and 'libfdk_aac'  as supported encoders.
 
 2.3.3
 -----

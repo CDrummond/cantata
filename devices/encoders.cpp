@@ -71,7 +71,7 @@ static void init()
         QByteArray cbr = "%1kb/s CBR";
         QByteArray quality = "%1 (~%2kb/s VBR)";
 
-        Encoder aac(QLatin1String("AAC"),
+        Encoder aacFaac(QLatin1String("AAC (libfaac)"),
                     QObject::tr("<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
                           "Coding</a> (AAC) is a patented lossy codec for digital audio.<br>AAC "
                           "generally achieves better sound quality than MP3 at similar bit rates. "
@@ -110,7 +110,21 @@ static void init()
                     QObject::tr("Smaller file"),
                     QObject::tr("Better sound quality"),
                     5);
-
+        Encoder aac(QLatin1String("AAC"),
+                    aacFaac.description, aacFaac.tooltip, aacFaac.extension, aacFaac.app, QLatin1String("aac"),
+                    QLatin1String("-b:a"), QObject::tr("Bitrate"),
+                    QList<Setting>() << Setting(QObject::tr(cbr).arg(64), 64)
+                                     << Setting(QObject::tr(cbr).arg(96), 96)
+                                     << Setting(QObject::tr(cbr).arg(128), 128)
+                                     << Setting(QObject::tr(cbr).arg(160), 160)
+                                     << Setting(QObject::tr(cbr).arg(192), 192)
+                                     << Setting(QObject::tr(cbr).arg(224), 224)
+                                     << Setting(QObject::tr(cbr).arg(320), 320)
+                                     << Setting(QObject::tr(cbr).arg(360), 360),
+                    aacFaac.low, aacFaac.high, 4, 1000);
+        Encoder aacFdk(QLatin1String("AAC (libfdk_aac)"),
+                    aac.description, aac.tooltip, aac.extension, aac.app, QLatin1String("libfdk_aac"),
+                    aac.param, aac.valueLabel, aac.values, aac.low, aac.high, 4);
         Encoder lame(QLatin1String("MP3"),
                     QObject::tr("<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) is "
                           "a patented digital audio codec using a form of lossy data compression."
@@ -228,7 +242,9 @@ static void init()
 
         if (!command.isEmpty()) {
             QList<Encoder> initial;
+            initial.append(aacFaac);
             initial.append(aac);
+            initial.append(aacFdk);
             initial.append(
                         Encoder(QObject::tr("Apple Lossless"),
                                 QObject::tr("<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "

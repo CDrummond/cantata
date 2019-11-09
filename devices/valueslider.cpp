@@ -45,7 +45,7 @@ ValueSlider::ValueSlider(QWidget *parent)
     rightLabel = new QLabel(this);
     rightLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     layout->addWidget(rightLabel, 2, 2, 1, 1);
-    layout->addWidget(midLabel, 3, 1, 1, 1);
+    layout->addWidget(midLabel, 3, 0, 1, 3);
     valueTypeLabel->setBuddy(slider);
     midLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 }

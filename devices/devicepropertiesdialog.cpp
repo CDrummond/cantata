@@ -34,6 +34,7 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     devProp=new DevicePropertiesWidget(this);
     devProp->showRemoteConnectionNote(false);
     setMainWidget(devProp);
+    setMinimumWidth(600);
 }
 
 void DevicePropertiesDialog::show(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props, int disabledProps)

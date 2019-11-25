@@ -628,12 +628,12 @@ Hvis &apos;Titel&apos; er &quot;D-A-D - Reconstrucdead&quot;, så vil &apos;Kuns
     <message>
         <location filename="../devices/audiocdsettings.ui" line="117"/>
         <source>Read offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Læseforskydning:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="137"/>
         <source>&apos;Read offset&apos; is used so that cdparanoia knows what offset to use to rip complete tracks, and not lose the beginning or end of tracks. A comprehensive list of offset values for most CD-ROM and DVD drives is available at &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;Læseforskydning&apos; bruges så cdparanoia ved hvilken forskydning som skal bruges til at rippe hele spor og samtidig ikke miste begyndelsen eller slutnignen af sporene. En omfattende liste over forskydningsværdier til de fleste CD-ROM- og DVD-drev findes på &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.cpp" line="37"/>
@@ -930,7 +930,7 @@ Hvis &apos;Titel&apos; er &quot;D-A-D - Reconstrucdead&quot;, så vil &apos;Kuns
     <message>
         <location filename="../gui/coverdialog.cpp" line="426"/>
         <source>An image already exists for this composer, and the file is not writeable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der findes allerede et billede til denne komponist, og der kan ikke skrives til filen.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="427"/>
@@ -945,7 +945,7 @@ Hvis &apos;Titel&apos; er &quot;D-A-D - Reconstrucdead&quot;, så vil &apos;Kuns
     <message>
         <location filename="../gui/coverdialog.cpp" line="436"/>
         <source>&apos;%1&apos; Composer Image</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; komponistbillede</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="438"/>
@@ -975,7 +975,7 @@ Kunne ikke downloade til midlertidig fil!</translation>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Billeder (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg)</source>
@@ -1039,12 +1039,12 @@ Kunne ikke kopiere fil til &apos;%1&apos;!</translation>
     <message>
         <location filename="../widgets/coverwidget.cpp" line="77"/>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Kunstner:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <location filename="../widgets/coverwidget.cpp" line="79"/>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Albumkunstner:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <location filename="../widgets/coverwidget.cpp" line="82"/>
@@ -1059,12 +1059,12 @@ Kunne ikke kopiere fil til &apos;%1&apos;!</translation>
     <message>
         <location filename="../widgets/coverwidget.cpp" line="87"/>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <location filename="../widgets/coverwidget.cpp" line="88"/>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;År:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
@@ -2674,20 +2674,20 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="219"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hvis ikke der er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers eller når der tilføjes musik til dit bibliotek fra enheder. Den skal angives &lt;b&gt;uden&lt;/b&gt; en endelse.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="223"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hvis ikke der er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers. Den skal angives &lt;b&gt;uden&lt;/b&gt; en endelse.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="vanished">Hvis der ikke er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers eller når der tilføjes musik til dit bibliotek fra enheder.</translation>
+        <translation type="vanished">Hvis ikke der er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers eller når der tilføjes musik til dit bibliotek fra enheder.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="vanished">Hvis der ikke er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers.</translation>
+        <translation type="vanished">Hvis ikke der er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="437"/>
@@ -3876,8 +3876,8 @@ Det kan ikke fortrydes.</translation>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n bit</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -4117,7 +4117,7 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../context/othersettings.ui" line="203"/>
         <source>Save downloaded lyrics into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Gem downloadede sangtekster i musikmappen</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="210"/>
@@ -4181,17 +4181,17 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="297"/>
         <source>Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan ikke tilføje lokale filer. Aktivér venligst den indbyggede HTTP-server eller konfigurer MPD til lokal filafspilning.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="299"/>
         <source>Cannot add local files. Please configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan ikke tilføje lokale filer. Konfigurer venligst MPD til lokal filafspilning.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="314"/>
         <source>Unable to add local files. No suitable files found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan ikke tilføje lokale filer. Ingen egnede filer fundet.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="370"/>
@@ -4412,12 +4412,12 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <source>Apply setting on connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Anvend indstilling når der oprettes forbindelse</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="190"/>
         <source>&lt;p&gt;MPD resets (to the value in its config file) the replaygain mode setting each time it is restarted. Cantata can work-around this by setting MPD to use the value defined here each time Cantata connects to MPD.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;MPD nulstiller indstillignen af replaygain-tilstanden (til værdien i dens konfigurationsfil) hver gang den genstartes. Cantata kan omgå det ved at indstille MPD til at bruge værdien som er defineret her, hver gang Cantata opretter forbindelse til MPD.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="197"/>
@@ -4556,7 +4556,7 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../playlists/playlistrule.ui" line="248"/>
         <source>If &apos;Exact match&apos; is checked, then string values will be matched for exact values. Otherwise partial matches will also be inclued. e.g. &apos;AB&apos; would match &apos;ABBA&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hvis &apos;Præcist match&apos; er tilvalgt, så vil strengværdier blive matchet for præcise værdier. Ellers inkluderes også delvise match, f.eks. vil &apos;AB&apos; matche &apos;ABBA&apos;.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="255"/>
@@ -4634,7 +4634,7 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../playlists/playlistrules.ui" line="144"/>
         <source>Include unrated</source>
-        <translation type="unfinished"></translation>
+        <translation>Inkluder uvurderet</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="151"/>
@@ -5069,12 +5069,12 @@ Overskriv?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="514"/>
         <source>Load local podcast file</source>
-        <translation type="unfinished"></translation>
+        <translation>Indlæs lokal podcast-fil</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Indtast podcast-URL nedenfor og tryk på &apos;Indlæs&apos; eller tryk på mappeikonet for at indlæse en lokal podcast-fil.</translation>
     </message>
     <message>
         <source>Enter podcast URL below, and press &apos;Load&apos;</source>
@@ -5088,12 +5088,12 @@ Overskriv?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="559"/>
         <source>Podcasts (*.xml, *.rss, *.opml</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcasts (*.xml, *.rss, *.opml</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="566"/>
         <source>Failed to read file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke læse fil?</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="573"/>
@@ -5156,7 +5156,7 @@ Overskriv?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="54"/>
         <source>Export Current Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksportér nuværende abonneringer</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="83"/>
@@ -5176,12 +5176,12 @@ Overskriv?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="309"/>
         <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksportér Podcast-abonneringer</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="315"/>
         <source>Export failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksport mislykkedes!</translation>
     </message>
     <message>
         <source>Do you wish to download the selected podcast episodes?</source>
@@ -6305,7 +6305,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>cue - Cue file parsing</source>
-        <translation type="unfinished"></translation>
+        <translation>cue - Tolkning af cue-fil</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
@@ -6410,7 +6410,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="169"/>
         <source>all - Enable all debug</source>
-        <translation type="unfinished"></translation>
+        <translation>all - Aktivér al fejlretning</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="360"/>
@@ -6437,12 +6437,12 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="366"/>
         <source>Collection name</source>
-        <translation type="unfinished"></translation>
+        <translation>Samlingsnavn</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="367"/>
         <source>Start full screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Start fuldskærm</translation>
     </message>
 </context>
 <context>
@@ -6877,7 +6877,7 @@ Vælg venligst et andet navn.</translation>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="103"/>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <translation>Titel</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="104"/>
@@ -7031,14 +7031,14 @@ Vælg venligst et andet navn.</translation>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Er du sikker på, at du vil slette de valgte sange?
+        <translation>Er du sikker på, at du vil slette de valgte sange?
 
 Det kan ikke fortrydes.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="176"/>
         <source>Delete Songs</source>
-        <translation type="unfinished">Slet sange</translation>
+        <translation>Slet sange</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="248"/>
@@ -7598,7 +7598,7 @@ Genindlæs fra disk, eller slet kopien på disken og download?</translation>
     <message>
         <location filename="../context/songview.cpp" line="219"/>
         <source>Failed to locate lyrics</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke finde sangtekster</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="227"/>
@@ -7794,7 +7794,7 @@ Genindlæs fra disk, eller slet kopien på disken og download?</translation>
     <message>
         <location filename="../context/songview.cpp" line="618"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Varighed</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="620"/>
@@ -7804,7 +7804,7 @@ Genindlæs fra disk, eller slet kopien på disken og download?</translation>
     <message>
         <location filename="../context/songview.cpp" line="621"/>
         <source>Original Year</source>
-        <translation type="unfinished">Oprindeligt år</translation>
+        <translation>Oprindeligt år</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="658"/>
@@ -7943,7 +7943,7 @@ Genindlæs fra disk, eller slet kopien på disken og download?</translation>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="60"/>
         <source>Remove Invalid Tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjern ugyldige spor</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="87"/>
@@ -8163,7 +8163,7 @@ Overskriv?</translation>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="49"/>
         <source>Community Radio Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Fællesskabsradiobrowser</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="108"/>

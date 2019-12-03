@@ -55,6 +55,7 @@ QImage TreeView::setOpacity(const QImage &orig, double opacity)
 
 QPixmap TreeView::createBgndPixmap(const QIcon &icon)
 {
+    #if ENABLE_VIEW_BACKGROUND
     if (icon.isNull()) {
         return QPixmap();
     }
@@ -68,6 +69,9 @@ QPixmap TreeView::createBgndPixmap(const QIcon &icon)
         img=img.scaled(bgndSize, bgndSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     return QPixmap::fromImage(setOpacity(img, 0.075));
+    #else
+    return QPixmap();
+    #endif
 }
 
 static bool forceSingleClick=true;
@@ -314,6 +318,7 @@ void TreeView::setUseSimpleDelegate()
 
 void TreeView::setBackgroundImage(const QIcon &icon)
 {
+    #if ENABLE_VIEW_BACKGROUND
     QPalette pal=parentWidget()->palette();
 //    if (!icon.isNull()) {
 //        pal.setColor(QPalette::Base, Qt::transparent);
@@ -323,16 +328,19 @@ void TreeView::setBackgroundImage(const QIcon &icon)
     #endif
     viewport()->setPalette(pal);
     bgnd=createBgndPixmap(icon);
+    #endif
 }
 
 void TreeView::paintEvent(QPaintEvent *e)
 {
+    #if ENABLE_VIEW_BACKGROUND
     if (!bgnd.isNull()) {
         QPainter p(viewport());
         QSize sz=size();
         p.fillRect(0, 0, sz.width(), sz.height(), QApplication::palette().color(QPalette::Base));
         p.drawPixmap((sz.width()-bgnd.width())/2, (sz.height()-bgnd.height())/2, bgnd);
     }
+    #endif
     if (!info.isEmpty() && model() && 0==model()->rowCount()) {
         QPainter p(viewport());
         QColor col(palette().text().color());

@@ -54,6 +54,8 @@
 40. Categorized view is reported to crash (#1530), so disable by default. Pass
     -DENABLE_CATEGORIZED_VIEW=ON to cmake to re-enable.
 41. Add 'aac' and 'libfdk_aac'  as supported encoders.
+42. Custom playqueue background is not workig with Qt 5.12 onwards, so
+    disabled for now.
 
 2.3.3
 -----

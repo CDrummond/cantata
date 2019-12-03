@@ -45,6 +45,7 @@
 #include <QCryptographicHash>
 #include <QMimeData>
 #include <QDateTime>
+#include <QTextDocument>
 #include <stdio.h>
 
 static QString encodeName(const QString &name)
@@ -498,12 +499,14 @@ QModelIndex PodcastService::index(int row, int col, const QModelIndex &parent) c
     return row<podcasts.count() ? createIndex(row, col, podcasts.at(row)) : QModelIndex();
 }
 
-static QString trimDescr(QString descr)
+static QString trimDescr(QString descr, int limit=1000)
 {
     if (!descr.isEmpty()) {
-        static const int constMaxDescrLen=300;
-        if (descr.length()>constMaxDescrLen) {
-            descr=descr.left(constMaxDescrLen)+QLatin1String("...");
+        QTextDocument doc;
+        doc.setHtml(descr);
+        descr=doc.toPlainText().simplified();
+        if (descr.length()>limit) {
+            descr=descr.left(limit)+QLatin1String("...");
         }
         descr+=QLatin1String("<br/><br/>");
     }

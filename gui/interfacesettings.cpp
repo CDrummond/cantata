@@ -172,6 +172,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     sbPosition->addItem(tr("Bottom"), FancyTabWidget::Bot);
     connect(sbAutoHide, SIGNAL(toggled(bool)), SLOT(sbAutoHideChanged()));
     views->setItemDelegate(new BasicItemDelegate(views));
+    #if ENABLE_VIEW_BACKGROUND
     playQueueBackground_none->setProperty(constValueProperty, PlayQueueView::BI_None);
     playQueueBackground_cover->setProperty(constValueProperty, PlayQueueView::BI_Cover);
     playQueueBackground_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
@@ -185,6 +186,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     connect(playQueueBackground_none, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_cover, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
     connect(playQueueBackground_custom, SIGNAL(toggled(bool)), SLOT(enablePlayQueueBackgroundOptions()));
+    #endif
     connect(storeCoversInMpdDir, SIGNAL(toggled(bool)), this, SLOT(storeCoversInMpdDirToggled()));
     if (!enableNotifications) {
         REMOVE(systemTrayPopup)
@@ -248,6 +250,7 @@ void InterfaceSettings::load()
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
 
+    #if ENABLE_VIEW_BACKGROUND
     int pqBgnd=Settings::self()->playQueueBackground();
     playQueueBackground_none->setChecked(pqBgnd==playQueueBackground_none->property(constValueProperty).toInt());
     playQueueBackground_cover->setChecked(pqBgnd==playQueueBackground_cover->property(constValueProperty).toInt());
@@ -255,6 +258,7 @@ void InterfaceSettings::load()
     playQueueBackgroundOpacity->setValue(Settings::self()->playQueueBackgroundOpacity());
     playQueueBackgroundBlur->setValue(Settings::self()->playQueueBackgroundBlur());
     playQueueBackgroundFile->setText(Utils::convertPathForDisplay(Settings::self()->playQueueBackgroundFile(), false));
+    #endif
 
     playQueueConfirmClear->setChecked(Settings::self()->playQueueConfirmClear());
     playQueueSearch->setChecked(Settings::self()->playQueueSearch());
@@ -301,12 +305,16 @@ void InterfaceSettings::load()
     sbAutoHideChanged();
     responsiveSidebar->setChecked(Settings::self()->responsiveSidebar());
     viewItemChanged(views->item(0));
+    #if ENABLE_VIEW_BACKGROUND
     setPlayQueueBackgroundOpacityLabel();
     setPlayQueueBackgroundBlurLabel();
     enablePlayQueueBackgroundOptions();
     if (enableMpris) {
         enableMpris->setChecked(Settings::self()->mpris());
     }
+    #else
+    playQueueBackgroundOptions->setVisible(false);
+    #endif
 }
 
 static QSet<QString> toSet(const QString &str)
@@ -334,6 +342,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
 
+    #if ENABLE_VIEW_BACKGROUND
     if (playQueueBackground_none->isChecked()) {
         Settings::self()->savePlayQueueBackground(playQueueBackground_none->property(constValueProperty).toInt());
     } else if (playQueueBackground_cover->isChecked()) {
@@ -344,6 +353,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueBackgroundOpacity(playQueueBackgroundOpacity->value());
     Settings::self()->savePlayQueueBackgroundBlur(playQueueBackgroundBlur->value());
     Settings::self()->savePlayQueueBackgroundFile(Utils::convertPathFromDisplay(playQueueBackgroundFile->text(), false));
+    #endif
 
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->savePlayQueueSearch(playQueueSearch->isChecked());
@@ -562,20 +572,26 @@ void InterfaceSettings::sbAutoHideChanged()
 
 void InterfaceSettings::setPlayQueueBackgroundOpacityLabel()
 {
+    #if ENABLE_VIEW_BACKGROUND
     playQueueBackgroundOpacityLabel->setText(tr("%1%", "value%").arg(playQueueBackgroundOpacity->value()));
+    #endif
 }
 
 void InterfaceSettings::setPlayQueueBackgroundBlurLabel()
 {
+    #if ENABLE_VIEW_BACKGROUND
     playQueueBackgroundBlurLabel->setText(tr("%1 px", "pixels").arg(playQueueBackgroundBlur->value()));
+    #endif
 }
 
 void InterfaceSettings::enablePlayQueueBackgroundOptions()
 {
+    #if ENABLE_VIEW_BACKGROUND
     playQueueBackgroundOpacity->setEnabled(!playQueueBackground_none->isChecked());
     playQueueBackgroundOpacityLabel->setEnabled(playQueueBackgroundOpacity->isEnabled());
     playQueueBackgroundBlur->setEnabled(playQueueBackgroundOpacity->isEnabled());
     playQueueBackgroundBlurLabel->setEnabled(playQueueBackgroundOpacity->isEnabled());
+    #endif
 }
 
 void InterfaceSettings::systemTrayCheckBoxToggled()

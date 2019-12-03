@@ -56,6 +56,8 @@
 41. Add 'aac' and 'libfdk_aac'  as supported encoders.
 42. Custom playqueue background is not workig with Qt 5.12 onwards, so
     disabled for now.
+43. Convert podcast descriptions to plain text, trim whitespace, and limit to 
+    1000 characters.
 
 2.3.3
 -----

@@ -29,6 +29,7 @@
 #include "song.h"
 #if !defined CANTATA_NO_UI_FUNCTIONS
 #include "online/onlineservice.h"
+#include "online/podcastservice.h"
 #endif
 #include <QStringList>
 #include <QSet>
@@ -825,6 +826,12 @@ QString Song::filePath(const QString &base) const
 
 QString Song::describe() const
 {
+    #if !defined CANTATA_NO_UI_FUNCTIONS
+    if (OnlineSvrTrack==type && PodcastService::constName==onlineService()) {
+        return title;
+    }
+    #endif
+
     QString albumText=album.isEmpty() ? name() : displayAlbum(album, Song::albumYear(*this));
 
     if (title.isEmpty()) {

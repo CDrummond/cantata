@@ -27,8 +27,6 @@
 #include "onlineservice.h"
 #include "widgets/multipagewidget.h"
 
-class PodcastService;
-
 class OnlineServicesPage : public MultiPageWidget
 {
     Q_OBJECT
@@ -44,9 +42,6 @@ public:
 
 Q_SIGNALS:
     void error(const QString &msg);
-
-private:
-    PodcastService *podcast;
 };
 
 #endif

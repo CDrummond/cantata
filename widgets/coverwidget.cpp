@@ -71,30 +71,19 @@ void CoverLabel::updateToolTip(bool isEvent)
         setToolTip(QString());
         return;
     }
-    QString toolTip=QLatin1String("<table>");
-    const QImage &img=CurrentCover::self()->image();
 
-    toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>").arg(current.artist);
-    if (current.artist!=current.albumArtist()) {
-        toolTip+=tr("<tr><td align=\"right\"><b>Album artist:</b></td><td>%1</td></tr>").arg(current.albumArtist());
+    const QImage &img=CurrentCover::self()->image();
+    if (img.isNull()) {
+        return;
     }
-    if (!current.composer().isEmpty()) {
-        toolTip+=tr("<tr><td align=\"right\"><b>Composer:</b></td><td>%1</td></tr>").arg(current.composer());
-    }
-    if (!current.performer().isEmpty() && current.performer()!=current.albumArtist()) {
-        toolTip+=tr("<tr><td align=\"right\"><b>Performer:</b></td><td>%1</td></tr>").arg(current.performer());
-    }
-    toolTip+=tr("<tr><td align=\"right\"><b>Album:</b></td><td>%1</td></tr>").arg(current.albumName());
-    toolTip+=tr("<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(QString::number(current.year));
-    toolTip+="</table>";
-    if (!img.isNull()) {
-        if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
-            toolTip+=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-        } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
-            toolTip+=QString("<br/>%1").arg(View::encode(img));
-        } else {
-            toolTip+=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
-        }
+
+    QString toolTip;
+    if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
+        toolTip=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
+        toolTip=QString("<br/>%1").arg(View::encode(img));
+    } else {
+        toolTip=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
     }
     setToolTip(toolTip);
 

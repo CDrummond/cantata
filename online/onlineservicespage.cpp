@@ -49,9 +49,8 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     SoundCloudService *soundcloud=new SoundCloudService(this);
     addPage(soundcloud->name(), soundcloud->icon(), soundcloud->title(), soundcloud->descr(), new OnlineSearchWidget(soundcloud, this));
 
-    podcast=new PodcastService(this);
-    addPage(podcast->name(), podcast->icon(), podcast->title(), podcast->descr(), new PodcastWidget(podcast, this));
-    connect(podcast, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
+    addPage(PodcastService::self()->name(), PodcastService::self()->icon(), PodcastService::self()->title(), PodcastService::self()->descr(), new PodcastWidget(PodcastService::self(), this));
+    connect(PodcastService::self(), SIGNAL(error(QString)), this, SIGNAL(error(QString)));
 
     Configuration config(metaObject()->className());
     load(config);
@@ -65,12 +64,12 @@ OnlineServicesPage::~OnlineServicesPage()
 
 bool OnlineServicesPage::isDownloading()
 {
-    return podcast->isDownloading();
+    return PodcastService::self()->isDownloading();
 }
 
 void OnlineServicesPage::cancelAll()
 {
-    podcast->cancelAll();
+    PodcastService::self()->cancelAll();
 }
 
 #include "moc_onlineservicespage.cpp"

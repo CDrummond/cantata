@@ -24,6 +24,7 @@
 #include "podcastservice.h"
 #include "podcastsettingsdialog.h"
 #include "rssparser.h"
+#include "support/globalstatic.h"
 #include "support/utils.h"
 #include "support/monoicon.h"
 #include "gui/settings.h"
@@ -47,6 +48,8 @@
 #include <QDateTime>
 #include <QTextDocument>
 #include <stdio.h>
+
+GLOBAL_STATIC(PodcastService, instance)
 
 static QString encodeName(const QString &name)
 {
@@ -214,8 +217,10 @@ Song PodcastService::Episode::toSong() const
     Song song;
     song.title=name;
     song.file=url.toString();
-    song.artist=parent->name;
+    song.album=parent->name;
     song.time=duration;
+    song.setExtraField(Song::OnlineImageUrl, parent->imageUrl.toString());
+    song.setExtraField(Song::OnlineImageCacheName, parent->imageFile);
     if (!localFile.isEmpty()) {
         song.setLocalPath(localFile);
     }
@@ -411,8 +416,8 @@ const Song & PodcastService::Podcast::coverSong()
     return song;
 }
 
-PodcastService::PodcastService(QObject *p)
-    : ActionModel(p)
+PodcastService::PodcastService()
+    : ActionModel(nullptr)
     , downloadJob(nullptr)
     , rssUpdateTimer(nullptr)
 {
@@ -436,6 +441,44 @@ QString PodcastService::title() const
 QString PodcastService::descr() const
 {
     return tr("Subscribe to RSS feeds");
+}
+
+bool PodcastService::episodeCover(const Song &s, QImage &img, QString &imgFilename) const
+{
+    if ((s.isFromOnlineService() && s.onlineService()==constName) || isPodcastFile(s.file)) {
+        QString path=s.decodedPath();
+        if (path.isEmpty()) {
+            path=s.file;
+        }
+        for (Podcast *podcast: podcasts) {
+            for (Episode *episode: podcast->episodes) {
+                if (episode->url==path || episode->localFile==path) {
+                    imgFilename = podcast->imageFile;
+                    img = QImage(imgFilename);
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+QString PodcastService::episodeDescr(const Song &s) const
+{
+    if ((s.isFromOnlineService() && s.onlineService()==constName) || isPodcastFile(s.file)) {
+        QString path=s.decodedPath();
+        if (path.isEmpty()) {
+            path=s.file;
+        }
+        for (Podcast *podcast: podcasts) {
+            for (Episode *episode: podcast->episodes) {
+                if (episode->url==path || episode->localFile==path) {
+                    return episode->descr.replace("<p><br></p>", "");
+                }
+            }
+        }
+    }
+    return QString();
 }
 
 int PodcastService::rowCount(const QModelIndex &index) const
@@ -1343,6 +1386,7 @@ void PodcastService::currentMpdSong(const Song &s)
                         idx=createIndex(podcasts.indexOf(podcast), 0, (void *)podcast);
                         emit dataChanged(idx, idx);
                     }
+
                     return;
                 }
             }

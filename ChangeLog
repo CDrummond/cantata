@@ -54,10 +54,13 @@
 40. Categorized view is reported to crash (#1530), so disable by default. Pass
     -DENABLE_CATEGORIZED_VIEW=ON to cmake to re-enable.
 41. Add 'aac' and 'libfdk_aac'  as supported encoders.
-42. Custom playqueue background is not workig with Qt 5.12 onwards, so
-    disabled for now.
+42. Custom playqueue background is not working with Qt 5.12 onwards, so
+    disabled for now. (#1554)
 43. Convert podcast descriptions to plain text, trim whitespace, and limit to 
     1000 characters.
+44. Show podcast coves in toolbar, queue, and info view.
+45. Show podcast description in info view.
+46. Only show cover in toolbar cover tooltip.
 
 2.3.3
 -----

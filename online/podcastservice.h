@@ -113,13 +113,17 @@ public:
 
     static const QLatin1String constName;
 
-    PodcastService(QObject *p);
+    static PodcastService * self();
+
+    PodcastService();
     ~PodcastService() override { cancelAll(); }
 
     Song & fixPath(Song &song) const;
     QString name() const override;
     QString title() const override;
     QString descr() const override;
+    bool episodeCover(const Song &s, QImage &img, QString &imgFilename) const;
+    QString episodeDescr(const Song &s) const;
     int rowCount(const QModelIndex &index = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override { Q_UNUSED(parent) return 1; }
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;

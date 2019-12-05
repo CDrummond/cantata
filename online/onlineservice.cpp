@@ -57,6 +57,8 @@ Song & OnlineService::encode(Song &song)
     add(json, "track", song.track);
     add(json, "disc", song.disc);
     add(json, "service", song.onlineService());
+    add(json, "imgcache", song.extraField(Song::OnlineImageCacheName));
+    add(json, "imgurl", song.extraField(Song::OnlineImageUrl));
     song.file=Utils::addHashParam(QUrl(song.file).toEncoded(), constSongDetails, QJsonDocument(json).toJson(QJsonDocument::Compact));
     return song;
 }
@@ -84,6 +86,8 @@ bool OnlineService::decode(Song &song)
             if (obj.contains("track")) song.track=obj["track"].toInt();
             if (obj.contains("disc")) song.track=obj["disc"].toInt();
             song.setIsFromOnlineService(obj["service"].toString());
+            if (obj.contains("imgcache")) song.setExtraField(Song::OnlineImageCacheName, obj["imgcache"].toString());
+            if (obj.contains("imgurl")) song.setExtraField(Song::OnlineImageUrl, obj["imgurl"].toString());
             song.type=Song::OnlineSvrTrack;
             song.file=Utils::removeHash(song.file);
             return true;

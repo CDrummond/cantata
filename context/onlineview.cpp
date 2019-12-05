@@ -23,6 +23,7 @@
 
 #include "onlineview.h"
 #include "gui/covers.h"
+#include "online/podcastservice.h"
 
 OnlineView::OnlineView(QWidget *p)
     : View(p)
@@ -40,12 +41,13 @@ void OnlineView::update(const Song &song, bool force)
             needToUpdate=true;
             return;
         }
-        setHeader(song.describe());
-        Covers::Image cImg=Covers::self()->requestImage(song, true);
+        setHeader(currentSong.describe().replace("<b>", "").replace("</b>", ""));
+        QString descr = PodcastService::self()->episodeDescr(song);
+        Covers::Image cImg = Covers::self()->requestImage(song, true);
         if (!cImg.img.isNull()) {
-            setHtml(createPicTag(cImg.img, cImg.fileName));
+            setHtml(createPicTag(cImg.img, cImg.fileName)+(descr.isEmpty() ? QString() : ("<br>"+descr)));
         } else {
-            setHtml(QString());
+            setHtml(descr.isEmpty() ? QString() : descr);
         }
     }
 }

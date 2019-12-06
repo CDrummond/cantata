@@ -214,7 +214,9 @@ public:
         int viewCount = view->model() ? view->model()->rowCount(view->rootIndex()) : -1;
         int numItems = viewWidth/iconWidth;
         if (numItems>1 && viewCount>1 && (viewCount+1)>numItems) {
-            iconWidth=qMax(iconWidth-1, (int)(viewWidth/numItems)-3);
+            iconWidth = qMax(iconWidth-1, (int)(viewWidth/numItems)-1);
+        } else if (numItems==1) {
+            iconWidth = viewWidth;
         }
         return iconWidth;
     }
@@ -900,7 +902,7 @@ void ItemView::addSeparator()
 void ItemView::setMode(Mode m)
 {
     initialised=true;
-    if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView) || (Mode_Table==m && !tableView) 
+    if (m<0 || m>=Mode_Count || (Mode_GroupedTree==m && !groupedView) || (Mode_Table==m && !tableView)
         #ifdef ENABLE_CATEGORIZED_VIEW
         || (Mode_Categorized==m && !categorizedView)
         #endif
@@ -1341,7 +1343,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
         if (scrollTo) {
             v->scrollTo(idx, QAbstractItemView::PositionAtTop);
         }
-    } 
+    }
     #ifdef ENABLE_CATEGORIZED_VIEW
     else if (Mode_Categorized==mode) {
         // TODO
@@ -1642,7 +1644,7 @@ void ItemView::setExpanded(const QModelIndex &idx, bool exp)
 
 QAction * ItemView::getAction(const QModelIndex &index)
 {
-    QModelIndex idx = 
+    QModelIndex idx =
     #ifdef ENABLE_CATEGORIZED_VIEW
         Mode_Categorized==mode ? categorizedView->mapFromSource(index) :
     #endif
@@ -1800,7 +1802,7 @@ void ItemView::coverLoaded(const Song &song, int size)
     Q_UNUSED(song)
 
     if (Mode_BasicTree==mode || Mode_GroupedTree==mode || !isVisible() || (Mode_IconTop==mode && size!=zoomedSize(listView, gridCoverSize)) ||
-        (Mode_IconTop!=mode && Mode_Categorized!=mode && size!=listCoverSize) 
+        (Mode_IconTop!=mode && Mode_Categorized!=mode && size!=listCoverSize)
         #ifdef ENABLE_CATEGORIZED_VIEW
         || (Mode_Categorized==mode && size!=zoomedSize(categorizedView, gridCoverSize))
         #endif

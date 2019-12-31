@@ -1,6 +1,8 @@
 Cantata
 =======
 
+**NOTE** Cantata is now in a bug-fix only state. Therefore, new features are unlikly to be implemented unless pull requests are submitted. The next release, 2.4.0, is likely to be the last feature release.
+
 ![ScreenShot](screenshots/mainwindow.png)
 
 

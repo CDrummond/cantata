@@ -4,6 +4,10 @@ about: Create a report to help us improve
 
 ---
 
+**NOTE** Cantata is now in a bug-fix only state. Only bugs that are actual bugs, and not missing functionality will be fixed. Pull requests, however, will still be accepted.
+---
+---
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 

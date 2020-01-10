@@ -853,27 +853,11 @@ Não foi possível fazer um backup do original!</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation>tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Compositor:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
+        <translation type="vanished">tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Compositor:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
         <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Intérprete:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Intérprete:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3045,6 +3029,10 @@ Sair agora cancelará o download.</translation>
         <source>About Cantata</source>
         <translation>Sobre o Cantata</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
+        <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Cliente de MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2020 Craig Drummond&lt;br/&gt;Lançado sob licença &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt; {1&lt;?} {2011-2018 ?} {3&lt;?}</translation>
+    </message>
 </context>
 <context>
     <name>MenuButton</name>
@@ -4244,7 +4232,7 @@ Sobrescrevè-lo?</translation>
     </message>
     <message>
         <source>Show Unplayed Only</source>
-        <translation>Mostrar apenas os episódios ainda não escutados </translation>
+        <translation type="vanished">Mostrar apenas os episódios ainda não escutados </translation>
     </message>
     <message>
         <source>Configure</source>

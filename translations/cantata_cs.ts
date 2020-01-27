@@ -6802,7 +6802,7 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="73"/>
         <source>Cantata uses various internet services to provide covers, radio stream listings, etc. Most of these require an application&apos;s developer to register with the service, and obtain an API Key. Cantata contains the keys required to access these services. Unfortunately, some of these services have a usage limit per API key. Therefore, some of Cantata&apos;s features may not function if the key (which is shared with all Cantata users) has reached its monthly usage limit. To work-around this, you can register with a service yourself, and configure Cantata to use your personal API key. This key may be entered below. For any blank values below, Cantata will use its default key.</source>
-        <translation>Cantata používá kvůli poskytování obalů, seznamů datových proudů rádií atd. různé internetové služby. Většina z nich vyžaduje, aby se vývojář programu přihlásil u služby a dostal klíč API. Cantata obsahuje klíče požadované pro přistupování k těmto službám. Naneštěstí mají omezení na počet užití klíče API. Proto nemusí některé z funkcí Cantaty pracovat, pokud klíč (jenž je sdílen se všemi uživateli Cantaty) dosáhl svého omezení počtu užití za měsíc. Abyste to ochcali, můžete se u služby zaregistrovat sami a Cantatu nastavit tak, aby používala váš vlastní klíč API. Tento klíč je možno zadat níže.. V případě jakýchkoli prázdných hodnot níže Cantata použije svůj výchozí klíč.</translation>
+        <translation>Cantata používá kvůli poskytování obalů, seznamů vysílání (datových proudů) rádií atd. různé internetové služby. Většina z nich vyžaduje, aby se vývojář programu přihlásil u služby a dostal klíč API. Cantata obsahuje klíče požadované pro přistupování k těmto službám. Naneštěstí mají omezení na počet užití klíče API. Proto nemusí některé z funkcí Cantaty pracovat, pokud klíč (jenž je sdílen se všemi uživateli Cantaty) dosáhl svého omezení počtu užití za měsíc. Abyste to ochcali, můžete se u služby zaregistrovat sami a Cantatu nastavit tak, aby používala váš vlastní klíč API. Tento klíč je možno zadat níže.. V případě jakýchkoli prázdných hodnot níže Cantata použije svůj výchozí klíč.</translation>
     </message>
     <message>
         <location filename="../gui/apikeyssettings.cpp" line="88"/>
@@ -6900,7 +6900,7 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../devices/audiocdsettings.ui" line="103"/>
         <source>Full paranoia mode (best quality)</source>
-        <translation>Úplný režim paranoia (nejlepší jakost):</translation>
+        <translation>Úplný režim paranoia (nejlepší jakost)</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="110"/>
@@ -6910,12 +6910,12 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../devices/audiocdsettings.ui" line="117"/>
         <source>Read offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Načíst posun:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="137"/>
         <source>&apos;Read offset&apos; is used so that cdparanoia knows what offset to use to rip complete tracks, and not lose the beginning or end of tracks. A comprehensive list of offset values for most CD-ROM and DVD drives is available at &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Načíst posun se používá, aby cdparanoia věděla, jaký posun použít pro vytažení celých skladeb, a neztratit začátek nebo konec skladeb. Seznam hodnot posunu většiny mechanik CD-ROM a DVD je dostupný na &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.cpp" line="37"/>
@@ -7009,12 +7009,12 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../gui/cachesettings.cpp" line="273"/>
         <source>Stream Listings</source>
-        <translation>Soupisy proudů</translation>
+        <translation>Soupisy vysílání</translation>
     </message>
     <message>
         <location filename="../gui/cachesettings.cpp" line="274"/>
         <source>Podcast Directories</source>
-        <translation>Adresáře se záznamy (podcasty)</translation>
+        <translation>Adresáře se záznamy</translation>
     </message>
     <message>
         <location filename="../gui/cachesettings.cpp" line="275"/>
@@ -7216,7 +7216,7 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../gui/coverdialog.cpp" line="426"/>
         <source>An image already exists for this composer, and the file is not writeable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pro tohoto skladatele již existuje jeden obrázek. Soubor však není zapisovatelný.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="427"/>
@@ -7231,7 +7231,7 @@ Např. Pokud je Název &quot;Wibble - Wobble&quot;, pak Umělec se nastaví na &
     <message>
         <location filename="../gui/coverdialog.cpp" line="436"/>
         <source>&apos;%1&apos; Composer Image</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; Obrázek skladatele</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="438"/>
@@ -7261,7 +7261,7 @@ Nepodařilo se stáhnout do dočasného souboru!</translation>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrázky (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg)</source>
@@ -7844,7 +7844,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../streams/digitallyimportedsettings.ui" line="29"/>
         <location filename="../build/ui_digitallyimportedsettings.h" line="177"/>
         <source>You can listen for free without an account, but Premium members can listen to higher quality streams without advertisements. Visit &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; to upgrade to a premium account.</source>
-        <translation>Můžete poslouchat zdarma bez účtu, ale členové Premium mohou poslouchat proudy o vyšší kvalitě a bez reklam. Navštivte stránky &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt;, kde můžete udělat povýšení na prémiový účet.</translation>
+        <translation>Můžete poslouchat zdarma bez účtu, ale členové Premium mohou poslouchat vysílání o vyšší kvalitě a bez reklam. Navštivte stránky &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt;, kde můžete udělat povýšení na prémiový účet.</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="42"/>
@@ -7868,7 +7868,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../streams/digitallyimportedsettings.ui" line="81"/>
         <location filename="../build/ui_digitallyimportedsettings.h" line="181"/>
         <source>Stream type:</source>
-        <translation>Typ proudu:</translation>
+        <translation>Typ vysílání:</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.ui" line="94"/>
@@ -7900,7 +7900,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../streams/digitallyimportedsettings.ui" line="164"/>
         <location filename="../build/ui_digitallyimportedsettings.h" line="187"/>
         <source>If you enter account details, then a &apos;DI&apos; status item will appear under the list of streams. This will indicate if you are logged in or not.</source>
-        <translation>Pokud zadáte podrobnosti účtu, stav &apos;DI&apos; (Digitally Imported) se objeví pod seznamem proudů. To ukáže, zda jste přihlášen nebo nejste.</translation>
+        <translation>Pokud zadáte podrobnosti účtu, stav &apos;DI&apos; (Digitally Imported) se objeví pod seznamem vysílání. To ukáže, zda jste přihlášen nebo nejste.</translation>
     </message>
     <message>
         <location filename="../streams/digitallyimportedsettings.cpp" line="35"/>
@@ -8408,7 +8408,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../widgets/groupedview.cpp" line="292"/>
         <source>Streams</source>
-        <translation>Proudy</translation>
+        <translation>Vysílání</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/groupedview.cpp" line="406"/>
@@ -8758,7 +8758,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/interfacesettings.ui" line="160"/>
         <location filename="../build/ui_interfacesettings.h" line="695"/>
         <source>Initially collapse albums</source>
-        <translation>Na začátku alba složit</translation>
+        <translation>Na začátku sbalit alba</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="167"/>
@@ -8770,7 +8770,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/interfacesettings.ui" line="174"/>
         <location filename="../build/ui_interfacesettings.h" line="697"/>
         <source>Scroll to current track</source>
-        <translation>Projíždět k nynější skladbě</translation>
+        <translation>Posunout k nynější skladbě</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="181"/>
@@ -9158,7 +9158,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
-        <translation>Internet - proudy, Jamendo, Maganatune, SoundCloud, a zvukové záznamy</translation>
+        <translation>Internet - vysílání (datové proudy), Jamendo, Maganatune, SoundCloud, a zvukové záznamy</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="157"/>
@@ -9229,12 +9229,12 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="221"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud není pro Název souboru zadáno žádné nastavení, Cantata použije výchozí &lt;code&gt;obal&lt;/code&gt;. Tento název souboru se používá při stahování obalů, nebo při přidávání hudby do knihovny ze zařízení. Měl by být zadán &lt;b&gt;bez&lt;/b&gt; přípony.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="225"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud není pro Název souboru zadáno žádné nastavení, Cantata použije výchozí &lt;code&gt;obal&lt;/code&gt;. Tento název souboru se používá při stahování obalů, nebo při přidávání hudby do knihovny ze zařízení.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
@@ -9304,12 +9304,12 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../online/jamendosettingsdialog.cpp" line="37"/>
         <source>Ogg</source>
-        <translation>Ogg</translation>
+        <translation>OGG</translation>
     </message>
     <message>
         <location filename="../online/jamendosettingsdialog.cpp" line="38"/>
         <source>Streaming format:</source>
-        <translation>Formát přenosu:</translation>
+        <translation>Formát vysílání (přenosu):</translation>
     </message>
 </context>
 <context>
@@ -9677,7 +9677,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     <message>
         <location filename="../online/magnatuneservice.cpp" line="121"/>
         <source>Streaming</source>
-        <translation>Přenos</translation>
+        <translation>Vysílání (přenos)</translation>
     </message>
     <message>
         <location filename="../online/magnatuneservice.cpp" line="140"/>
@@ -9856,7 +9856,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <location filename="../gui/mainwindow.cpp" line="304"/>
         <location filename="../x/gui/mainwindow.cpp" line="302"/>
         <source>Add Stream URL</source>
-        <translation>Přidat adresu proudu</translation>
+        <translation>Přidat adresu (URL) vysílání</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="305"/>
@@ -9986,7 +9986,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <location filename="../gui/mainwindow.cpp" line="327"/>
         <location filename="../x/gui/mainwindow.cpp" line="325"/>
         <source>Play HTTP Output Stream</source>
-        <translation>Přehrát proud s výstupem HTTP</translation>
+        <translation>Přehrát vysílání s výstupem HTTP</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="348"/>
@@ -10010,7 +10010,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <location filename="../gui/mainwindow.cpp" line="355"/>
         <location filename="../x/gui/mainwindow.cpp" line="353"/>
         <source>Collapse All</source>
-        <translation>Složit vše</translation>
+        <translation>Sbalit vše</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="357"/>
@@ -10307,7 +10307,7 @@ Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>
         <location filename="../gui/mainwindow.cpp" line="2056"/>
         <location filename="../x/gui/mainwindow.cpp" line="2023"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
-        <translation>&apos;%1&apos; se používá na ukládání oblíbených proudů. Vyberte, prosím, jiný název.</translation>
+        <translation>&apos;%1&apos; se používá na ukládání oblíbených vysílání. Vyberte, prosím, jiný název.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2060"/>
@@ -10360,7 +10360,7 @@ Přidat do tohoto seznamu skladeb?</translation>
     <message>
         <location filename="../x/gui/mainwindow.cpp" line="1202"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Klient pro MPD.&lt;br/&gt;&lt;br/&gt;© Craig Drummond 2011-2016.&lt;br/&gt;Vydáno pod &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt; {1&lt;?} {2011-2018 ?} {3&lt;?}</translation>
+        <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Klient pro MPD.&lt;br/&gt;&lt;br/&gt;© Craig Drummond 2011-2018.&lt;br/&gt;Vydáno pod &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -10411,7 +10411,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../dbus/mpris.cpp" line="166"/>
         <source>(Stream)</source>
-        <translation>(Proud)</translation>
+        <translation>(vysílání)</translation>
     </message>
 </context>
 <context>
@@ -10563,15 +10563,15 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
         <location filename="../x/widgets/nowplayingwidget.cpp" line="327"/>
         <source>Now Playing</source>
-        <translation>Nyní se přehrává</translation>
+        <translation>Nyní se hraje</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n bit</numerusform>
+            <numerusform>%n bity</numerusform>
+            <numerusform>%n bitů</numerusform>
         </translation>
     </message>
     <message>
@@ -10830,13 +10830,13 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../context/othersettings.ui" line="203"/>
         <location filename="../build/ui_othersettings.h" line="230"/>
         <source>Save downloaded lyrics into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit stažená slova písně ve složce s hudbou</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="210"/>
         <location filename="../build/ui_othersettings.h" line="231"/>
         <source>Always collapse into a single pane</source>
-        <translation>Vždy složit do jednoho pole</translation>
+        <translation>Vždy sbalit do jedné tabulky</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="213"/>
@@ -10898,17 +10898,17 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="297"/>
         <source>Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze přidat místní soubory. Povolte, prosím, server HTTP, nebo MPD nastavte pro přehrávání místních souborů.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="299"/>
         <source>Cannot add local files. Please configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze přidat místní soubory. Nastavte, prosím, MPD pro přehrávání místních souborů.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="314"/>
         <source>Unable to add local files. No suitable files found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze přidat místní soubory. Nenalezeny žádné vhodné soubory.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="370"/>
@@ -11156,13 +11156,13 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <location filename="../build/ui_playbacksettings.h" line="234"/>
         <source>Apply setting on connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít nastavení při spojení</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="190"/>
         <location filename="../build/ui_playbacksettings.h" line="236"/>
         <source>&lt;p&gt;MPD resets (to the value in its config file) the replaygain mode setting each time it is restarted. Cantata can work-around this by setting MPD to use the value defined here each time Cantata connects to MPD.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;MPD obnoví výchozí (na hodnotu ve svém souboru s nastavením) nastavení režimu vyrovnání hlasitosti pokaždé, když je spuštěno znovu. Cantata to může udělat také tak, že MPD nastaví tak, aby používal hodnotu vymezenou zde, pokaždé když se Cantata spojí s MPD.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="197"/>
@@ -11324,7 +11324,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../playlists/playlistrule.ui" line="248"/>
         <location filename="../build/ui_playlistrule.h" line="277"/>
         <source>If &apos;Exact match&apos; is checked, then string values will be matched for exact values. Otherwise partial matches will also be inclued. e.g. &apos;AB&apos; would match &apos;ABBA&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud je zaškrtnuta Přesná shoda, budou se v hodnotách řetězců hledat přesné hodnoty. V opačném případě budou zahrnuty i částečné shody, například AB odpovídá ABBA.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="255"/>
@@ -11415,7 +11415,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../playlists/playlistrules.ui" line="144"/>
         <location filename="../build/ui_playlistrules.h" line="270"/>
         <source>Include unrated</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahrnout nehodnocené</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="151"/>
@@ -11961,12 +11961,12 @@ Přepsat?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="514"/>
         <source>Load local podcast file</source>
-        <translation type="unfinished"></translation>
+        <translation>Nahrát místní soubor se zvukovým záznamem</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zadejte adresu (URL) níže a stiskněte Nahrát, nebo stiskněte ikonu složky pro nahrání místního souboru se zvukovým záznamem.</translation>
     </message>
     <message>
         <source>Enter podcast URL below, and press &apos;Load&apos;</source>
@@ -11980,12 +11980,12 @@ Přepsat?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="559"/>
         <source>Podcasts (*.xml, *.rss, *.opml</source>
-        <translation type="unfinished"></translation>
+        <translation>Záznamy (*.xml, *.rss, *.opml</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="566"/>
         <source>Failed to read file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se přečíst soubor!</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="573"/>
@@ -12047,7 +12047,7 @@ Přepsat?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="54"/>
         <source>Export Current Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyvést nynější odběry</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="83"/>
@@ -12067,12 +12067,12 @@ Přepsat?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="311"/>
         <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyvést odběry záznamu</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="317"/>
         <source>Export failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se vyvést!</translation>
     </message>
     <message>
         <source>Do you wish to download the selected podcast episodes?</source>
@@ -13003,7 +13003,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="869"/>
         <source>(Stream)</source>
-        <translation>(Proud)</translation>
+        <translation>(vysílání)</translation>
     </message>
     <message>
         <location filename="../scrobbling/scrobbler.cpp" line="91"/>
@@ -13357,7 +13357,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>cue - Cue file parsing</source>
-        <translation type="unfinished"></translation>
+        <translation>cue - zpracovává se soubor CUE</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
@@ -13397,7 +13397,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="148"/>
         <source>stream-fetcher - Fetching of stream URLs</source>
-        <translation>stream-fetcher - natahování adres (URL) proudů</translation>
+        <translation>stream-fetcher - natahování adres (URL) vysílání (datových proudů)</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="149"/>
@@ -13452,7 +13452,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="164"/>
         <source>http-stream - Playback of MPD output streams</source>
-        <translation>http-stream - přehrávání proudů s výstupem MPD</translation>
+        <translation>http-stream - přehrávání vysílání (datových proudů) s výstupem MPD</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="167"/>
@@ -13462,7 +13462,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="169"/>
         <source>all - Enable all debug</source>
-        <translation type="unfinished"></translation>
+        <translation>vše - povolit ladění všeho</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="360"/>
@@ -13473,7 +13473,8 @@ width x height</comment>
         <location filename="../gui/main.cpp" line="363"/>
         <source>Comma-separated list of debug areas - possible values:
 </source>
-        <translation>Čárkou oddělený seznam oblastí ladění - možné hodnoty:</translation>
+        <translation>Čárkou oddělený seznam oblastí ladění - možné hodnoty:
+</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="364"/>
@@ -13488,12 +13489,12 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="366"/>
         <source>Collection name</source>
-        <translation type="unfinished"></translation>
+        <translation>Název sbírky</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="367"/>
         <source>Start full screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Začít v režimu zobrazení na celou obrazovku</translation>
     </message>
 </context>
 <context>
@@ -13944,7 +13945,7 @@ Vyberte, prosím, jiný název.</translation>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="103"/>
         <source>Title</source>
-        <translation type="unfinished">Název</translation>
+        <translation>Název</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="104"/>
@@ -14106,14 +14107,14 @@ Vyberte, prosím, jiný název.</translation>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Opravdu chcete odstranit vybrané písně?
+        <translation>Opravdu chcete odstranit vybrané písně?
 
 Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="176"/>
         <source>Delete Songs</source>
-        <translation type="unfinished">Smazat písně</translation>
+        <translation>Smazat písně</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="248"/>
@@ -14310,7 +14311,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/serversettings.ui" line="139"/>
         <location filename="../build/ui_serversettings.h" line="286"/>
         <source>HTTP stream URL:</source>
-        <translation>Adresa (URL) proudu HTTP:</translation>
+        <translation>Adresa (URL) vysílání (datového proudu) HTTP:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="152"/>
@@ -14362,7 +14363,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/serversettings.ui" line="201"/>
         <location filename="../build/ui_serversettings.h" line="298"/>
         <source>&apos;HTTP Stream URL&apos; is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.</source>
-        <translation>Adresa (URL) proudu HTTP se používá jen tehdy, když máte nastaveno MPD na výstup do proudu HTTP, a přejete si, aby Cantata mohla tento proud přehrávat.</translation>
+        <translation>Adresa (URL) vysílání (datového proudu) HTTP se používá jen tehdy, když máte nastaveno MPD na výstup do datového proudu HTTP, a přejete si, aby Cantata mohla tento datový proud přehrávat.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="208"/>
@@ -14634,7 +14635,7 @@ Prověřte, prosím, že zařízení je stále ještě připojeno.</translation>
     <message>
         <location filename="../context/songview.cpp" line="112"/>
         <source>Scroll Lyrics</source>
-        <translation>Projíždět text písně</translation>
+        <translation>Posunout text písně</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="113"/>
@@ -14708,7 +14709,7 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../context/songview.cpp" line="219"/>
         <source>Failed to locate lyrics</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se najít slova písně</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="227"/>
@@ -14904,7 +14905,7 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../context/songview.cpp" line="618"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Doba trvání</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="620"/>
@@ -14914,7 +14915,7 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../context/songview.cpp" line="621"/>
         <source>Original Year</source>
-        <translation type="unfinished">Původní rok</translation>
+        <translation>Původní rok</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="658"/>
@@ -15056,12 +15057,12 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="60"/>
         <source>Remove Invalid Tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstranit neplatné skladby</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="87"/>
         <source>Initially Collapse Albums</source>
-        <translation>Na začátku alba složit</translation>
+        <translation>Na začátku sbalit alba</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="111"/>
@@ -15127,7 +15128,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamdialog.cpp" line="49"/>
         <source>Add stream to favourites</source>
-        <translation>Přidat proud do oblíbených</translation>
+        <translation>Přidat vysílání do oblíbených</translation>
     </message>
     <message>
         <location filename="../streams/streamdialog.cpp" line="54"/>
@@ -15142,12 +15143,12 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamdialog.cpp" line="70"/>
         <source>Add Stream</source>
-        <translation>Přidat proud</translation>
+        <translation>Přidat vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamdialog.cpp" line="82"/>
         <source>Edit Stream</source>
-        <translation>Upravit proud</translation>
+        <translation>Upravit vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamdialog.cpp" line="103"/>
@@ -15183,7 +15184,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="144"/>
         <source>Install/Update Stream Providers</source>
-        <translation>Nainstalovat/Aktualizovat poskytovatele proudů</translation>
+        <translation>Nainstalovat/Aktualizovat poskytovatele vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="193"/>
@@ -15193,7 +15194,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="238"/>
         <source>Failed to download list of stream providers!</source>
-        <translation>Nepodařilo se stáhnout seznam poskytovatelů proudů!</translation>
+        <translation>Nepodařilo se stáhnout seznam poskytovatelů vysílání!</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="249"/>
@@ -15277,17 +15278,17 @@ Přepsat?</translation>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="49"/>
         <source>Community Radio Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Prohlížeš společenských rádií</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="108"/>
         <source>Stream Search</source>
-        <translation>Hledání proudu</translation>
+        <translation>Hledání vysílání</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="110"/>
         <source>Search for radio streams</source>
-        <translation>Hledat rozhlasové proudy</translation>
+        <translation>Hledat rozhlasová vysílání</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="137"/>
@@ -15327,17 +15328,17 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamspage.cpp" line="103"/>
         <source>Import Streams Into Favorites</source>
-        <translation>Zavést proudy do oblíbených</translation>
+        <translation>Zavést vysílání do oblíbených</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="104"/>
         <source>Export Favorite Streams</source>
-        <translation>Vyvést oblíbené proudy</translation>
+        <translation>Vyvést oblíbená vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="105"/>
         <source>Add New Stream To Favorites</source>
-        <translation>Přidat nový proud do oblíbených</translation>
+        <translation>Přidat nové vysílání do oblíbených</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="106"/>
@@ -15347,7 +15348,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamspage.cpp" line="107"/>
         <source>Seatch For Streams</source>
-        <translation>Hledat rozhlasové proudy</translation>
+        <translation>Hledat vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="141"/>
@@ -15363,22 +15364,22 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamspage.cpp" line="253"/>
         <source>Import Streams</source>
-        <translation>Zavést proudy</translation>
+        <translation>Zavést vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="254"/>
         <source>XML Streams (*.xml *.xml.gz *.cantata)</source>
-        <translation>Proudy XML (*.xml *.xml.gz *.cantata)</translation>
+        <translation>Vysílání XML (*.xml *.xml.gz *.cantata)</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="265"/>
         <source>Export Streams</source>
-        <translation>Vyvést proudy</translation>
+        <translation>Vyvést vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="265"/>
         <source>XML Streams (*.xml.gz)</source>
-        <translation>Proudy XML (*.xml.gz)</translation>
+        <translation>Vysílání XML (*.xml.gz)</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="276"/>
@@ -15389,13 +15390,13 @@ Přepsat?</translation>
         <location filename="../streams/streamspage.cpp" line="290"/>
         <location filename="../streams/streamspage.cpp" line="492"/>
         <source>Stream &apos;%1&apos; already exists!</source>
-        <translation>Proud &apos;%1&apos; již existuje!</translation>
+        <translation>Vysílání &apos;%1&apos; již existuje!</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="292"/>
         <location filename="../streams/streamspage.cpp" line="494"/>
         <source>A stream named &apos;%1&apos; already exists!</source>
-        <translation>Proud pojmenovaný &apos;%1&apos; již existuje!</translation>
+        <translation>Vysílání pojmenované &apos;%1&apos; již existuje!</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="311"/>
@@ -15416,7 +15417,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamspage.cpp" line="409"/>
         <source>Reload &apos;%1&apos; streams?</source>
-        <translation>Nahrát znovu &apos;%1&apos; proudů?</translation>
+        <translation>Nahrát znovu &apos;%1&apos; vysílání?</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="423"/>
@@ -15431,7 +15432,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamspage.cpp" line="453"/>
         <source>Are you sure you wish to remove the %1 selected streams?</source>
-        <translation>Opravdu chcete odstranit %1 vybrané proudy?</translation>
+        <translation>Opravdu chcete odstranit %1 vybraná vysílání?</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="457"/>
@@ -15484,7 +15485,7 @@ Přepsat?</translation>
     <message>
         <location filename="../models/streamsmodel.cpp" line="507"/>
         <source>Add Stream To Favorites</source>
-        <translation>Přidat proud do oblíbených</translation>
+        <translation>Přidat vysílání do oblíbených</translation>
     </message>
     <message>
         <location filename="../models/streamsmodel.cpp" line="508"/>
@@ -15499,7 +15500,7 @@ Přepsat?</translation>
     <message>
         <location filename="../models/streamsmodel.cpp" line="544"/>
         <source>Streams</source>
-        <translation>Proudy</translation>
+        <translation>Vysílání</translation>
     </message>
     <message>
         <location filename="../models/streamsmodel.cpp" line="549"/>
@@ -15543,7 +15544,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamssettings.cpp" line="65"/>
         <source>Configure Streams</source>
-        <translation>Nastavit proudy</translation>
+        <translation>Nastavit vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="73"/>
@@ -15573,12 +15574,12 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamssettings.cpp" line="136"/>
         <source>Install Streams</source>
-        <translation>Nainstalovat proudy</translation>
+        <translation>Nainstalovat vysílání</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="136"/>
         <source>Cantata Streams (*.streams)</source>
-        <translation>Proudy Cantata (*.streams)</translation>
+        <translation>Vysílání Cantata (*.streams)</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="150"/>
@@ -15607,12 +15608,12 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamssettings.cpp" line="210"/>
         <source>Failed to create stream category folder!</source>
-        <translation>Nepodařilo se vytvořit složku pro skupinu proudu!</translation>
+        <translation>Nepodařilo se vytvořit složku pro skupinu vysílání!</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="218"/>
         <source>Failed to save stream list!</source>
-        <translation>Nepodařilo se uložit seznam proudu!</translation>
+        <translation>Nepodařilo se uložit seznam vysílání!</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="276"/>
@@ -15622,7 +15623,7 @@ Přepsat?</translation>
     <message>
         <location filename="../streams/streamssettings.cpp" line="283"/>
         <source>Failed to remove streams folder!</source>
-        <translation>Nepodařilo se odstranit složku s proudy!</translation>
+        <translation>Nepodařilo se odstranit složku s vysíláními!</translation>
     </message>
 </context>
 <context>

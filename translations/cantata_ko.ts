@@ -1615,11 +1615,11 @@ width x height</comment>
     </message>
     <message>
         <source>An image already exists for this artist, and the file is not writeable.</source>
-        <translation type="vanished">이 연주자의 이미지가 이미 있으므로, 파일 쓰기가 되지 않습니다.</translation>
+        <translation type="vanished">이 연주자의 이미지가 이미 있으므로, 파일을 쓸 수 없습니다.</translation>
     </message>
     <message>
         <source>A cover already exists for this album, and the file is not writeable.</source>
-        <translation type="vanished">이 음반의 표지가 이미 있으므로, 파일 쓰기가 되지 않습니다.</translation>
+        <translation type="vanished">이 음반의 표지가 이미 있으므로, 파일을 쓸 수 없습니다.</translation>
     </message>
     <message>
         <source>&apos;%1&apos; Artist Image</source>
@@ -6888,12 +6888,12 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../devices/audiocdsettings.ui" line="117"/>
         <source>Read offset:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">읽기 오프셋:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="137"/>
         <source>&apos;Read offset&apos; is used so that cdparanoia knows what offset to use to rip complete tracks, and not lose the beginning or end of tracks. A comprehensive list of offset values for most CD-ROM and DVD drives is available at &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;읽기 오프셋&apos;은 전체 곡을 리핑하고, 곡의 시작이나 끝을 잃지 않도록 사용할 오프셋을 cdparanoia에게 알려줍니다. 대부분의 CD 롬과 DVD 드라이브 오프셋 값 &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.cpp" line="37"/>
@@ -7189,17 +7189,17 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../gui/coverdialog.cpp" line="424"/>
         <source>An image already exists for this artist, and the file is not writeable.</source>
-        <translation type="unfinished">이 연주자의 이미지가 이미 있으므로, 파일 쓰기가 되지 않습니다.</translation>
+        <translation type="unfinished">이 연주자의 이미지가 이미 있으므로, 파일을 쓸 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="426"/>
         <source>An image already exists for this composer, and the file is not writeable.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">이 작곡가의 이미지가 이미 있으므로, 파일을 쓸 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="427"/>
         <source>A cover already exists for this album, and the file is not writeable.</source>
-        <translation type="unfinished">이 음반의 표지가 이미 있으므로, 파일 쓰기가 되지 않습니다.</translation>
+        <translation type="unfinished">이 음반의 표지가 이미 있으므로, 파일을 쓸 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="434"/>
@@ -7209,7 +7209,7 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
     <message>
         <location filename="../gui/coverdialog.cpp" line="436"/>
         <source>&apos;%1&apos; Composer Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">작곡가 이미지</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="438"/>
@@ -7239,7 +7239,7 @@ Could not download to temporary file!</source>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">이미지 (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg)</source>
@@ -9205,12 +9205,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="221"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;파일 이름&apos;이 설정되지 않으면, 기본  &lt;code&gt;음반표지&lt;/code&gt;를 사용합니다. 이 파일 이름은 음반표지를 내려받거나 장치로부터 라이브러리에 음악을 추가할 때 사용됩니다. 확장자&lt;b&gt;없이&lt;/b&gt; 설정해야 합니다.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="225"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;파일 이름&apos;이 설정되지 않으면, 기본  &lt;code&gt;음반표&lt;/code&gt;를 사용합니다. 이 파일 이름은 음반표지를 내려받을 때 사용됩니다. 확장자&lt;b&gt;없이&lt;/b&gt; 설정해야 합니다.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
@@ -10519,7 +10519,7 @@ This cannot be undone.</source>
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
+            <numerusform>%n 비트</numerusform>
         </translation>
     </message>
     <message>
@@ -10774,7 +10774,7 @@ This cannot be undone.</source>
         <location filename="../context/othersettings.ui" line="203"/>
         <location filename="../build/ui_othersettings.h" line="230"/>
         <source>Save downloaded lyrics into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음악 폴더에 내려받은 가사를 저장함</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="210"/>
@@ -10842,17 +10842,17 @@ This cannot be undone.</source>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="297"/>
         <source>Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">로컬 파일을 추가할 수 없음. 내장 HTTP 서버를 사용하거나 로컬 파일을 재생하도록 MPD를 설정해야 합니다.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="299"/>
         <source>Cannot add local files. Please configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">로컬 파일을 추가할 수 없음. 로컬 파일을 재생하도록 MPD를 설정해야 합니다.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="314"/>
         <source>Unable to add local files. No suitable files found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">로컬 파일을 추가할 수 없음. 적당한 파일을 찾을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="370"/>
@@ -11100,13 +11100,13 @@ This cannot be undone.</source>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <location filename="../build/ui_playbacksettings.h" line="234"/>
         <source>Apply setting on connect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">연결할 때 설정 적용</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="190"/>
         <location filename="../build/ui_playbacksettings.h" line="236"/>
         <source>&lt;p&gt;MPD resets (to the value in its config file) the replaygain mode setting each time it is restarted. Cantata can work-around this by setting MPD to use the value defined here each time Cantata connects to MPD.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;MPD는 다시 시작할 때마다 리플레이게인을 (설정 파일 값으로) 다시 설정합니다. 칸타타로 MPD에 연결할 때마다 이 설정 값을 읽어서 해결할 수 있습니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="197"/>
@@ -11268,7 +11268,7 @@ This cannot be undone.</source>
         <location filename="../playlists/playlistrule.ui" line="248"/>
         <location filename="../build/ui_playlistrule.h" line="277"/>
         <source>If &apos;Exact match&apos; is checked, then string values will be matched for exact values. Otherwise partial matches will also be inclued. e.g. &apos;AB&apos; would match &apos;ABBA&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;정확한 맞춤&apos;을 사용하면, 문자열 값을 정확하게 맞춥니다. 아니면 부분 맞춤이 포함됩니다. 예. &apos;AB&apos;는  &apos;ABBA&apos;를 포함합니다.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="255"/>
@@ -11359,7 +11359,7 @@ This cannot be undone.</source>
         <location filename="../playlists/playlistrules.ui" line="144"/>
         <location filename="../build/ui_playlistrules.h" line="270"/>
         <source>Include unrated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">평점 없음 포함</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="151"/>
@@ -11883,12 +11883,12 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="514"/>
         <source>Load local podcast file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">로컬 팟캐스트 파일 읽기</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">로컬 팟캐스트 파일을 읽으려면, 팟캐스트 URL을 아래에 입력하고 &apos;읽기&apos;를 누르거나 폴더 아이콘을 누릅니다.</translation>
     </message>
     <message>
         <source>Enter podcast URL below, and press &apos;Load&apos;</source>
@@ -11902,12 +11902,12 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="559"/>
         <source>Podcasts (*.xml, *.rss, *.opml</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">팟캐스트 (*.xml, *.rss, *.opml)</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="566"/>
         <source>Failed to read file!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파일을 읽을 수 없음!</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="573"/>
@@ -11969,7 +11969,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="54"/>
         <source>Export Current Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">현재 구독을 내보낼 수 없음</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="83"/>
@@ -11989,12 +11989,12 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="311"/>
         <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">팟캐스트 구독을 내보낼 수 없음</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="317"/>
         <source>Export failed!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">내보낼 수 없음!</translation>
     </message>
     <message>
         <source>Do you wish to download the selected podcast episodes?</source>
@@ -13304,7 +13304,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>cue - Cue file parsing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">cue - Cue 파일 분석</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
@@ -13409,7 +13409,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="169"/>
         <source>all - Enable all debug</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">all - 모두 사용함</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="360"/>
@@ -13435,12 +13435,12 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="366"/>
         <source>Collection name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">음원 이름</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="367"/>
         <source>Start full screen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">전체 화면 시작</translation>
     </message>
 </context>
 <context>
@@ -14651,7 +14651,7 @@ Reload from disk, or delete disk copy and download?</source>
     <message>
         <location filename="../context/songview.cpp" line="219"/>
         <source>Failed to locate lyrics</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">가사를 찾을 수 없음</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="227"/>
@@ -14847,7 +14847,7 @@ Reload from disk, or delete disk copy and download?</source>
     <message>
         <location filename="../context/songview.cpp" line="618"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">길이</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="620"/>
@@ -14993,7 +14993,7 @@ Reload from disk, or delete disk copy and download?</source>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="60"/>
         <source>Remove Invalid Tracks</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">없는 곡을 지울 수 없음</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="87"/>
@@ -15212,7 +15212,7 @@ Overwrite?</source>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="49"/>
         <source>Community Radio Browser</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Community Radio Browser</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="108"/>

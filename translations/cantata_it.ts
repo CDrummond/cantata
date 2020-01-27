@@ -638,12 +638,12 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../devices/audiocdsettings.ui" line="117"/>
         <source>Read offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Offset lettura:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="137"/>
         <source>&apos;Read offset&apos; is used so that cdparanoia knows what offset to use to rip complete tracks, and not lose the beginning or end of tracks. A comprehensive list of offset values for most CD-ROM and DVD drives is available at &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;Offset lettura&apos; viene utilizzato da cdparanoia per conoscere l&apos;offset da usare quando estrae le tracce complete e per non mancare l&apos;inizio o la fine delle tracce. A questo indirizzo è disponibile una lista comprensiva dei valori di offser per la maggior parte delle unità CD e DVD &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.cpp" line="37"/>
@@ -944,7 +944,7 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../gui/coverdialog.cpp" line="426"/>
         <source>An image already exists for this composer, and the file is not writeable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esiste già un immagine per questo compositore, ed il file non è scrivibile.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="427"/>
@@ -959,7 +959,7 @@ Se &apos;Titolo&apos; è &quot;Wibble - Wobble&quot;, allora &apos;Artista&apos;
     <message>
         <location filename="../gui/coverdialog.cpp" line="436"/>
         <source>&apos;%1&apos; Composer Image</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; Immagine Compositore</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="438"/>
@@ -989,7 +989,7 @@ Non è stato possibile scaricare su un file temporaneo!</translation>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Immagini (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg)</source>
@@ -2935,12 +2935,12 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="221"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora Cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine, oppure di aggiunge della musica alla tua libreria dai dispositivi. Dev&apos;essere specificato &lt;b&gt;senza&lt;/b&gt; estensione.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="225"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se non è specificato nulla su &apos;Nome file&apos;, allora Cantata userà &lt;code&gt;cover&lt;/code&gt; come nome predefinito. Questo nome viene usato quando si scaricano le copertine. Dev&apos;essere specificato &lt;b&gt;senza&lt;/b&gt; estensione.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
@@ -4060,7 +4060,7 @@ Aggiungere i brani a quella scaletta?</translation>
     <message>
         <location filename="../x/gui/mainwindow.cpp" line="1202"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Client per MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2020 Craig Drummond&lt;br/&gt;Rilasciato sotto licenza &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt; {1&lt;?} {2011-2018 ?} {3&lt;?}</translation>
+        <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Client per MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2020 Craig Drummond&lt;br/&gt;Rilasciato sotto licenza &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4260,7 +4260,7 @@ Non sarà possibile tornare indietro.</translation>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -4519,7 +4519,7 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../context/othersettings.ui" line="203"/>
         <location filename="../build/ui_othersettings.h" line="230"/>
         <source>Save downloaded lyrics into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva i testi scaricati nella cartella musica</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="210"/>
@@ -4587,17 +4587,17 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="297"/>
         <source>Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile aggiungere file locali. Si prega di abilitare il server HTTP incorporato, oppure configurare MPD per la riproduzione dei file locali.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="299"/>
         <source>Cannot add local files. Please configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile aggiungere file locali. Si prega configurare MPD per la riproduzione dei file locali.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="314"/>
         <source>Unable to add local files. No suitable files found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non sono in grado di aggiungere file locali. Non sono stati trovati file adatti.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="370"/>
@@ -4845,13 +4845,13 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <location filename="../build/ui_playbacksettings.h" line="234"/>
         <source>Apply setting on connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Applica le impostazione alla connessione</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="190"/>
         <location filename="../build/ui_playbacksettings.h" line="236"/>
         <source>&lt;p&gt;MPD resets (to the value in its config file) the replaygain mode setting each time it is restarted. Cantata can work-around this by setting MPD to use the value defined here each time Cantata connects to MPD.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Ogni volta che viene riavviato, MPD reimposta (al valore contenuto nel suo file di configurazione) la modalità di replay gain. Cantata può aggirare quest&apos;impostazione specificando ad MPD di utilizzare il valore qui definito ogni volta che Cantata si connette ad MPD.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="197"/>
@@ -5013,7 +5013,7 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../playlists/playlistrule.ui" line="248"/>
         <location filename="../build/ui_playlistrule.h" line="277"/>
         <source>If &apos;Exact match&apos; is checked, then string values will be matched for exact values. Otherwise partial matches will also be inclued. e.g. &apos;AB&apos; would match &apos;ABBA&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quando &apos;Corrispondenza esatta&apos; è attivo, i valori delle stringhe verranno confrontati con i valori esatti. In caso contrario, verranno incluse anche le corrispondenze parziali. es. &apos;AB&apos; farebbe risultare &apos;ABBA&apos;.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="255"/>
@@ -5104,7 +5104,7 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../playlists/playlistrules.ui" line="144"/>
         <location filename="../build/ui_playlistrules.h" line="270"/>
         <source>Include unrated</source>
-        <translation type="unfinished"></translation>
+        <translation>Includi senza valutazione</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="151"/>
@@ -5565,12 +5565,12 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="514"/>
         <source>Load local podcast file</source>
-        <translation type="unfinished"></translation>
+        <translation>Carica un file podcast locale</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci l&apos;URL di un podcast e premi &apos;Carica&apos;, oppure premi sull&apos;icona della cartella per caricare un file podcast locale.</translation>
     </message>
     <message>
         <source>Enter podcast URL below, and press &apos;Load&apos;</source>
@@ -5584,12 +5584,12 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="559"/>
         <source>Podcasts (*.xml, *.rss, *.opml</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast (*.xml, *.rss, *.opml)</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="566"/>
         <source>Failed to read file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile leggere il file!</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="573"/>
@@ -5651,7 +5651,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="54"/>
         <source>Export Current Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta le Sottoscrizioni Attuali</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="83"/>
@@ -5671,12 +5671,12 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="311"/>
         <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta le Sottoscrizioni di Podcast</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="317"/>
         <source>Export failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Esportazione fallita!</translation>
     </message>
     <message>
         <source>Do you wish to download the selected podcast episodes?</source>
@@ -6821,7 +6821,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>cue - Cue file parsing</source>
-        <translation type="unfinished"></translation>
+        <translation>cue - Lettura di file cue</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
@@ -6926,7 +6926,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="169"/>
         <source>all - Enable all debug</source>
-        <translation type="unfinished"></translation>
+        <translation>tutto - Attiva il debug completo</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="360"/>
@@ -6952,12 +6952,12 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="366"/>
         <source>Collection name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome Collezione</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="367"/>
         <source>Start full screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvia a schermo intero</translation>
     </message>
 </context>
 <context>
@@ -7408,7 +7408,7 @@ Prego scegliere un nome diverso.</translation>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="103"/>
         <source>Title</source>
-        <translation type="unfinished">Titolo</translation>
+        <translation>Titolo</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="104"/>
@@ -7569,14 +7569,14 @@ Prego scegliere un nome diverso.</translation>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Sicuro di voler cancellare i brani selezionati?
+        <translation>Sicuro di voler cancellare i brani selezionati?
 
 Non sarà possibile tornare indietro.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="176"/>
         <source>Delete Songs</source>
-        <translation type="unfinished">Cancella Brani</translation>
+        <translation>Cancella Brani</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="248"/>
@@ -8178,7 +8178,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../context/songview.cpp" line="219"/>
         <source>Failed to locate lyrics</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile trovare i testi</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="227"/>
@@ -8374,7 +8374,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../context/songview.cpp" line="618"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Durata</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="620"/>
@@ -8384,7 +8384,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../context/songview.cpp" line="621"/>
         <source>Original Year</source>
-        <translation type="unfinished">Anno Originale</translation>
+        <translation>Anno Originale</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="658"/>
@@ -8523,7 +8523,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="60"/>
         <source>Remove Invalid Tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi le Tracce Non Valide</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="87"/>
@@ -8743,7 +8743,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="49"/>
         <source>Community Radio Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfoglia le Radio della Comunità</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="108"/>

@@ -4,7 +4,7 @@ about: Suggest an idea for this project
 
 ---
 
-**NOTE** Cantata is now in a bug-fix only state. Therefore feature requests will usuaully be rejected. Pull requests, however, will still be accepted - so, if you desire a new feature this would be the route required.
+**NOTE** Cantata is now in a bug-fix only state. Therefore feature requests will usually be rejected. Pull requests, however, will still be accepted - so, if you desire a new feature this would be the route required.
 ---
 ---
 

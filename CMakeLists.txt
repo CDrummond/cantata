@@ -48,7 +48,7 @@ option(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculati
 option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" ON)
 option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
 option(ENABLE_LIBVLC "Use libVLC for MPD HTTP stream playback (if ENABLE_HTTP_STREAM_PLAYBACK=ON)" OFF)
-option(ENABLE_CATEGORIZED_VIEW "Enable support for categorised view" OFF)
+option(ENABLE_CATEGORIZED_VIEW "Enable support for categorised view" ON)
 
 if (WIN32 OR APPLE OR HAIKU)
     option(ENABLE_DEVICES_SUPPORT "Enable suport for external devices" OFF)

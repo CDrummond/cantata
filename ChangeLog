@@ -4,6 +4,7 @@
    Qt bug.
 2. Look in /usr/lib64/qt5/bin for lrelease
 3. Fix deprecation warnings.
+4. Enable catagorized view by default, might also be a Qt issue?
 
 2.4.0
 -----

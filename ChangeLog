@@ -1,7 +1,7 @@
 2.4.1
 -----
-1. Re-enable custom playqueue background for Qt versions prior to 5.12 and from
-   5.13.2 onwwards.
+1. Re-enable custom playqueue background. This is broken for 5.12, but that's a
+   Qt bug.
 2. Look in /usr/lib64/qt5/bin for lrelease
 3. Fix deprecation warnings.
 

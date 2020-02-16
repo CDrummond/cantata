@@ -113,9 +113,7 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     setMode(ItemView::Mode_GroupedTree);
     animator.setPropertyName("fade");
     animator.setTargetObject(this);
-    #if ENABLE_VIEW_BACKGROUND
     connect(CurrentCover::self(), SIGNAL(coverImage(QImage)), this, SLOT(setImage(QImage)));
-    #endif
 }
 
 PlayQueueView::~PlayQueueView()
@@ -127,7 +125,7 @@ void PlayQueueView::readConfig()
     setAutoExpand(Settings::self()->playQueueAutoExpand());
     setStartClosed(Settings::self()->playQueueStartClosed());
     setMode((ItemView::Mode)Settings::self()->playQueueView());
-    #if ENABLE_VIEW_BACKGROUND
+
     int origOpacity=backgroundOpacity;
     int origBlur=backgroundBlur;
     QString origCustomBackgroundFile=customBackgroundFile;
@@ -164,7 +162,6 @@ void PlayQueueView::readConfig()
         }
         break;
     }
-    #endif
 }
 
 void PlayQueueView::saveConfig()
@@ -430,7 +427,6 @@ void PlayQueueView::updatePalette()
 
 void PlayQueueView::setImage(const QImage &img)
 {
-    #if ENABLE_VIEW_BACKGROUND
     if (BI_None==backgroundImageType || (sender() && BI_Custom==backgroundImageType)) {
         return;
     }
@@ -465,7 +461,6 @@ void PlayQueueView::setImage(const QImage &img)
         animator.setEndValue(1.0);
         animator.start();
     }
-    #endif
 }
 
 void PlayQueueView::streamFetchStatus(const QString &msg)
@@ -486,7 +481,6 @@ void PlayQueueView::searchActive(bool a)
 
 void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)
 {
-    #if ENABLE_VIEW_BACKGROUND
     if (BI_None==backgroundImageType) {
         return;
     }
@@ -511,7 +505,6 @@ void PlayQueueView::drawBackdrop(QWidget *widget, const QSize &size)
             p.drawPixmap((size.width()-curentBackground.width())/2, (size.height()-curentBackground.height())/2, curentBackground);
         }
     }
-    #endif
 }
 
 #include "moc_playqueueview.cpp"

@@ -1,3 +1,8 @@
+2.4.1
+-----
+1. Re-enable custom playqueue background for Qt versions prior to 5.12 and from
+   5.13.2 onwwards.
+
 2.4.0
 -----
  1. Add 'Read offset' setting for AudioCDs.

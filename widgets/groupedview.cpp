@@ -847,7 +847,7 @@ void GroupedView::expand(const QModelIndex &idx, bool singleOnly)
             if (!singleOnly) {
                 quint32 count=model()->rowCount(idx);
                 for (quint32 i=0; i<count; ++i) {
-                    expand(idx.child(i, 0));
+                    expand(model()->index(i, 0, idx));
                 }
             }
         } else if (AlbumHeader==getType(idx)) {
@@ -868,7 +868,7 @@ void GroupedView::collapse(const QModelIndex &idx, bool singleOnly)
             if (!singleOnly) {
                 quint32 count=model()->rowCount(idx);
                 for (quint32 i=0; i<count; ++i) {
-                    collapse(idx.child(i, 0));
+                    collapse(model()->index(i, 0, idx));
                 }
             }
         }

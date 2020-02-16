@@ -1703,7 +1703,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         if (itemModel->canFetchMore(index)) {
             itemModel->fetchMore(index);
         }
-        QModelIndex fistChild=index.child(0, 0);
+        QModelIndex fistChild=itemModel->index(0, 0, index);
         if (!fistChild.isValid()) {
             return;
         }
@@ -1714,7 +1714,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         //}
         prevTopIndex.append(curTop);
         bool haveChildren=itemModel->canFetchMore(fistChild);
-        setLevel(currentLevel+1, haveChildren || fistChild.child(0, 0).isValid());
+        setLevel(currentLevel+1, haveChildren || itemModel->index(0, 0, fistChild).isValid());
         categorizedView->setPlain(!haveChildren);
         categorizedView->setRootIndex(index);
         setTitle();
@@ -1727,11 +1727,11 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         }
         categorizedView->scrollToTop();
     #endif
-    } else if (usingListView() && (index.isValid() && (index.child(0, 0).isValid() || itemModel->canFetchMore(index)) && index!=listView->rootIndex())) {
+    } else if (usingListView() && (index.isValid() && (itemModel->index(0, 0, index).isValid() || itemModel->canFetchMore(index)) && index!=listView->rootIndex())) {
         if (itemModel->canFetchMore(index)) {
             itemModel->fetchMore(index);
         }
-        QModelIndex fistChild=index.child(0, 0);
+        QModelIndex fistChild=itemModel->index(0, 0, index);
         if (!fistChild.isValid()) {
             return;
         }
@@ -1741,7 +1741,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
             curTop=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(curTop);
         }
         prevTopIndex.append(curTop);
-        setLevel(currentLevel+1, itemModel->canFetchMore(fistChild) || fistChild.child(0, 0).isValid());
+        setLevel(currentLevel+1, itemModel->canFetchMore(fistChild) || itemModel->index(0, 0, fistChild).isValid());
         listView->setRootIndex(index);
         setTitle();
 

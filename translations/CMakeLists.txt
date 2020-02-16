@@ -4,7 +4,7 @@ foreach (TS_FILE ${TS_FILES})
     list(APPEND CANTATA_TRANS "${TRANS}")
 endforeach ()
 
-find_program(LRELEASE_EXECUTABLE lrelease)
+find_program(LRELEASE_EXECUTABLE lrelease PATHS /usr/lib64/qt5/bin/)
 
 if (LRELEASE_EXECUTABLE)
     set(catalogname cantata)

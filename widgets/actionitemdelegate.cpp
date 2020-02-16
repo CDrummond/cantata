@@ -175,7 +175,7 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index, int adjust) co
     bool rtl = QApplication::isRightToLeft();
     QListView *lv=qobject_cast<QListView *>(view);
     GroupedView *gv=lv ? nullptr : qobject_cast<GroupedView *>(view);
-    ActionPos actionPos=gv ? AP_HBottom : (lv && QListView::ListMode!=lv->viewMode() && (index.child(0, 0).isValid() || index.model()->canFetchMore(index)) ? AP_VTop : AP_HMiddle);
+    ActionPos actionPos=gv ? AP_HBottom : (lv && QListView::ListMode!=lv->viewMode() && (index.model()->index(0, 0, index).isValid() || index.model()->canFetchMore(index)) ? AP_VTop : AP_HMiddle);
     QRect rect = view->visualRect(index);
     rect.moveTo(view->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     // Adjust position side to take into account the fact that layout is dynamic

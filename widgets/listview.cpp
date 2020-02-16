@@ -34,6 +34,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QModelIndex>
+#include <algorithm>
 
 ListView::ListView(QWidget *parent)
     : QListView(parent)
@@ -89,7 +90,7 @@ QModelIndexList ListView::selectedIndexes(bool sorted) const
 {
     QModelIndexList indexes=selectionModel() ? selectionModel()->selectedIndexes() : QModelIndexList();
     if (sorted) {
-        qSort(indexes);
+        std::sort(indexes.begin(), indexes.end());
     }
     return indexes;
 }

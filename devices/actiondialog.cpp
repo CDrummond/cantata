@@ -51,6 +51,7 @@
 #ifdef QT_QTDBUS_FOUND
 #include <QDBusConnection>
 #endif
+#include <algorithm>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -386,7 +387,7 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     songsToAction=songs;
     mode=m;
     setCaption(Copy==mode || Sync==mode ? tr("Copy Songs") : tr("Delete Songs"));
-    qSort(songsToAction);
+    std::sort(songsToAction.begin(), songsToAction.end());
     progressLabel->setText(QString());
     progressBar->setValue(0);
     progressBar->setRange(0, (Copy==mode || Sync==mode ? songsToAction.count() : (songsToAction.count()+1))*100);

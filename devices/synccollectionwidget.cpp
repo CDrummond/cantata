@@ -32,6 +32,7 @@
 #include "support/actioncollection.h"
 #include <QTimer>
 #include <QAction>
+#include <algorithm>
 
 SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title)
     : QWidget(parent)
@@ -93,7 +94,7 @@ QList<Song> SyncCollectionWidget::checkedSongs() const
     for (const Song *s: checked) {
         songs.append(*s);
     }
-    qSort(songs);
+    std::sort(songs.begin(), songs.end());
     return songs;
 }
 

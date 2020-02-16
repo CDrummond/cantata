@@ -383,7 +383,7 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
         int td=index.data(Cantata::Role_AlbumDuration).toUInt();
         QString totalDuration=td>0 && td!=song.time ? Utils::formatTime(td) : QString();
         QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
-        int totalDurationWidth=fm.width(totalDuration)+8;
+        int totalDurationWidth=fm.horizontalAdvance(totalDuration)+8;
         QRect textRect(r.x(), r.y(), r.width()-(rtl ? (4*constBorder) : totalDurationWidth), textHeight);
         QFont tf(f);
         tf.setBold(true);
@@ -420,7 +420,7 @@ void GroupedViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
     int ratingsStart=rtl ? 0 : drawRatings(painter, song, r, fm, option.palette.color(QPalette::Active, QPalette::Text)); // TODO!!!
 
-    int durationWidth=showTrackDuration ? fm.width(duration)+8 : 0;
+    int durationWidth=showTrackDuration ? fm.horizontalAdvance(duration)+8 : 0;
     QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
     QRect textRect(r.x(), r.y(), r.width()-durationWidth, textHeight);
     if (ratingsStart>0) {
@@ -451,7 +451,7 @@ int GroupedViewDelegate::drawRatings(QPainter *painter, const Song &song, const 
         painter->setOpacity(painter->opacity()*0.75);
         const QSize &ratingSize=ratingPainter->size();
         int spacing=constBorder*2;
-        int durationWidth=fm.width("0:00:00")+spacing;
+        int durationWidth=fm.horizontalAdvance("0:00:00")+spacing;
         QRect ratingRect(r.x()+r.width()-(durationWidth+ratingSize.width()+spacing),
                          r.y()+(r.height()-ratingSize.height())/2,
                          ratingSize.width(), ratingSize.height());

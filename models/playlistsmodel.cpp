@@ -47,6 +47,7 @@
 #ifdef ENABLE_HTTP_SERVER
 #include "http/httpserver.h"
 #endif
+#include <algorithm>
 
 QString PlaylistsModel::headerText(int col)
 {
@@ -959,7 +960,7 @@ void PlaylistsModel::updateItemMenu(bool create)
             names << p->name;
         }
     }
-    qSort(names.begin(), names.end(), PlaylistsProxyModel::compareNames);
+    std::sort(names.begin(), names.end(), PlaylistsProxyModel::compareNames);
     for (const QString &n: names) {
         itemMenu->addAction(n, this, SLOT(emitAddToExisting()));
     }

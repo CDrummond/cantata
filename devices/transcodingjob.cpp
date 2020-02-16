@@ -50,7 +50,7 @@ void TranscodingJob::run()
     } else {
         QStringList parameters=encoder.params(value, src, destFile);
         process = new QProcess;
-        process->setReadChannelMode(QProcess::MergedChannels);
+        process->setProcessChannelMode(QProcess::MergedChannels);
         process->setReadChannel(QProcess::StandardOutput);
         connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(processOutput()));
         connect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(finished(int, QProcess::ExitStatus)));

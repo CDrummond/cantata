@@ -26,6 +26,7 @@
 #include "support/actioncollection.h"
 #include "support/action.h"
 #include <QEvent>
+#include <algorithm>
 
 static Action *action=nullptr;
 
@@ -58,7 +59,7 @@ void GenreCombo::update(const QSet<QString> &g)
 
     genres=mg;
     QStringList entries=g.toList();
-    qSort(entries);
+    std::sort(entries.begin(), entries.end());
     entries.prepend(tr("All Genres"));
 
     if (count()==entries.count()) {

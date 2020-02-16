@@ -39,7 +39,7 @@ OtherSettings::OtherSettings(QWidget *p)
     contextBackdrop_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
     contextBackdropFile->setDirMode(false);
     contextBackdropFile->setFilter(tr("Images (*.png *.jpg)"));
-    int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(tr("10px", "pixels")));
+    int labelWidth=qMax(fontMetrics().horizontalAdvance(QLatin1String("100%")), fontMetrics().horizontalAdvance(tr("10px", "pixels")));
     contextBackdropOpacityLabel->setFixedWidth(labelWidth);
     contextBackdropBlurLabel->setFixedWidth(labelWidth);
     connect(contextBackdropOpacity, SIGNAL(valueChanged(int)), SLOT(setContextBackdropOpacityLabel()));

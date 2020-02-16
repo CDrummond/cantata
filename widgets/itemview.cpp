@@ -600,7 +600,7 @@ public:
             painter->drawText(textRect, str, textOpt);
 
             if (text.count()>1) {
-                int mainWidth=textMetrics.width(str);
+                int mainWidth=textMetrics.horizontalAdvance(str);
                 text.takeFirst();
                 str=text.join(Song::constSep);
                 textRect=QRect(r.x()+(mainWidth+8), r.y()+((r.height()-textHeight)/2), r.width()-(mainWidth+8), textHeight);

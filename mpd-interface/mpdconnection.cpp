@@ -49,6 +49,7 @@
 #elif defined Q_OS_MAC && defined IOKIT_FOUND
 #include "mac/powermanagement.h"
 #endif
+#include <algorithm>
 #include <QDebug>
 static bool debugEnabled=false;
 #define DBUG if (debugEnabled) qWarning() << "MPDConnection" << QThread::currentThreadId()
@@ -980,7 +981,7 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
     QList<quint32> moveItems;
 
     moveItems.append(items);
-    qSort(moveItems);
+    std::sort(moveItems.begin(), moveItems.end());
 
     int posOffset = 0;
 
@@ -1876,7 +1877,7 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
     QList<quint32> sorted=positions;
     QList<quint32> removed;
 
-    qSort(sorted);
+    std::sort(sorted.begin(), sorted.end());
 
     for (int i=sorted.count()-1; i>=0; --i) {
         quint32 idx=sorted.at(i);
@@ -1964,7 +1965,7 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
                     }
                 }
             }
-            qSort(songs);
+            std::sort(songs.begin(), songs.end());
         }
     }
     emit searchResponse(id, songs);
@@ -2049,7 +2050,7 @@ void MPDConnection::removeStreams(const QList<quint32> &positions)
     QList<quint32> sorted=positions;
     QList<quint32> removed;
 
-    qSort(sorted);
+    std::sort(sorted.begin(), sorted.end());
 
     for (int i=sorted.count()-1; i>=0; --i) {
         quint32 idx=sorted.at(i);
@@ -2134,7 +2135,7 @@ bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &
     QList<quint32> moveItems=items;
     int posOffset = 0;
 
-    qSort(moveItems);
+    std::sort(moveItems.begin(), moveItems.end());
 
     //first move all items (starting with the biggest) to the end so we don't have to deal with changing rownums
     for (int i = moveItems.size() - 1; i >= 0; i--) {

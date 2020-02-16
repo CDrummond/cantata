@@ -40,6 +40,7 @@
 #include <QValidator>
 #include <QStyle>
 #include <QStandardPaths>
+#include <algorithm>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -129,7 +130,7 @@ void ServerSettings::load()
     QList<MPDConnectionDetails> all=Settings::self()->allConnections();
     QString currentCon=Settings::self()->currentConnection();
 
-    qSort(all);
+    std::sort(all.begin(), all.end());
     combo->clear();
     int idx=0;
     haveBasicCollection=false;

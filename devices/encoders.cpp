@@ -26,6 +26,7 @@
 #include "support/utils.h"
 #include <QRegExp>
 #include <QProcess>
+#include <algorithm>
 
 namespace Encoders
 {
@@ -371,7 +372,7 @@ static void init()
         insertCodec(QLatin1String("lame"), QLatin1String("-V"), QString(), lame);
         insertCodec(QLatin1String("oggenc"), QLatin1String("-q"), QLatin1String("-o"), ogg);
         insertCodec(QLatin1String("opusenc"), QLatin1String("--bitrate"), QString(), opus);
-        qSort(installedEncoders);
+        std::sort(installedEncoders.begin(), installedEncoders.end());
     }
 }
 

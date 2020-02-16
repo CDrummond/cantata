@@ -518,7 +518,7 @@ void CoverDialog::insertItem(CoverItem *item)
     list->addItem(item);
     if (item->isLocal()) {
         list->scrollToItem(item);
-        list->setItemSelected(item, true);
+        item->setSelected(true);
     }
 }
 

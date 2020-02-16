@@ -119,6 +119,7 @@
 #include <QFileDialog>
 #include "mediakeys.h"
 #include <cstdlib>
+#include <algorithm>
 
 static int nextKey(int &key)
 {
@@ -1360,7 +1361,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
     if (menuItems!=mpd) {
         menu->clear();
         QList<Output> out=outputs;
-        qSort(out);
+        std::sort(out.begin(), out.end());
         int i=Qt::Key_1;
         for (const Output &o: out) {
             QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
@@ -1386,17 +1387,17 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
 
         if (!switchedOn.isEmpty() && switchedOff.isEmpty()) {
             QStringList names=switchedOn.toList();
-            qSort(names);
+            std::sort(names.begin(), names.end());
             trayItem->showMessage(tr("Outputs"), tr("Enabled: %1").arg(names.join(QLatin1String(", "))));
         } else if (!switchedOff.isEmpty() && switchedOn.isEmpty()) {
             QStringList names=switchedOff.toList();
-            qSort(names);
+            std::sort(names.begin(), names.end());
             trayItem->showMessage(tr("Outputs"), tr("Disabled: %1").arg(names.join(QLatin1String(", "))));
         } else if (!switchedOn.isEmpty() && !switchedOff.isEmpty()) {
             QStringList on=switchedOn.toList();
-            qSort(on);
+            std::sort(on.begin(), on.end());
             QStringList off=switchedOff.toList();
-            qSort(off);
+            std::sort(off.begin(), off.end());
             trayItem->showMessage(tr("Outputs"),
                                   tr("Enabled: %1").arg(on.join(QLatin1String(", ")))+QLatin1Char('\n')+
                                   tr("Disabled: %1").arg(off.join(QLatin1String(", "))));
@@ -1429,7 +1430,7 @@ void MainWindow::updateConnectionsMenu()
 
         if (menuItems!=cfg) {
             menu->clear();
-            qSort(connections);
+            std::sort(connections.begin(), connections.end());
             int i=Qt::Key_1;
             for (const MPDConnectionDetails &d: connections) {
                 QAction *act=menu->addAction(d.getName(), this, SLOT(changeConnection()));
@@ -1614,8 +1615,8 @@ void MainWindow::showServerInfo()
 {
     QStringList handlers=MPDConnection::self()->urlHandlers().toList();
     QStringList tags=MPDConnection::self()->tags().toList();
-    qSort(handlers);
-    qSort(tags);
+    std::sort(handlers.begin(), handlers.end());
+    std::sort(tags.begin(), tags.end());
     long version=MPDConnection::self()->version();
     QDateTime dbUpdate;
     dbUpdate.setTime_t(MPDStats::self()->dbUpdate());

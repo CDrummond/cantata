@@ -42,6 +42,7 @@
 #include <QEventLoop>
 #include <QDir>
 #include <QTimer>
+#include <algorithm>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -175,7 +176,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         deleteLater();
         return;
     }
-    qSort(original);
+    std::sort(original.begin(), original.end());
 
     if (!songsOk(original, baseDir, udi.isEmpty())) {
         return;

@@ -47,7 +47,7 @@ void AlbumScanner::start()
 {
     if (!proc) {
         proc=new QProcess(this);
-        proc->setReadChannelMode(QProcess::MergedChannels);
+        proc->setProcessChannelMode(QProcess::MergedChannels);
         proc->setReadChannel(QProcess::StandardOutput);
         connect(proc, SIGNAL(finished(int)), this, SLOT(procFinished()));
         connect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(read()));

@@ -56,7 +56,7 @@ public:
             painter->setPen(opt.palette.color(opt.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Link));
             QRect r=opt.rect;
             int pad=3;
-            int w = qMin(r.width()-(2*pad), opt.fontMetrics.width(index.data().toString()));
+            int w = qMin(r.width()-(2*pad), opt.fontMetrics.horizontalAdvance(index.data().toString()));
             painter->drawLine(r.x()+pad, r.y()+r.height()-2, r.x()+w-1, r.y()+r.height()-2);
         } else {
             BasicItemDelegate::paint(painter, option, index);
@@ -100,8 +100,8 @@ ApiKeysSettings::ApiKeysSettings(QWidget *p)
     for (const auto &k: keys) {
         QTreeWidgetItem *item=new QTreeWidgetItem(tree, QStringList() << k.name << k.url << k.key);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
-        nameWidth=qMax(nameWidth, fm.width(k.name)+padding);
-        urlWidth=qMax(urlWidth, fm.width(k.url)+padding);
+        nameWidth=qMax(nameWidth, fm.horizontalAdvance(k.name)+padding);
+        urlWidth=qMax(urlWidth, fm.horizontalAdvance(k.url)+padding);
     }
     tree->setColumnWidth(0, nameWidth);
     tree->setColumnWidth(1, urlWidth);

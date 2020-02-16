@@ -29,6 +29,7 @@
 #include <QFile>
 #include <QRegExp>
 #include <QDebug>
+#include <algorithm>
 
 static const int constSchemaVersion=5;
 
@@ -704,7 +705,7 @@ QList<LibraryDb::Genre> LibraryDb::getGenres()
         DBUG << it.key();
         genres.append(Genre(it.key(), it.value().size()));
     }
-    qSort(genres);
+    std::sort(genres.begin(), genres.end());
     return genres;
 }
 
@@ -737,7 +738,7 @@ QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
 //        DBUG << it.key();
         artists.append(Artist(it.key(), sortMap[it.key()], it.value()));
     }
-    qSort(artists);
+    std::sort(artists.begin(), artists.end());
     return artists;
 }
 
@@ -852,25 +853,25 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
     DBUG << "After select" << timer.elapsed();
     switch(sort) {
     case AS_AlArYr:
-        qSort(albums.begin(), albums.end(), albumsSortAlArYr);
+        std::sort(albums.begin(), albums.end(), albumsSortAlArYr);
         break;
     case AS_AlYrAr:
-        qSort(albums.begin(), albums.end(), albumsSortAlYrAr);
+        std::sort(albums.begin(), albums.end(), albumsSortAlYrAr);
         break;
     case AS_ArAlYr:
-        qSort(albums.begin(), albums.end(), albumsSortArAlYr);
+        std::sort(albums.begin(), albums.end(), albumsSortArAlYr);
         break;
     case AS_ArYrAl:
-        qSort(albums.begin(), albums.end(), albumsSortArYrAl);
+        std::sort(albums.begin(), albums.end(), albumsSortArYrAl);
         break;
     case AS_YrAlAr:
-        qSort(albums.begin(), albums.end(), albumsSortYrAlAr);
+        std::sort(albums.begin(), albums.end(), albumsSortYrAlAr);
         break;
     case AS_YrArAl:
-        qSort(albums.begin(), albums.end(), albumsSortYrArAl);
+        std::sort(albums.begin(), albums.end(), albumsSortYrArAl);
         break;
     case AS_Modified:
-        qSort(albums.begin(), albums.end(), albumsSortModified);
+        std::sort(albums.begin(), albums.end(), albumsSortModified);
         break;
     default:
         break;
@@ -908,19 +909,19 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
 
     switch(sort) {
     case AS_AlArYr:
-        qSort(songs.begin(), songs.end(), songsSortAlAr);
+        std::sort(songs.begin(), songs.end(), songsSortAlAr);
         break;
     case AS_ArAlYr:
-        qSort(songs.begin(), songs.end(), songsSortArAl);
+        std::sort(songs.begin(), songs.end(), songsSortArAl);
         break;
 //    case AS_Year:
-//        qSort(songs.begin(), songs.end(), songsSortYrAlAr);
+//        std::sort(songs.begin(), songs.end(), songsSortYrAlAr);
 //        break;
 //    case AS_Modified:
-//        qSort(songs.begin(), songs.end(), songsSortModified);
+//        std::sort(songs.begin(), songs.end(), songsSortModified);
 //        break;
     default:
-        qSort(songs.begin(), songs.end(), songSort);
+        std::sort(songs.begin(), songs.end(), songSort);
         break;
     }
     return songs;
@@ -1006,7 +1007,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbumsWithArtistOrComposer(const QString &
         }
     }
 
-    qSort(albums.begin(), albums.end(), albumsSortArAlYr);
+    std::sort(albums.begin(), albums.end(), albumsSortArAlYr);
 
     return albums;
 }

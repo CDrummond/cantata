@@ -45,7 +45,7 @@ public:
         : TableView(QLatin1String("playlist"), p)
     {
         setUseSimpleDelegate();
-        setIndentation(fontMetrics().width(QLatin1String("XX")));
+        setIndentation(fontMetrics().horizontalAdvance(QLatin1String("XX")));
     }
 
     ~PlaylistTableView() override { }

@@ -41,6 +41,7 @@
 #include <QTimer>
 #include <QFile>
 #include <QDir>
+#include <algorithm>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -129,7 +130,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi, bool for
     opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     musicFolder=MPDConnection::self()->getDetails().dir;
     #endif
-    qSort(origSongs);
+    std::sort(origSongs.begin(), origSongs.end());
 
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);

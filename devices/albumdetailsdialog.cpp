@@ -37,6 +37,7 @@
 #include <QStyledItemDelegate>
 #include <QMouseEvent>
 #include <QSpinBox>
+#include <algorithm>
 
 enum Columns {
     COL_TRACK,
@@ -174,7 +175,7 @@ void AlbumDetailsDialog::show(AudioCdDevice *dev)
     for (const MusicLibraryItem *i: dev->childItems()) {
         songs.append(static_cast<const MusicLibraryItemSong *>(i)->song());
     }
-    qSort(songs);
+    std::sort(songs.begin(), songs.end());
 
     for (const Song &s: songs) {
         QTreeWidgetItem *item=new QTreeWidgetItem(tracks);

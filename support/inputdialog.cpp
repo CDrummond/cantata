@@ -29,6 +29,7 @@
 #include <QLabel>
 #include <QFormLayout>
 #include <QSpinBox>
+#include <algorithm>
 
 enum InputType {
     Int,
@@ -52,7 +53,7 @@ InputDialog::InputDialog(const QString &caption, const QString &label, const QSt
         if (!value.isEmpty() && -1==items.indexOf(value)) {
             items.append(value);
         }
-        qSort(items);
+        std::sort(items.begin(), items.end());
         combo->addItems(items);
         combo->setCurrentText(value.isEmpty() ? QString() : value);
         connect(combo, SIGNAL(editTextChanged(QString)), this, SLOT(enableOkButton()));

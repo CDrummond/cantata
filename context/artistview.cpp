@@ -43,6 +43,7 @@
 #include <QMenu>
 #include <QTimer>
 #include <QDesktopServices>
+#include <algorithm>
 
 static const char *constNameKey="name";
 
@@ -416,7 +417,7 @@ QStringList ArtistView::parseSimilarResponse(const QByteArray &resp)
         }
     }
 
-    qSort(artists);
+    std::sort(artists.begin(), artists.end());
     return artists;
 }
 

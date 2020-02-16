@@ -32,6 +32,7 @@
 #include <QSortFilterProxyModel>
 #include <QSpinBox>
 #include <QStyle>
+#include <algorithm>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -341,7 +342,7 @@ void PlaylistRulesDialog::remove()
     for (const QModelIndex &i: items) {
         rows.append(proxy->mapToSource(i).row());
     }
-    qSort(rows);
+    std::sort(rows.begin(), rows.end());
     while (rows.count()) {
         model->removeRow(rows.takeLast());
     }

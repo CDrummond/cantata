@@ -36,6 +36,7 @@
 #include <QModelIndex>
 #include <QApplication>
 #include <QLinearGradient>
+#include <algorithm>
 
 class CategoryDrawer : public KCategoryDrawer
 {
@@ -156,7 +157,7 @@ QModelIndexList CategorizedView::selectedIndexes(bool sorted) const
     }
 
     if (sorted) {
-        qSort(actual);
+        std::sort(actual.begin(), actual.end());
     }
     return actual;
 }

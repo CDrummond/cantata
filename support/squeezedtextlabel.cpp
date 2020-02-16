@@ -40,7 +40,7 @@ void SqueezedTextLabel::elideText()
 {
     QFontMetrics fm(fontMetrics());
     int labelWidth = size().width();
-    int lineWidth = fm.width(originalText);
+    int lineWidth = fm.horizontalAdvance(originalText);
 
     if (lineWidth > labelWidth) {
         QLabel::setText(fm.elidedText(originalText, elideMode, labelWidth));

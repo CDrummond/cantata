@@ -54,6 +54,7 @@
 #include "solid-lite/storagedrive.h"
 #include "solid-lite/storagevolume.h"
 #include "solid-lite/opticaldisc.h"
+#include <algorithm>
 
 #include <QDebug>
 static bool debugIsEnabled=false;
@@ -208,13 +209,13 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
                     break;
                 }
 
-                qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
+                std::sort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
 
                 for (MusicLibraryItem *a: artists) {
                     const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
                     // Now sort all albums as they would appear in UI...
                     QList<MusicLibraryItem *> artistAlbums=artist->childItems();
-                    qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+                    std::sort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
                     for (MusicLibraryItem *i: artistAlbums) {
                         const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
                         for (const MusicLibraryItem *song: album->childItems()) {
@@ -231,7 +232,7 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
         case MusicLibraryItem::Type_Artist: {
             // First, sort all albums as they would appear in UI...
             QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
-            qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+            std::sort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
 
             for (MusicLibraryItem *i: artistAlbums) {
                 const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
@@ -904,7 +905,7 @@ void DevicesModel::updateItemMenu()
         }
 
         QStringList keys=items.keys();
-        qSort(keys.begin(), keys.end(), lessThan);
+        std::sort(keys.begin(), keys.end(), lessThan);
 
         for (const QString &k: keys) {
             const MusicLibraryItemRoot *d=items[k];

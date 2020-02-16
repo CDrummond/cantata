@@ -27,6 +27,7 @@
 #include "support/configuration.h"
 #include <QMenu>
 #include <QProcess>
+#include <algorithm>
 
 GLOBAL_STATIC(CustomActions, instance)
 
@@ -74,7 +75,7 @@ CustomActions::CustomActions()
 
 void CustomActions::set(QList<Command> cmds)
 {
-    qSort(cmds);
+    std::sort(cmds.begin(), cmds.end());
     bool diff=cmds.length()!=commands.length();
 
     if (!diff) {

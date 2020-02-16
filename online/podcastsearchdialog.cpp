@@ -316,7 +316,7 @@ void PodcastPage::imageJobFinished()
         if (img.width()>maxImageSize || img.height()>maxImageSize) {
             img=img.scaled(maxImageSize, maxImageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
-        imageCache.insert(imageJob->property(constOrigUrlProperty).toUrl(), new QImage(img), img.byteCount());
+        imageCache.insert(imageJob->property(constOrigUrlProperty).toUrl(), new QImage(img), img.sizeInBytes());
         updateText();
     }
     imageJob=nullptr;

@@ -43,6 +43,7 @@
 #include <QSystemTrayIcon>
 #include <QSysInfo>
 #include <QStyleFactory>
+#include <algorithm>
 
 #define REMOVE(w) \
     w->setVisible(false); \
@@ -178,7 +179,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     playQueueBackground_custom->setProperty(constValueProperty, PlayQueueView::BI_Custom);
     playQueueBackgroundFile->setDirMode(false);
     playQueueBackgroundFile->setFilter(tr("Images (*.png *.jpg)"));
-    int labelWidth=qMax(fontMetrics().width(QLatin1String("100%")), fontMetrics().width(tr("10px", "pixels")));
+    int labelWidth=qMax(fontMetrics().horizontalAdvance(QLatin1String("100%")), fontMetrics().horizontalAdvance(tr("10px", "pixels")));
     playQueueBackgroundOpacityLabel->setFixedWidth(labelWidth);
     playQueueBackgroundBlurLabel->setFixedWidth(labelWidth);
     connect(playQueueBackgroundOpacity, SIGNAL(valueChanged(int)), SLOT(setPlayQueueBackgroundOpacityLabel()));
@@ -448,7 +449,7 @@ void InterfaceSettings::showEvent(QShowEvent *e)
 
         QString current = Settings::self()->lang();
         QStringList names = langMap.keys();
-        qStableSort(names.begin(), names.end(), localeAwareCompare);
+        std::stable_sort(names.begin(), names.end(), localeAwareCompare);
         lang->addItem(tr("System default"), QString());
         lang->setCurrentIndex(0);
         for (const QString &name: names) {

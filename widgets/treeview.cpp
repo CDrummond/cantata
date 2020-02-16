@@ -38,6 +38,7 @@
 #include <QList>
 #include <QApplication>
 #include <QHeaderView>
+#include <algorithm>
 
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 
@@ -164,7 +165,7 @@ void TreeView::drag(Qt::DropActions supportedActions, QAbstractItemView *view, c
         drag->setMimeData(data);
         int pixSize=Icon::stdSize(Utils::scaleForDpi(32));
         drag->setPixmap(Icons::self()->audioListIcon.pixmap(pixSize, pixSize));
-        drag->start(supportedActions);
+        drag->exec(supportedActions);
     }
 }
 
@@ -243,8 +244,8 @@ QModelIndexList TreeView::sortIndexes(const QModelIndexList &list)
             toSort.append(Index(i));
         }
     }
-    // Call qSort on these - this will use operator<
-    qSort(toSort);
+    // Call std::sort on these - this will use operator<
+    std::sort(toSort.begin(), toSort.end());
 
     // Now convert the QList<Index> into a QModelIndexList
     QModelIndexList sorted;

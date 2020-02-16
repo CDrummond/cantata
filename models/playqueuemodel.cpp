@@ -63,6 +63,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QXmlStreamReader>
+#include <algorithm>
 
 GLOBAL_STATIC(PlayQueueModel, instance)
 
@@ -1467,23 +1468,23 @@ void PlayQueueModel::sortBy()
         }
 
         if (constSortByArtistKey==key) {
-            qSort(copy.begin(), copy.end(), artistSort);
+            std::sort(copy.begin(), copy.end(), artistSort);
         } else if (constSortByAlbumArtistKey==key) {
-            qSort(copy.begin(), copy.end(), albumArtistSort);
+            std::sort(copy.begin(), copy.end(), albumArtistSort);
         } else if (constSortByAlbumKey==key) {
-            qSort(copy.begin(), copy.end(), albumSort);
+            std::sort(copy.begin(), copy.end(), albumSort);
         } else if (constSortByGenreKey==key) {
-            qSort(copy.begin(), copy.end(), genreSort);
+            std::sort(copy.begin(), copy.end(), genreSort);
         } else if (constSortByYearKey==key) {
-            qSort(copy.begin(), copy.end(), yearSort);
+            std::sort(copy.begin(), copy.end(), yearSort);
         } else if (constSortByComposerKey==key) {
-            qSort(copy.begin(), copy.end(), composerSort);
+            std::sort(copy.begin(), copy.end(), composerSort);
         } else if (constSortByPerformerKey==key) {
-            qSort(copy.begin(), copy.end(), performerSort);
+            std::sort(copy.begin(), copy.end(), performerSort);
         } else if (constSortByTitleKey==key) {
-            qSort(copy.begin(), copy.end(), titleSort);
+            std::sort(copy.begin(), copy.end(), titleSort);
         } else if (constSortByNumberKey==key) {
-            qSort(copy.begin(), copy.end(), trackSort);
+            std::sort(copy.begin(), copy.end(), trackSort);
         }
         QList<quint32> positions;
         for (const Song *s: copy) {
@@ -1611,7 +1612,7 @@ void PlayQueueModel::shuffleAlbums()
     while (!keys.isEmpty()) {
         quint32 key=keys.takeAt(Utils::random(keys.count()));
         QList<const Song *> albumSongs=albums[key];
-        qSort(albumSongs.begin(), albumSongs.end(), songSort);
+        std::sort(albumSongs.begin(), albumSongs.end(), songSort);
         for (const Song *song: albumSongs) {
             positions.append(getRowById(song->id));
         }

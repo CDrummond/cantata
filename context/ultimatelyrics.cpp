@@ -30,6 +30,7 @@
 #include <QFileInfoList>
 #include <QXmlStreamReader>
 #include <QSet>
+#include <algorithm>
 
 GLOBAL_STATIC(UltimateLyrics, instance)
 
@@ -205,7 +206,7 @@ void UltimateLyrics::setEnabled(const QStringList &enabled)
             provider->setRelevance(relevance++);
         }
     }
-    qSort(providers.begin(), providers.end(), compareLyricProviders);
+    std::sort(providers.begin(), providers.end(), compareLyricProviders);
     Settings::self()->saveLyricProviders(enabled);
 }
 

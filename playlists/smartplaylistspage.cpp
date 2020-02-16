@@ -31,6 +31,7 @@
 #include "support/messagebox.h"
 #include "gui/stdactions.h"
 #include "models/mpdlibrarymodel.h"
+#include <algorithm>
 
 SmartPlaylistsPage::SmartPlaylistsPage(QWidget *p)
     : SinglePageWidget(p)
@@ -323,31 +324,31 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
     sortAscending = command.orderAscending;
     switch(command.order) {
     case RulesPlaylists::Order_AlbumArtist:
-        qSort(songs.begin(), songs.end(), albumArtistSort);
+        std::sort(songs.begin(), songs.end(), albumArtistSort);
         break;
     case RulesPlaylists::Order_Artist:
-        qSort(songs.begin(), songs.end(), artistSort);
+        std::sort(songs.begin(), songs.end(), artistSort);
         break;
     case RulesPlaylists::Order_Album:
-        qSort(songs.begin(), songs.end(), albumSort);
+        std::sort(songs.begin(), songs.end(), albumSort);
         break;
     case RulesPlaylists::Order_Composer:
-        qSort(songs.begin(), songs.end(), composerSort);
+        std::sort(songs.begin(), songs.end(), composerSort);
         break;
     case RulesPlaylists::Order_Date:
-        qSort(songs.begin(), songs.end(), dateSort);
+        std::sort(songs.begin(), songs.end(), dateSort);
         break;
     case RulesPlaylists::Order_Genre:
-        qSort(songs.begin(), songs.end(), genreSort);
+        std::sort(songs.begin(), songs.end(), genreSort);
         break;
     case RulesPlaylists::Order_Rating:
-        qSort(songs.begin(), songs.end(), ratingSort);
+        std::sort(songs.begin(), songs.end(), ratingSort);
         break;
     case RulesPlaylists::Order_Title:
-        qSort(songs.begin(), songs.end(), titleSort);
+        std::sort(songs.begin(), songs.end(), titleSort);
         break;
     case RulesPlaylists::Order_Age:
-        qSort(songs.begin(), songs.end(), ageSort);
+        std::sort(songs.begin(), songs.end(), ageSort);
         break;
     default:
     case RulesPlaylists::Order_Random:

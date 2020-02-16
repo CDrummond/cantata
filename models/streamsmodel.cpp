@@ -58,6 +58,7 @@
 #endif
 #include <stdio.h>
 #include <time.h>
+#include <algorithm>
 
 #include <QDebug>
 GLOBAL_STATIC(StreamsModel, instance)
@@ -1516,7 +1517,7 @@ QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev
                 }
             } else if ("</tr>"==line) {
                 if (entry.streams.count()) {
-                    qSort(entry.streams);
+                    std::sort(entry.streams.begin(), entry.streams.end());
                     QString name;
                     QString url=entry.streams.at(0).url;
 

@@ -43,7 +43,7 @@ public:
         return sh;
     }
 
-    QSize sizeHint() const override { return QSize(fontMetrics().width(originalText), QLabel::sizeHint().height()); }
+    QSize sizeHint() const override { return QSize(fontMetrics().horizontalAdvance(originalText), QLabel::sizeHint().height()); }
     void resizeEvent(QResizeEvent *) override { elideText(); }
 
 private:

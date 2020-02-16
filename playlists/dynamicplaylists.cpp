@@ -580,7 +580,7 @@ void DynamicPlaylists::checkHelper()
             QFileInfo inf(Utils::cacheDir(rulesDir, false)+constActiveRules);
 
             if (inf.exists() && inf.isSymLink()) {
-                QString link=inf.readLink();
+                QString link=inf.symLinkTarget();
                 if (!link.isEmpty()) {
                     QString fname=QFileInfo(link).fileName();
                     if (fname.endsWith(constExtension)) {

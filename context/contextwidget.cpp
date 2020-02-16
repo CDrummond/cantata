@@ -95,7 +95,7 @@ public:
             f.setBold(true);
         }
         QFontMetrics fm(f);
-        if (fm.width(txt)>rect().width()) {
+        if (fm.horizontalAdvance(txt)>rect().width()) {
             txt=fm.elidedText(txt, isRightToLeft() ? Qt::ElideLeft : Qt::ElideRight, rect().width());
         }
 
@@ -504,7 +504,7 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     QRect r(rect());
 
     if (darkBackground) {
-        p.fillRect(r, palette().background().color());
+        p.fillRect(r, palette().window().color());
     } else {
         QColor col = palette().windowText().color();
         col.setAlphaF(0.15);

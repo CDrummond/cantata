@@ -163,11 +163,11 @@ void FancyTabProxyStyle::drawControl(ControlElement element, const QStyleOption 
 
     int textFlags = Qt::AlignTop | Qt::AlignVCenter;
     #ifdef Q_OS_MAC
-    p->setPen(selected && active ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
+    p->setPen(selected && active ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().windowText().color());
     #elif defined Q_OS_WIN
-    p->setPen(QApplication::palette().foreground().color());
+    p->setPen(QApplication::palette().windowText().color());
     #else
-    p->setPen(selected && active ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
+    p->setPen(selected && active ? QApplication::palette().highlightedText().color() : QApplication::palette().windowText().color());
     #endif
 
     drawIcon(tabOpt->icon, iconRect, p, tabOpt->iconSize, selected && active);
@@ -269,7 +269,7 @@ QSize FancyTab::sizeHint() const
     int padding = FancyTabBar::Side==tabbar->position() ? Utils::scaleForDpi(12) : 0;
     if (withText) {
         QFontMetrics fm(font());
-        int textWidth = fm.width(text)*1.1;
+        int textWidth = fm.horizontalAdvance(text)*1.1;
         int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + spacing;
         return QSize(width, iconSize + spacing + fm.height() + padding);
     } else {
@@ -456,11 +456,11 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
         tabTextRect.translate(0, -2);
 
         #ifdef Q_OS_MAC
-        painter->setPen(selected ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().foreground().color());
+        painter->setPen(selected ? OSXStyle::self()->viewPalette().highlightedText().color() : OSXStyle::self()->viewPalette().windowText().color());
         #elif defined Q_OS_WIN
-        painter->setPen(QApplication::palette().foreground().color());
+        painter->setPen(QApplication::palette().windowText().color());
         #else
-        painter->setPen(selected ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
+        painter->setPen(selected ? QApplication::palette().highlightedText().color() : QApplication::palette().windowText().color());
         #endif
         int textFlags = Qt::AlignCenter | Qt::AlignBottom;
         painter->drawText(tabTextRect, textFlags, tabText);

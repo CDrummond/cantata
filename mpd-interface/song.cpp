@@ -39,6 +39,7 @@
 #include <QUrl>
 #include <QMutex>
 #include <QMutexLocker>
+#include <algorithm>
 
 //static const quint8 constOnlineDiscId=0xEE;
 
@@ -129,7 +130,7 @@ static bool songTypeSort(const Song &s1, const Song &s2)
 
 void Song::sortViaType(QList<Song> &songs)
 {
-    qSort(songs.begin(), songs.end(), songTypeSort);
+    std::sort(songs.begin(), songs.end(), songTypeSort);
 }
 
 QString Song::decodePath(const QString &file, bool cdda)

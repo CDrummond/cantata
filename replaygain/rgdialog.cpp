@@ -45,6 +45,7 @@
 #include <QCloseEvent>
 #include <QCoreApplication>
 #include <QEventLoop>
+#include <algorithm>
 
 enum Columns
 {
@@ -164,7 +165,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi, bool autoScan)
     }
 
     autoScanTags=autoScan;
-    qSort(origSongs);
+    std::sort(origSongs.begin(), origSongs.end());
 
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
@@ -625,7 +626,7 @@ void RgDialog::toggleDisplay()
     for (int i=0; i<view->topLevelItemCount(); ++i) {
         QTreeWidgetItem *item=view->topLevelItem(i);
         if (!removedItems.contains(view->indexOfTopLevelItem(item))) {
-            view->setItemHidden(item, showAll ? false : origTags.contains(i));
+            item->setHidden(showAll ? false : origTags.contains(i));
         }
     }
 }
@@ -646,7 +647,7 @@ void RgDialog::removeItems()
         QList<QTreeWidgetItem *> selection=view->selectedItems();
         for (QTreeWidgetItem *item: selection) {
             int index=view->indexOfTopLevelItem(item);
-            view->setItemHidden(item, true);
+            item->setHidden(true);
             removedItems.insert(index);
             if (tagsToSave.contains(index)) {
                 tagsToSave.remove(index);

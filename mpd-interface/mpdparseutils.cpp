@@ -43,6 +43,7 @@
 #include "support/utils.h"
 #include "cuefile.h"
 #include "mpdconnection.h"
+#include <algorithm>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -751,7 +752,7 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
                 sngs.append(s);
             }
         }
-        qSort(playlists);
+        std::sort(playlists.begin(), playlists.end());
         songs=sngs;
         songs+=playlists;
     }

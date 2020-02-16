@@ -39,6 +39,7 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 #include <QStylePainter>
+#include <algorithm>
 
 class SelectorButton : public ToolButton
 {
@@ -270,7 +271,7 @@ void MultiPageWidget::setPage()
 void MultiPageWidget::sortItems()
 {
     QList<QString> keys=entries.keys();
-    qSort(keys);
+    std::sort(keys.begin(), keys.end());
     infoLabel->setVisible(0==entries.count());
     QVBoxLayout *layout=static_cast<QVBoxLayout *>(view->layout());
 

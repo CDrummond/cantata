@@ -81,6 +81,7 @@
     </exclude>
     <invalidIndicator value="Couldn't find that page."/>
   </provider>
+<!-- Issue #1571
   <provider name="Encyclopaedia Metallum" charset="utf-8" url="https://www.metal-archives.com/search/ajax-advanced/searching/songs/?songTitle={title}&amp;bandName={artist}&amp;ExactBandMatch=1">
     <extract>
       <item url="http://www.metal-archives.com/release/ajax-view-lyrics/id/{id}"/>
@@ -89,6 +90,7 @@
     <invalidIndicator value="&quot;iTotalRecords&quot;: 0"/>
     <invalidIndicator value="lyrics not available"/>
   </provider>
+-->
   <provider name="letras.mus.br" charset="utf-8" url="https://www.letras.mus.br/winamp.php?musica={title}&amp;artista={artist}">
     <urlFormat replace="_@,;&amp;\/&quot;" with="_"/>
     <urlFormat replace=" " with="+"/>

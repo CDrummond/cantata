@@ -5,6 +5,7 @@
 2. Look in /usr/lib64/qt5/bin for lrelease
 3. Fix deprecation warnings.
 4. Enable catagorized view by default, might also be a Qt issue?
+5. Remove Encyclopaedia Metallum from lyrics providers, as does not work.
 
 2.4.0
 -----

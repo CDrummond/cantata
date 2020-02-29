@@ -1,3 +1,8 @@
+2.4.2
+-----
+1. Correctly handle changing 'Basic' mode music folder.
+2. When stopping 'Basic' mode MPD instance, send SIGKILL.
+
 2.4.1
 -----
 1. Re-enable custom playqueue background. This is broken for 5.12, but that's a

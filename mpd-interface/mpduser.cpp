@@ -134,6 +134,11 @@ void MPDUser::setMusicFolder(const QString &folder)
     }
     init(true);
 
+    bool mpdRunning = isRunning();
+    if (mpdRunning) {
+        controlMpd(true);
+    }
+
     QFile cfgFile(Utils::dataDir(constDir, true)+constConfigFile);
     QStringList lines;
     if (cfgFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
@@ -145,22 +150,22 @@ void MPDUser::setMusicFolder(const QString &folder)
                 lines.append(line);
             }
         }
+        cfgFile.close();
     }
 
     if (!lines.isEmpty()) {
-        cfgFile.close();
         if (cfgFile.open(QIODevice::WriteOnly|QIODevice::Text)) {
             QTextStream out(&cfgFile);
             for (const QString &line: lines) {
                 out << line;
             }
+            cfgFile.close();
         }
     }
     det.dir=folder;
     det.setDirReadable();
-    if (0!=getPid()) {
-        controlMpd(true); // Stop
-        controlMpd(false); // Start
+    if (mpdRunning) {
+        controlMpd(false);
     }    
 }
 
@@ -334,14 +339,20 @@ int MPDUser::getPid()
 
 bool MPDUser::controlMpd(bool stop)
 {
+    if (stop) {
+        int pid = getPid();
+        ::kill(pid, SIGKILL);
+        return !isRunning();
+    }
+
     QString confFile=Utils::dataDir(constDir, true)+constConfigFile;
     if (!QFile::exists(confFile)) {
         return false;
     }
     QStringList args=QStringList() << confFile;
-    if (stop) {
+    /*if (stop) {
         args+="--kill";
-    } else {
+    } else*/ {
         // Ensure cache dir exists before starting MPD
         Utils::cacheDir(constDir, true);
         if (!pidFileName.isEmpty() && QFile::exists(pidFileName)) {

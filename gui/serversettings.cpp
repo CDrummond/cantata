@@ -299,6 +299,7 @@ void ServerSettings::add()
         basicDir->setText(dir);
         MPDUser::self()->setMusicFolder(dir);
         combo->addItem(MPDUser::translatedName());
+        haveBasicCollection = true;
     }
     #endif
     removeButton->setEnabled(combo->count()>1);

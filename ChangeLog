@@ -2,6 +2,8 @@
 -----
 1. Correctly handle changing 'Basic' mode music folder.
 2. When stopping 'Basic' mode MPD instance, send SIGKILL.
+3. Correctly set 'storeLyricsInMpdDir' config item, UI was setting wrong config
+   item.
 
 2.4.1
 -----

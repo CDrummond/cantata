@@ -54,7 +54,7 @@ void OtherSettings::load()
     wikipediaIntroOnly->setChecked(Settings::self()->wikipediaIntroOnly());
     contextDarkBackground->setChecked(Settings::self()->contextDarkBackground());
     contextAlwaysCollapsed->setChecked(Settings::self()->contextAlwaysCollapsed());
-    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+    storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
 
     int bgnd=Settings::self()->contextBackdrop();
     contextBackdrop_none->setChecked(bgnd==contextBackdrop_none->property(constValueProperty).toInt());
@@ -76,7 +76,7 @@ void OtherSettings::save()
     Settings::self()->saveWikipediaIntroOnly(wikipediaIntroOnly->isChecked());
     Settings::self()->saveContextDarkBackground(contextDarkBackground->isChecked());
     Settings::self()->saveContextAlwaysCollapsed(contextAlwaysCollapsed->isChecked());
-    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
+    Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
 
     if (contextBackdrop_none->isChecked()) {
         Settings::self()->saveContextBackdrop(contextBackdrop_none->property(constValueProperty).toInt());

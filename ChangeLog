@@ -5,6 +5,8 @@
 3. Correctly set 'storeLyricsInMpdDir' config item, UI was setting wrong config
    item.
 4. Set minimum Qt5 version to 5.11
+5. Fix destructor of DeviceManagerPrivate to prevent Cantata from potentially
+   crashing when closing.
 
 2.4.1
 -----

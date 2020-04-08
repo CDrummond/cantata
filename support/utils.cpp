@@ -782,11 +782,11 @@ QString Utils::cacheDir(const QString &sub, bool create)
 QString Utils::systemDir(const QString &sub)
 {
     #if defined Q_OS_WIN
-    return fixPath(QCoreApplication::applicationDirPath())+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    return fixPath(QCoreApplication::applicationDirPath()+constDirSep+(sub.isEmpty() ? QString() : (sub+constDirSep)));
     #elif defined Q_OS_MAC
-    return fixPath(QCoreApplication::applicationDirPath())+QLatin1String("../Resources/")+(sub.isEmpty() ? QString() : (sub+constDirSep));
+    return fixPath(QCoreApplication::applicationDirPath()+QLatin1String("/../Resources/")+(sub.isEmpty() ? QString() : (sub+constDirSep)));
     #else
-    return fixPath(QString(SHARE_INSTALL_PREFIX"/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : sub));
+    return fixPath(QString(SHARE_INSTALL_PREFIX"/")+QCoreApplication::applicationName()+constDirSep+(sub.isEmpty() ? QString() : (sub+constDirSep)));
     #endif
 }
 
@@ -802,7 +802,7 @@ QString Utils::helper(const QString &app)
     if (QFile::exists(local)) {
         return local;
     }
-    return QString(INSTALL_PREFIX "/" LINUX_LIB_DIR "/")+QCoreApplication::applicationName()+constDirSep+app;
+    return fixPath(QString(INSTALL_PREFIX "/" LINUX_LIB_DIR "/")+QCoreApplication::applicationName()+constDirSep)+app;
     #endif
 }
 

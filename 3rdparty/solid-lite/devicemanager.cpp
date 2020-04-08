@@ -59,9 +59,9 @@ Solid::DeviceManagerPrivate::~DeviceManagerPrivate()
         disconnect(backend, nullptr, this, nullptr);
     }
 
-    for (QtPointer<DevicePrivate> dev: m_devicesMap) {
+    for (QtPointer<DevicePrivate> &dev: m_devicesMap) {
         if (dev.data() && !dev.data()->ref.deref()) {
-            delete dev.data();
+            dev.data()->deleteLater();
         }
     }
 

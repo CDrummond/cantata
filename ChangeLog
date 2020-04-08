@@ -5,7 +5,10 @@
 3. Correctly set 'storeLyricsInMpdDir' config item, UI was setting wrong config
    item.
 4. Set minimum Qt5 version to 5.11
-7. Align path construction in Utils::systemDir() and Utils::helper()
+5. Fix destructor of DeviceManagerPrivate to prevent Cantata from potentially
+   crashing when closing.
+6. Correctly set song details 'time', 'year', 'track' and 'disc' for streams
+   from online services.
 
 2.4.1
 -----

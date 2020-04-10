@@ -10,8 +10,19 @@
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
-find_path(UDEV_INCLUDE_DIR libudev.h)
-find_library(UDEV_LIBS udev)
+# use pkg-config to get the directories and then use these values
+# in the find_path() and find_library() calls
+include(FindPkgConfig)
+pkg_check_modules(_UDEV libudev)
+
+find_path(UDEV_INCLUDE_DIR libudev.h
+    ${_UDEV_INCLUDE_DIRS}
+)
+
+find_library(UDEV_LIBS NAMES udev
+    PATHS
+    ${_UDEV_LIBRARY_DIRS}
+)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(UDev DEFAULT_MSG UDEV_INCLUDE_DIR UDEV_LIBS)

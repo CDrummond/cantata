@@ -293,7 +293,7 @@ bool PodcastService::Podcast::load()
                     ep->duration=time.isEmpty() ? 0 : time.toUInt();
                     ep->played=constTrue==attributes.value(constPlayedAttribute).toString();
                     ep->descr=attributes.value(constDescrAttribute).toString();
-                    if (QFile::exists(localFile)) {
+                    if (!localFile.isEmpty() && QFile::exists(localFile)) {
                         ep->localFile=localFile;
                     } else if (!podPath.isEmpty()) {
                         QString localPath=podPath+episodeFileName(ep->url);

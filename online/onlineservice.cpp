@@ -81,10 +81,10 @@ bool OnlineService::decode(Song &song)
             song.album=obj["album"].toString();
             song.title=obj["title"].toString();
             song.genres[0]=obj["genre"].toString();
-            if (obj.contains("time")) song.track=obj["time"].toInt();
-            if (obj.contains("year")) song.track=obj["year"].toInt();
+            if (obj.contains("time")) song.time=obj["time"].toInt();
+            if (obj.contains("year")) song.year=obj["year"].toInt();
             if (obj.contains("track")) song.track=obj["track"].toInt();
-            if (obj.contains("disc")) song.track=obj["disc"].toInt();
+            if (obj.contains("disc")) song.disc=obj["disc"].toInt();
             song.setIsFromOnlineService(obj["service"].toString());
             if (obj.contains("imgcache")) song.setExtraField(Song::OnlineImageCacheName, obj["imgcache"].toString());
             if (obj.contains("imgurl")) song.setExtraField(Song::OnlineImageUrl, obj["imgurl"].toString());

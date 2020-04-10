@@ -5,6 +5,9 @@
 # CDIOPARANOIA_INCLUDE_DIRS - the libcdio_paranoia include directory
 # CDIOPARANOIA_LIBRARIES - The libcdio_paranoia libraries
 
+cmake_policy(SET CMP0075 NEW)
+cmake_policy(SET CMP0011 NEW)
+
 include(FindPkgConfig)
 include(CheckIncludeFiles)
 

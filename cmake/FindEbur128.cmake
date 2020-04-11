@@ -6,10 +6,19 @@
 #
 set(EBUR128_FOUND FALSE)
 
+# use pkg-config to get the directories and then use these values
+# in the find_path() and find_library() calls
+find_package(PkgConfig)
+
+if(PKG_CONFIG_FOUND)
+  pkg_check_modules(_EBUR128 libebur128)
+endif(PKG_CONFIG_FOUND)
+
 find_path(EBUR128_INCLUDE_DIR ebur128.h
   HINTS
   PATH_SUFFIXES include 
   PATHS
+  ${_EBUR128_INCLUDE_DIRS}
   ~/Library/Frameworks
   /Library/Frameworks
   /usr/local/include
@@ -26,6 +35,7 @@ find_library(EBUR128_LIBRARY
   HINTS
   PATH_SUFFIXES lib64 lib
   PATHS
+  ${_EBUR128_LIBRARY_DIRS}
   /usr/local
   /usr
   /sw

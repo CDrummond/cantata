@@ -265,7 +265,7 @@ static inline QString cacheKey(const Song &song, int size)
     } else if (Song::SingleTracks==song.type) {
         return QLatin1String("single")+QString::number(size);
     } else if (song.isStandardStream()) {
-        return QLatin1String("str")+QString::number(size);
+        return QLatin1String("stream")+QString::number(size);
     } else if (isOnlineServiceImage(song)) {
         return song.onlineService()+QString::number(size);
     }
@@ -1313,7 +1313,7 @@ QPixmap * Covers::getScaledCover(const Song &song, int size)
     if (size<4 || song.isUnknownAlbum()) {
         return nullptr;
     }
-//    DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId << size;
+//    DBUG_CLASS("Covers") << song.albumArtist() << song.album << song.mbAlbumId() << size;
     QString key=cacheKey(song, size);
     QPixmap *pix(cache.object(key));
     if (!pix) {
@@ -1353,13 +1353,16 @@ QPixmap * Covers::saveScaledCover(const QImage &img, const Song &song, int size)
 QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
 {
     bool podcast=!song.isArtistImageRequest() && !song.isComposerImageRequest() && song.isFromOnlineService() && OnlineService::isPodcasts(song.onlineService());
+    bool stream=!song.isArtistImageRequest() && !song.isComposerImageRequest() && (song.isStandardStream() || OnlineService::showLogoAsCover(song));
     QString key=song.isArtistImageRequest()
                 ? QLatin1String("artist-")
                     : song.isComposerImageRequest()
                         ? QLatin1String("composer-")
                         : podcast
                             ? QLatin1String("podcast-")
-                            : QLatin1String("album-");
+                            : stream
+                                ? QLatin1String("stream-")
+                                : QLatin1String("album-");
 
     key+=QString::number(size);
     QPixmap *pix=cache.object(key);
@@ -1368,7 +1371,9 @@ QPixmap * Covers::defaultPix(const Song &song, int size, int origSize)
                 ? Icons::self()->artistIcon
                 : podcast
                     ? Icons::self()->podcastIcon
-                    : Icons::self()->albumIcon(size);
+                    : stream
+                        ? Icons::self()->streamIcon
+                        : Icons::self()->albumIcon(size);
         pix=new QPixmap(icn.pixmap(size, size).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         if (size!=origSize) {
             pix->setDevicePixelRatio(devicePixelRatio);

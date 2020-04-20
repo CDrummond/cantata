@@ -74,7 +74,7 @@ QString CurrentCover::findIcon(const QStringList &names)
     initIconThemes();
     QList<int> sizes=QList<int>() << 256 << 128 << 64 << 48 << 32 << 24 << 22;
     QStringList paths=QIcon::themeSearchPaths();
-    QStringList sections=QStringList() << "categories" << "devices";
+    QStringList sections=QStringList() << "apps" << "categories" << "devices" << "mimetypes" << "mimes";
     for (const QString &theme: iconThemes) {
         for (const QString &n: names) {
             for (const QString &p: paths) {
@@ -121,7 +121,7 @@ CurrentCover::CurrentCover()
     , valid(false)
     , timer(nullptr)
 {
-    img=stdImage(false);
+    img=stdImage(current);
     coverFileName=noCoverFileName;
 }
 
@@ -129,24 +129,53 @@ CurrentCover::~CurrentCover()
 {
 }
 
-const QImage & CurrentCover::stdImage(bool stream)
+const QImage & CurrentCover::stdImage(const Song &s)
 {
-    QImage &img=stream ? noStreamCover : noCover;
+    bool podcast=s.isFromOnlineService() && OnlineService::isPodcasts(s.onlineService());
+    bool stream=s.isStandardStream() || OnlineService::showLogoAsCover(s);
+
+    QImage &img=podcast
+                ? noPodcastCover
+                : stream
+                    ? noStreamCover
+                    : noCover;
 
     if (img.isNull()) {
         int iconSize=Icon::stdSize(Utils::scaleForDpi(128));
-        img = (stream ? Icons::self()->streamIcon : Icons::self()->albumIcon(iconSize)).pixmap(iconSize, iconSize).toImage();
+        const QIcon &icon=podcast
+                ? Icons::self()->podcastIcon
+                : stream
+                    ? Icons::self()->streamIcon
+                    : Icons::self()->albumIcon(iconSize);
+        img=icon.pixmap(iconSize, iconSize).toImage();
 
-        QString &file=stream ? noStreamCoverFileName : noCoverFileName;
-        if (stream && file.isEmpty()) {
-            QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
-            if (QFile::exists(iconFile)) {
-                file=iconFile;
+        QString &file=podcast
+                      ? noPodcastCoverFileName
+                      : stream
+                          ? noStreamCoverFileName
+                          : noCoverFileName;
+
+        if (file.isEmpty()) {
+            if (podcast) {
+                QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"podcasts.png");
+                if (QFile::exists(iconFile)) {
+                    file=iconFile;
+                }
+            } else if (stream) {
+                QString iconFile=QString(CANTATA_SYS_ICONS_DIR+"stream.png");
+                if (QFile::exists(iconFile)) {
+                    file=iconFile;
+                }
             }
         }
         #if !defined Q_OS_WIN && !defined Q_OS_MAC
         if (file.isEmpty()) {
-            file=findIcon(stream ? QStringList() << "applications-internet" : QStringList() << "media-optical" << "media-optical-audio");
+            QStringList iconNames=podcast
+                    ? QStringList{ QStringLiteral("x-media-podcast"), QStringLiteral("news-feed"), QStringLiteral("application-rss+xml"), QStringLiteral("application-atom+xml") }
+                    : stream
+                        ? QStringList{ QStringLiteral("applications-internet") }
+                        : QStringList{ QStringLiteral("media-optical"), QStringLiteral("media-optical-audio") };
+            file=findIcon(iconNames);
         }
         #endif
     }
@@ -161,7 +190,7 @@ void CurrentCover::setEnabled(bool e)
 
     enabled=e;
     if (enabled) {
-        img=stdImage(false);
+        img=stdImage(Song());
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
         connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), this, SLOT(coverRetrieved(const Song &, const QImage &, const QString &)));
     } else {
@@ -202,7 +231,7 @@ void CurrentCover::update(const Song &s)
             } else {
                 // We need to set the image here, so that TrayItem gets the correct 'noCover' image
                 // ...but if Covers does eventually download a cover, we dont want valid->noCover->valid
-                img=stdImage(false);
+                img=stdImage(current);
                 // Start a timer - in case cover retrieval fails...
                 if (!timer) {
                     timer=new QTimer(this);
@@ -213,7 +242,7 @@ void CurrentCover::update(const Song &s)
             }
         } else {
             valid=true;
-            img=stdImage(current.isStandardStream());
+            img=stdImage(current);
             coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
             emit coverFile(coverFileName);
             emit coverImage(QImage());

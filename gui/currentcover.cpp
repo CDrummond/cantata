@@ -75,9 +75,9 @@ QString CurrentCover::findIcon(const QStringList &names)
     QList<int> sizes=QList<int>() << 256 << 128 << 64 << 48 << 32 << 24 << 22;
     QStringList paths=QIcon::themeSearchPaths();
     QStringList sections=QStringList() << "categories" << "devices";
-    for (const QString &p: paths) {;
+    for (const QString &theme: iconThemes) {
         for (const QString &n: names) {
-            for (const QString &theme: iconThemes) {
+            for (const QString &p: paths) {
                 QMap<int, QString> files;
                 for (int s: sizes) {
                     for (const QString &sect: sections) {

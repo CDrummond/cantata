@@ -67,7 +67,7 @@ void CoverLabel::updateToolTip(bool isEvent)
     }
 
     const Song &current=CurrentCover::self()->song();
-    if (current.isEmpty() || (current.isStream() && !current.isCantataStream() && !current.isCdda()) || OnlineService::showLogoAsCover(current)) {
+    if (current.isEmpty() || current.isStandardStream() || OnlineService::showLogoAsCover(current)) {
         setToolTip(QString());
         return;
     }

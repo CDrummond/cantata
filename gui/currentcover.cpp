@@ -243,9 +243,7 @@ void CurrentCover::update(const Song &s)
         } else {
             valid=true;
             img=stdImage(current);
-            coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
-            emit coverFile(coverFileName);
-            emit coverImage(QImage());
+            setDefault();
         }
     }
 }
@@ -263,16 +261,22 @@ void CurrentCover::coverRetrieved(const Song &s, const QImage &newImage, const Q
             emit coverFile(file);
             emit coverImage(newImage);
         } else {
-            coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
-            emit coverFile(coverFileName);
-            emit coverImage(QImage());
+            setDefault();
         }
     }
 }
 
 void CurrentCover::setDefault()
 {
-    coverFileName=current.isStandardStream() ? noStreamCoverFileName : noCoverFileName;
+    bool podcast=current.isFromOnlineService() && OnlineService::isPodcasts(current.onlineService());
+    bool stream=current.isStandardStream() || OnlineService::showLogoAsCover(current);
+
+    coverFileName=podcast
+                  ? noPodcastCoverFileName
+                  : stream
+                      ? noStreamCoverFileName
+                      : noCoverFileName;
+
     emit coverFile(coverFileName);
     emit coverImage(QImage());
 }

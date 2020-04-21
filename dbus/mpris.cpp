@@ -45,6 +45,7 @@ Mpris::Mpris(QObject *p)
     QDBusConnection::sessionBus().registerObject("/org/mpris/MediaPlayer2", this, QDBusConnection::ExportAdaptors);
     connect(this, SIGNAL(setRandom(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(this, SIGNAL(setRepeat(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
+    connect(this, SIGNAL(setSingle(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
     connect(this, SIGNAL(setSeekId(qint32, quint32)), MPDConnection::self(), SLOT(setSeekId(qint32, quint32)));
     connect(this, SIGNAL(seek(qint32)), MPDConnection::self(), SLOT(seek(qint32)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
@@ -88,6 +89,19 @@ QString Mpris::PlaybackStatus() const
     case MPDState_Paused: return QLatin1String("Paused");
     default:
     case MPDState_Stopped: return QLatin1String("Stopped");
+    }
+}
+
+void Mpris::SetLoopStatus(const QString &s)
+{
+    bool repeat=(QLatin1String("None")!=s);
+    bool single=(QLatin1String("Track")==s);
+
+    if (MPDStatus::self()->repeat()!=repeat) {
+        emit setRepeat(repeat);
+    }
+    if (MPDStatus::self()->single()!=single) {
+        emit setSingle(single);
     }
 }
 

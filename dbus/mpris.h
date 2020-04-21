@@ -80,8 +80,8 @@ public:
     void SetPosition(const QDBusObjectPath &trackId, qlonglong pos);
     void OpenUri(const QString &) { }
     QString PlaybackStatus() const;
-    QString LoopStatus() { return MPDStatus::self()->repeat() ? QLatin1String("Playlist") : QLatin1String("None"); }
-    void SetLoopStatus(const QString &s) { emit setRepeat(QLatin1String("None")!=s); }
+    QString LoopStatus() { return MPDStatus::self()->repeat() ? (MPDStatus::self()->single() ? QLatin1String("Track") : QLatin1String("Playlist")) : QLatin1String("None"); }
+    void SetLoopStatus(const QString &s);
     QVariantMap Metadata() const;
     int Rate() const { return 1.0; }
     void SetRate(double) { }
@@ -119,6 +119,7 @@ Q_SIGNALS:
     // org.mpris.MediaPlayer2.Player
     void setRandom(bool toggle);
     void setRepeat(bool toggle);
+    void setSingle(bool toggle);
     void setSeekId(qint32 songId, quint32 time);
     void seek(qint32 offset);
     void setVolume(int vol);

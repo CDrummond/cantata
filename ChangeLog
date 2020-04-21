@@ -15,6 +15,7 @@
 9. When checking if song exists, check disc number.
 10. Fix getting song details from Cantata stream URLs.
 11. MPRIS interface: fix if condition for CanSeek status update.
+12. MPRIS interface: fix CanPlay/CanPause status update.
 
 2.4.1
 -----

@@ -117,8 +117,10 @@ void Mpris::updateStatus()
     }
     if (MPDStatus::self()->state()!=status.state) {
         map.insert("PlaybackStatus", PlaybackStatus());
-        //map.insert("CanPlay", CanPlay());
-        //map.insert("CanPause", CanPause());
+        map.insert("CanPause", CanPause());
+    }
+    if (MPDStatus::self()->playlistLength()!=status.playlistLength) {
+        map.insert("CanPlay", CanPlay());
     }
     if (MPDStatus::self()->songId()!=status.songId) {
         map.insert("CanSeek", CanSeek());

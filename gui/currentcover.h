@@ -56,7 +56,7 @@ private Q_SLOTS:
     void setDefault();
 
 private:
-    const QImage & stdImage(bool stream);
+    const QImage & stdImage(const Song &s);
     #if !defined Q_OS_WIN && !defined Q_OS_MAC
     void initIconThemes();
     QString findIcon(const QStringList &names);
@@ -69,8 +69,10 @@ private:
     mutable QImage img;
     QString coverFileName;
     QImage noStreamCover;
+    QImage noPodcastCover;
     QImage noCover;
     QString noStreamCoverFileName;
+    QString noPodcastCoverFileName;
     QString noCoverFileName;
     QTimer *timer;
     #if !defined Q_OS_WIN && !defined Q_OS_MAC

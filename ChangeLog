@@ -9,6 +9,7 @@
    crashing when closing.
 6. Correctly set song details 'time', 'year', 'track' and 'disc' for streams
    from online services.
+7. Don't use last.fm for artist image searches, its broken.
 
 2.4.1
 -----

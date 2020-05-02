@@ -1011,27 +1011,29 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
         }
     }
 
-    QStringList largeUrls=QStringList() << "extralarge" << "large";
-    QStringList thumbUrls=QStringList() << "large" << "medium" << "small";
+    if (!(isArtist||isComposer)) {
+        QStringList largeUrls=QStringList() << "extralarge" << "large";
+        QStringList thumbUrls=QStringList() << "large" << "medium" << "small";
 
-    for (const SizeMap &urls: entries) {
-        QString largeUrl;
-        QString thumbUrl;
+        for (const SizeMap &urls: entries) {
+            QString largeUrl;
+            QString thumbUrl;
 
-        for (const QString &u: largeUrls) {
-            if (urls.contains(u)) {
-                largeUrl=urls[u];
-                break;
+            for (const QString &u: largeUrls) {
+                if (urls.contains(u)) {
+                    largeUrl=urls[u];
+                    break;
+                }
             }
-        }
 
-        for (const QString &u: thumbUrls) {
-            if (urls.contains(u)) {
-                thumbUrl=urls[u];
-                break;
+            for (const QString &u: thumbUrls) {
+                if (urls.contains(u)) {
+                    thumbUrl=urls[u];
+                    break;
+                }
             }
+            downloadThumbnail(thumbUrl, largeUrl, constLastFmHost);
         }
-        downloadThumbnail(thumbUrl, largeUrl, constLastFmHost);
     }
 
     if (enabledProviders&Prov_CoverArt) {

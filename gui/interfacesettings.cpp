@@ -458,7 +458,11 @@ void InterfaceSettings::showEvent(QShowEvent *e)
         }
 
         styleOption->addItem(tr("System default"));
-        styleOption->addItems(QStyleFactory::keys());
+        for (const auto & key: QStyleFactory::keys()) {
+            if (!key.startsWith("bb10") && key!="gtk2") {
+                styleOption->addItem(key);
+            }
+        }
 
         if (styleOption->count()<3) {
             REMOVE(styleOption)

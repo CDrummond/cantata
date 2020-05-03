@@ -10,6 +10,8 @@
 6. Correctly set song details 'time', 'year', 'track' and 'disc' for streams
    from online services.
 7. Don't use last.fm for artist image searches, its broken.
+8. Hide BB10 styles (look bad), and gtk2 style (doesn't start) from list of
+   styles in interface settings.
 
 2.4.1
 -----

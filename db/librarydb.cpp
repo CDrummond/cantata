@@ -1140,6 +1140,7 @@ bool LibraryDb::songExists(const Song &song)
     query.addWhere("albumId", song.albumId());
     query.addWhere("title", song.title);
     query.addWhere("track", song.track);
+    query.addWhere("disc", song.disc);
     query.exec();
     return query.next();
 }

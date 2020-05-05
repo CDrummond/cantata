@@ -13,6 +13,7 @@
 8. Hide BB10 styles (look bad), and gtk2 style (doesn't start) from list of
    styles in interface settings.
 9. When checking if song exists, check disc number.
+10. Fix getting song details from Cantata stream URLs.
 
 2.4.1
 -----

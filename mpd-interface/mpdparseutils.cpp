@@ -382,12 +382,15 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
         if (!song.file.isEmpty() && song.file.startsWith(constHttpProtocol) && HttpServer::self()->isOurs(song.file)) {
             song.type=Song::CantataStream;
             Song mod=HttpServer::self()->decodeUrl(song.file);
-            mod.priority=song.priority;
             if (!mod.title.isEmpty()) {
                 mod.id=song.id;
+                mod.priority=song.priority;
                 song=mod;
-                song.setLocalPath(mod.file);
+            } else {
+                song.file=mod.file;
+                song.time=mod.time;
             }
+            song.setLocalPath(mod.file);
             modifiedFile=true;
         } else
         #endif

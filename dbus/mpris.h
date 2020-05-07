@@ -80,8 +80,8 @@ public:
     void SetPosition(const QDBusObjectPath &trackId, qlonglong pos);
     void OpenUri(const QString &) { }
     QString PlaybackStatus() const;
-    QString LoopStatus() { return MPDStatus::self()->repeat() ? QLatin1String("Playlist") : QLatin1String("None"); }
-    void SetLoopStatus(const QString &s) { emit setRepeat(QLatin1String("None")!=s); }
+    QString LoopStatus() { return MPDStatus::self()->repeat() ? (MPDStatus::self()->single() ? QLatin1String("Track") : QLatin1String("Playlist")) : QLatin1String("None"); }
+    void SetLoopStatus(const QString &s);
     QVariantMap Metadata() const;
     int Rate() const { return 1.0; }
     void SetRate(double) { }
@@ -93,8 +93,8 @@ public:
     double MinimumRate() const { return 1.0; }
     double MaximumRate() const { return 1.0; }
     bool CanControl() const { return true; }
-    bool CanPlay() const { return true; }
-    bool CanPause() const { return true; }
+    bool CanPlay() const { return MPDStatus::self()->playlistLength()>0; }
+    bool CanPause() const { return MPDState_Stopped!=MPDStatus::self()->state(); }
     bool CanSeek() const { return -1!=MPDStatus::self()->songId() && !currentSong.isCdda() && !currentSong.isStandardStream() && currentSong.time>5; }
     bool CanGoNext() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
     bool CanGoPrevious() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
@@ -119,6 +119,7 @@ Q_SIGNALS:
     // org.mpris.MediaPlayer2.Player
     void setRandom(bool toggle);
     void setRepeat(bool toggle);
+    void setSingle(bool toggle);
     void setSeekId(qint32 songId, quint32 time);
     void seek(qint32 offset);
     void setVolume(int vol);

@@ -45,6 +45,7 @@ Mpris::Mpris(QObject *p)
     QDBusConnection::sessionBus().registerObject("/org/mpris/MediaPlayer2", this, QDBusConnection::ExportAdaptors);
     connect(this, SIGNAL(setRandom(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(this, SIGNAL(setRepeat(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
+    connect(this, SIGNAL(setSingle(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
     connect(this, SIGNAL(setSeekId(qint32, quint32)), MPDConnection::self(), SLOT(setSeekId(qint32, quint32)));
     connect(this, SIGNAL(seek(qint32)), MPDConnection::self(), SLOT(seek(qint32)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
@@ -91,6 +92,19 @@ QString Mpris::PlaybackStatus() const
     }
 }
 
+void Mpris::SetLoopStatus(const QString &s)
+{
+    bool repeat=(QLatin1String("None")!=s);
+    bool single=(QLatin1String("Track")==s);
+
+    if (MPDStatus::self()->repeat()!=repeat) {
+        emit setRepeat(repeat);
+    }
+    if (MPDStatus::self()->single()!=single) {
+        emit setSingle(single);
+    }
+}
+
 qlonglong Mpris::Position() const
 {
     // Cant use MPDStatus, as we dont poll for track position, but use a timer instead!
@@ -117,8 +131,12 @@ void Mpris::updateStatus()
     }
     if (MPDStatus::self()->state()!=status.state) {
         map.insert("PlaybackStatus", PlaybackStatus());
-        //map.insert("CanPlay", CanPlay());
-        //map.insert("CanPause", CanPause());
+        map.insert("CanPause", CanPause());
+    }
+    if (MPDStatus::self()->playlistLength()!=status.playlistLength) {
+        map.insert("CanPlay", CanPlay());
+    }
+    if (MPDStatus::self()->songId()!=status.songId) {
         map.insert("CanSeek", CanSeek());
     }
     if (MPDStatus::self()->timeElapsed()!=status.timeElapsed) {

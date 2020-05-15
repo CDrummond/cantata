@@ -1816,11 +1816,6 @@ void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
     current=song;
 
     CurrentCover::self()->update(current);
-    #ifdef QT_QTDBUS_FOUND
-    if (mpris) {
-        mpris->updateCurrentSong(current);
-    }
-    #endif
     if (current.time<5 && MPDStatus::self()->songId()==current.id && MPDStatus::self()->timeTotal()>5) {
         current.time=MPDStatus::self()->timeTotal();
     }
@@ -1832,6 +1827,11 @@ void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
     playQueue->updateRows(idx.row(), current.key, autoScrollPlayQueue && playQueueProxyModel.isEmpty() && isPlaying, wasEmpty);
     scrollPlayQueue(wasEmpty);
     if (diffSong) {
+        #ifdef QT_QTDBUS_FOUND
+        if (mpris) {
+            mpris->updateCurrentSong(current);
+        }
+        #endif
         context->update(current);
         trayItem->songChanged(song, isPlaying);
     }

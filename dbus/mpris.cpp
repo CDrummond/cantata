@@ -136,7 +136,7 @@ void Mpris::updateStatus()
     if (MPDStatus::self()->playlistLength()!=status.playlistLength) {
         map.insert("CanPlay", CanPlay());
     }
-    if (MPDStatus::self()->songId()!=status.songId) {
+    if (MPDStatus::self()->songId()!=status.songId || MPDStatus::self()->timeTotal()!=status.timeTotal) {
         map.insert("CanSeek", CanSeek());
     }
     if (MPDStatus::self()->timeElapsed()!=status.timeElapsed) {

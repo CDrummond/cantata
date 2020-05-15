@@ -17,6 +17,7 @@
 11. Amend MPRIS interface: fix CanPlay/CanPause/CanSeek status update as well
     as LoopStatus getter and setter.
 12. When checking if songs are different, compare track and disc numbers too.
+13. Avoid unknown song durations and duplicate updates of MPRIS' song details.
 
 2.4.1
 -----

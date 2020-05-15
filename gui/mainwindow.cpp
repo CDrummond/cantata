@@ -1952,6 +1952,11 @@ void MainWindow::updateStatus(MPDStatus * const status)
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
+    #ifdef QT_QTDBUS_FOUND
+    if (mpris) {
+        mpris->updateStatus(status);
+    }
+    #endif
     #if defined Q_OS_WIN
     if (thumbnailTooolbar) {
         thumbnailTooolbar->update(status);

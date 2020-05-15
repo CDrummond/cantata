@@ -116,6 +116,13 @@ void Mpris::updateStatus()
 {
     QVariantMap map;
 
+    // If the current song has not yet been updated, reject this status
+    // update and wait for the next unless the play queue has recently
+    // been emptied or the connection to MPD has been lost ...
+    if (MPDStatus::self()->songId()!=currentSong.id && MPDStatus::self()->songId()!=-1) {
+        return;
+    }
+
     if (MPDStatus::self()->repeat()!=status.repeat) {
         map.insert("LoopStatus", LoopStatus());
     }
@@ -162,8 +169,19 @@ void Mpris::updateCurrentCover(const QString &fileName)
 
 void Mpris::updateCurrentSong(const Song &song)
 {
+    qint32 lastSongId = currentSong.id;
     currentSong = song;
-    signalUpdate("Metadata", Metadata());
+
+    if (song.id!=lastSongId && (song.id==status.songId || -1==status.songId)) {
+        // The update of the current song may come a little late.
+        // So reset song ID and update status once again.
+        if (-1!=status.songId) {
+            status.songId = lastSongId;
+        }
+        updateStatus();
+    } else {
+        signalUpdate("Metadata", Metadata());
+    }
 }
 
 QVariantMap Mpris::Metadata() const {

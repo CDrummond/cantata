@@ -148,7 +148,7 @@ struct Song
     int compareTo(const Song &o) const;
     virtual ~Song() { }
     bool isEmpty() const;
-    bool isDifferent(const Song &s) const { return file!=s.file || year!=s.year || artist!=s.artist || album!=s.album || title!=s.title || name()!=s.name(); }
+    bool isDifferent(const Song &s) const { return file!=s.file || year!=s.year || track!=s.track || disc!=s.disc || artist!=s.artist || album!=s.album || title!=s.title || name()!=s.name(); }
     bool sameMetadata(const Song &o) const;
     void guessTags();
     void revertGuessedTags();

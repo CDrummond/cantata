@@ -51,7 +51,7 @@ Mpris::Mpris(QObject *p)
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
 
 //    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
-    connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
+//    connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(CurrentCover::self(), SIGNAL(coverFile(const QString &)), this, SLOT(updateCurrentCover(const QString &)));
 }
 
@@ -62,15 +62,14 @@ Mpris::~Mpris()
 
 void Mpris::Pause()
 {
-    if (MPDState_Playing==MPDStatus::self()->state()) {
+    if (!status.isNull() && MPDState_Playing==status->state()) {
         StdActions::self()->playPauseTrackAction->trigger();
     }
 }
 
 void Mpris::Play()
 {
-    MPDStatus * const status = MPDStatus::self();
-    if (status->playlistLength() && MPDState_Playing!=status->state()) {
+    if (!status.isNull() && status->playlistLength()>0 && MPDState_Playing!=status->state()) {
         StdActions::self()->playPauseTrackAction->trigger();
     }
 }
@@ -84,7 +83,11 @@ void Mpris::SetPosition(const QDBusObjectPath &trackId, qlonglong pos)
 
 QString Mpris::PlaybackStatus() const
 {
-    switch(MPDStatus::self()->state()) {
+    if (status.isNull()) {
+        return QLatin1String("Stopped");
+    }
+
+    switch (status->state()) {
     case MPDState_Playing: return QLatin1String("Playing");
     case MPDState_Paused: return QLatin1String("Paused");
     default:
@@ -94,13 +97,17 @@ QString Mpris::PlaybackStatus() const
 
 void Mpris::SetLoopStatus(const QString &s)
 {
+    if (status.isNull()) {
+        return;
+    }
+
     bool repeat=(QLatin1String("None")!=s);
     bool single=(QLatin1String("Track")==s);
 
-    if (MPDStatus::self()->repeat()!=repeat) {
+    if (status->repeat()!=repeat) {
         emit setRepeat(repeat);
     }
-    if (MPDStatus::self()->single()!=single) {
+    if (status->single()!=single) {
         emit setSingle(single);
     }
 }
@@ -109,47 +116,63 @@ qlonglong Mpris::Position() const
 {
     // Cant use MPDStatus, as we dont poll for track position, but use a timer instead!
     //return MPDStatus::self()->timeElapsed();
-    return convertTime(MPDStatus::self()->guessedElapsed());
+    return status.isNull() ? 0 : convertTime(status->guessedElapsed());
 }
 
 void Mpris::updateStatus()
 {
+    updateStatus(MPDStatus::self());
+}
+
+void Mpris::updateStatus(MPDStatus * const status)
+{
     QVariantMap map;
 
-    if (MPDStatus::self()->repeat()!=status.repeat) {
+    // If the current song has not yet been updated, reject this status
+    // update and wait for the next unless the play queue has recently
+    // been emptied or the connection to MPD has been lost ...
+    if (status->songId()!=currentSong.id && status->songId()!=-1) {
+        return;
+    }
+
+    if (status!=this->status) {
+        this->status = status;
+    }
+    if (status->repeat()!=lastStatus.repeat || status->single()!=lastStatus.single) {
         map.insert("LoopStatus", LoopStatus());
     }
-    if (MPDStatus::self()->random()!=status.random) {
+    if (status->random()!=lastStatus.random) {
         map.insert("Shuffle", Shuffle());
     }
-    if (MPDStatus::self()->volume()!=status.volume) {
+    if (status->volume()!=lastStatus.volume) {
         map.insert("Volume", Volume());
     }
-    if (MPDStatus::self()->state()!=status.state || MPDStatus::self()->playlistLength()!=status.playlistLength) {
+    if (status->state()!=lastStatus.state || status->playlistLength()!=lastStatus.playlistLength) {
         map.insert("CanGoNext", CanGoNext());
         map.insert("CanGoPrevious", CanGoPrevious());
     }
-    if (MPDStatus::self()->state()!=status.state) {
+    if (status->state()!=lastStatus.state) {
         map.insert("PlaybackStatus", PlaybackStatus());
         map.insert("CanPause", CanPause());
     }
-    if (MPDStatus::self()->playlistLength()!=status.playlistLength) {
+    if (status->playlistLength()!=lastStatus.playlistLength) {
         map.insert("CanPlay", CanPlay());
     }
-    if (MPDStatus::self()->songId()!=status.songId) {
+    if (status->songId()!=lastStatus.songId || status->timeTotal()!=lastStatus.timeTotal) {
         map.insert("CanSeek", CanSeek());
     }
-    if (MPDStatus::self()->timeElapsed()!=status.timeElapsed) {
-        map.insert("Position", convertTime(MPDStatus::self()->timeElapsed()));
+    if (status->timeElapsed()!=lastStatus.timeElapsed) {
+        map.insert("Position", convertTime(status->timeElapsed()));
     }
-    if (!map.isEmpty() || MPDStatus::self()->songId()!=status.songId) {
+    if (!map.isEmpty() || status->songId()!=lastStatus.songId) {
         if (!map.contains("Position")) {
-            map.insert("Position", convertTime(MPDStatus::self()->timeElapsed()));
+            map.insert("Position", convertTime(status->timeElapsed()));
         }
         map.insert("Metadata", Metadata());
         signalUpdate(map);
     }
-    status=MPDStatus::self()->getValues();
+
+    lastStatus = status->getValues();
 }
 
 void Mpris::updateCurrentCover(const QString &fileName)
@@ -162,8 +185,19 @@ void Mpris::updateCurrentCover(const QString &fileName)
 
 void Mpris::updateCurrentSong(const Song &song)
 {
+    qint32 lastSongId = currentSong.id;
     currentSong = song;
-    signalUpdate("Metadata", Metadata());
+
+    if (song.id!=lastSongId && (song.id==lastStatus.songId || -1==lastStatus.songId)) {
+        // The update of the current song may come a little late.
+        // So reset song ID and update status once again.
+        if (-1!=lastStatus.songId) {
+            lastStatus.songId = lastSongId;
+        }
+        updateStatus();
+    } else {
+        signalUpdate("Metadata", Metadata());
+    }
 }
 
 QVariantMap Mpris::Metadata() const {

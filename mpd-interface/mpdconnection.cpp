@@ -1264,8 +1264,14 @@ void MPDConnection::getReplayGain()
 void MPDConnection::goToNext()
 {
     toggleStopAfterCurrent(false);
-    stopVolumeFade();
-    sendCommand("next");
+    Response status=sendCommand("status");
+    if (status.ok) {
+        MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
+        if (MPDState_Stopped!=sv.state && -1!=sv.nextSongId) {
+            stopVolumeFade();
+            sendCommand("next");
+        }
+    }
 }
 
 static inline QByteArray value(bool b)

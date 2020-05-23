@@ -329,12 +329,7 @@ MPDParseUtils::CueSupport Settings::cueSupport()
 
 QStringList Settings::lyricProviders()
 {
-    return cfg.get("lyricProviders", QStringList() << "lyrics.wikia.com" << "lyricstime.com" << "lyricsreg.com"
-                                                   << "lyricsmania.com" << "metrolyrics.com" << "azlyrics.com"
-                                                   << "songlyrics.com" << "elyrics.net" << "lyricsdownload.com"
-                                                   << "lyrics.com" << "lyricsbay.com" << "directlyrics.com"
-                                                   << "loudson.gs" << "teksty.org" << "tekstowo.pl (POLISH)"
-                                                   << "vagalume.uol.com.br" << "vagalume.uol.com.br (PORTUGUESE)");
+    return cfg.get("lyricProviders", QStringList() << "azlyrics.com" << "chartlyrics.com" << "lyrics.wikia.com");
 }
 
 QStringList Settings::wikipediaLangs()

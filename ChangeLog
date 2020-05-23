@@ -21,6 +21,8 @@
 14. Synchronize update of current song details and status of MPRIS interface,
     trigger MPRIS status update when connection to MPD has been lost.
 15. Add chartlyrics.com to list of lyrics providers.
+16. Set default lyrics providers to azlyrics.com, chartlyrics.com, and
+    lyrics.wikia.com
 
 2.4.1
 -----

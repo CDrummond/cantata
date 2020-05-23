@@ -20,6 +20,7 @@
 13. Avoid unknown song durations and duplicate updates of MPRIS' song details.
 14. Synchronize update of current song details and status of MPRIS interface,
     trigger MPRIS status update when connection to MPD has been lost.
+15. Add chartlyrics.com to list of lyrics providers.
 
 2.4.1
 -----

@@ -26,7 +26,6 @@
 #include "gui/settings.h"
 #include "widgets/icons.h"
 #include "support/action.h"
-#include "mpd-interface/mpdstatus.h"
 #include <QWinThumbnailToolButton>
 
 ThumbnailToolBar::ThumbnailToolBar(QWidget *p)
@@ -38,7 +37,8 @@ ThumbnailToolBar::ThumbnailToolBar(QWidget *p)
     stopButton=createButton(StdActions::self()->stopPlaybackAction);
     nextButton=createButton(StdActions::self()->nextTrackAction);
     readSettings();
-    update(MPDStatus::self());
+    status=MPDStatus::self();
+    update();
 }
 
 void ThumbnailToolBar::readSettings()
@@ -46,15 +46,37 @@ void ThumbnailToolBar::readSettings()
     stopButton->setVisible(Settings::self()->showStopButton());
 }
 
-void ThumbnailToolBar::update(MPDStatus * const status)
+void ThumbnailToolBar::updateCurrentSong(const Song &song)
 {
-    playPauseButton->setEnabled(status->playlistLength()>0);
-    switch (status->state()) {
+    qint32 lastSongId = currentSong.id;
+    currentSong = song;
+
+    if (song.id!=lastSongId && !status.isNull() && song.id==status->songId()) {
+        update();
+    }
+}
+
+void ThumbnailToolBar::updateStatus(MPDStatus * const status)
+{
+    if (status!=this->status) {
+        this->status = status;
+    }
+    if (status->songId()==currentSong.id || status->songId()==-1) {
+        update();
+    }
+}
+
+void ThumbnailToolBar::update()
+{
+    playPauseButton->setEnabled(!status.isNull() && status->playlistLength()>0);
+
+    MPDState state = status.isNull() ? MPDState_Inactive : status->state();
+    switch (state) {
     case MPDState_Playing:
         playPauseButton->setIcon(Icons::self()->toolbarPauseIcon);
         stopButton->setEnabled(true);
-        nextButton->setEnabled(status->playlistLength()>1);
-        prevButton->setEnabled(status->playlistLength()>1);
+        nextButton->setEnabled(status->nextSongId()!=-1);
+        prevButton->setEnabled(status->playlistLength()>1 || status->timeTotal()>5 || currentSong.time>5);
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
@@ -66,8 +88,8 @@ void ThumbnailToolBar::update(MPDStatus * const status)
     case MPDState_Paused:
         playPauseButton->setIcon(Icons::self()->toolbarPlayIcon);
         stopButton->setEnabled(0!=status->playlistLength());
-        nextButton->setEnabled(status->playlistLength()>1);
-        prevButton->setEnabled(status->playlistLength()>1);
+        nextButton->setEnabled(status->nextSongId()!=-1);
+        prevButton->setEnabled(status->playlistLength()>1 || status->timeTotal()>5 || currentSong.time>5);
     default:
         break;
     }

@@ -25,9 +25,11 @@
 #define WINTHUMBNAILTOOLBAR_H
 
 #include <QWinThumbnailToolBar>
+#include <QPointer>
+#include "mpd-interface/song.h"
+#include "mpd-interface/mpdstatus.h"
 
 class QWinThumbnailToolButton;
-class MPDStatus;
 class Action;
 class ThumbnailToolBar : public QWinThumbnailToolBar
 {
@@ -36,12 +38,16 @@ public:
     virtual ~ThumbnailToolBar() { }
 
     void readSettings();
-    void update(MPDStatus * const status);
+    void updateCurrentSong(const Song &song);
+    void updateStatus(MPDStatus * const status);
 
 private:
+    void update();
     QWinThumbnailToolButton * createButton(Action *act);
 
 private:
+    Song currentSong;
+    QPointer<MPDStatus> status;
     QWinThumbnailToolButton *prevButton;
     QWinThumbnailToolButton *playPauseButton;
     QWinThumbnailToolButton *stopButton;

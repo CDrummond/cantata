@@ -23,6 +23,7 @@
 15. Add chartlyrics.com to list of lyrics providers.
 16. Set default lyrics providers to azlyrics.com, chartlyrics.com, and
     lyrics.wikia.com
+17. Fix enabling of play queue navigation actions 'next' and 'previous'.
 
 2.4.1
 -----

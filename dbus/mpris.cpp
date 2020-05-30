@@ -147,7 +147,7 @@ void Mpris::updateStatus(MPDStatus * const status)
     if (status->volume()!=lastStatus.volume) {
         map.insert("Volume", Volume());
     }
-    if (status->state()!=lastStatus.state || status->playlistLength()!=lastStatus.playlistLength) {
+    if (status->state()!=lastStatus.state || status->songId()!=lastStatus.songId || status->nextSongId()!=lastStatus.nextSongId || status->playlistLength()!=lastStatus.playlistLength) {
         map.insert("CanGoNext", CanGoNext());
         map.insert("CanGoPrevious", CanGoPrevious());
     }

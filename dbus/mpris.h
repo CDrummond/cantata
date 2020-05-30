@@ -97,8 +97,8 @@ public:
     bool CanPlay() const { return !status.isNull() && status->playlistLength()>0; }
     bool CanPause() const { return !status.isNull() && MPDState_Stopped!=status->state() && status->songId()!=-1; }
     bool CanSeek() const { return !status.isNull() && status->songId()!=-1 && !currentSong.isCdda() && !currentSong.isStandardStream() && currentSong.time>5; }
-    bool CanGoNext() const { return !status.isNull() && MPDState_Stopped!=status->state() && status->playlistLength()>1; }
-    bool CanGoPrevious() const { return !status.isNull() && MPDState_Stopped!=status->state() && status->playlistLength()>1; }
+    bool CanGoNext() const { return !status.isNull() && MPDState_Stopped!=status->state() && status->songId()!=-1 && status->nextSongId()!=-1; }
+    bool CanGoPrevious() const { return !status.isNull() && MPDState_Stopped!=status->state() && status->songId()!=-1 && (status->playlistLength()>1 || currentSong.time>5); }
 
     // org.mpris.MediaPlayer2
     bool CanQuit() const { return true; }

@@ -28,6 +28,7 @@
 #include "upowerinterface.h"
 #include "login1interface.h"
 #include "mpd-interface/mpdstatus.h"
+#include <QGuiApplication>
 #include <QString>
 
 GLOBAL_STATIC(PowerManagement, instance)
@@ -77,17 +78,17 @@ void PowerManagement::beginSuppressingSleep()
     QString reason=tr("Cantata is playing a track");
     QDBusReply<uint> reply;
     if (policy->isValid()) {
-        reply = policy->AddInhibition((uint)1, QCoreApplication::applicationName(), reason);
+        reply = policy->AddInhibition((uint)1, QGuiApplication::applicationDisplayName(), reason);
     } else {
         // Fallback to the fd.o Inhibit interface
-        reply = inhibit->Inhibit(QCoreApplication::applicationName(), reason);
+        reply = inhibit->Inhibit(QGuiApplication::applicationDisplayName(), reason);
     }
     cookie=reply.isValid() ? reply : -1;
 
     QString types=QStringLiteral("sleep");
     QString mode=QStringLiteral("block");
     QDBusPendingReply<QDBusUnixFileDescriptor> futureReply;
-    futureReply = login1->Inhibit(types, QCoreApplication::applicationName(), reason, mode);
+    futureReply = login1->Inhibit(types, QGuiApplication::applicationDisplayName(), reason, mode);
     futureReply.waitForFinished();
     if (futureReply.isValid()) {
         descriptor=futureReply.value();

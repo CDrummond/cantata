@@ -28,6 +28,7 @@
 #include "upowerinterface.h"
 #include "login1interface.h"
 #include "mpd-interface/mpdstatus.h"
+#include <QString>
 
 GLOBAL_STATIC(PowerManagement, instance)
 
@@ -69,9 +70,10 @@ void PowerManagement::setInhibitSuspend(bool i)
 
 void PowerManagement::beginSuppressingSleep()
 {
-    if (-1!=cookie) {
+    if (-1!=cookie || descriptor.isValid()) {
         return;
     }
+
     QString reason=tr("Cantata is playing a track");
     QDBusReply<uint> reply;
     if (policy->isValid()) {
@@ -81,21 +83,33 @@ void PowerManagement::beginSuppressingSleep()
         reply = inhibit->Inhibit(QCoreApplication::applicationName(), reason);
     }
     cookie=reply.isValid() ? reply : -1;
+
+    QString types=QStringLiteral("sleep");
+    QString mode=QStringLiteral("block");
+    QDBusPendingReply<QDBusUnixFileDescriptor> futureReply;
+    futureReply = login1->Inhibit(types, QCoreApplication::applicationName(), reason, mode);
+    futureReply.waitForFinished();
+    if (futureReply.isValid()) {
+        descriptor=futureReply.value();
+    }
 }
 
 void PowerManagement::stopSuppressingSleep()
 {
-    if (-1==cookie) {
-        return;
+    if (-1!=cookie) {
+        if (policy->isValid()) {
+            policy->ReleaseInhibition(cookie);
+        } else {
+            // Fallback to the fd.o Inhibit interface
+            inhibit->UnInhibit(cookie);
+        }
+        cookie=-1;
     }
 
-    if (policy->isValid()) {
-        policy->ReleaseInhibition(cookie);
-    } else {
-        // Fallback to the fd.o Inhibit interface
-        inhibit->UnInhibit(cookie);
+    if (descriptor.isValid()) {
+        QDBusUnixFileDescriptor invalidDescriptor;
+        descriptor.swap(invalidDescriptor);
     }
-    cookie=-1;
 }
 
 void PowerManagement::mpdStatusUpdated()

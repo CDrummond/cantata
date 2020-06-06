@@ -25,7 +25,7 @@
 #define POWERMANAGEMENT_H
 
 #include <QObject>
-#include <QString>
+#include <QDBusUnixFileDescriptor>
 
 class OrgKdeSolidPowerManagementPolicyAgentInterface;
 class OrgFreedesktopPowerManagementInhibitInterface;
@@ -54,6 +54,7 @@ private Q_SLOTS:
 private:
     bool inhibitSuspendWhilstPlaying;
     int cookie;
+    QDBusUnixFileDescriptor descriptor;
     OrgKdeSolidPowerManagementPolicyAgentInterface *policy;
     OrgFreedesktopPowerManagementInhibitInterface *inhibit;
     OrgFreedesktopUPowerInterface *upower;

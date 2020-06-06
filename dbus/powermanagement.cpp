@@ -38,7 +38,7 @@ PowerManagement::PowerManagement()
     policy = new OrgKdeSolidPowerManagementPolicyAgentInterface(OrgKdeSolidPowerManagementPolicyAgentInterface::staticInterfaceName(),
                                                                 QLatin1String("/org/kde/Solid/PowerManagement/PolicyAgent"),
                                                                 QDBusConnection::sessionBus(), this);
-    inhibit = new OrgFreedesktopPowerManagementInhibitInterface(OrgFreedesktopPowerManagementInhibitInterface::staticInterfaceName(),
+    inhibit = new OrgFreedesktopPowerManagementInhibitInterface("org.freedesktop.PowerManagement",
                                                                 QLatin1String("/org/freedesktop/PowerManagement/Inhibit"),
                                                                 QDBusConnection::sessionBus(), this);
     upower = new OrgFreedesktopUPowerInterface(OrgFreedesktopUPowerInterface::staticInterfaceName(),

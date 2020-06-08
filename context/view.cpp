@@ -57,7 +57,7 @@ QString View::encode(const QImage &img)
     buffer.open(QIODevice::WriteOnly);
     img.save(&buffer, "PNG");
     #ifdef CONTEXT_CENTERED
-    return QString("<table width=\"100%\"><tr><td align=\"center\"><img src=\"data:image/png;base64,%1\"/></td></tr></table>").arg(QString(buffer.data().toBase64()));
+    return QString("<div style=\"text-align:center;\"><img src=\"data:image/png;base64,%1\"/></div>").arg(QString(buffer.data().toBase64()));
     #else
     return QString("<img src=\"data:image/png;base64,%1\"/>").arg(QString(buffer.data().toBase64()));
     #endif
@@ -175,7 +175,7 @@ QString View::createPicTag(const QImage &img, const QString &file)
 {
     if (!file.isEmpty() && QFile::exists(file)) {
         #ifdef CONTEXT_CENTERED
-        return QString("<table width=\"100%\"><tr><td align=\"center\"><img src=\"%1\"/></td></tr></table>").arg(file);
+        return QString("<div style=\"text-align:center;\"><img src=\"%1\"/></div>").arg(file);
         #else
         return QString("<img src=\"%1\"/>").arg(file);
         #endif

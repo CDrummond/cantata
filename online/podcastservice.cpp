@@ -332,7 +332,7 @@ bool PodcastService::Podcast::save() const
     writer.writeAttribute(constImageAttribute, imageUrl.toString()); // ??
     writer.writeAttribute(constRssAttribute, url.toString()); // ??
     writer.writeAttribute(constNameAttribute, name);
-    writer.writeAttribute(constDateAttribute, descr);
+    writer.writeAttribute(constDescrAttribute, descr);
     for (Episode *ep: episodes) {
         writer.writeStartElement(constEpisodeTag);
         writer.writeAttribute(constNameAttribute, ep->name);

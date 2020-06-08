@@ -22,6 +22,7 @@
  */
 
 #include "textbrowser.h"
+#include <QFile>
 #include <QImage>
 #include <QScrollBar>
 #include <QEvent>
@@ -41,23 +42,26 @@ TextBrowser::TextBrowser(QWidget *p)
 QVariant TextBrowser::loadResource(int type, const QUrl &name)
 {
     if (QTextDocument::ImageResource==type) {
+        QImage img;
         if ((name.scheme().isEmpty() || QLatin1String("file")==name.scheme())) {
-            QImage img;
             img.load(name.path());
-            if (!img.isNull()) {
-                haveImg=true;
-                return img.scaled(imageSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            if (img.isNull()) {
+                // Failed to load, perhaps extension is wrong? If so try to guess from plain data without hint from file name.
+                QFile file(name.path());
+                if (file.open(QIODevice::ReadOnly)) {
+                    QByteArray data=file.readAll();
+                    img.loadFromData(data);
+                }
             }
         } else if (QLatin1String("data")==name.scheme()) {
             QByteArray encoded=name.toEncoded();
             static const QString constStart("data:image/png;base64,");
             encoded=QByteArray::fromBase64(encoded.mid(constStart.length()));
-            QImage img;
             img.loadFromData(encoded);
-            if (!img.isNull()) {
-                haveImg=true;
-                return img.scaled(imageSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            }
+        }
+        if (!img.isNull()) {
+            haveImg=true;
+            return img.scaled(imageSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
     }
     return QTextBrowser::loadResource(type, name);

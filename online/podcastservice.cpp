@@ -551,7 +551,7 @@ static QString trimDescr(QString descr, int limit=1000)
         if (descr.length()>limit) {
             descr=descr.left(limit)+QLatin1String("...");
         }
-        descr+=QLatin1String("<br/><br/>");
+        descr=QLatin1String("<br/>")+descr+QLatin1String("<br/><br/>");
     }
     return descr;
 }

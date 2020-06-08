@@ -35,6 +35,7 @@
 #include <QDesktopWidget>
 #include <QEventLoop>
 #include <QStandardPaths>
+#include <QSystemTrayIcon>
 #include <QSet>
 #include <QUrl>
 #ifndef _MSC_VER 
@@ -982,9 +983,11 @@ bool Utils::useSystemTray()
     #elif defined Q_OS_WIN
     return true;
     #elif QT_QTDBUS_FOUND
-    return Gnome==currentDe() ? QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.StatusNotifierWatcher") : true;
+    return (Gnome==currentDe() || Unity==currentDe())
+            ? QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.StatusNotifierWatcher")
+            : QSystemTrayIcon::isSystemTrayAvailable();
     #else
-    return Gnome!=currentDe();
+    return Gnome!=currentDe() && Unity!=currentDe() && QSystemTrayIcon::isSystemTrayAvailable();
     #endif
 }
 

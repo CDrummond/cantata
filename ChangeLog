@@ -26,6 +26,8 @@
 17. Fix enabling of play queue navigation actions 'next' and 'previous'.
 18. Fix bus name of freedesktop.org's power management.
 19. Additionally call Inhibit() from org.freedesktop.login1.Manager.
+20. Query Qt whether system tray is available if current desktop environment is
+    not some kind of GNOME (incl. Unity flavored GNOME).
 
 2.4.1
 -----

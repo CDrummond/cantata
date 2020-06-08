@@ -29,6 +29,7 @@
 20. Query Qt whether system tray is available if current desktop environment is
     not some kind of GNOME (incl. Unity flavored GNOME).
 21. Fix writing 'descr' attribute when saving podcast information to cache dir.
+22. Fix loading cover images with wrong file extension in context view.
 
 2.4.1
 -----

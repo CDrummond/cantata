@@ -28,6 +28,7 @@
 19. Additionally call Inhibit() from org.freedesktop.login1.Manager.
 20. Query Qt whether system tray is available if current desktop environment is
     not some kind of GNOME (incl. Unity flavored GNOME).
+21. Fix writing 'descr' attribute when saving podcast information to cache dir.
 
 2.4.1
 -----

@@ -332,7 +332,7 @@ bool PodcastService::Podcast::save() const
     writer.writeAttribute(constImageAttribute, imageUrl.toString()); // ??
     writer.writeAttribute(constRssAttribute, url.toString()); // ??
     writer.writeAttribute(constNameAttribute, name);
-    writer.writeAttribute(constDateAttribute, descr);
+    writer.writeAttribute(constDescrAttribute, descr);
     for (Episode *ep: episodes) {
         writer.writeStartElement(constEpisodeTag);
         writer.writeAttribute(constNameAttribute, ep->name);
@@ -551,7 +551,7 @@ static QString trimDescr(QString descr, int limit=1000)
         if (descr.length()>limit) {
             descr=descr.left(limit)+QLatin1String("...");
         }
-        descr+=QLatin1String("<br/><br/>");
+        descr=QLatin1String("<br/>")+descr+QLatin1String("<br/><br/>");
     }
     return descr;
 }

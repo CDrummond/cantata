@@ -816,8 +816,8 @@ QString Song::filePath(const QString &base) const
         return file;
     }
     QString fileName=decodePath(file, isCdda());
-    if (!base.isEmpty()) {
-        bool haveAbsPath=fileName.startsWith("/"); // Utils::constDirSep
+    if (!base.isEmpty() && !fileName.isEmpty() && !isNonMPD()) {
+        bool haveAbsPath=fileName.startsWith("/") || fileName.contains(":/");
         if (!haveAbsPath) {
             return QString(base+fileName);
         }

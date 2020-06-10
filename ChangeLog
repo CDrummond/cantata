@@ -30,6 +30,8 @@
     not some kind of GNOME (incl. Unity flavored GNOME).
 21. Fix writing 'descr' attribute when saving podcast information to cache dir.
 22. Fix loading cover images with wrong file extension in context view.
+23. Avoid prepending song's file path with MPD's music directory if it is empty,
+    a stream URL or an absolute path.
 
 2.4.1
 -----

@@ -747,7 +747,7 @@ void SongView::abort()
 
 void SongView::update(const Song &s, bool force)
 {
-    if (s.isEmpty() || s.title.isEmpty() || s.artist.isEmpty()) {
+    if (s.isEmpty()) {
         currentSong=s;
         infoNeedsUpdating=metadataNeedsUpdating=lyricsNeedsUpdating=false;
         clear();
@@ -772,12 +772,13 @@ void SongView::update(const Song &s, bool force)
     if (force || songChanged) {
         setMode(Mode_Blank);
 //        controls->setVisible(true);
-        currentRequest++;
-        currentSong=song;
 
         if (song.title.isEmpty() || song.artist.isEmpty()) {
             clear();
-            return;
+            infoNeedsUpdating=lyricsNeedsUpdating=false;
+        } else {
+            currentRequest++;
+            infoNeedsUpdating=lyricsNeedsUpdating=true;
         }
 
         // Only reset the provider if the refresh was an automatic one or if the song has
@@ -786,9 +787,15 @@ void SongView::update(const Song &s, bool force)
         if (!force || songChanged) {
             currentProvider=-1;
         }
+    }
 
-        infoNeedsUpdating=metadataNeedsUpdating=lyricsNeedsUpdating=true;
+    metadataNeedsUpdating=force || song.isDifferent(currentSong);
+    currentSong=song;
+
+    if (!song.title.isEmpty()) {
         setHeader(song.title);
+    }
+    if (metadataNeedsUpdating || infoNeedsUpdating || lyricsNeedsUpdating) {
         curentViewChanged();
     }
 }

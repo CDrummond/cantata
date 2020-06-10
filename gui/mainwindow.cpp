@@ -2322,16 +2322,17 @@ void MainWindow::locateTrack()
 
 void MainWindow::moveSelectionAfterCurrentSong()
 {
-    QList<int> selectedIdexes = playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes());
+    QList<int> selectedRows = playQueueProxyModel.mapToSourceRows(playQueue->selectedIndexes());
+    int currentSongIdx = PlayQueueModel::self()->currentSongRow();
+    QList<quint32> selectedSongIds;
 
-    if( !selectedIdexes.empty() ){
-        QList<quint32> selectedSongIds;
-        for (int row: selectedIdexes){
+    for (int row: selectedRows) {
+        if (currentSongIdx!=row) {
             selectedSongIds.append( (quint32) row);
         }
+    }
 
-        int currentSongIdx = PlayQueueModel::self()->currentSongRow();
-
+    if( !selectedSongIds.empty() ) {
         emit playNext(selectedSongIds, currentSongIdx+1, PlayQueueModel::self()->rowCount());
     }
 }

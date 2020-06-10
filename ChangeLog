@@ -32,6 +32,8 @@
 22. Fix loading cover images with wrong file extension in context view.
 23. Avoid prepending song's file path with MPD's music directory if it is empty,
     a stream URL or an absolute path.
+24. Ignore current song in selection when moving selected songs within the play
+    queue to play them next.
 
 2.4.1
 -----

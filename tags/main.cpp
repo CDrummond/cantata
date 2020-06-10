@@ -28,6 +28,9 @@
 #include "tags.h"
 #include "taghelper.h"
 
+// Defined in support/utils.cpp - and used by song.cpp!
+const QLatin1Char Utils::constDirSep('/');
+
 #ifdef Q_OS_WIN
 #include <windows.h>
 static long __stdcall exceptionHandler(EXCEPTION_POINTERS *p)

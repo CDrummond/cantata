@@ -34,6 +34,8 @@
     a stream URL or an absolute path.
 24. Ignore current song in selection when moving selected songs within the play
     queue to play them next.
+25. Also show metadata of the current track in the context view if 'title' or
+    'artist' are missing, but do not try to fetch information nor lyrics.
 
 2.4.1
 -----

@@ -34,7 +34,6 @@
 #include <QFont>
 #include <QPainterPath>
 #include <stdlib.h>
-#include <QTime>
 
 class QString;
 class QWidget;
@@ -51,8 +50,6 @@ namespace Utils
     {
         return (fabs(d1 - d2) < precision);
     }
-    inline int random(int max=0) { return max ? (qrand()%max) : qrand(); }
-	inline void initRand() { QTime time = QTime::currentTime();	qsrand((time.second() * 1000) + (time.msec()));	}
 
     extern QString fixPath(const QString &d, bool ensureEndsInSlash=true);
     #ifdef Q_OS_WIN

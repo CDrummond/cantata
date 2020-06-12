@@ -88,7 +88,6 @@ void Application::init()
     // Ensure this is started before any MPD connection
     HttpServer::self();
 
-    Utils::initRand();
     Song::initTranslations();
 
     // Init sizes (before any widgets constructed!)

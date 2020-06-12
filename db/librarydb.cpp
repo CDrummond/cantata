@@ -28,6 +28,7 @@
 #include <QSqlQuery>
 #include <QFile>
 #include <QRegExp>
+#include <QRandomGenerator>
 #include <QDebug>
 #include <algorithm>
 
@@ -1060,7 +1061,7 @@ LibraryDb::Album LibraryDb::getRandomAlbum(const QStringList &genres, const QStr
         return Album();
     }
 
-    return albums.at(Utils::random(albums.count()));
+    return albums.at(QRandomGenerator::global()->bounded(albums.count()));
 }
 
 QSet<QString> LibraryDb::get(const QString &type)

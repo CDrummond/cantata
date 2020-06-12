@@ -377,7 +377,7 @@ void FancyTabBar::mousePressEvent(QMouseEvent *e)
 
 void FancyTabBar::wheelEvent(QWheelEvent *ev)
 {
-    int numDegrees = ev->delta() / 8;
+    int numDegrees = ev->angleDelta().y() / 8;
     int numSteps = numDegrees / -15;
     int prevIndex = currentIdx;
 

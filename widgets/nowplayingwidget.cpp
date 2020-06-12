@@ -345,7 +345,7 @@ void NowPlayingWidget::startTimer()
         timer->setInterval(1000);
         connect(timer, SIGNAL(timeout()), this, SLOT(updatePos()));
     }
-    startTime.restart();
+    elapsedTimer.start();
     lastVal=value();
     timer->start();
     pollCount=0;
@@ -362,7 +362,7 @@ void NowPlayingWidget::stopTimer()
 void NowPlayingWidget::setValue(int v)
 {
     if (qAbs(v-slider->value())>1 || MPDState_Playing!=MPDStatus::self()->state()) {
-        startTime.restart();
+        elapsedTimer.start();
         lastVal=v;
         slider->setValue(v);
         updateTimes();
@@ -418,7 +418,7 @@ void NowPlayingWidget::updateTimes()
 
 void NowPlayingWidget::updatePos()
 {
-    quint16 elapsed=(startTime.elapsed()/1000.0)+0.5;
+    quint16 elapsed=(elapsedTimer.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
     MPDStatus::self()->setGuessedElapsed(lastVal+elapsed);
     if (++pollCount>=constPollMpd) {

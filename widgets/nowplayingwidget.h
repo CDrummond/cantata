@@ -25,7 +25,7 @@
 #define NOWPLAYING_WIDGET_H
 
 #include <QWidget>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QSlider>
 #include "support/squeezedtextlabel.h"
 
@@ -101,7 +101,7 @@ private:
     PosSlider *slider;
     RatingWidget *ratingWidget;
     QTimer *timer;
-    QTime startTime;
+    QElapsedTimer elapsedTimer;
     QString currentSongFile;
     int lastVal;
     int pollCount;

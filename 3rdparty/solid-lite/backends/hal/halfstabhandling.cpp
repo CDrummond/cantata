@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QProcess>
 #include <QTextStream>
-#include <QTime>
+#include <QElapsedTimer>
 
 #include <solid-lite/soliddefs_p.h>
 
@@ -73,13 +73,13 @@ bool _k_isNetworkFileSystem(const QString &fstype, const QString &devName)
 void _k_updateMountPointsCache()
 {
     static bool firstCall = true;
-    static QTime elapsedTime;
+    static QElapsedTimer elapsedTimer;
 
     if (firstCall) {
         firstCall = false;
-        elapsedTime.start();
-    } else if (elapsedTime.elapsed()>10000) {
-        elapsedTime.restart();
+        elapsedTimer.start();
+    } else if (elapsedTimer.elapsed()>10000) {
+        elapsedTimer.restart();
     } else {
         return;
     }

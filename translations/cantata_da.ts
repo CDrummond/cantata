@@ -4135,6 +4135,11 @@ Det kan ikke fortrydes.</translation>
         <source>Now Playing</source>
         <translation>Afspiller nu</translation>
     </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="459"/>
+        <source>%1 kb/s</source>
+        <translation>%1 kb/s</translation>
+    </message>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
@@ -4142,6 +4147,11 @@ Det kan ikke fortrydes.</translation>
             <numerusform>%n bit</numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
+        <source>%1 kHz</source>
+        <translation>%1 kHz</translation>
     </message>
 </context>
 <context>

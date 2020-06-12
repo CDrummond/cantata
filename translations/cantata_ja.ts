@@ -4107,12 +4107,22 @@ This cannot be undone.</source>
         <source>Now Playing</source>
         <translation>現在再生中</translation>
     </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="459"/>
+        <source>%1 kb/s</source>
+        <translation>%1 kb/s</translation>
+    </message>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
+        <source>%1 kHz</source>
+        <translation>%1 kHz</translation>
     </message>
 </context>
 <context>

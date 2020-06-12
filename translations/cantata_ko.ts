@@ -10515,12 +10515,22 @@ This cannot be undone.</source>
         <source>Now Playing</source>
         <translation type="unfinished">지금 연주 중</translation>
     </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="459"/>
+        <source>%1 kb/s</source>
+        <translation type="unfinished">%1 kb/s</translation>
+    </message>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
         <translation type="unfinished">
             <numerusform>%n 비트</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
+        <source>%1 kHz</source>
+        <translation type="unfinished">%1 kHz</translation>
     </message>
     <message>
         <source>(Stream)</source>

@@ -133,7 +133,7 @@ QAction *ActionCollection::addAction(const QString &name, QAction *action) {
   else
     action->setObjectName(indexName);
   if(indexName.isEmpty())
-    indexName = indexName.sprintf("unnamed-%p", (void *)action);
+    indexName = QString::asprintf("unnamed-%p", (void *)action);
 
   // do we already have this action?
   if(_actionByName.value(indexName, nullptr) == action)

@@ -456,7 +456,7 @@ void NowPlayingWidget::updateInfo()
 
     QString info;
     if (MPDStatus::self()->bitrate()>0) {
-        info += QString().sprintf("%d kbps", MPDStatus::self()->bitrate());
+        info += tr("%1 kb/s").arg(MPDStatus::self()->bitrate());
     }
     if (MPDStatus::self()->bits()>0) {
         if (!info.isEmpty()) {
@@ -468,7 +468,7 @@ void NowPlayingWidget::updateInfo()
         if (!info.isEmpty()) {
             info+=", ";
         }
-        info += QString().sprintf("%.1f kHz", MPDStatus::self()->samplerate()/1000.0);
+        info += tr("%1 kHz").arg(MPDStatus::self()->samplerate()/1000.0, 0, 'f', 1);
     }
 
     int pos=currentSongFile.lastIndexOf('.');

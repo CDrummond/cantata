@@ -845,7 +845,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             meta->composer=createString(song.composer());
             meta->genre=createString(song.genres[0]);
             meta->album=createString(song.album);
-            meta->date=createString(QString().sprintf("%4d0101T0000.0", song.year));
+            meta->date=createString(QStringLiteral("%1").arg(song.year, 4)+"0101T0000.0");
             meta->filename=createString(destName);
             meta->tracknumber=song.track;
             meta->duration=song.time*1000;

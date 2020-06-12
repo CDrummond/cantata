@@ -46,39 +46,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="127"/>
+        <location filename="../devices/actiondialog.cpp" line="128"/>
         <source>&lt;b&gt;INVALID&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="141"/>
-        <location filename="../devices/actiondialog.cpp" line="144"/>
+        <location filename="../devices/actiondialog.cpp" line="142"/>
+        <location filename="../devices/actiondialog.cpp" line="145"/>
         <source>&lt;i&gt;(When different)&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="173"/>
+        <location filename="../devices/actiondialog.cpp" line="174"/>
         <source>Artists:%1, Albums:%2, Songs:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="241"/>
+        <location filename="../devices/actiondialog.cpp" line="242"/>
         <source>%1 free</source>
         <translation>%1 vapaana</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="254"/>
-        <location filename="../devices/actiondialog.cpp" line="258"/>
+        <location filename="../devices/actiondialog.cpp" line="255"/>
+        <location filename="../devices/actiondialog.cpp" line="259"/>
         <source>Local Music Library</source>
         <translation>Paikallinen musiikkikirjasto</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="256"/>
+        <location filename="../devices/actiondialog.cpp" line="257"/>
         <source>Audio CD</source>
         <translation>Ääni-CD</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="280"/>
+        <location filename="../devices/actiondialog.cpp" line="281"/>
         <source>There is insufficient space left on the destination device.
 
 The selected songs consume %1, but there is only %2 left.
@@ -89,7 +89,7 @@ Valitut kappaleet vievät %1 mutta tilaa on jäljellä enää %2.
 Kappaleet on koodattava kooltaan pienemmiksi, jotta kopiointi voi onnistua.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="290"/>
+        <location filename="../devices/actiondialog.cpp" line="291"/>
         <source>There is insufficient space left on the destination.
 
 The selected songs consume %1, but there is only %2 left.</source>
@@ -98,30 +98,30 @@ The selected songs consume %1, but there is only %2 left.</source>
 Valitut kappaleet vievät %1 mutta tilaa on vain %2 jäljellä.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="304"/>
-        <location filename="../devices/actiondialog.cpp" line="324"/>
-        <location filename="../devices/actiondialog.cpp" line="556"/>
+        <location filename="../devices/actiondialog.cpp" line="305"/>
+        <location filename="../devices/actiondialog.cpp" line="325"/>
+        <location filename="../devices/actiondialog.cpp" line="557"/>
         <source>Copy Songs To Library</source>
         <translation>Kopioi kappaleet kirjastoon</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="304"/>
-        <location filename="../devices/actiondialog.cpp" line="324"/>
+        <location filename="../devices/actiondialog.cpp" line="305"/>
+        <location filename="../devices/actiondialog.cpp" line="325"/>
         <source>Copy Songs To Device</source>
         <translation>Kopioi kappaleet laitteelle</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="388"/>
+        <location filename="../devices/actiondialog.cpp" line="389"/>
         <source>Copy Songs</source>
         <translation>Kopioi kappaleet</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="388"/>
+        <location filename="../devices/actiondialog.cpp" line="389"/>
         <source>Delete Songs</source>
         <translation>Poista kappaleet</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="425"/>
+        <location filename="../devices/actiondialog.cpp" line="426"/>
         <source>You have not configured the destination device.
 
 Continue with the default settings?</source>
@@ -130,19 +130,19 @@ Continue with the default settings?</source>
 Jatketaanko oletusasetuksin?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="426"/>
-        <location filename="../devices/actiondialog.cpp" line="430"/>
+        <location filename="../devices/actiondialog.cpp" line="427"/>
+        <location filename="../devices/actiondialog.cpp" line="431"/>
         <source>Not Configured</source>
         <translation>Ei asetettu</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="427"/>
-        <location filename="../devices/actiondialog.cpp" line="431"/>
+        <location filename="../devices/actiondialog.cpp" line="428"/>
+        <location filename="../devices/actiondialog.cpp" line="432"/>
         <source>Use Defaults</source>
         <translation>Käytä oletuksia</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="429"/>
+        <location filename="../devices/actiondialog.cpp" line="430"/>
         <source>You have not configured the source device.
 
 Continue with the default settings?</source>
@@ -151,199 +151,199 @@ Continue with the default settings?</source>
 Jatketaanko oletusasetuksin?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="481"/>
+        <location filename="../devices/actiondialog.cpp" line="482"/>
         <source>Are you sure you wish to stop?</source>
         <translation>Haluatko varmasti lopettaa?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="481"/>
+        <location filename="../devices/actiondialog.cpp" line="482"/>
         <source>Stop</source>
         <translation>Lopeta</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="526"/>
+        <location filename="../devices/actiondialog.cpp" line="527"/>
         <source>Device has been removed!</source>
         <translation>Laite on poistettu!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="528"/>
+        <location filename="../devices/actiondialog.cpp" line="529"/>
         <source>Device is not connected!</source>
         <translation>Laitetta ei ole kytketty!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="530"/>
+        <location filename="../devices/actiondialog.cpp" line="531"/>
         <source>Device is busy?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="532"/>
+        <location filename="../devices/actiondialog.cpp" line="533"/>
         <source>Device has been changed?</source>
         <translation>Onko laite vaihtunut?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="607"/>
+        <location filename="../devices/actiondialog.cpp" line="608"/>
         <source>Clearing unused folders</source>
         <translation>Poistetaan käyttämättömiä kansioita</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="622"/>
+        <location filename="../devices/actiondialog.cpp" line="623"/>
         <source>Calculate ReplayGain for ripped tracks?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="622"/>
+        <location filename="../devices/actiondialog.cpp" line="623"/>
         <source>ReplayGain</source>
         <translation>ReplayGain</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="623"/>
+        <location filename="../devices/actiondialog.cpp" line="624"/>
         <source>Calculate</source>
         <translation>Laske</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="676"/>
+        <location filename="../devices/actiondialog.cpp" line="677"/>
         <source>The destination filename already exists!</source>
         <translation>Kohdetiedostonimi on jo olemassa!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="679"/>
+        <location filename="../devices/actiondialog.cpp" line="680"/>
         <source>Song already exists!</source>
         <translation>Kappale on jo olemassa!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="682"/>
+        <location filename="../devices/actiondialog.cpp" line="683"/>
         <source>Song does not exist!</source>
         <translation>Kappaletta ei ole olemassa!</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="685"/>
+        <location filename="../devices/actiondialog.cpp" line="686"/>
         <source>Failed to create destination folder!&lt;br/&gt;Please check you have sufficient permissions.</source>
         <translation>Kohdekansiota ei voitu luoda!&lt;br/&gt;Varmista, että käyttöoikeutesi riittävät.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="688"/>
+        <location filename="../devices/actiondialog.cpp" line="689"/>
         <source>Source file no longer exists?</source>
         <translation>Lähdetiedostoa ei enää ole?</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="691"/>
+        <location filename="../devices/actiondialog.cpp" line="692"/>
         <source>Failed to copy.</source>
         <translation>Kopiointi epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="691"/>
+        <location filename="../devices/actiondialog.cpp" line="692"/>
         <source>Failed to delete.</source>
         <translation>Poistaminen epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="694"/>
+        <location filename="../devices/actiondialog.cpp" line="695"/>
         <source>Not connected to device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="697"/>
+        <location filename="../devices/actiondialog.cpp" line="698"/>
         <source>Selected codec is not available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="700"/>
+        <location filename="../devices/actiondialog.cpp" line="701"/>
         <source>Transcoding failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="703"/>
+        <location filename="../devices/actiondialog.cpp" line="704"/>
         <source>Failed to create temporary file.&lt;br/&gt;(Required for transcoding to MTP devices.)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="706"/>
+        <location filename="../devices/actiondialog.cpp" line="707"/>
         <source>Failed to read source file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="709"/>
+        <location filename="../devices/actiondialog.cpp" line="710"/>
         <source>Failed to write to destination file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="712"/>
+        <location filename="../devices/actiondialog.cpp" line="713"/>
         <source>No space left on device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="715"/>
+        <location filename="../devices/actiondialog.cpp" line="716"/>
         <source>Failed to update metadata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="718"/>
+        <location filename="../devices/actiondialog.cpp" line="719"/>
         <source>Failed to download track.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="721"/>
+        <location filename="../devices/actiondialog.cpp" line="722"/>
         <source>Failed to lock device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="750"/>
+        <location filename="../devices/actiondialog.cpp" line="751"/>
         <source>Local Music Library Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="802"/>
-        <location filename="../devices/actiondialog.cpp" line="816"/>
+        <location filename="../devices/actiondialog.cpp" line="803"/>
+        <location filename="../devices/actiondialog.cpp" line="817"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="806"/>
+        <location filename="../devices/actiondialog.cpp" line="807"/>
         <source>Skip</source>
         <translation>Ohita</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="807"/>
+        <location filename="../devices/actiondialog.cpp" line="808"/>
         <source>Auto Skip</source>
         <translation>Ohita automaattisesti</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="811"/>
+        <location filename="../devices/actiondialog.cpp" line="812"/>
         <source>Retry</source>
         <translation>Yritä uudelleen</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="826"/>
+        <location filename="../devices/actiondialog.cpp" line="827"/>
         <source>Artist:</source>
         <translation>Artisti:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="827"/>
+        <location filename="../devices/actiondialog.cpp" line="828"/>
         <source>Album:</source>
         <translation>Albumi:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="828"/>
+        <location filename="../devices/actiondialog.cpp" line="829"/>
         <source>Track:</source>
         <translation>Raita:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="832"/>
+        <location filename="../devices/actiondialog.cpp" line="833"/>
         <source>Source file:</source>
         <translation>Lähdetiedosto:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="833"/>
+        <location filename="../devices/actiondialog.cpp" line="834"/>
         <source>Destination file:</source>
         <translation>Kohdetiedosto:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="835"/>
+        <location filename="../devices/actiondialog.cpp" line="836"/>
         <source>File:</source>
         <translation>Tiedosto:</translation>
     </message>
     <message>
-        <location filename="../devices/actiondialog.cpp" line="853"/>
-        <location filename="../devices/actiondialog.cpp" line="869"/>
+        <location filename="../devices/actiondialog.cpp" line="854"/>
+        <location filename="../devices/actiondialog.cpp" line="870"/>
         <source>Saving cache</source>
         <translation>Tallennetaan välimuistia</translation>
     </message>
@@ -414,72 +414,72 @@ Jatketaanko oletusasetuksin?</translation>
 <context>
     <name>AlbumDetailsDialog</name>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="103"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="104"/>
         <source>Audio CD</source>
         <translation>Ääni-CD</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="138"/>
-        <location filename="../devices/albumdetailsdialog.cpp" line="235"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="139"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="236"/>
         <source>Apply &quot;Various Artists&quot; Workaround</source>
         <translation>Käytä ”Useita artisteja” -hätäratkaisua</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="139"/>
-        <location filename="../devices/albumdetailsdialog.cpp" line="259"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="140"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="260"/>
         <source>Revert &quot;Various Artists&quot; Workaround</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="140"/>
-        <location filename="../devices/albumdetailsdialog.cpp" line="277"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="141"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="278"/>
         <source>Capitalize</source>
         <translation>Suuraakkosta</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="141"/>
-        <location filename="../devices/albumdetailsdialog.cpp" line="294"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="142"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="295"/>
         <source>Adjust Track Numbers</source>
         <translation>Säädä raitanumeroita</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="143"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="144"/>
         <source>Tools</source>
         <translation>Työkalut</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="231"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="232"/>
         <source>Apply &quot;Various Artists&quot; workaround?</source>
         <translation>Käytetäänkö ”Useita artisteja” -hätäratkaisua?</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="233"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="234"/>
         <source>This will set &apos;Album artist&apos; and &apos;Artist&apos; to &quot;Various Artists&quot;, and set &apos;Title&apos; to &quot;TrackArtist - TrackTitle&quot;</source>
         <translation>Tämä asettaa albumin artistiksi ja artistiksi ”Useita artisteja” ja kappaleen nimeksi ”KappaleenArtisti - KappaleenOtsikko”</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="252"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="253"/>
         <source>Revert &quot;Various Artists&quot; workaround?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="254"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="255"/>
         <source>Where the &apos;Album artist&apos; is the same as &apos;Artist&apos; and the &apos;Title&apos; is of the format &quot;TrackArtist - TrackTitle&quot;, &apos;Artist&apos; will be taken from &apos;Title&apos; and &apos;Title&apos; itself will be set to just the title. e.g. 
 If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; will be set to &quot;Wibble&quot; and &apos;Title&apos; will be set to &quot;Wobble&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="260"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="261"/>
         <source>Revert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="276"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="277"/>
         <source>Capitalize the first letter of &apos;Title&apos;, &apos;Artist&apos;, &apos;Album artist&apos;, and &apos;Album&apos;?</source>
         <translation>Suuraakkostetaanko kappaleen otsikon, artistin, albumin artistin ja albumin ensi kirjain?</translation>
     </message>
     <message>
-        <location filename="../devices/albumdetailsdialog.cpp" line="294"/>
+        <location filename="../devices/albumdetailsdialog.cpp" line="295"/>
         <source>Adjust track number by:</source>
         <translation>Korjaa raitanumeroa:</translation>
     </message>
@@ -541,27 +541,27 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
 <context>
     <name>ArtistView</name>
     <message>
-        <location filename="../context/artistview.cpp" line="101"/>
+        <location filename="../context/artistview.cpp" line="102"/>
         <source>Refresh Artist Information</source>
         <translation>Virkistä artistin tiedot</translation>
     </message>
     <message>
-        <location filename="../context/artistview.cpp" line="109"/>
+        <location filename="../context/artistview.cpp" line="110"/>
         <source>Artist</source>
         <translation>Artisti</translation>
     </message>
     <message>
-        <location filename="../context/artistview.cpp" line="323"/>
+        <location filename="../context/artistview.cpp" line="324"/>
         <source>Albums</source>
         <translation>Albumit</translation>
     </message>
     <message>
-        <location filename="../context/artistview.cpp" line="349"/>
+        <location filename="../context/artistview.cpp" line="350"/>
         <source>Web Links</source>
         <translation>Verkkolinkit</translation>
     </message>
     <message>
-        <location filename="../context/artistview.cpp" line="430"/>
+        <location filename="../context/artistview.cpp" line="431"/>
         <source>Similar Artists</source>
         <translation>Samankaltaisia artisteja</translation>
     </message>
@@ -1001,7 +1001,7 @@ Väliaikaistiedostoa ei voitu ladata!</translation>
         <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1213"/>
+        <location filename="../gui/coverdialog.cpp" line="1215"/>
         <source>Failed to set cover!
 
 Could not make copy!</source>
@@ -1010,7 +1010,7 @@ Could not make copy!</source>
 Kopiota ei voitu tehdä!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1222"/>
+        <location filename="../gui/coverdialog.cpp" line="1224"/>
         <source>Failed to set cover!
 
 Could not backup original!</source>
@@ -1019,7 +1019,7 @@ Could not backup original!</source>
 Alkuperäistä ei voitu varmuuskopioida!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1278"/>
+        <location filename="../gui/coverdialog.cpp" line="1280"/>
         <source>Failed to set cover!
 
 Could not copy file to &apos;%1&apos;!</source>
@@ -1028,7 +1028,7 @@ Could not copy file to &apos;%1&apos;!</source>
 Tiedostoa ei voitu kopioida kohteeseen ”%1”!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1332"/>
+        <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation>Etsitään…</translation>
     </message>
@@ -1099,7 +1099,7 @@ Tiedostoa ei voitu kopioida kohteeseen ”%1”!</translation>
 <context>
     <name>CustomActions</name>
     <message>
-        <location filename="../gui/customactions.cpp" line="55"/>
+        <location filename="../gui/customactions.cpp" line="56"/>
         <source>Custom Actions</source>
         <translation>Mukautetut toiminnot</translation>
     </message>
@@ -1336,37 +1336,37 @@ Tiedostoa ei voitu kopioida kohteeseen ”%1”!</translation>
 <context>
     <name>DevicesModel</name>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="93"/>
+        <location filename="../models/devicesmodel.cpp" line="94"/>
         <source>Configure Device</source>
         <translation>Laitteen asetukset</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="94"/>
+        <location filename="../models/devicesmodel.cpp" line="95"/>
         <source>Refresh Device</source>
         <translation>Virkistä laite</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="95"/>
+        <location filename="../models/devicesmodel.cpp" line="96"/>
         <source>Connect Device</source>
         <translation>Yhdistä laite</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="96"/>
+        <location filename="../models/devicesmodel.cpp" line="97"/>
         <source>Disconnect Device</source>
         <translation>Irrota laite</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="98"/>
+        <location filename="../models/devicesmodel.cpp" line="99"/>
         <source>Edit CD Details</source>
         <translation>Muokkaa CD-tietoja</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="344"/>
+        <location filename="../models/devicesmodel.cpp" line="345"/>
         <source>Not Connected</source>
         <translation>Ei kytketty</translation>
     </message>
     <message>
-        <location filename="../models/devicesmodel.cpp" line="918"/>
+        <location filename="../models/devicesmodel.cpp" line="919"/>
         <source>No Devices Attached</source>
         <translation>Ei liitettyjä laitteita</translation>
     </message>
@@ -1995,12 +1995,12 @@ Tätä ei voi kumota.</translation>
 <context>
     <name>GenreCombo</name>
     <message>
-        <location filename="../widgets/genrecombo.cpp" line="40"/>
+        <location filename="../widgets/genrecombo.cpp" line="41"/>
         <source>Filter On Genre</source>
         <translation>Suodata tyylilajin mukaan</translation>
     </message>
     <message>
-        <location filename="../widgets/genrecombo.cpp" line="62"/>
+        <location filename="../widgets/genrecombo.cpp" line="63"/>
         <source>All Genres</source>
         <translation>Kaikki tyylilajit</translation>
     </message>
@@ -2273,7 +2273,7 @@ Tätä ei voi kumota.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="138"/>
-        <location filename="../gui/interfacesettings.cpp" line="151"/>
+        <location filename="../gui/interfacesettings.cpp" line="152"/>
         <source>Play Queue</source>
         <translation>Soittojono</translation>
     </message>
@@ -2553,82 +2553,82 @@ Tätä ei voi kumota.</translation>
         <translation>Tyyliasetuksen muuttaminen vaatii Cantatan uudelleenkäynnistyksen.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="148"/>
+        <location filename="../gui/interfacesettings.cpp" line="149"/>
         <source>Use &apos;Year&apos; tag to display &amp; sort</source>
         <translation>Käytä näkymään ja lajitteluun vuosi-tunnistetta</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="149"/>
+        <location filename="../gui/interfacesettings.cpp" line="150"/>
         <source>Use &apos;Original Year&apos; tag to display &amp; sort, fallback to &apos;Year&apos; if not set</source>
         <translation>Käytä näkymään ja lajitteluun alkuperäinen vuosi -tunnistetta tai vuotta, jollei sitä ole asetettu</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="152"/>
+        <location filename="../gui/interfacesettings.cpp" line="153"/>
         <source>Library</source>
         <translation>Kirjasto</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="153"/>
+        <location filename="../gui/interfacesettings.cpp" line="154"/>
         <source>Folders</source>
         <translation>Kansiot</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="154"/>
+        <location filename="../gui/interfacesettings.cpp" line="155"/>
         <source>Playlists</source>
         <translation>Soittolistat</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="155"/>
+        <location filename="../gui/interfacesettings.cpp" line="156"/>
         <source>Internet - Streams, Jamendo, Maganatune, SoundCloud, and Podcasts</source>
         <translation>Internet – virrat, Jamendo, Magnatune, SoundCloud ja podcastit</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="157"/>
+        <location filename="../gui/interfacesettings.cpp" line="158"/>
         <source>Devices - UMS, MTP (e.g. Android), and AudioCDs</source>
         <translation>Laitteet – UMS, MTP (esim. Android) ja ääni-CD:t</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="161"/>
+        <location filename="../gui/interfacesettings.cpp" line="162"/>
         <source>Search (via MPD)</source>
         <translation>Etsi (MPD:llä)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="162"/>
+        <location filename="../gui/interfacesettings.cpp" line="163"/>
         <source>Info - Current song information (artist, album, and lyrics)</source>
         <translation>Tietoa – nykyisen kappaleen tiedot (artisti, albumi ja sanat)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="167"/>
+        <location filename="../gui/interfacesettings.cpp" line="168"/>
         <source>Large</source>
         <translation>Iso</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="168"/>
+        <location filename="../gui/interfacesettings.cpp" line="169"/>
         <source>Small</source>
         <translation>Pieni</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="169"/>
+        <location filename="../gui/interfacesettings.cpp" line="170"/>
         <source>Tab-bar</source>
         <translation>Välilehtipalkki</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="170"/>
+        <location filename="../gui/interfacesettings.cpp" line="171"/>
         <source>Left</source>
         <translation>Vasemmalla</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="170"/>
+        <location filename="../gui/interfacesettings.cpp" line="171"/>
         <source>Right</source>
         <translation>Oikealla</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="171"/>
+        <location filename="../gui/interfacesettings.cpp" line="172"/>
         <source>Top</source>
         <translation>Ylhäällä</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="172"/>
+        <location filename="../gui/interfacesettings.cpp" line="173"/>
         <source>Bottom</source>
         <translation>Alhaalla</translation>
     </message>
@@ -2644,17 +2644,17 @@ Tätä ei voi kumota.</translation>
         <translation>10 px</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="207"/>
+        <location filename="../gui/interfacesettings.cpp" line="206"/>
         <source>Notifications</source>
         <translation>Ilmoitukset</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="221"/>
+        <location filename="../gui/interfacesettings.cpp" line="220"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="225"/>
+        <location filename="../gui/interfacesettings.cpp" line="224"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2667,24 +2667,24 @@ Tätä ei voi kumota.</translation>
         <translation type="vanished">Ellei tiedostonimeä ole määritetty, Cantata käyttää oletusnimeä &lt;code&gt;cover&lt;/code&gt;. Tätä käytetään ladattaessa kansikuvia.</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="447"/>
+        <location filename="../gui/interfacesettings.cpp" line="438"/>
         <source>English (en)</source>
         <translation>Englanti (en)</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="452"/>
-        <location filename="../gui/interfacesettings.cpp" line="469"/>
+        <location filename="../gui/interfacesettings.cpp" line="443"/>
+        <location filename="../gui/interfacesettings.cpp" line="460"/>
         <source>System default</source>
         <translation>Järjestelmän oletus</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="576"/>
+        <location filename="../gui/interfacesettings.cpp" line="570"/>
         <source>%1%</source>
         <comment>value%</comment>
         <translation>%1 %</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="583"/>
+        <location filename="../gui/interfacesettings.cpp" line="575"/>
         <source>%1 px</source>
         <comment>pixels</comment>
         <translation>%1 px</translation>
@@ -2832,7 +2832,7 @@ Valitse toinen pikanäppäin.</translation>
 <context>
     <name>LibraryDb</name>
     <message>
-        <location filename="../db/librarydb.cpp" line="568"/>
+        <location filename="../db/librarydb.cpp" line="570"/>
         <source>Database error - please check Qt SQLite driver is installed</source>
         <translation>Tietokantavirhe: varmista, että Qt:n SQLite-ajuri on asennettu</translation>
     </message>
@@ -3006,85 +3006,85 @@ Jos haku löytää uudet sanat, nämä yhdistetään Cantatassa yhä kappaleen j
 <context>
     <name>MPDConnection</name>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="171"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="172"/>
         <source>Unknown</source>
         <translation>Tuntematon</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="437"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="438"/>
         <source>Connection to %1 failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="438"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="439"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="439"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="440"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="547"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="548"/>
         <source>Connecting to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="665"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="666"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="733"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="734"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="735"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="736"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="737"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="744"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="738"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="745"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD ilmoitti seuraavan virheen: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="741"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="752"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="742"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="753"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1801"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1808"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1816"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1823"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1829"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1836"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1832"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1839"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2083"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2090"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2364"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2391"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2371"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2398"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>Arvosteluja ei voi tallentaa, koska MPD-komentoa ”sticker” ei tueta.</translation>
     </message>
@@ -3173,543 +3173,450 @@ Jos haku löytää uudet sanat, nämä yhdistetään Cantatassa yhä kappaleen j
         <translation>Poistu koko ruudulta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="253"/>
-        <location filename="../x/gui/mainwindow.cpp" line="251"/>
+        <location filename="../gui/mainwindow.cpp" line="254"/>
         <source>Configure Cantata...</source>
         <translation>Cantatan asetukset…</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="253"/>
-        <location filename="../x/gui/mainwindow.cpp" line="251"/>
+        <location filename="../gui/mainwindow.cpp" line="254"/>
         <source>Preferences...</source>
         <translation>Asetukset…</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="256"/>
-        <location filename="../x/gui/mainwindow.cpp" line="254"/>
+        <location filename="../gui/mainwindow.cpp" line="257"/>
         <source>Quit</source>
         <translation>Lopeta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="259"/>
-        <location filename="../x/gui/mainwindow.cpp" line="257"/>
+        <location filename="../gui/mainwindow.cpp" line="260"/>
         <source>About Cantata...</source>
         <translation>Tietoa Cantatasta…</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="266"/>
-        <location filename="../x/gui/mainwindow.cpp" line="264"/>
+        <location filename="../gui/mainwindow.cpp" line="267"/>
         <source>Show Window</source>
         <translation>Näytä ikkuna</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="269"/>
-        <location filename="../x/gui/mainwindow.cpp" line="267"/>
+        <location filename="../gui/mainwindow.cpp" line="270"/>
         <source>Server information...</source>
         <translation>Palvelintiedot…</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="272"/>
-        <location filename="../x/gui/mainwindow.cpp" line="270"/>
+        <location filename="../gui/mainwindow.cpp" line="273"/>
         <source>Refresh Database</source>
         <translation>Virkistä tietokanta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="273"/>
-        <location filename="../x/gui/mainwindow.cpp" line="271"/>
+        <location filename="../gui/mainwindow.cpp" line="274"/>
         <source>Refresh</source>
         <translation>Virkistä</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="275"/>
-        <location filename="../x/gui/mainwindow.cpp" line="273"/>
+        <location filename="../gui/mainwindow.cpp" line="276"/>
         <source>Connect</source>
         <translation>Yhdistä</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="276"/>
-        <location filename="../x/gui/mainwindow.cpp" line="274"/>
+        <location filename="../gui/mainwindow.cpp" line="277"/>
         <source>Collection</source>
         <translation>Kokoelma</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="277"/>
-        <location filename="../gui/mainwindow.cpp" line="1390"/>
-        <location filename="../gui/mainwindow.cpp" line="1394"/>
-        <location filename="../gui/mainwindow.cpp" line="1400"/>
-        <location filename="../x/gui/mainwindow.cpp" line="275"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1380"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1384"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1390"/>
+        <location filename="../gui/mainwindow.cpp" line="278"/>
+        <location filename="../gui/mainwindow.cpp" line="1391"/>
+        <location filename="../gui/mainwindow.cpp" line="1395"/>
+        <location filename="../gui/mainwindow.cpp" line="1401"/>
         <source>Outputs</source>
         <translation>Ulostulot</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="278"/>
-        <location filename="../x/gui/mainwindow.cpp" line="276"/>
+        <location filename="../gui/mainwindow.cpp" line="279"/>
         <source>Stop After Track</source>
         <translation>Pysäytä kappaleen jälkeen</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="284"/>
-        <location filename="../x/gui/mainwindow.cpp" line="282"/>
+        <location filename="../gui/mainwindow.cpp" line="285"/>
         <source>Seek forward (%1 seconds)</source>
         <translation>Hyppää eteenpäin (%1 s)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="285"/>
-        <location filename="../x/gui/mainwindow.cpp" line="283"/>
+        <location filename="../gui/mainwindow.cpp" line="286"/>
         <source>Seek backward (%1 seconds)</source>
         <translation>Hyppää taaksepäin (%1 s)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="298"/>
-        <location filename="../x/gui/mainwindow.cpp" line="296"/>
+        <location filename="../gui/mainwindow.cpp" line="299"/>
         <source>Add To Stored Playlist</source>
         <translation>Lisää tallennettuun soittolistaan</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="303"/>
-        <location filename="../x/gui/mainwindow.cpp" line="301"/>
+        <location filename="../gui/mainwindow.cpp" line="304"/>
         <source>Crop Others</source>
         <translation>Poista muut</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="304"/>
-        <location filename="../x/gui/mainwindow.cpp" line="302"/>
+        <location filename="../gui/mainwindow.cpp" line="305"/>
         <source>Add Stream URL</source>
         <translation>Lisää virran verkko-osoite</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="305"/>
-        <location filename="../x/gui/mainwindow.cpp" line="303"/>
+        <location filename="../gui/mainwindow.cpp" line="306"/>
         <source>Add Local Files</source>
         <translation>Lisää paikallisia tiedostoja</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="307"/>
-        <location filename="../x/gui/mainwindow.cpp" line="305"/>
+        <location filename="../gui/mainwindow.cpp" line="308"/>
         <source>Clear</source>
         <translation>Tyhjennä</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="309"/>
-        <location filename="../x/gui/mainwindow.cpp" line="307"/>
+        <location filename="../gui/mainwindow.cpp" line="310"/>
         <source>Center On Current Track</source>
         <translation>Keskitä nykyinen kappale</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="310"/>
-        <location filename="../x/gui/mainwindow.cpp" line="308"/>
+        <location filename="../gui/mainwindow.cpp" line="311"/>
         <source>Expanded Interface</source>
         <translation>Laaja käyttöliittymä</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="312"/>
-        <location filename="../x/gui/mainwindow.cpp" line="310"/>
+        <location filename="../gui/mainwindow.cpp" line="313"/>
         <source>Show Current Song Information</source>
         <translation>Näytä nykyisen kappaleen tiedot</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="315"/>
-        <location filename="../x/gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="316"/>
         <source>Full Screen</source>
         <translation>Koko ruutu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="319"/>
-        <location filename="../x/gui/mainwindow.cpp" line="317"/>
+        <location filename="../gui/mainwindow.cpp" line="320"/>
         <source>Random</source>
         <translation>Satunnainen</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="320"/>
-        <location filename="../x/gui/mainwindow.cpp" line="318"/>
+        <location filename="../gui/mainwindow.cpp" line="321"/>
         <source>Repeat</source>
         <translation>Toisto</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="321"/>
-        <location filename="../x/gui/mainwindow.cpp" line="319"/>
+        <location filename="../gui/mainwindow.cpp" line="322"/>
         <source>Single</source>
         <translation>Yksittäinen</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="321"/>
-        <location filename="../x/gui/mainwindow.cpp" line="319"/>
+        <location filename="../gui/mainwindow.cpp" line="322"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation>Jos ”yksittäinen” on käytössä, soitto pysäytetään nykyisen kappaleen jälkeen tai kappale toistetaan, jos myös ”toisto” on käytössä.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="322"/>
-        <location filename="../x/gui/mainwindow.cpp" line="320"/>
+        <location filename="../gui/mainwindow.cpp" line="323"/>
         <source>Consume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="322"/>
-        <location filename="../x/gui/mainwindow.cpp" line="320"/>
+        <location filename="../gui/mainwindow.cpp" line="323"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="323"/>
-        <location filename="../x/gui/mainwindow.cpp" line="321"/>
+        <location filename="../gui/mainwindow.cpp" line="324"/>
         <source>Find in Play Queue</source>
         <translation>Etsi soittojonosta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="327"/>
-        <location filename="../x/gui/mainwindow.cpp" line="325"/>
+        <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Play HTTP Output Stream</source>
         <translation>Soita HTTP-tulosvirtaa</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="333"/>
-        <location filename="../x/gui/mainwindow.cpp" line="331"/>
+        <location filename="../gui/mainwindow.cpp" line="334"/>
         <source>Locate In Library</source>
         <translation>Paikanna kirjastosta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="334"/>
-        <location filename="../x/gui/mainwindow.cpp" line="332"/>
+        <location filename="../gui/mainwindow.cpp" line="335"/>
         <source>Artist</source>
         <translation>Artisti</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="335"/>
-        <location filename="../x/gui/mainwindow.cpp" line="333"/>
+        <location filename="../gui/mainwindow.cpp" line="336"/>
         <source>Album</source>
         <translation>Albumi</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="336"/>
-        <location filename="../x/gui/mainwindow.cpp" line="334"/>
+        <location filename="../gui/mainwindow.cpp" line="337"/>
         <source>Track</source>
         <translation>Raita</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="348"/>
-        <location filename="../x/gui/mainwindow.cpp" line="346"/>
+        <location filename="../gui/mainwindow.cpp" line="349"/>
         <source>Play Next</source>
         <translation>Soita seuraava</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="351"/>
-        <location filename="../x/gui/mainwindow.cpp" line="349"/>
+        <location filename="../gui/mainwindow.cpp" line="352"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation>Muokkaa kappaletietoja (soittojono)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="353"/>
-        <location filename="../x/gui/mainwindow.cpp" line="351"/>
+        <location filename="../gui/mainwindow.cpp" line="354"/>
         <source>Expand All</source>
         <translation>Laajenna kaikki</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="355"/>
-        <location filename="../x/gui/mainwindow.cpp" line="353"/>
+        <location filename="../gui/mainwindow.cpp" line="356"/>
         <source>Collapse All</source>
         <translation>Supista kaikki</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="357"/>
-        <location filename="../x/gui/mainwindow.cpp" line="355"/>
+        <location filename="../gui/mainwindow.cpp" line="358"/>
         <source>Cancel</source>
         <translation>Peru</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="411"/>
-        <location filename="../x/gui/mainwindow.cpp" line="409"/>
+        <location filename="../gui/mainwindow.cpp" line="412"/>
         <source>Play Queue</source>
         <translation>Soita jono</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="416"/>
-        <location filename="../x/gui/mainwindow.cpp" line="414"/>
+        <location filename="../gui/mainwindow.cpp" line="417"/>
         <source>Library</source>
         <translation>Kirjasto</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="421"/>
-        <location filename="../x/gui/mainwindow.cpp" line="419"/>
+        <location filename="../gui/mainwindow.cpp" line="422"/>
         <source>Folders</source>
         <translation>Kansiot</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="427"/>
-        <location filename="../x/gui/mainwindow.cpp" line="425"/>
+        <location filename="../gui/mainwindow.cpp" line="428"/>
         <source>Playlists</source>
         <translation>Soittolistat</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="437"/>
-        <location filename="../x/gui/mainwindow.cpp" line="434"/>
+        <location filename="../gui/mainwindow.cpp" line="438"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="446"/>
-        <location filename="../x/gui/mainwindow.cpp" line="443"/>
+        <location filename="../gui/mainwindow.cpp" line="447"/>
         <source>Devices</source>
         <translation>Laitteet</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="453"/>
-        <location filename="../x/gui/mainwindow.cpp" line="450"/>
+        <location filename="../gui/mainwindow.cpp" line="454"/>
         <source>Search</source>
         <translation>Etsi</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="458"/>
-        <location filename="../x/gui/mainwindow.cpp" line="455"/>
+        <location filename="../gui/mainwindow.cpp" line="459"/>
         <source>Info</source>
         <translation>Tiedot</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="493"/>
-        <location filename="../x/gui/mainwindow.cpp" line="490"/>
+        <location filename="../gui/mainwindow.cpp" line="494"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="595"/>
-        <location filename="../x/gui/mainwindow.cpp" line="592"/>
+        <location filename="../gui/mainwindow.cpp" line="596"/>
         <source>Show Menubar</source>
         <translation>Näytä valikkorivi</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="601"/>
-        <location filename="../x/gui/mainwindow.cpp" line="598"/>
+        <location filename="../gui/mainwindow.cpp" line="602"/>
         <source>&amp;Music</source>
         <translation>M&amp;usiikki</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="612"/>
-        <location filename="../x/gui/mainwindow.cpp" line="609"/>
+        <location filename="../gui/mainwindow.cpp" line="613"/>
         <source>&amp;Edit</source>
         <translation>&amp;Muokkaa</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="624"/>
-        <location filename="../x/gui/mainwindow.cpp" line="621"/>
+        <location filename="../gui/mainwindow.cpp" line="625"/>
         <source>&amp;View</source>
         <translation>&amp;Näkymä</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="636"/>
-        <location filename="../x/gui/mainwindow.cpp" line="633"/>
+        <location filename="../gui/mainwindow.cpp" line="637"/>
         <source>&amp;Queue</source>
         <translation>&amp;Jono</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="646"/>
-        <location filename="../x/gui/mainwindow.cpp" line="643"/>
+        <location filename="../gui/mainwindow.cpp" line="647"/>
         <source>&amp;Settings</source>
         <translation>&amp;Asetukset</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="662"/>
-        <location filename="../x/gui/mainwindow.cpp" line="659"/>
+        <location filename="../gui/mainwindow.cpp" line="663"/>
         <source>&amp;Help</source>
         <translation>&amp;Ohje</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="707"/>
-        <location filename="../x/gui/mainwindow.cpp" line="704"/>
+        <location filename="../gui/mainwindow.cpp" line="708"/>
         <source>Set Rating</source>
         <translation>Aseta arvostelu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="712"/>
-        <location filename="../x/gui/mainwindow.cpp" line="709"/>
+        <location filename="../gui/mainwindow.cpp" line="713"/>
         <source>No Rating</source>
         <translation>Ei arvostelua</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1040"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1035"/>
+        <location filename="../gui/mainwindow.cpp" line="1041"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation>Dynaamisen soittolistan sääntöjä vastaavia kappaleita ei löytynyt.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1171"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1161"/>
+        <location filename="../gui/mainwindow.cpp" line="1172"/>
         <source>Connecting to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1205"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1195"/>
+        <location filename="../gui/mainwindow.cpp" line="1206"/>
         <source>Refresh MPD Database?</source>
         <translation>Virkistetäänkö MPD-tietokanta?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1211"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1201"/>
+        <location filename="../gui/mainwindow.cpp" line="1212"/>
         <source>About Cantata</source>
         <translation>Tietoa Cantatasta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1212"/>
+        <location filename="../gui/mainwindow.cpp" line="1213"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2020 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1215"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1205"/>
+        <location filename="../gui/mainwindow.cpp" line="1216"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1217"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1207"/>
+        <location filename="../gui/mainwindow.cpp" line="1218"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1218"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1208"/>
+        <location filename="../gui/mainwindow.cpp" line="1219"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1219"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1209"/>
+        <location filename="../gui/mainwindow.cpp" line="1220"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation>Kontekstinäkymän metatiedon tarjoavat &lt;a href=&quot;http://www.wikipedia.org/&quot;&gt;Wikipedia&lt;/a&gt; ja &lt;a href=&quot;http://www.last.fm/&quot;&gt;Last.fm&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1220"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1210"/>
+        <location filename="../gui/mainwindow.cpp" line="1221"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1227"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1217"/>
+        <location filename="../gui/mainwindow.cpp" line="1228"/>
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1228"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1218"/>
+        <location filename="../gui/mainwindow.cpp" line="1229"/>
         <source>Abort download and quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1256"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1246"/>
+        <location filename="../gui/mainwindow.cpp" line="1257"/>
         <source>Please close other dialogs first.</source>
         <translation type="unfinished">Sulje ensin muut ikkunat.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1390"/>
-        <location filename="../gui/mainwindow.cpp" line="1401"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1380"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1391"/>
+        <location filename="../gui/mainwindow.cpp" line="1391"/>
+        <location filename="../gui/mainwindow.cpp" line="1402"/>
         <source>Enabled: %1</source>
         <translation>Käytössä: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1394"/>
-        <location filename="../gui/mainwindow.cpp" line="1402"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1384"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1392"/>
+        <location filename="../gui/mainwindow.cpp" line="1395"/>
+        <location filename="../gui/mainwindow.cpp" line="1403"/>
         <source>Disabled: %1</source>
         <translation>Ei käytössä: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1624"/>
-        <location filename="../gui/mainwindow.cpp" line="1647"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1593"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1616"/>
+        <location filename="../gui/mainwindow.cpp" line="1625"/>
+        <location filename="../gui/mainwindow.cpp" line="1648"/>
         <source>Server Information</source>
         <translation>Palvelintiedot</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1627"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1596"/>
+        <location filename="../gui/mainwindow.cpp" line="1628"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Palvelin&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Yhteyskäytäntö:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Käynnissä:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Soittanut:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Käsittelijät:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tunnisteet:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1638"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1607"/>
+        <location filename="../gui/mainwindow.cpp" line="1639"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Tietokanta&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artisteja:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albumeja:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Kappaleita:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Kesto:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Päivitetty:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1791"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1760"/>
+        <location filename="../gui/mainwindow.cpp" line="1796"/>
         <source>Cantata (%1)</source>
         <translation>Cantata (%1)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1858"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1827"/>
+        <location filename="../gui/mainwindow.cpp" line="1868"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD ilmoitti seuraavan virheen: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1929"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1898"/>
+        <location filename="../gui/mainwindow.cpp" line="1939"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1929"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1898"/>
+        <location filename="../gui/mainwindow.cpp" line="1939"/>
         <source>Playback stopped</source>
         <translation>Soittaminen lopetettu</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1974"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1941"/>
+        <location filename="../gui/mainwindow.cpp" line="1989"/>
         <source>Remove all songs from play queue?</source>
         <translation>Poistetaanko soittojonon kaikki kappaleet?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2025"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1992"/>
+        <location filename="../gui/mainwindow.cpp" line="2040"/>
         <source>Priority</source>
         <translation>Etusijaisuus</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2025"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1992"/>
+        <location filename="../gui/mainwindow.cpp" line="2040"/>
         <source>Enter priority (0..255):</source>
         <translation>Aseta etusijaisuus (0..255):</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2026"/>
-        <location filename="../x/gui/mainwindow.cpp" line="1993"/>
+        <location filename="../gui/mainwindow.cpp" line="2041"/>
         <source>Decrease priority for each subsequent track</source>
         <translation>Vähennä etusijaisuutta kultakin seuraavalta kappaleelta</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2053"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2020"/>
+        <location filename="../gui/mainwindow.cpp" line="2068"/>
         <source>Playlist Name</source>
         <translation>Soittolistan nimi</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2053"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2020"/>
+        <location filename="../gui/mainwindow.cpp" line="2068"/>
         <source>Enter a name for the playlist:</source>
         <translation>Anna soittolistalle nimi:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2056"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2023"/>
+        <location filename="../gui/mainwindow.cpp" line="2071"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation>”%1” on suosikkivirtojen tallentamiseen käytetty nimi: valitse toinen nimi.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2060"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2027"/>
+        <location filename="../gui/mainwindow.cpp" line="2075"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -3718,26 +3625,22 @@ Add to that playlist?</source>
 Lisätäänkö siihen soittolistaan?</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2061"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2028"/>
+        <location filename="../gui/mainwindow.cpp" line="2076"/>
         <source>Existing Playlist</source>
         <translation>Olemassa oleva soittolista</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2122"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2089"/>
+        <location filename="../gui/mainwindow.cpp" line="2137"/>
         <source>Select Music Files</source>
         <translation>Valitse musiikkitiedostot</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2122"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2089"/>
+        <location filename="../gui/mainwindow.cpp" line="2137"/>
         <source>Music Files </source>
         <translation>Musiikkitiedostot</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2151"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2118"/>
+        <location filename="../gui/mainwindow.cpp" line="2166"/>
         <source>%n Track(s)</source>
         <translation>
             <numerusform>%n kappale</numerusform>
@@ -3745,18 +3648,12 @@ Lisätäänkö siihen soittolistaan?</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2153"/>
-        <location filename="../x/gui/mainwindow.cpp" line="2120"/>
+        <location filename="../gui/mainwindow.cpp" line="2168"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n kappale (%1)</numerusform>
             <numerusform>%n kappaletta (%1)</numerusform>
         </translation>
-    </message>
-    <message>
-        <location filename="../x/gui/mainwindow.cpp" line="1202"/>
-        <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3805,7 +3702,7 @@ Tätä ei voi kumota.</translation>
 <context>
     <name>Mpris</name>
     <message>
-        <location filename="../dbus/mpris.cpp" line="166"/>
+        <location filename="../dbus/mpris.cpp" line="218"/>
         <source>(Stream)</source>
         <translation>(Virta)</translation>
     </message>
@@ -3860,22 +3757,22 @@ Tätä ei voi kumota.</translation>
 <context>
     <name>MusicBrainz</name>
     <message>
-        <location filename="../devices/musicbrainz.cpp" line="153"/>
+        <location filename="../devices/musicbrainz.cpp" line="151"/>
         <source>Failed to open CD device</source>
         <translation>CD-laitteen avaaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../devices/musicbrainz.cpp" line="215"/>
+        <location filename="../devices/musicbrainz.cpp" line="213"/>
         <source>Track %1</source>
         <translation>Raita %1</translation>
     </message>
     <message>
-        <location filename="../devices/musicbrainz.cpp" line="301"/>
+        <location filename="../devices/musicbrainz.cpp" line="299"/>
         <source>%1 (Disc %2)</source>
         <translation>%1 (levy %2)</translation>
     </message>
     <message>
-        <location filename="../devices/musicbrainz.cpp" line="383"/>
+        <location filename="../devices/musicbrainz.cpp" line="381"/>
         <source>No matches found in MusicBrainz</source>
         <translation>MusicBrainzistä ei löytynyt osumia</translation>
     </message>
@@ -3943,13 +3840,11 @@ Tätä ei voi kumota.</translation>
     <name>NowPlayingWidget</name>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
-        <location filename="../x/widgets/nowplayingwidget.cpp" line="326"/>
         <source>Copy To Clipboard</source>
         <translation>Kopioi leikepöydälle</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
-        <location filename="../x/widgets/nowplayingwidget.cpp" line="327"/>
         <source>Now Playing</source>
         <translation>Nyt soi</translation>
     </message>
@@ -3965,11 +3860,11 @@ Tätä ei voi kumota.</translation>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
         <source>%1 kHz</source>
         <translation>%1 kHz</translation>
-    </message>
     </message>
 </context>
 <context>
@@ -4269,154 +4164,154 @@ Tätä ei voi kumota.</translation>
 <context>
     <name>PlayQueueModel</name>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="297"/>
+        <location filename="../models/playqueuemodel.cpp" line="299"/>
         <source>Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="299"/>
+        <location filename="../models/playqueuemodel.cpp" line="301"/>
         <source>Cannot add local files. Please configure MPD for local file playback.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="314"/>
+        <location filename="../models/playqueuemodel.cpp" line="316"/>
         <source>Unable to add local files. No suitable files found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="370"/>
+        <location filename="../models/playqueuemodel.cpp" line="372"/>
         <source>Title</source>
         <translation>Otsikko</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="371"/>
-        <location filename="../models/playqueuemodel.cpp" line="451"/>
+        <location filename="../models/playqueuemodel.cpp" line="373"/>
+        <location filename="../models/playqueuemodel.cpp" line="453"/>
         <source>Artist</source>
         <translation>Artisti</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="372"/>
-        <location filename="../models/playqueuemodel.cpp" line="453"/>
+        <location filename="../models/playqueuemodel.cpp" line="374"/>
+        <location filename="../models/playqueuemodel.cpp" line="455"/>
         <source>Album</source>
         <translation>Albumi</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="373"/>
+        <location filename="../models/playqueuemodel.cpp" line="375"/>
         <source>#</source>
         <comment>Track number</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="374"/>
+        <location filename="../models/playqueuemodel.cpp" line="376"/>
         <source>Length</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="375"/>
+        <location filename="../models/playqueuemodel.cpp" line="377"/>
         <source>Disc</source>
         <translation>Levy</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="376"/>
-        <location filename="../models/playqueuemodel.cpp" line="457"/>
+        <location filename="../models/playqueuemodel.cpp" line="378"/>
+        <location filename="../models/playqueuemodel.cpp" line="459"/>
         <source>Year</source>
         <translation>Vuosi</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="377"/>
+        <location filename="../models/playqueuemodel.cpp" line="379"/>
         <source>Original Year</source>
         <translation>Alkuperäinen vuosi</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="378"/>
-        <location filename="../models/playqueuemodel.cpp" line="456"/>
+        <location filename="../models/playqueuemodel.cpp" line="380"/>
+        <location filename="../models/playqueuemodel.cpp" line="458"/>
         <source>Genre</source>
         <translation>Tyylilaji</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="379"/>
+        <location filename="../models/playqueuemodel.cpp" line="381"/>
         <source>Priority</source>
         <translation type="unfinished">Etusijaisuus</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="380"/>
-        <location filename="../models/playqueuemodel.cpp" line="458"/>
+        <location filename="../models/playqueuemodel.cpp" line="382"/>
+        <location filename="../models/playqueuemodel.cpp" line="460"/>
         <source>Composer</source>
         <translation>Säveltäjä</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="381"/>
-        <location filename="../models/playqueuemodel.cpp" line="459"/>
+        <location filename="../models/playqueuemodel.cpp" line="383"/>
+        <location filename="../models/playqueuemodel.cpp" line="461"/>
         <source>Performer</source>
         <translation>Esittäjä</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="382"/>
+        <location filename="../models/playqueuemodel.cpp" line="384"/>
         <source>Rating</source>
         <translation>Arvostelu</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="383"/>
+        <location filename="../models/playqueuemodel.cpp" line="385"/>
         <source>Filename</source>
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="384"/>
+        <location filename="../models/playqueuemodel.cpp" line="386"/>
         <source>Path</source>
         <translation>Sijainti</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="429"/>
+        <location filename="../models/playqueuemodel.cpp" line="431"/>
         <source>Remove Duplicates</source>
         <translation>Poista kaksoiskappaleet</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="432"/>
+        <location filename="../models/playqueuemodel.cpp" line="434"/>
         <source>Undo</source>
         <translation>Kumoa</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="434"/>
+        <location filename="../models/playqueuemodel.cpp" line="436"/>
         <source>Redo</source>
         <translation>Tee uudelleen</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="440"/>
+        <location filename="../models/playqueuemodel.cpp" line="442"/>
         <source>Shuffle</source>
         <translation>Sekoita</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="442"/>
+        <location filename="../models/playqueuemodel.cpp" line="444"/>
         <source>Tracks</source>
         <translation>Kappaleet</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="443"/>
+        <location filename="../models/playqueuemodel.cpp" line="445"/>
         <source>Albums</source>
         <translation>Albumit</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="449"/>
+        <location filename="../models/playqueuemodel.cpp" line="451"/>
         <source>Sort By</source>
         <translation>Lajittele</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="452"/>
+        <location filename="../models/playqueuemodel.cpp" line="454"/>
         <source>Album Artist</source>
         <translation>Albumin artisti</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="454"/>
+        <location filename="../models/playqueuemodel.cpp" line="456"/>
         <source>Track Title</source>
         <translation>Kappaleen otsikko</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="455"/>
+        <location filename="../models/playqueuemodel.cpp" line="457"/>
         <source>Track Number</source>
         <translation>Raitanumero</translation>
     </message>
     <message>
-        <location filename="../models/playqueuemodel.cpp" line="517"/>
+        <location filename="../models/playqueuemodel.cpp" line="519"/>
         <source># (Track Number)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4771,7 +4666,7 @@ Tätä ei voi kumota.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="168"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
         <source>Each playlist requires a unique name, enter that above.
 
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
@@ -4780,75 +4675,75 @@ Use the settings below to restrict the range of songs added.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="182"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
         <source>No Limit</source>
         <translation>Ei rajoitusta</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="201"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
         <source>Ascending</source>
         <translation type="unfinished">Nouseva</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Descending</source>
         <translation type="unfinished">Laskeva</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="149"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
         <source>Dynamic Playlist</source>
         <translation>Dynaaminen soittolista</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="149"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
         <source>Smart Playlist</source>
         <translation>Älykäs soittolista</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="212"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
         <source>Number of songs:</source>
         <translation>Kappaleiden määrä:</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="355"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
         <source>About dynamic rules</source>
         <translation>Tietoa dynaamisista säännöistä</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="357"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="358"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="372"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="373"/>
         <source>About smart rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="374"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="375"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="408"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="409"/>
         <source>Failed to save %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="426"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="427"/>
         <source>A set of rules named &apos;%1&apos; already exists!
 
 Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="427"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="428"/>
         <source>Overwrite Rules</source>
         <translation>Korvaa säännöt</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="472"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="473"/>
         <source>Saving %1</source>
         <translation>Tallennetaan %1</translation>
     </message>
@@ -4856,23 +4751,23 @@ Overwrite?</source>
 <context>
     <name>PlaylistsModel</name>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="93"/>
+        <location filename="../models/playlistsmodel.cpp" line="94"/>
         <source>New Playlist...</source>
         <translation>Uusi soittolista…</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="116"/>
+        <location filename="../models/playlistsmodel.cpp" line="117"/>
         <source>Stored Playlists</source>
         <translation>Tallennetut soittolistat</translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="121"/>
+        <location filename="../models/playlistsmodel.cpp" line="122"/>
         <source>Standard playlists</source>
         <translation>Vakiosoittolistat</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/playlistsmodel.cpp" line="346"/>
-        <location filename="../models/playlistsmodel.cpp" line="357"/>
+        <location filename="../models/playlistsmodel.cpp" line="347"/>
+        <location filename="../models/playlistsmodel.cpp" line="358"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n kappale (%1)</numerusform>
@@ -4880,7 +4775,7 @@ Overwrite?</source>
         </translation>
     </message>
     <message>
-        <location filename="../models/playlistsmodel.cpp" line="355"/>
+        <location filename="../models/playlistsmodel.cpp" line="356"/>
         <source>Smart Playlist</source>
         <translation>Älykäs soittolista</translation>
     </message>
@@ -5315,7 +5210,7 @@ Overwrite?</source>
 <context>
     <name>PowerManagement</name>
     <message>
-        <location filename="../dbus/powermanagement.cpp" line="75"/>
+        <location filename="../dbus/powermanagement.cpp" line="78"/>
         <source>Cantata is playing a track</source>
         <translation>Cantata soittaa kappaletta</translation>
     </message>
@@ -5514,139 +5409,139 @@ Overwrite?</source>
         <translation>Avaa selaimeen</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="75"/>
+        <location filename="../devices/encoders.cpp" line="76"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding&gt;Advanced Audio Coding&lt;/a&gt; (AAC) is a patented lossy codec for digital audio.&lt;br&gt;AAC generally achieves better sound quality than MP3 at similar bit rates. It is a reasonable choice for the iPod and some other portable music players.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="80"/>
+        <location filename="../devices/encoders.cpp" line="81"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="98"/>
-        <location filename="../devices/encoders.cpp" line="150"/>
+        <location filename="../devices/encoders.cpp" line="99"/>
+        <location filename="../devices/encoders.cpp" line="151"/>
         <source>Expected average bitrate for variable bitrate encoding</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../devices/encoders.cpp" line="110"/>
-        <location filename="../devices/encoders.cpp" line="161"/>
-        <location filename="../devices/encoders.cpp" line="204"/>
-        <location filename="../devices/encoders.cpp" line="238"/>
-        <location filename="../devices/encoders.cpp" line="296"/>
-        <location filename="../devices/encoders.cpp" line="330"/>
-        <source>Smaller file</source>
-        <translation>Pienempi tiedosto</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="111"/>
         <location filename="../devices/encoders.cpp" line="162"/>
         <location filename="../devices/encoders.cpp" line="205"/>
         <location filename="../devices/encoders.cpp" line="239"/>
+        <location filename="../devices/encoders.cpp" line="297"/>
         <location filename="../devices/encoders.cpp" line="331"/>
+        <source>Smaller file</source>
+        <translation>Pienempi tiedosto</translation>
+    </message>
+    <message>
+        <location filename="../devices/encoders.cpp" line="112"/>
+        <location filename="../devices/encoders.cpp" line="163"/>
+        <location filename="../devices/encoders.cpp" line="206"/>
+        <location filename="../devices/encoders.cpp" line="240"/>
+        <location filename="../devices/encoders.cpp" line="332"/>
         <source>Better sound quality</source>
         <translation>Parempi äänenlaatu</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="129"/>
+        <location filename="../devices/encoders.cpp" line="130"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) is a patented digital audio codec using a form of lossy data compression.&lt;br&gt;In spite of its shortcomings, it is a common format for consumer audio storage, and is widely supported on portable music players.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="133"/>
+        <location filename="../devices/encoders.cpp" line="134"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;205kb/s&lt;/b&gt; is probably overkill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="165"/>
+        <location filename="../devices/encoders.cpp" line="166"/>
         <source>Ogg Vorbis</source>
         <translation>Ogg Vorbis</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="166"/>
+        <location filename="../devices/encoders.cpp" line="167"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; is an open and royalty-free audio codec for lossy audio compression.&lt;br&gt;It produces smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around excellent choice, especially for portable music players that support it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="171"/>
+        <location filename="../devices/encoders.cpp" line="172"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Vorbis&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;The Vorbis encoder uses a quality rating between -1 and 10 to define a certain expected audio quality level. The bitrate measure in this slider is just a rough estimate (provided by Vorbis) of the average bitrate of the encoded track given a quality value. In fact, with newer and more efficient Vorbis versions the actual bitrate is even lower.&lt;br&gt;&lt;b&gt;5&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;3&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;8&lt;/b&gt; is probably overkill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="191"/>
+        <location filename="../devices/encoders.cpp" line="192"/>
         <source>Quality rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="208"/>
+        <location filename="../devices/encoders.cpp" line="209"/>
         <source>Opus</source>
         <translation>Opus</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="209"/>
+        <location filename="../devices/encoders.cpp" line="210"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; is a patent-free digital audio codec using a form of lossy data compression.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="211"/>
+        <location filename="../devices/encoders.cpp" line="212"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="115"/>
-        <location filename="../devices/encoders.cpp" line="228"/>
-        <location filename="../devices/encoders.cpp" line="321"/>
+        <location filename="../devices/encoders.cpp" line="116"/>
+        <location filename="../devices/encoders.cpp" line="229"/>
+        <location filename="../devices/encoders.cpp" line="322"/>
         <source>Bitrate</source>
         <translation>Bittinopeus</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="249"/>
+        <location filename="../devices/encoders.cpp" line="250"/>
         <source>Apple Lossless</source>
         <translation>Applen häviötön</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="250"/>
+        <location filename="../devices/encoders.cpp" line="251"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) is an audio codec for lossless compression of digital music.&lt;br&gt;Recommended only for Apple music players and players that do not support FLAC.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="265"/>
+        <location filename="../devices/encoders.cpp" line="266"/>
         <source>FLAC</source>
         <translation>FLAC</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="266"/>
+        <location filename="../devices/encoders.cpp" line="267"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) is an open and royalty-free codec for lossless compression of digital music.&lt;br&gt;If you wish to store your music without compromising on audio quality, FLAC is an excellent choice.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="270"/>
+        <location filename="../devices/encoders.cpp" line="271"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="285"/>
+        <location filename="../devices/encoders.cpp" line="286"/>
         <source>Compression level</source>
         <translation>Pakkaustaso</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="295"/>
+        <location filename="../devices/encoders.cpp" line="296"/>
         <source>Faster compression</source>
         <translation>Nopeampi pakkaus</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="302"/>
+        <location filename="../devices/encoders.cpp" line="303"/>
         <source>Windows Media Audio</source>
         <translation>Windows Media Audio</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="303"/>
+        <location filename="../devices/encoders.cpp" line="304"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) is a proprietary codec developed by Microsoft for lossy audio compression.&lt;br&gt;Recommended only for portable music players that do not support Ogg Vorbis.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="307"/>
+        <location filename="../devices/encoders.cpp" line="308"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;Due to the limitations of the proprietary &lt;b&gt;WMA&lt;/b&gt; format and the difficulty of reverse-engineering a proprietary encoder, the WMA encoder used by Cantata sets a &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;constant bitrate (CBR)&lt;/a&gt; setting.&lt;br&gt;For this reason, the bitrate measure in this slider is a pretty accurate estimate of the bitrate of the encoded track.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;112kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;182kb/s&lt;/b&gt; is probably overkill.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5712,72 +5607,72 @@ Overwrite?</source>
         <translation>Tuntematon virhe</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="606"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="71"/>
+        <location filename="../mpd-interface/song.cpp" line="607"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="72"/>
         <source>Artist</source>
         <translation>Artisti</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="73"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="74"/>
         <source>SimilarArtists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="75"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="76"/>
         <source>AlbumArtist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="610"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="77"/>
+        <location filename="../mpd-interface/song.cpp" line="611"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="78"/>
         <source>Composer</source>
         <translation>Säveltäjä</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="79"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="80"/>
         <source>Comment</source>
         <translation>Huomautus</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="612"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="81"/>
+        <location filename="../mpd-interface/song.cpp" line="613"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="82"/>
         <source>Album</source>
         <translation>Albumi</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="605"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="83"/>
+        <location filename="../mpd-interface/song.cpp" line="606"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="84"/>
         <source>Title</source>
         <translation>Otsikko</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="619"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="85"/>
+        <location filename="../mpd-interface/song.cpp" line="620"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="86"/>
         <source>Genre</source>
         <translation>Tyylilaji</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="87"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="88"/>
         <source>Date</source>
         <translation>Päiväys</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="89"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="90"/>
         <source>File</source>
         <translation>Tiedosto</translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="101"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="102"/>
         <source>Include</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="108"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="109"/>
         <source>Exclude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="131"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="132"/>
         <source> (Exact)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5810,29 +5705,29 @@ width x height</comment>
         <translation>CoverArt Archive</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="56"/>
+        <location filename="../gui/interfacesettings.cpp" line="57"/>
         <location filename="../widgets/singlepagewidget.cpp" line="41"/>
         <source>Grouped Albums</source>
         <translation>Ryhmitellyt albumit</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="57"/>
+        <location filename="../gui/interfacesettings.cpp" line="58"/>
         <location filename="../widgets/singlepagewidget.cpp" line="44"/>
         <source>Table</source>
         <translation>Taulukko</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="72"/>
+        <location filename="../gui/interfacesettings.cpp" line="73"/>
         <source>Parse in Library view, and show in Folders view</source>
         <translation>Jäsennä kirjastonäkymässä, näytä kansionäkymässä</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="73"/>
+        <location filename="../gui/interfacesettings.cpp" line="74"/>
         <source>Only show in Folders view</source>
         <translation>Näytä vain kansionäkymässä</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.cpp" line="74"/>
+        <location filename="../gui/interfacesettings.cpp" line="75"/>
         <source>Do not list</source>
         <translation>Älä luettele</translation>
     </message>
@@ -6027,25 +5922,25 @@ width x height</comment>
         <translation>Jäsennysvirhe ladattaessa välimuistitiedostoa: tarkista kappaleen tunnisteet.</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1286"/>
-        <location filename="../models/streamsmodel.cpp" line="1293"/>
+        <location filename="../models/streamsmodel.cpp" line="1287"/>
+        <location filename="../models/streamsmodel.cpp" line="1294"/>
         <source>Other</source>
         <translation>Muuta</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="207"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="209"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="208"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="220"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation>”%1” (%2:%3)</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="73"/>
+        <location filename="../mpd-interface/song.cpp" line="74"/>
         <source>Single Tracks</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6055,65 +5950,65 @@ width x height</comment>
         <translation>Henkilökohtainen</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="71"/>
-        <location filename="../support/utils.cpp" line="705"/>
+        <location filename="../mpd-interface/song.cpp" line="72"/>
+        <location filename="../support/utils.cpp" line="706"/>
         <source>Unknown</source>
         <translation>Tuntematon</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="72"/>
+        <location filename="../mpd-interface/song.cpp" line="73"/>
         <source>Various Artists</source>
         <translation>Useita artisteja</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="608"/>
+        <location filename="../mpd-interface/song.cpp" line="609"/>
         <source>Album artist</source>
         <translation>Albumin artisti</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="611"/>
+        <location filename="../mpd-interface/song.cpp" line="612"/>
         <source>Performer</source>
         <translation>Esittäjä</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="614"/>
+        <location filename="../mpd-interface/song.cpp" line="615"/>
         <source>Track number</source>
         <translation>Raitanumero</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="617"/>
+        <location filename="../mpd-interface/song.cpp" line="618"/>
         <source>Disc number</source>
         <translation>Levyn numero</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="621"/>
+        <location filename="../mpd-interface/song.cpp" line="622"/>
         <source>Year</source>
         <translation>Vuosi</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="624"/>
+        <location filename="../mpd-interface/song.cpp" line="625"/>
         <source>Original Year</source>
         <translation>Alkuperäinen vuosi</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="627"/>
+        <location filename="../mpd-interface/song.cpp" line="628"/>
         <source>Length</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="841"/>
+        <location filename="../mpd-interface/song.cpp" line="842"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; albumilla &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="842"/>
+        <location filename="../mpd-interface/song.cpp" line="843"/>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
         <translation>&lt;b&gt;%1&lt;/b&gt; artistilta &lt;b&gt;%2&lt;/b&gt; albumilla &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="869"/>
+        <location filename="../mpd-interface/song.cpp" line="870"/>
         <source>(Stream)</source>
         <translation>(Virta)</translation>
     </message>
@@ -6311,38 +6206,38 @@ width x height</comment>
         <translation>Kysymys</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="490"/>
-        <location filename="../support/utils.cpp" line="498"/>
+        <location filename="../support/utils.cpp" line="491"/>
+        <location filename="../support/utils.cpp" line="499"/>
         <source>%1 B</source>
         <translation>%1 t</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="491"/>
+        <location filename="../support/utils.cpp" line="492"/>
         <source>%1 kB</source>
         <translation>%1 kt</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="492"/>
+        <location filename="../support/utils.cpp" line="493"/>
         <source>%1 MB</source>
         <translation>%1 Mt</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="494"/>
+        <location filename="../support/utils.cpp" line="495"/>
         <source>%1 GB</source>
         <translation>%1 Gt</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="499"/>
+        <location filename="../support/utils.cpp" line="500"/>
         <source>%1 KiB</source>
         <translation>%1 KiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="500"/>
+        <location filename="../support/utils.cpp" line="501"/>
         <source>%1 MiB</source>
         <translation>%1 MiB</translation>
     </message>
     <message>
-        <location filename="../support/utils.cpp" line="502"/>
+        <location filename="../support/utils.cpp" line="503"/>
         <source>%1 GiB</source>
         <translation>%1 GiB</translation>
     </message>
@@ -6727,179 +6622,179 @@ Valitse toinen nimi.</translation>
 <context>
     <name>RgDialog</name>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="81"/>
+        <location filename="../replaygain/rgdialog.cpp" line="82"/>
         <source>ReplayGain</source>
         <translation>ReplayGain</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="91"/>
+        <location filename="../replaygain/rgdialog.cpp" line="92"/>
         <source>Show All Tracks</source>
         <translation>Näytä kaikki kappaleet</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="92"/>
+        <location filename="../replaygain/rgdialog.cpp" line="93"/>
         <source>Show Untagged Tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="99"/>
+        <location filename="../replaygain/rgdialog.cpp" line="100"/>
         <source>Remove From List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="103"/>
+        <location filename="../replaygain/rgdialog.cpp" line="104"/>
         <source>Artist</source>
         <translation>Artisti</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="104"/>
+        <location filename="../replaygain/rgdialog.cpp" line="105"/>
         <source>Album</source>
         <translation>Albumi</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="105"/>
+        <location filename="../replaygain/rgdialog.cpp" line="106"/>
         <source>Title</source>
         <translation>Otsikko</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="106"/>
+        <location filename="../replaygain/rgdialog.cpp" line="107"/>
         <source>Album Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="107"/>
+        <location filename="../replaygain/rgdialog.cpp" line="108"/>
         <source>Track Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="108"/>
+        <location filename="../replaygain/rgdialog.cpp" line="109"/>
         <source>Album Peak</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="109"/>
+        <location filename="../replaygain/rgdialog.cpp" line="110"/>
         <source>Track Peak</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="129"/>
-        <location filename="../replaygain/rgdialog.cpp" line="268"/>
+        <location filename="../replaygain/rgdialog.cpp" line="130"/>
+        <location filename="../replaygain/rgdialog.cpp" line="269"/>
         <source>Scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="232"/>
+        <location filename="../replaygain/rgdialog.cpp" line="233"/>
         <source>Abort scanning of tracks?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="232"/>
         <location filename="../replaygain/rgdialog.cpp" line="233"/>
-        <location filename="../replaygain/rgdialog.cpp" line="241"/>
+        <location filename="../replaygain/rgdialog.cpp" line="234"/>
         <location filename="../replaygain/rgdialog.cpp" line="242"/>
+        <location filename="../replaygain/rgdialog.cpp" line="243"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="241"/>
+        <location filename="../replaygain/rgdialog.cpp" line="242"/>
         <source>Abort reading of existing tags?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="267"/>
+        <location filename="../replaygain/rgdialog.cpp" line="268"/>
         <source>Scan &lt;b&gt;all&lt;/b&gt; tracks?&lt;br/&gt;&lt;br/&gt;&lt;i&gt;All tracks have existing ReplayGain tags.&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="269"/>
+        <location filename="../replaygain/rgdialog.cpp" line="270"/>
         <source>Do you wish to scan all tracks, or only tracks without existing tags?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="270"/>
+        <location filename="../replaygain/rgdialog.cpp" line="271"/>
         <source>Untagged Tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="270"/>
+        <location filename="../replaygain/rgdialog.cpp" line="271"/>
         <source>All Tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="280"/>
+        <location filename="../replaygain/rgdialog.cpp" line="281"/>
         <source>Scanning tracks...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="349"/>
+        <location filename="../replaygain/rgdialog.cpp" line="350"/>
         <source>Reading existing tags...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="400"/>
+        <location filename="../replaygain/rgdialog.cpp" line="401"/>
         <source>%1 (Corrupt tags?)</source>
         <comment>filename (Corrupt tags?)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="413"/>
+        <location filename="../replaygain/rgdialog.cpp" line="414"/>
         <source>Failed to update the tags of the following tracks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="449"/>
+        <location filename="../replaygain/rgdialog.cpp" line="450"/>
         <source>Device has been removed!</source>
         <translation type="unfinished">Laite on poistettu!</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="454"/>
+        <location filename="../replaygain/rgdialog.cpp" line="455"/>
         <source>Device is not connected.</source>
         <translation type="unfinished">Laitetta ei ole kytketty.</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="459"/>
+        <location filename="../replaygain/rgdialog.cpp" line="460"/>
         <source>Device is busy?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="494"/>
-        <location filename="../replaygain/rgdialog.cpp" line="503"/>
-        <location filename="../replaygain/rgdialog.cpp" line="588"/>
-        <location filename="../replaygain/rgdialog.cpp" line="592"/>
+        <location filename="../replaygain/rgdialog.cpp" line="495"/>
+        <location filename="../replaygain/rgdialog.cpp" line="504"/>
+        <location filename="../replaygain/rgdialog.cpp" line="589"/>
+        <location filename="../replaygain/rgdialog.cpp" line="593"/>
         <source>%1 dB</source>
         <translation>%1 dB</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="499"/>
         <location filename="../replaygain/rgdialog.cpp" line="500"/>
-        <location filename="../replaygain/rgdialog.cpp" line="508"/>
+        <location filename="../replaygain/rgdialog.cpp" line="501"/>
         <location filename="../replaygain/rgdialog.cpp" line="509"/>
-        <location filename="../replaygain/rgdialog.cpp" line="564"/>
+        <location filename="../replaygain/rgdialog.cpp" line="510"/>
         <location filename="../replaygain/rgdialog.cpp" line="565"/>
         <location filename="../replaygain/rgdialog.cpp" line="566"/>
         <location filename="../replaygain/rgdialog.cpp" line="567"/>
+        <location filename="../replaygain/rgdialog.cpp" line="568"/>
         <source>Failed</source>
         <translation>Epäonnistui</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="518"/>
-        <location filename="../replaygain/rgdialog.cpp" line="528"/>
+        <location filename="../replaygain/rgdialog.cpp" line="519"/>
+        <location filename="../replaygain/rgdialog.cpp" line="529"/>
         <source>Original: %1 dB</source>
         <translation>Alkuperäinen: %1 dB</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="523"/>
-        <location filename="../replaygain/rgdialog.cpp" line="533"/>
+        <location filename="../replaygain/rgdialog.cpp" line="524"/>
+        <location filename="../replaygain/rgdialog.cpp" line="534"/>
         <source>Original: %1</source>
         <translation>Alkuperäinen: %1</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="644"/>
+        <location filename="../replaygain/rgdialog.cpp" line="645"/>
         <source>Remove the selected tracks from the list?</source>
         <translation>Poistetaanko valitut kappaleet luettelosta?</translation>
     </message>
     <message>
-        <location filename="../replaygain/rgdialog.cpp" line="645"/>
+        <location filename="../replaygain/rgdialog.cpp" line="646"/>
         <source>Remove Tracks</source>
         <translation>Poista kappaleet</translation>
     </message>
@@ -7268,7 +7163,7 @@ Tätä ei voi kumota.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="76"/>
-        <location filename="../gui/serversettings.cpp" line="98"/>
+        <location filename="../gui/serversettings.cpp" line="99"/>
         <source>Host:</source>
         <translation>Palvelin:</translation>
     </message>
@@ -7339,82 +7234,82 @@ Tätä ei voi kumota.</translation>
         <translation>Jos musiikkikansioasetus muuttuu, käyttäjän on päivitettävä tietokanta uudelleen. Tämän voi tehdä painamalla artisti- tai albuminäkymän ”Virkistä tietokanta” -painiketta.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="78"/>
+        <location filename="../gui/serversettings.cpp" line="79"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, and transferring to (and from) devices.</source>
         <translation>Tätä kansiota käytetään musiikkitiedostojen paikantamiseen myös tunnisteiden muokkausta, ReplayGainiä ja laitteille tai laitteilta siirtoa varten.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="81"/>
+        <location filename="../gui/serversettings.cpp" line="82"/>
         <source>This folder will also be used to locate music files for tag-editing, replay gain, etc.</source>
         <translation>Tätä kansiota käytetään musiikkitiedostojen paikantamiseen tunnisteiden muokkausta, ReplayGainiä jne. varten.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="85"/>
+        <location filename="../gui/serversettings.cpp" line="86"/>
         <source>More information</source>
         <translation>Lisätietoa</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="121"/>
+        <location filename="../gui/serversettings.cpp" line="122"/>
         <source>Discover...</source>
         <translation>Etsi…</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="261"/>
+        <location filename="../gui/serversettings.cpp" line="262"/>
         <source>Which type of collection do you wish to connect to?</source>
         <translation>Millaiseen kokoelmaan haluat yhdistää?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="262"/>
+        <location filename="../gui/serversettings.cpp" line="263"/>
         <source>Standard - music collection may be shared, is on another machine, is already setup, or you wish to enable access from other clients (e.g. MPDroid)</source>
         <translation>Vakio – musiikkikokoelma voi olla jaettu, toisella koneella, jo asetettu tai haluat sallia yhteyden muillekin asiakkaille (esim. MPDroid)</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="265"/>
+        <location filename="../gui/serversettings.cpp" line="266"/>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Yksinkertainen – musiikkikokoelmaa ei jaeta, ja Cantata asettaa ja hallitsee MPD-palvelua. Palvelu on yksinomaan Cantatalle, eivätkä muut MPD-asiakkaat voi käyttää sitä.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="269"/>
+        <location filename="../gui/serversettings.cpp" line="270"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
         <translation>&lt;i&gt;&lt;b&gt;HUOMAA:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="269"/>
+        <location filename="../gui/serversettings.cpp" line="270"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
         <translation>Jos haluat tarkemman MPD-asetukset (esim. useita ääniulostuloja, täysi DSD-tuki tms.), sinun &lt;b&gt;täytyy&lt;/b&gt; valita ”Vakio”.</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="271"/>
+        <location filename="../gui/serversettings.cpp" line="272"/>
         <source>Add Collection</source>
         <translation>Lisää kokoelma</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="271"/>
+        <location filename="../gui/serversettings.cpp" line="272"/>
         <source>Standard</source>
         <translation>Vakio</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="271"/>
+        <location filename="../gui/serversettings.cpp" line="272"/>
         <source>Basic</source>
         <translation>Yksinkertainen</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="318"/>
+        <location filename="../gui/serversettings.cpp" line="320"/>
         <source>Delete &apos;%1&apos;?</source>
         <translation>Poistetaanko ”%1”?</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="319"/>
+        <location filename="../gui/serversettings.cpp" line="321"/>
         <source>Delete</source>
         <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="372"/>
+        <location filename="../gui/serversettings.cpp" line="374"/>
         <source>New Collection %1</source>
         <translation>Uusi kokoelma %1</translation>
     </message>
     <message>
-        <location filename="../gui/serversettings.cpp" line="389"/>
+        <location filename="../gui/serversettings.cpp" line="391"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -7504,32 +7399,32 @@ Tätä ei voi kumota.</translation>
 <context>
     <name>SmartPlaylistsPage</name>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="38"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="39"/>
         <source>Add</source>
         <translation>Lisää</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="39"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="40"/>
         <source>Edit</source>
         <translation>Muokkaa</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="40"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="41"/>
         <source>Remove</source>
         <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="73"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="74"/>
         <source>A &apos;smart&apos; playlist contains a set of rules to select tracks from your music library to play. The playlist also controls the order in which tracks are added. Unlike &apos;dynamic&apos; playlists, the play queue is not dynamically updated.</source>
         <translation>”Älykäs” soittolista sisältää sääntöjä, joilla soitettavat kappaleet valitaan kirjastosta. Soittolista määrittää myös kappaleiden soittojärjestyksen. Toisin kuin ”dynaamista” soittolistaa, soittojonoa ei päivitetä dynaamisesti.</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="77"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="78"/>
         <source>Use the + icon (below) to create a new &apos;smart&apos; playlist.</source>
         <translation>Luo uusi ”älykäs” soittolista painamalla +-kuvaketta (alla).</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="126"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="127"/>
         <source>Are you sure you wish to remove the selected rules?
 
 This cannot be undone.</source>
@@ -7538,14 +7433,14 @@ This cannot be undone.</source>
 Tätä ei voi kumota.</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="127"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="128"/>
         <source>Remove Smart Rules</source>
         <translation>Poista älykkäät säännöt</translation>
     </message>
     <message>
-        <location filename="../playlists/smartplaylistspage.cpp" line="172"/>
-        <location filename="../playlists/smartplaylistspage.cpp" line="204"/>
-        <location filename="../playlists/smartplaylistspage.cpp" line="316"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="173"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="205"/>
+        <location filename="../playlists/smartplaylistspage.cpp" line="317"/>
         <source>Failed to locate any matching songs</source>
         <translation>Sääntöjä vastaavia kappaleita ei löytynyt</translation>
     </message>
@@ -7880,7 +7775,7 @@ Luetaanko levyltä vai poistetaanko levyn kopio ja ladataan verkosta?</translati
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="887"/>
+        <location filename="../context/songview.cpp" line="894"/>
         <source>Fetching lyrics via %1</source>
         <translation>Noudetaan sanoja: %1</translation>
     </message>
@@ -8385,77 +8280,77 @@ Korvataanko se?</translation>
 <context>
     <name>StreamsModel</name>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="228"/>
+        <location filename="../models/streamsmodel.cpp" line="229"/>
         <source>Bookmarks</source>
         <translation>Kirjanmerkit</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="493"/>
+        <location filename="../models/streamsmodel.cpp" line="494"/>
         <source>TuneIn</source>
         <translation>TuneIn</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="496"/>
+        <location filename="../models/streamsmodel.cpp" line="497"/>
         <source>IceCast</source>
         <translation>IceCast</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="497"/>
+        <location filename="../models/streamsmodel.cpp" line="498"/>
         <source>ShoutCast</source>
         <translation>ShoutCast</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="500"/>
+        <location filename="../models/streamsmodel.cpp" line="501"/>
         <source>Dirble</source>
         <translation>Dirble</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="503"/>
+        <location filename="../models/streamsmodel.cpp" line="504"/>
         <source>Favorites</source>
         <translation>Suosikit</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="506"/>
+        <location filename="../models/streamsmodel.cpp" line="507"/>
         <source>Bookmark Category</source>
         <translation>Kirjanmerkkiluokka</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="507"/>
+        <location filename="../models/streamsmodel.cpp" line="508"/>
         <source>Add Stream To Favorites</source>
         <translation>Lisää virta suosikeihin</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="508"/>
+        <location filename="../models/streamsmodel.cpp" line="509"/>
         <source>Configure Digitally Imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="509"/>
+        <location filename="../models/streamsmodel.cpp" line="510"/>
         <source>Reload</source>
         <translation>Lataa uudelleen</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="544"/>
+        <location filename="../models/streamsmodel.cpp" line="545"/>
         <source>Streams</source>
         <translation>Virrat</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="549"/>
+        <location filename="../models/streamsmodel.cpp" line="550"/>
         <source>Radio stations</source>
         <translation>Radioasemat</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="634"/>
+        <location filename="../models/streamsmodel.cpp" line="635"/>
         <source>Not Loaded</source>
         <translation>Ei ladattu</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="636"/>
+        <location filename="../models/streamsmodel.cpp" line="637"/>
         <source>Loading...</source>
         <translation>Ladataan…</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/streamsmodel.cpp" line="638"/>
+        <location filename="../models/streamsmodel.cpp" line="639"/>
         <source>%n Entry(s)</source>
         <translation>
             <numerusform>%n tietue</numerusform>
@@ -8557,17 +8452,17 @@ Overwrite?</source>
 <context>
     <name>SyncCollectionWidget</name>
     <message>
-        <location filename="../devices/synccollectionwidget.cpp" line="51"/>
+        <location filename="../devices/synccollectionwidget.cpp" line="52"/>
         <source>Search</source>
         <translation type="unfinished">Etsi</translation>
     </message>
     <message>
-        <location filename="../devices/synccollectionwidget.cpp" line="56"/>
+        <location filename="../devices/synccollectionwidget.cpp" line="57"/>
         <source>Check Items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/synccollectionwidget.cpp" line="58"/>
+        <location filename="../devices/synccollectionwidget.cpp" line="59"/>
         <source>Uncheck Items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8737,255 +8632,255 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="205"/>
+        <location filename="../tags/tageditor.cpp" line="206"/>
         <source>Tags</source>
         <translation>Tunnisteet</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="213"/>
+        <location filename="../tags/tageditor.cpp" line="214"/>
         <source>Tools</source>
         <translation>Työkalut</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="215"/>
-        <location filename="../tags/tageditor.cpp" line="567"/>
+        <location filename="../tags/tageditor.cpp" line="216"/>
+        <location filename="../tags/tageditor.cpp" line="568"/>
         <source>Apply &quot;Various Artists&quot; Workaround</source>
         <translation type="unfinished">Käytä ”Useita artisteja” -hätäratkaisua</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="216"/>
-        <location filename="../tags/tageditor.cpp" line="612"/>
+        <location filename="../tags/tageditor.cpp" line="217"/>
+        <location filename="../tags/tageditor.cpp" line="613"/>
         <source>Revert &quot;Various Artists&quot; Workaround</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="217"/>
+        <location filename="../tags/tageditor.cpp" line="218"/>
         <source>Set &apos;Album Artist&apos; from &apos;Artist&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="218"/>
-        <location filename="../tags/tageditor.cpp" line="692"/>
+        <location filename="../tags/tageditor.cpp" line="219"/>
+        <location filename="../tags/tageditor.cpp" line="693"/>
         <source>Capitalize</source>
         <translation>Suuraakkosta</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="219"/>
-        <location filename="../tags/tageditor.cpp" line="721"/>
+        <location filename="../tags/tageditor.cpp" line="220"/>
+        <location filename="../tags/tageditor.cpp" line="722"/>
         <source>Adjust Track Numbers</source>
         <translation>Säädä raitanumeroita</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="221"/>
+        <location filename="../tags/tageditor.cpp" line="222"/>
         <source>Read Ratings from File</source>
         <translation>Lue arvostelut tiedostosta</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="222"/>
+        <location filename="../tags/tageditor.cpp" line="223"/>
         <source>Write Ratings to File</source>
         <translation>Kirjoita arvostelut tiedostoon</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="346"/>
-        <location filename="../tags/tageditor.cpp" line="897"/>
+        <location filename="../tags/tageditor.cpp" line="347"/>
+        <location filename="../tags/tageditor.cpp" line="898"/>
         <source>All tracks</source>
         <translation>Kaikki kappaleet</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="562"/>
+        <location filename="../tags/tageditor.cpp" line="563"/>
         <source>Apply &quot;Various Artists&quot; workaround to &lt;b&gt;all&lt;/b&gt; tracks?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="563"/>
+        <location filename="../tags/tageditor.cpp" line="564"/>
         <source>Apply &quot;Various Artists&quot; workaround?</source>
         <translation type="unfinished">Käytetäänkö ”Useita artisteja” -hätäratkaisua?</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="565"/>
+        <location filename="../tags/tageditor.cpp" line="566"/>
         <source>&lt;i&gt;This will set &apos;Album artist&apos; and &apos;Artist&apos; to &quot;Various Artists&quot;, and set &apos;Title&apos; to &quot;TrackArtist - TrackTitle&quot;&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="604"/>
+        <location filename="../tags/tageditor.cpp" line="605"/>
         <source>Revert &quot;Various Artists&quot; workaround on &lt;b&gt;all&lt;/b&gt; tracks?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="605"/>
+        <location filename="../tags/tageditor.cpp" line="606"/>
         <source>Revert &quot;Various Artists&quot; workaround</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="607"/>
+        <location filename="../tags/tageditor.cpp" line="608"/>
         <source>&lt;i&gt;Where the &apos;Album artist&apos; is the same as &apos;Artist&apos; and the &apos;Title&apos; is of the format &quot;TrackArtist - TrackTitle&quot;, &apos;Artist&apos; will be taken from &apos;Title&apos; and &apos;Title&apos; itself will be set to just the title. e.g. &lt;br/&gt;&lt;br/&gt;If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; will be set to &quot;Wibble&quot; and &apos;Title&apos; will be set to &quot;Wobble&quot;&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="613"/>
+        <location filename="../tags/tageditor.cpp" line="614"/>
         <source>Revert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="654"/>
+        <location filename="../tags/tageditor.cpp" line="655"/>
         <source>Set &apos;Album Artist&apos; from &apos;Artist&apos; (if &apos;Album Artist&apos; is empty) for &lt;b&gt;all&lt;/b&gt; tracks?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="655"/>
+        <location filename="../tags/tageditor.cpp" line="656"/>
         <source>Set &apos;Album Artist&apos; from &apos;Artist&apos; (if &apos;Album Artist&apos; is empty)?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="656"/>
+        <location filename="../tags/tageditor.cpp" line="657"/>
         <source>Album Artist from Artist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="689"/>
+        <location filename="../tags/tageditor.cpp" line="690"/>
         <source>Capitalize the first letter of text fields (e.g. &apos;Title&apos;, &apos;Artist&apos;, etc) of &lt;b&gt;all&lt;/b&gt; tracks?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="691"/>
+        <location filename="../tags/tageditor.cpp" line="692"/>
         <source>Capitalize the first letter of text fields (e.g. &apos;Title&apos;, &apos;Artist&apos;, etc)?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="721"/>
+        <location filename="../tags/tageditor.cpp" line="722"/>
         <source>Adjust the value of each track number by:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="722"/>
+        <location filename="../tags/tageditor.cpp" line="723"/>
         <source>Adjust track number by:</source>
         <translation type="unfinished">Korjaa raitanumeroa:</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="752"/>
+        <location filename="../tags/tageditor.cpp" line="753"/>
         <source>Read ratings for all tracks from the music files?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="753"/>
+        <location filename="../tags/tageditor.cpp" line="754"/>
         <source>Read rating from music file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="754"/>
-        <location filename="../tags/tageditor.cpp" line="822"/>
+        <location filename="../tags/tageditor.cpp" line="755"/>
+        <location filename="../tags/tageditor.cpp" line="823"/>
         <source>Ratings</source>
         <translation>Arvostelut</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="755"/>
+        <location filename="../tags/tageditor.cpp" line="756"/>
         <source>Read Ratings</source>
         <translation>Lue arvostelut</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="755"/>
+        <location filename="../tags/tageditor.cpp" line="756"/>
         <source>Read Rating</source>
         <translation>Lue arvostelu</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="784"/>
+        <location filename="../tags/tageditor.cpp" line="785"/>
         <source>Read, and updated, ratings from the following tracks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="805"/>
+        <location filename="../tags/tageditor.cpp" line="806"/>
         <source>Not all Song ratings have been read from MPD!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="806"/>
-        <location filename="../tags/tageditor.cpp" line="814"/>
+        <location filename="../tags/tageditor.cpp" line="807"/>
+        <location filename="../tags/tageditor.cpp" line="815"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database. In order to save these into the actual file, Cantata must first read them from MPD.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="813"/>
+        <location filename="../tags/tageditor.cpp" line="814"/>
         <source>Song rating has not been read from MPD!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="820"/>
+        <location filename="../tags/tageditor.cpp" line="821"/>
         <source>Write ratings for all tracks to the music files?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="821"/>
+        <location filename="../tags/tageditor.cpp" line="822"/>
         <source>Write rating to music file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="823"/>
+        <location filename="../tags/tageditor.cpp" line="824"/>
         <source>Write Ratings</source>
         <translation>Kirjoita arvostelut</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="823"/>
+        <location filename="../tags/tageditor.cpp" line="824"/>
         <source>Write Rating</source>
         <translation>Kirjoita arvostelu</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="847"/>
+        <location filename="../tags/tageditor.cpp" line="848"/>
         <source>Failed to write ratings of the following tracks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="854"/>
+        <location filename="../tags/tageditor.cpp" line="855"/>
         <source>Failed to write rating to music file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="891"/>
+        <location filename="../tags/tageditor.cpp" line="892"/>
         <source>All tracks [modified]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="893"/>
+        <location filename="../tags/tageditor.cpp" line="894"/>
         <source>%1 [modified]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1210"/>
+        <location filename="../tags/tageditor.cpp" line="1211"/>
         <source>%1 (Corrupt tags?)</source>
         <comment>filename (Corrupt tags?)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1219"/>
+        <location filename="../tags/tageditor.cpp" line="1220"/>
         <source>Failed to update the tags of the following tracks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1225"/>
+        <location filename="../tags/tageditor.cpp" line="1226"/>
         <source>Would you also like to rename your song files, so as to match your tags?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1226"/>
+        <location filename="../tags/tageditor.cpp" line="1227"/>
         <source>Rename Files</source>
         <translation>Muuta tiedostojen nimiä</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1226"/>
+        <location filename="../tags/tageditor.cpp" line="1227"/>
         <source>Rename</source>
         <translation>Muuta nimeä</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1290"/>
+        <location filename="../tags/tageditor.cpp" line="1291"/>
         <source>Device has been removed!</source>
         <translation>Laite on poistettu!</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1295"/>
+        <location filename="../tags/tageditor.cpp" line="1296"/>
         <source>Device is not connected.</source>
         <translation>Laitetta ei ole kytketty.</translation>
     </message>
     <message>
-        <location filename="../tags/tageditor.cpp" line="1300"/>
+        <location filename="../tags/tageditor.cpp" line="1301"/>
         <source>Device is busy?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9085,95 +8980,95 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="67"/>
+        <location filename="../tags/trackorganiser.cpp" line="68"/>
         <source>Organize Files</source>
         <translation type="unfinished">Järjestä tiedostot</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="73"/>
+        <location filename="../tags/trackorganiser.cpp" line="74"/>
         <source>Rename</source>
         <translation type="unfinished">Muuta nimeä</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="80"/>
+        <location filename="../tags/trackorganiser.cpp" line="81"/>
         <source>Remove From List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="165"/>
+        <location filename="../tags/trackorganiser.cpp" line="166"/>
         <source>Abort renaming of files?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="165"/>
+        <location filename="../tags/trackorganiser.cpp" line="166"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="282"/>
+        <location filename="../tags/trackorganiser.cpp" line="283"/>
         <source>Source file does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="283"/>
-        <location filename="../tags/trackorganiser.cpp" line="302"/>
-        <location filename="../tags/trackorganiser.cpp" line="324"/>
-        <location filename="../tags/trackorganiser.cpp" line="345"/>
+        <location filename="../tags/trackorganiser.cpp" line="284"/>
+        <location filename="../tags/trackorganiser.cpp" line="303"/>
+        <location filename="../tags/trackorganiser.cpp" line="325"/>
+        <location filename="../tags/trackorganiser.cpp" line="346"/>
         <source>Skip</source>
         <translation type="unfinished">Ohita</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="283"/>
-        <location filename="../tags/trackorganiser.cpp" line="302"/>
-        <location filename="../tags/trackorganiser.cpp" line="324"/>
-        <location filename="../tags/trackorganiser.cpp" line="345"/>
+        <location filename="../tags/trackorganiser.cpp" line="284"/>
+        <location filename="../tags/trackorganiser.cpp" line="303"/>
+        <location filename="../tags/trackorganiser.cpp" line="325"/>
+        <location filename="../tags/trackorganiser.cpp" line="346"/>
         <source>Auto Skip</source>
         <translation type="unfinished">Ohita automaattisesti</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="301"/>
+        <location filename="../tags/trackorganiser.cpp" line="302"/>
         <source>Destination file already exists!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="323"/>
+        <location filename="../tags/trackorganiser.cpp" line="324"/>
         <source>Failed to create destination folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="344"/>
+        <location filename="../tags/trackorganiser.cpp" line="345"/>
         <source>Failed to rename &apos;%1&apos; to &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="474"/>
+        <location filename="../tags/trackorganiser.cpp" line="475"/>
         <source>Remove the selected tracks from the list?</source>
         <translation type="unfinished">Poistetaanko valitut kappaleet luettelosta?</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="475"/>
+        <location filename="../tags/trackorganiser.cpp" line="476"/>
         <source>Remove Tracks</source>
         <translation type="unfinished">Poista kappaleet</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="490"/>
+        <location filename="../tags/trackorganiser.cpp" line="491"/>
         <source>Song ratings are not stored in the song files, but within MPD&apos;s &apos;sticker&apos; database.
 
 If you rename a file (or the folder it is within), then the rating associated with the song will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="550"/>
+        <location filename="../tags/trackorganiser.cpp" line="551"/>
         <source>Device has been removed!</source>
         <translation type="unfinished">Laite on poistettu!</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="555"/>
+        <location filename="../tags/trackorganiser.cpp" line="556"/>
         <source>Device is not connected.</source>
         <translation type="unfinished">Laitetta ei ole kytketty.</translation>
     </message>
     <message>
-        <location filename="../tags/trackorganiser.cpp" line="560"/>
+        <location filename="../tags/trackorganiser.cpp" line="561"/>
         <source>Device is busy?</source>
         <translation type="unfinished"></translation>
     </message>

@@ -3200,12 +3200,20 @@ Não será possível desfazer esta escolha.</translation>
         <source>Now Playing</source>
         <translation>Em reprodução</translation>
     </message>
+    <message>
+        <source>%1 kb/s</source>
+        <translation>%1 kb/s</translation>
+    </message>
     <message numerus="yes">
         <source>%n bit</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>%1 kHz</source>
+        <translation>%1 kHz</translation>
     </message>
 </context>
 <context>

@@ -9013,6 +9013,11 @@ This cannot be undone.</source>
         <source>Now Playing</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="459"/>
+        <source>%1 kb/s</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
@@ -9020,6 +9025,11 @@ This cannot be undone.</source>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
+        <source>%1 kHz</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>(Stream)</source>

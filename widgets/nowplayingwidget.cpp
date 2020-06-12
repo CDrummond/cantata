@@ -345,7 +345,7 @@ void NowPlayingWidget::startTimer()
         timer->setInterval(1000);
         connect(timer, SIGNAL(timeout()), this, SLOT(updatePos()));
     }
-    startTime.restart();
+    elapsedTimer.start();
     lastVal=value();
     timer->start();
     pollCount=0;
@@ -362,7 +362,7 @@ void NowPlayingWidget::stopTimer()
 void NowPlayingWidget::setValue(int v)
 {
     if (qAbs(v-slider->value())>1 || MPDState_Playing!=MPDStatus::self()->state()) {
-        startTime.restart();
+        elapsedTimer.start();
         lastVal=v;
         slider->setValue(v);
         updateTimes();
@@ -418,7 +418,7 @@ void NowPlayingWidget::updateTimes()
 
 void NowPlayingWidget::updatePos()
 {
-    quint16 elapsed=(startTime.elapsed()/1000.0)+0.5;
+    quint16 elapsed=(elapsedTimer.elapsed()/1000.0)+0.5;
     slider->setValue(lastVal+elapsed);
     MPDStatus::self()->setGuessedElapsed(lastVal+elapsed);
     if (++pollCount>=constPollMpd) {
@@ -456,7 +456,7 @@ void NowPlayingWidget::updateInfo()
 
     QString info;
     if (MPDStatus::self()->bitrate()>0) {
-        info += QString().sprintf("%d kbps", MPDStatus::self()->bitrate());
+        info += tr("%1 kb/s").arg(MPDStatus::self()->bitrate());
     }
     if (MPDStatus::self()->bits()>0) {
         if (!info.isEmpty()) {
@@ -468,7 +468,7 @@ void NowPlayingWidget::updateInfo()
         if (!info.isEmpty()) {
             info+=", ";
         }
-        info += QString().sprintf("%.1f kHz", MPDStatus::self()->samplerate()/1000.0);
+        info += tr("%1 kHz").arg(MPDStatus::self()->samplerate()/1000.0, 0, 'f', 1);
     }
 
     int pos=currentSongFile.lastIndexOf('.');

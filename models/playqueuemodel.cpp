@@ -63,6 +63,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QXmlStreamReader>
+#include <QRandomGenerator>
 #include <algorithm>
 
 GLOBAL_STATIC(PlayQueueModel, instance)
@@ -1610,7 +1611,7 @@ void PlayQueueModel::shuffleAlbums()
 
     QList<quint32> positions;
     while (!keys.isEmpty()) {
-        quint32 key=keys.takeAt(Utils::random(keys.count()));
+        quint32 key=keys.takeAt(QRandomGenerator::global()->bounded(keys.count()));
         QList<const Song *> albumSongs=albums[key];
         std::sort(albumSongs.begin(), albumSongs.end(), songSort);
         for (const Song *song: albumSongs) {

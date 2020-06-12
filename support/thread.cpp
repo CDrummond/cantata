@@ -23,7 +23,6 @@
 
 #include "thread.h"
 #include "globalstatic.h"
-#include "utils.h"
 #include <QCoreApplication>
 #include <QtGlobal>
 #include <QTimer>
@@ -108,7 +107,6 @@ Thread::~Thread()
 
 void Thread::run()
 {
-    Utils::initRand();
     QThread::run();
 }
 

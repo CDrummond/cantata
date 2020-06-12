@@ -32,6 +32,7 @@
 #include <QApplication>
 #include <QLocalSocket>
 #include <QLocalServer>
+#include <QRandomGenerator>
 
 #include <QDebug>
 static bool debugEnabled=false;
@@ -302,7 +303,7 @@ bool TagHelperIface::startHelper()
         server=new QLocalServer(this);
 
         forever {
-            QString name="cantata-tags-"+QString::number(currentPid)+QLatin1Char('-')+QString::number(Utils::random());
+            QString name="cantata-tags-"+QString::number(currentPid)+QLatin1Char('-')+QString::number(QRandomGenerator::global()->generate());
             QLocalServer::removeServer(name);
             if (server->listen(name)) {
                 DBUG << "Listening on" << server->fullServerName();

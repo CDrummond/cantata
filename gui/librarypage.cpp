@@ -28,12 +28,12 @@
 #include "settings.h"
 #include "stdactions.h"
 #include "customactions.h"
-#include "support/utils.h"
 #include "support/messagebox.h"
 #include "support/actioncollection.h"
 #include "models/mpdlibrarymodel.h"
 #include "widgets/menubutton.h"
 #include "widgets/genrecombo.h"
+#include <QRandomGenerator>
 
 LibraryPage::LibraryPage(QWidget *p)
     : SinglePageWidget(p)
@@ -401,7 +401,7 @@ void LibraryPage::addRandomAlbum()
     LibraryDb::Album album;
     if (!albums.isEmpty()) {
         // We have albums selected, so choose a random one of these...
-        SqlLibraryModel::AlbumItem *al=albums.at(Utils::random(albums.size()));
+        SqlLibraryModel::AlbumItem *al=albums.at(QRandomGenerator::global()->bounded(albums.size()));
         album.artist=al->getArtistId();
         album.id=al->getId();
     } else {

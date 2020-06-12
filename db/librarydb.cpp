@@ -28,6 +28,7 @@
 #include <QSqlQuery>
 #include <QFile>
 #include <QRegExp>
+#include <QRandomGenerator>
 #include <QDebug>
 #include <algorithm>
 
@@ -1060,7 +1061,7 @@ LibraryDb::Album LibraryDb::getRandomAlbum(const QStringList &genres, const QStr
         return Album();
     }
 
-    return albums.at(Utils::random(albums.count()));
+    return albums.at(QRandomGenerator::global()->bounded(albums.count()));
 }
 
 QSet<QString> LibraryDb::get(const QString &type)
@@ -1164,9 +1165,9 @@ bool LibraryDb::setFilter(const QString &f, const QString &genre)
                     int val=parts.at(0).simplified().toUInt();
                     if (val>=constMinYear && val<=constMaxYear) {
                         if (Song::useOriginalYear()) {
-                            year = QString().sprintf("( (origYear = %d) OR (origYear = 0 AND year = %d) )", val, val);
+                            year = QString("( (origYear = %1) OR (origYear = 0 AND year = %1) )").arg(val);
                         } else {
-                            year = QString().sprintf("year = %d", val);
+                            year = QString("year = %1").arg(val);
                         }
                         continue;
                     }
@@ -1175,10 +1176,10 @@ bool LibraryDb::setFilter(const QString &f, const QString &genre)
                     int to=parts.at(1).simplified().toUInt();
                     if (from>=constMinYear && from<=constMaxYear && to>=constMinYear && to<=constMaxYear) {
                         if (Song::useOriginalYear()) {
-                            year = QString().sprintf("( (origYear >= %d AND origYear <= %d) OR (origYear = 0 AND year >= %d AND year <= %d))",
-                                                     qMin(from, to), qMax(from, to), qMin(from, to), qMax(from, to));
+                            year = QString("( (origYear >= %1 AND origYear <= %2) OR (origYear = 0 AND year >= %1 AND year <= %2))")
+                                   .arg(qMin(from, to)).arg(qMax(from, to));
                         } else {
-                            year = QString().sprintf("year >= %d AND year <= %d", qMin(from, to), qMax(from, to));
+                            year = QString("year >= %1 AND year <= %2").arg(qMin(from, to)).arg(qMax(from, to));
                         }
                         continue;
                     }

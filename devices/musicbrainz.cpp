@@ -27,8 +27,6 @@
 #include "network/networkproxyfactory.h"
 #include <QNetworkProxy>
 #include <QCryptographicHash>
-#include <cstdio>
-#include <cstring>
 #include <musicbrainz5/Query.h>
 #include <musicbrainz5/Medium.h>
 #include <musicbrainz5/Release.h>
@@ -83,12 +81,12 @@ static QString calculateDiscId(const QList<Track> &tracks)
     // Code based on libmusicbrainz/lib/diskid.cpp
     int numTracks = tracks.count()-1;
     QCryptographicHash sha(QCryptographicHash::Sha1);
-    char temp[9];
+    QString temp;
 
-    sprintf(temp, "%02X", 1);
-    sha.addData(temp, strlen(temp));
-    sprintf(temp, "%02X", numTracks);
-    sha.addData(temp, strlen(temp));
+    temp = QStringLiteral("%1").arg(1, 2, 16, QLatin1Char('0'));
+    sha.addData(temp.toUpper().toLatin1());
+    temp = QStringLiteral("%1").arg(numTracks, 2, 16, QLatin1Char('0'));
+    sha.addData(temp.toUpper().toLatin1());
 
     for(int i = 0; i < 100; i++) {
         int offset;
@@ -100,8 +98,8 @@ static QString calculateDiscId(const QList<Track> &tracks)
             offset = 0;
         }
 
-        sprintf(temp, "%08X", offset);
-        sha.addData(temp, strlen(temp));
+        temp = QStringLiteral("%1").arg(offset, 8, 16, QLatin1Char('0'));
+        sha.addData(temp.toUpper().toLatin1());
     }
 
     QByteArray base64 = sha.result().toBase64();

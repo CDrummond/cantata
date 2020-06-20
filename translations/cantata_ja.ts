@@ -974,11 +974,7 @@ Could not download to temporary file!</source>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">画像ファイル (*.png *.jpg)</translation>
+        <translation>画像ファイル (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
@@ -1031,21 +1027,6 @@ Could not copy file to &apos;%1&apos;!</source>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation>検索中...</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;作曲家:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;演奏家:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;アーティスト:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;アルバム:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;年:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1252,16 +1233,6 @@ Could not copy file to &apos;%1&apos;!</source>
         <translation>コード変換中</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation>ソースファイルが異なる書式の場合のみコード変換する</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation>ソースが FLAC/WAV の際のみトランスコードする</translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation>カバーを複写しない</translation>
@@ -1315,6 +1286,16 @@ Could not copy file to &apos;%1&apos;!</source>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
         <translation>常にトランスコードする</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation>ソースファイルが異なる書式の場合のみコード変換する</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
+        <translation>ソースが FLAC/WAV の際のみトランスコードする</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
@@ -2169,10 +2150,6 @@ This cannot be undone.</source>
         <translation>Cantataは &apos;AlbumArtist&apos;タグが設定されている場合はトラックをアルバムにグループ化し、そうでない場合は &apos;Artist&apos;タグにフォールバックします。複数のアーティストを含むアルバムをお持ちの場合は、グループ化が正しく機能するように &apos;AlbumArtist&apos;タグを&lt;b&gt;設定&lt;/b&gt;する必要があります。このシナリオでは、「Various Artists」を使用することをお勧めします。</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="vanished">&lt;b&gt;注意:&lt;/b&gt; お使いのユーザアカウントは &apos;users&apos; グループのメンバーではありません. Cantata はあなた(もしくは管理者が)ユーザアカウントをこのグループに追加することにより より良く動作します (アルバムカバー, 歌詞, その他の保存が正しい許可で行われる)。グループに使用中のアカウントを追加した場合は一旦ログアウト ログインを行ってアプリケーションを再起動することでこの機能が動作します。</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
         <source>Not Connected</source>
         <translation>未接続</translation>
@@ -2650,20 +2627,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="220"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;ファイル名&apos; に設定が指定されていない場合、Cantataはデフォルトの&lt;code&gt; カバー&lt;/code&gt;を使用します。 このファイル名は、カバーをダウンロードする際、またはデバイスからライブラリに音楽を追加するときに使用されます。</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="224"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="vanished">&apos;ファイル名&apos; に設定が指定されていない場合、Cantataはデフォルトの&lt;code&gt; カバー&lt;/code&gt;を使用します。 このファイル名は、カバーをダウンロードする際、またはデバイスからライブラリに音楽を追加するときに使用されます。</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="vanished">&apos;ファイル名&apos; に設定が指定されていない場合、Cantataはデフォルトの&lt;code&gt; カバー&lt;/code&gt;を使用します。 このファイル名は、カバーをダウンロードする際に使用されます。</translation>
+        <translation type="unfinished">&apos;ファイル名&apos; に設定が指定されていない場合、Cantataはデフォルトの&lt;code&gt; カバー&lt;/code&gt;を使用します。 このファイル名は、カバーをダウンロードする際に使用されます。</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="438"/>
@@ -4368,14 +4337,14 @@ This cannot be undone.</source>
         <translation>トラック間をクロスフェード：</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation>リプレイゲイン：</translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation> s</translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation>リプレイゲイン：</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -4654,6 +4623,16 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation>ダイナミックプレイリスト</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation>スマートプレイリスト</translation>
+    </message>
+    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
         <source>Each playlist requires a unique name, enter that above.
 
@@ -4681,16 +4660,6 @@ Use the settings below to restrict the range of songs added.</source>
         <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Descending</source>
         <translation>降順</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation>ダイナミックプレイリスト</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation>スマートプレイリスト</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
@@ -5042,11 +5011,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">podcast URL を以下で入力し ’読込’ を押してください</translation>
+        <translation type="unfinished">podcast URL を以下で入力し ’読込’ を押してください</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -5141,39 +5106,9 @@ Overwrite?</source>
         <translation>&apos;%1&apos; の購読を解除しますか？</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">選択した podcast エピソードをダウンロードしますか?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">ポッドキャストのエピソードのダウンロードをキャンセルしますか（現在のものとキュー内の双方）?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>選択済 podcast エピソードのダウンロード済みファイルを削除しますか?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">選択済 podcast エピソードを新規としてマーキングしますか?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">選択済 podcast エピソードを視聴済みとしてマーキングしますか?</translation>
-    </message>
-    <message>
-        <source>Refresh all subscriptions?</source>
-        <translation type="vanished">全ての購読を更新しますか?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -5194,6 +5129,16 @@ Overwrite?</source>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
         <translation>選択済みを更新</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6480,26 +6425,6 @@ Please choose a different name.</source>
         <translation>ユーザー:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="vanished">ドメイン:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">パスワード:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="vanished">シェア:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="vanished">パスワードをここに入力した場合、Cantata のコンフィグファイル内に&lt;b&gt;未暗号化状態&lt;/b&gt;で保存されます。共有にアクセスする前にカンタータのパスワードプロンプトを表示するには、パスワードを &apos; - &apos;に設定します</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="vanished">サービス名:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -6534,27 +6459,6 @@ Please choose a different name.</source>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="vanished">利用可能</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="vanished">利用不可</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="vanished">%1への接続詳細を解決できませんでした</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation>接続中...</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="vanished">Cantata をコマンドラインから起動した際はパスワードプロンプトが正常に動作しません。</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation>適切なSSH-askpass アプリケーションがインストールされていません！パスワード入力のために必要です。</translation>
@@ -6571,14 +6475,19 @@ Please choose a different name.</source>
         <translation>&quot;sshfs&quot; がインストールされていません!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation>切断中...</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation>接続中...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
-        <translation>&quot;ｆｕｓｅｍｏｕｎｔ&quot; がインストールされていません!</translation>
+        <translation>&quot;fusermount&quot; がインストールされていません!</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation>切断中...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -6961,13 +6870,6 @@ Please choose a different name.</source>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation>未認証状態</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: トラックをScrobble</translation>
     </message>
 </context>
 <context>
@@ -8056,23 +7958,6 @@ Overwrite?</source>
         <translation>&apos;%1&apos; のダウンロードに失敗</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="vanished">選択したストリームプロバイダをインストール/更新しますか?</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="vanished">選択したストリームプロバイダをインストールしますか?</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="vanished">選択したストリームプロバイダを更新しますか?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation>インストール/更新</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation>インストール/更新を中止しますか?</translation>
@@ -8093,6 +7978,11 @@ Overwrite?</source>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation>%1 ダウンロード中</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation>インストール/更新</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>

@@ -678,21 +678,13 @@ Se &apos;Título&apos; è &quot;Wibble - Wobble&quot;, então &apos;Artista&apos
     </message>
     <message>
         <source>%1 - %2 (%3)</source>
-        <translation type="vanished">%1 - %2 (%3)</translation>
-    </message>
-    <message>
-        <source>%1 - %2 Disc %3 (%4)</source>
-        <translation type="vanished">%1 - %2 - Disco %3 (%4)</translation>
+        <comment>artist - album (year)</comment>
+        <translation>%1 - %2 (%3)</translation>
     </message>
     <message>
         <source>%1 - %2 Disc %3 (%4)</source>
         <comment>artist - album Disc disc (year)</comment>
-        <translation type="unfinished">%1 - %2 - Disco %3 (%4)</translation>
-    </message>
-    <message>
-        <source>%1 - %2 (%3)</source>
-        <comment>artist - album (year)</comment>
-        <translation type="unfinished">%1 - %2 (%3)</translation>
+        <translation>%1 - %2 - Disco %3 (%4)</translation>
     </message>
 </context>
 <context>
@@ -753,7 +745,8 @@ Se &apos;Título&apos; è &quot;Wibble - Wobble&quot;, então &apos;Artista&apos
     </message>
     <message>
         <source>&apos;%1 - %2&apos; Album Cover</source>
-        <translation type="vanished">&apos;%1 - %2&apos; Capa do álbum</translation>
+        <comment>&apos;Artist - Album&apos; Album Cover</comment>
+        <translation>&apos;%1 - %2&apos; Capa do álbum</translation>
     </message>
     <message>
         <source>Failed to set cover!
@@ -796,8 +789,8 @@ Não foi possível baixá-la para o arquivo temporário!</translation>
         <translation>Exibição</translation>
     </message>
     <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">Imagens (*.png *.jpg)</translation>
+        <source>Images (*.png *.jpg *.jpeg)</source>
+        <translation>Imagens (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <source>Searching...</source>
@@ -835,30 +828,6 @@ Não foi possível fazer um backup do original!</translation>
         <source>&apos;%1&apos; Composer Image</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>&apos;%1 - %2&apos; Album Cover</source>
-        <comment>&apos;Artist - Album&apos; Album Cover</comment>
-        <translation type="unfinished">&apos;%1 - %2&apos; Capa do álbum</translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artista:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Álbum:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Ano:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Compositor:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Intérprete:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
 </context>
 <context>
     <name>CoverPreview</name>
@@ -868,16 +837,12 @@ Não foi possível fazer um backup do original!</translation>
     </message>
     <message>
         <source>Image (%1 x %2 %3%)</source>
-        <translation type="vanished">Imagem (%1 x %2 %3%)</translation>
+        <comment>Image (width x height zoom%)</comment>
+        <translation>Imagem (%1 x %2 %3%)</translation>
     </message>
     <message>
         <source>Downloading...</source>
         <translation>Baixando...</translation>
-    </message>
-    <message>
-        <source>Image (%1 x %2 %3%)</source>
-        <comment>Image (width x height zoom%)</comment>
-        <translation type="unfinished">Imagem (%1 x %2 %3%)</translation>
     </message>
 </context>
 <context>
@@ -1027,7 +992,8 @@ Não foi possível fazer um backup do original!</translation>
     </message>
     <message>
         <source>%1 (%2 free)</source>
-        <translation type="vanished">%1 (%2 livre)</translation>
+        <comment>name (size free)</comment>
+        <translation>%1 (%2 livre)</translation>
     </message>
     <message>
         <source>Use cache</source>
@@ -1092,11 +1058,6 @@ Não foi possível fazer um backup do original!</translation>
     <message>
         <source>Always transcode</source>
         <translation>Sempre transcodificar</translation>
-    </message>
-    <message>
-        <source>%1 (%2 free)</source>
-        <comment>name (size free)</comment>
-        <translation type="unfinished">%1 (%2 livre)</translation>
     </message>
 </context>
 <context>
@@ -1467,10 +1428,6 @@ Não será possível desfazer esta escolha.</translation>
         <translation>Artista do álbum</translation>
     </message>
     <message>
-        <source>Dance</source>
-        <translation type="vanished">Dance</translation>
-    </message>
-    <message>
         <source>Genre</source>
         <translation>Gênero</translation>
     </message>
@@ -1481,10 +1438,6 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Track Artist</source>
         <translation>Artista da faixa</translation>
-    </message>
-    <message>
-        <source>Various Artists</source>
-        <translation type="vanished">Vários artistas</translation>
     </message>
     <message>
         <source>About filename schemes</source>
@@ -1511,24 +1464,12 @@ Não será possível desfazer esta escolha.</translation>
         <translation>O artista do álbum. Para a maioria dos álbuns é igual a &lt;i&gt;Artista da faixa.&lt;/i&gt; Para compilações, geralmente são &lt;i&gt;Vários artistas.&lt;/i&gt;</translation>
     </message>
     <message>
-        <source>Wibble</source>
-        <translation type="vanished">Wibble</translation>
-    </message>
-    <message>
-        <source>Wobble</source>
-        <translation type="vanished">Wobble</translation>
-    </message>
-    <message>
         <source>Track Title (+Artist)</source>
         <translation>Nome da faixa (+Artista)</translation>
     </message>
     <message>
         <source>Composer</source>
         <translation>Compositor</translation>
-    </message>
-    <message>
-        <source>Now 5001</source>
-        <translation type="vanished">Now 5001</translation>
     </message>
     <message>
         <source>The track title (with &lt;i&gt;Track Artist&lt;/i&gt;, if different to &lt;i&gt;Album Artist&lt;/i&gt;).</source>
@@ -1549,10 +1490,6 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Track Title</source>
         <translation>Nome da faixa</translation>
-    </message>
-    <message>
-        <source>Vivaldi</source>
-        <translation type="vanished">Vivaldi</translation>
     </message>
     <message>
         <source>The genre of the album.</source>
@@ -1581,32 +1518,32 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Various Artists</source>
         <comment>Example album artist</comment>
-        <translation type="unfinished">Vários artistas</translation>
+        <translation>Vários artistas</translation>
     </message>
     <message>
         <source>Wibble</source>
         <comment>Example artist</comment>
-        <translation type="unfinished">Wibble</translation>
-    </message>
-    <message>
-        <source>Vivaldi</source>
-        <comment>Example composer</comment>
-        <translation type="unfinished">Vivaldi</translation>
-    </message>
-    <message>
-        <source>Now 5001</source>
-        <comment>Example album</comment>
-        <translation type="unfinished">Now 5001</translation>
+        <translation>Wibble</translation>
     </message>
     <message>
         <source>Wobble</source>
         <comment>Example song name</comment>
-        <translation type="unfinished">Wobble</translation>
+        <translation>Wobble</translation>
+    </message>
+    <message>
+        <source>Vivaldi</source>
+        <comment>Example composer</comment>
+        <translation>Vivaldi</translation>
+    </message>
+    <message>
+        <source>Now 5001</source>
+        <comment>Example album</comment>
+        <translation>Now 5001</translation>
     </message>
     <message>
         <source>Dance</source>
         <comment>Example genre</comment>
-        <translation type="unfinished">Dance</translation>
+        <translation>Dance</translation>
     </message>
 </context>
 <context>
@@ -1640,7 +1577,8 @@ Não será possível desfazer esta escolha.</translation>
     </message>
     <message>
         <source>%1 %2%</source>
-        <translation type="vanished">%1 %2%</translation>
+        <comment>Message percent</comment>
+        <translation>%1 %2%</translation>
     </message>
     <message>
         <source>Updating...</source>
@@ -1649,11 +1587,6 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Saving cache</source>
         <translation>Salvando a memória armazenada</translation>
-    </message>
-    <message>
-        <source>%1 %2%</source>
-        <comment>Message percent</comment>
-        <translation type="unfinished">%1 %2%</translation>
     </message>
 </context>
 <context>
@@ -1768,10 +1701,6 @@ Não será possível desfazer esta escolha.</translation>
         <translation>&lt;i&gt;Selecione esta opção se sua coleção de músicas não for compartilhada com outras pessoas, e você deseja que o Cantata configure e controle a instância MPD. Esta configuração será exclusiva para o Cantata e &lt;b&gt;não&lt;/b&gt; estará acessível a outros clientes MPD (p. ex. MPDroid)&lt;/i&gt;</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="vanished">&lt;b&gt;Advertência:&lt;/b&gt; Você não é atualmente membro do grupo &apos;usuários&apos;. O Cantata funcionará melhor (salvando as capas dos álbuns, letras, etc. com as permissões corretas) com você adicionando-se (ou o administrador adicionando-te ) a esse grupo. Se for você a adicionar-se ao grupo, será necessário fazer o logout e entrar novamente para que as alterações tenham efeito.</translation>
-    </message>
-    <message>
         <source>Music folder:</source>
         <translation>Pasta de músicas:</translation>
     </message>
@@ -1839,7 +1768,8 @@ Não será possível desfazer esta escolha.</translation>
     <name>InterfaceSettings</name>
     <message>
         <source>%1%</source>
-        <translation type="vanished">%1%</translation>
+        <comment>value%</comment>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>40%</source>
@@ -1863,7 +1793,8 @@ Não será possível desfazer esta escolha.</translation>
     </message>
     <message>
         <source>%1 px</source>
-        <translation type="vanished">%1 px</translation>
+        <comment>pixels</comment>
+        <translation>%1 px</translation>
     </message>
     <message>
         <source>Blur:</source>
@@ -1892,10 +1823,6 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Hide main window</source>
         <translation>Esconder a janela principal</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="vanished">Se algo não for especificado para o &apos;Nome do arquivo&apos;, será utilizado &lt;code&gt;cover&lt;/code&gt; por padrão no Cantata. Esse nome de arquivo é usado ao baixar capas ou adicionar músicas à sua biblioteca a partir de dispositivos.</translation>
     </message>
     <message>
         <source>Show popup messages when changing tracks</source>
@@ -1996,10 +1923,6 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Show cover of current track</source>
         <translation>Mostrar a capa da faixa atual</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="vanished">Se algo não for especificado para o &apos;Nome do arquivo&apos;, será usado pelo Cantata &lt;code&gt;cover&lt;/code&gt; por padrão. Esse nome de arquivo é usado ao baixar capas.</translation>
     </message>
     <message>
         <source>Opacity:</source>
@@ -2208,21 +2131,11 @@ Não será possível desfazer esta escolha.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se algo não for especificado para o &apos;Nome do arquivo&apos;, será utilizado &lt;code&gt;cover&lt;/code&gt; por padrão no Cantata. Esse nome de arquivo é usado ao baixar capas ou adicionar músicas à sua biblioteca a partir de dispositivos. Isso deve ser especificado &lt;b&gt;sem&lt;/b&gt; uma extenção.</translation>
     </message>
     <message>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1%</source>
-        <comment>value%</comment>
-        <translation type="unfinished">%1%</translation>
-    </message>
-    <message>
-        <source>%1 px</source>
-        <comment>pixels</comment>
-        <translation type="unfinished">%1 px</translation>
+        <translation>Se algo não for especificado para o &apos;Nome do arquivo&apos;, será usado pelo Cantata &lt;code&gt;cover&lt;/code&gt; por padrão. Esse nome de arquivo é usado ao baixar capas. Isso deve ser especificado &lt;b&gt;sem&lt;/b&gt; uma extenção.</translation>
     </message>
 </context>
 <context>
@@ -2277,27 +2190,33 @@ Não será possível desfazer esta escolha.</translation>
     <name>KeySequenceWidget</name>
     <message>
         <source>Alt</source>
-        <translation type="vanished">Alt</translation>
+        <comment>Alt key</comment>
+        <translation>Alt</translation>
     </message>
     <message>
         <source>Ctrl</source>
-        <translation type="vanished">Ctrl</translation>
+        <comment>Ctrl key</comment>
+        <translation>Ctrl</translation>
     </message>
     <message>
         <source>Meta</source>
-        <translation type="vanished">Meta</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="vanished">Nenhuma</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation type="vanished">Input</translation>
+        <comment>Meta key</comment>
+        <translation>Meta</translation>
     </message>
     <message>
         <source>Shift</source>
-        <translation type="vanished">Shift</translation>
+        <comment>Shift key</comment>
+        <translation>Shift</translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <comment>What the user inputs now will be taken as the new shortcut</comment>
+        <translation>Input</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <comment>No shortcut defined</comment>
+        <translation></translation>
     </message>
     <message>
         <source>Shortcut Conflict</source>
@@ -2326,36 +2245,6 @@ Exemplo para o conjunto de teclas de atalho &apos;Ctrl+a&apos;: mantenha pressio
     <message>
         <source>Do you want to reassign this shortcut to the selected action?</source>
         <translation>Você deseja reatribuir este atalho para a ação selecionada?</translation>
-    </message>
-    <message>
-        <source>Meta</source>
-        <comment>Meta key</comment>
-        <translation type="unfinished">Meta</translation>
-    </message>
-    <message>
-        <source>Ctrl</source>
-        <comment>Ctrl key</comment>
-        <translation type="unfinished">Ctrl</translation>
-    </message>
-    <message>
-        <source>Alt</source>
-        <comment>Alt key</comment>
-        <translation type="unfinished">Alt</translation>
-    </message>
-    <message>
-        <source>Shift</source>
-        <comment>Shift key</comment>
-        <translation type="unfinished">Shift</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <comment>What the user inputs now will be taken as the new shortcut</comment>
-        <translation type="unfinished">Input</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <comment>No shortcut defined</comment>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3031,7 +2920,7 @@ Sair agora cancelará o download.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Cliente de MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2020 Craig Drummond&lt;br/&gt;Lançado sob licença &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt; {1&lt;?} {2011-2018 ?} {3&lt;?}</translation>
+        <translation type="vanished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Cliente de MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2020 Craig Drummond&lt;br/&gt;Lançado sob licença &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -3157,7 +3046,8 @@ Não será possível desfazer esta escolha.</translation>
     </message>
     <message>
         <source>%1 by %2</source>
-        <translation type="vanished">%1 de %2</translation>
+        <comment>Album by Artist</comment>
+        <translation>%1 de %2</translation>
     </message>
     <message>
         <source>Cue Sheet</source>
@@ -3176,11 +3066,6 @@ Não será possível desfazer esta escolha.</translation>
             <numerusform>%n Artista</numerusform>
             <numerusform>%n Artistas</numerusform>
         </translation>
-    </message>
-    <message>
-        <source>%1 by %2</source>
-        <comment>Album by Artist</comment>
-        <translation type="unfinished">%1 de %2</translation>
     </message>
 </context>
 <context>
@@ -3361,7 +3246,8 @@ Não será possível desfazer esta escolha.</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="vanished">%1%</translation>
+        <comment>value%</comment>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>40%</source>
@@ -3377,7 +3263,8 @@ Não será possível desfazer esta escolha.</translation>
     </message>
     <message>
         <source>%1 px</source>
-        <translation type="vanished">%1 px</translation>
+        <comment>pixels</comment>
+        <translation>%1 px</translation>
     </message>
     <message>
         <source>Blur:</source>
@@ -3444,16 +3331,6 @@ Não será possível desfazer esta escolha.</translation>
         <source>Save downloaded lyrics into music folder</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>%1%</source>
-        <comment>value%</comment>
-        <translation type="unfinished">%1%</translation>
-    </message>
-    <message>
-        <source>%1 px</source>
-        <comment>pixels</comment>
-        <translation type="unfinished">%1 px</translation>
-    </message>
 </context>
 <context>
     <name>PathRequester</name>
@@ -3470,7 +3347,8 @@ Não será possível desfazer esta escolha.</translation>
     <name>PlayQueueModel</name>
     <message>
         <source>#</source>
-        <translation type="vanished">#</translation>
+        <comment>Track number</comment>
+        <translation>#</translation>
     </message>
     <message>
         <source>Disc</source>
@@ -3583,11 +3461,6 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Unable to add local files. No suitable files found.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>#</source>
-        <comment>Track number</comment>
-        <translation type="unfinished">#</translation>
     </message>
 </context>
 <context>
@@ -4074,7 +3947,8 @@ Sobrescrevè-lo?</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="vanished">%1 (%2)</translation>
+        <comment>podcast name (num unplayed episodes)</comment>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Failed to parse %1</source>
@@ -4087,11 +3961,6 @@ Sobrescrevè-lo?</translation>
     <message>
         <source>Subscribe to RSS feeds</source>
         <translation>Assinar fontes de notícias RSS</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <comment>podcast name (num unplayed episodes)</comment>
-        <translation type="unfinished">%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4192,10 +4061,6 @@ Sobrescrevè-lo?</translation>
         <translation>Falha ao buscar pelo podcast!</translation>
     </message>
     <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">Insira abaixo a URL do podcast e depois clique em &apos;Carregar&apos;</translation>
-    </message>
-    <message>
         <source>Failed to parse podcast.</source>
         <translation>Falha ao analisar o podcast.</translation>
     </message>
@@ -4205,7 +4070,7 @@ Sobrescrevè-lo?</translation>
     </message>
     <message>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira abaixo a URL do podcast e depois clique em &apos;Carregar&apos;, ou clique no ícone da pasta para carregar um arquivo de podcast local.</translation>
     </message>
     <message>
         <source>Podcasts (*.xml, *.rss, *.opml</source>
@@ -4219,24 +4084,12 @@ Sobrescrevè-lo?</translation>
 <context>
     <name>PodcastWidget</name>
     <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">Cancelar o download dos episódios de podcast (tanto do atual quanto dos demais que estão enfileirados)?</translation>
-    </message>
-    <message>
-        <source>Refresh all subscriptions?</source>
-        <translation type="vanished">Atualizar todas as assinaturas?</translation>
-    </message>
-    <message>
         <source>Cancel Download</source>
         <translation>Cancelar download</translation>
     </message>
     <message>
         <source>Mark Episodes As Listened</source>
         <translation>Marcar episódios como escutados</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">Marcar como escutados os episódios de podcast selecionados?</translation>
     </message>
     <message>
         <source>Show Unplayed Only</source>
@@ -4271,10 +4124,6 @@ Sobrescrevè-lo?</translation>
         <translation>Recarregar todas as assinaturas, ou apenas as selecionadas?</translation>
     </message>
     <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">Deseja baixar os episódios de podcast selecionados?</translation>
-    </message>
-    <message>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Deseja excluir os arquivos baixados dos episódios de podcast selecionados?</translation>
     </message>
@@ -4293,10 +4142,6 @@ Sobrescrevè-lo?</translation>
     <message>
         <source>Unsubscribe from &apos;%1&apos;?</source>
         <translation>Remover assinatura de &apos;%1&apos;?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">Deseja marcar como novos os episódios selecionados?</translation>
     </message>
     <message>
         <source>Add Subscription</source>
@@ -4748,7 +4593,8 @@ Sobrescrevè-lo?</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; por &lt;b&gt;%2&lt;/b&gt; em &lt;b&gt;%3&lt;/b&gt;</translation>
+        <comment>Song by Artist on Album</comment>
+        <translation>&lt;b&gt;%1&lt;/b&gt; por &lt;b&gt;%2&lt;/b&gt; em &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <source>MPD Client</source>
@@ -4765,7 +4611,9 @@ Sobrescrevè-lo?</translation>
     <message>
         <source>%1
 %2 x %3 (%4)</source>
-        <translation type="vanished">%1
+        <comment>name
+width x height (file size)</comment>
+        <translation>%1
 %2 x %3 (%4)</translation>
     </message>
     <message>
@@ -4920,7 +4768,9 @@ Sobrescrevè-lo?</translation>
     <message>
         <source>%1
 %2 x %3</source>
-        <translation type="vanished">%1
+        <comment>name
+width x height</comment>
+        <translation>%1
 %2 x %3</translation>
     </message>
     <message>
@@ -4949,7 +4799,8 @@ Sobrescrevè-lo?</translation>
     </message>
     <message>
         <source>&quot;%1&quot; (%2:%3)</source>
-        <translation type="vanished">&quot;%1&quot; (%2:%3)</translation>
+        <comment>name (host:port)</comment>
+        <translation>&quot;%1&quot; (%2:%3)</translation>
     </message>
     <message>
         <source>Performer</source>
@@ -5229,7 +5080,8 @@ Sobrescrevè-lo?</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
-        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; em &lt;b&gt;%2&lt;/b&gt;</translation>
+        <comment>Song on Album</comment>
+        <translation>&lt;b&gt;%1&lt;/b&gt; em &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Single Tracks</source>
@@ -5242,22 +5094,6 @@ Sobrescrevè-lo?</translation>
     <message>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
         <translation>O &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;livello di compressione&lt;/a&gt; é um valor inteiro entre 0 e 8 que representa a relação entre o tamanho do arquivo e a sua velocidade de compressão durante a codificação com &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Definir o nível de compressão para &lt;b&gt;0&lt;/b&gt; resulta num menor tempo para compactação, mas resulta num arquivo comparavelmente maior.&lt;br/&gt;D&apos;Por outro lado, um nível de compressão &lt;b&gt;8&lt;/b&gt; torna o processo de compressão bastante lente, mas produz um arquivo de menor tamanho.&lt;br/&gt;Observe que, sendo o formato FLAC um codec sem perdas, a qualidade do áudio na saída será exatamente a mesma depois da compactação em qualquer nível.&lt;br/&gt;Além disso, em níveis acima de &lt;b&gt;5&lt;/b&gt;  o tempo para compactação aumenta drasticamente, originando arquivos apenas um pouco menores, por isso não os recomendamos.</translation>
-    </message>
-    <message>
-        <source>%1
-%2 x %3 (%4)</source>
-        <comment>name
-width x height (file size)</comment>
-        <translation type="unfinished">%1
-%2 x %3 (%4)</translation>
-    </message>
-    <message>
-        <source>%1
-%2 x %3</source>
-        <comment>name
-width x height</comment>
-        <translation type="unfinished">%1
-%2 x %3</translation>
     </message>
     <message>
         <source>cue - Cue file parsing</source>
@@ -5274,21 +5110,6 @@ width x height</comment>
     <message>
         <source>Start full screen</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot; (%2:%3)</source>
-        <comment>name (host:port)</comment>
-        <translation type="unfinished">&quot;%1&quot; (%2:%3)</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
-        <comment>Song on Album</comment>
-        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; em &lt;b&gt;%2&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
-        <comment>Song by Artist on Album</comment>
-        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; por &lt;b&gt;%2&lt;/b&gt; em &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -5321,10 +5142,6 @@ Por favor, escolha outro nome.</translation>
 <context>
     <name>RemoteDevicePropertiesWidget</name>
     <message>
-        <source>Samba Share (Auto-discover host and port)</source>
-        <translation type="vanished">Compartilhamento Samba (Encontrar automaticamente o host e a porta)</translation>
-    </message>
-    <message>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
@@ -5345,18 +5162,6 @@ Por favor, escolha outro nome.</translation>
         <translation>Usuário:</translation>
     </message>
     <message>
-        <source>Samba Share</source>
-        <translation type="vanished">Compartilhamento Samba</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="vanished">Compartilhamento:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="vanished">Ao inserir aqui sua senha, ela será armazenada &lt;b&gt;sem criptografá-laa&lt;/b&gt; no arquivo de configuração do Cantata. Para que o Cantata solicite a senha antes de acessar o compartilhamento, defina a senha como &apos;-&apos;</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Opções</translation>
     </message>
@@ -5369,16 +5174,8 @@ Por favor, escolha outro nome.</translation>
         <translation>Pasta montada localmente</translation>
     </message>
     <message>
-        <source>Password:</source>
-        <translation type="vanished">Senha:</translation>
-    </message>
-    <message>
-        <source>Domain:</source>
-        <translation type="vanished">Domínio:</translation>
-    </message>
-    <message>
-        <source>This dialog is only used to add remote devices (e.g. via Samba), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation type="vanished">Esta janela de diálogo é utilizada apenas para adicionar dispositivos remotos (p. ex. via Samba) ou para acessar pastas montadas localmente. Para reprodutores de músicas normais, conectados por USB, o Cantata será exibido automaticamento quando o dispositivo for conectado.</translation>
+        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
+        <translation>Esta janela de diálogo é utilizada apenas para adicionar dispositivos remotos (p. ex. via sshfs) ou para acessar pastas montadas localmente. Para reprodutores de músicas normais, conectados por USB, o Cantata será exibido automaticamento quando o dispositivo for conectado.</translation>
     </message>
     <message>
         <source>Folder:</source>
@@ -5393,16 +5190,8 @@ Por favor, escolha outro nome.</translation>
         <translation>Shell Seguro (sshfs)</translation>
     </message>
     <message>
-        <source>Service name:</source>
-        <translation type="vanished">Nome do serviço:</translation>
-    </message>
-    <message>
         <source>These settings are only editable when the device is not connected.</source>
         <translation>Essas configurações só podem ser alteradas quando o dispositivo não estiver conectado.</translation>
-    </message>
-    <message>
-        <source>This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5428,20 +5217,8 @@ Por favor, escolha outro nome.</translation>
         <translation>Não conectado</translation>
     </message>
     <message>
-        <source>Not Available</source>
-        <translation type="vanished">Indisponível</translation>
-    </message>
-    <message>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation>&quot;fusermount&quot; não está instalado!</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="vanished">A solicitação de senha não funciona quando o Cantata é iniciado a partir da linha de comando.</translation>
-    </message>
-    <message>
-        <source>Available</source>
-        <translation type="vanished">Disponível</translation>
     </message>
     <message>
         <source>%1 free</source>
@@ -5450,10 +5227,6 @@ Por favor, escolha outro nome.</translation>
     <message>
         <source>Failed to connect to &quot;%1&quot;</source>
         <translation>Não foi possível conectar a &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="vanished">Não foi possível resolver os detalhes da conexão para %1</translation>
     </message>
     <message>
         <source>Updating tracks...</source>
@@ -5540,7 +5313,8 @@ Por favor, escolha outro nome.</translation>
     </message>
     <message>
         <source>%1 (Corrupt tags?)</source>
-        <translation type="vanished">%1 (Etiquetas corrompidas?)</translation>
+        <comment>filename (Corrupt tags?)</comment>
+        <translation>%1 (Etiquetas corrompidas?)</translation>
     </message>
     <message>
         <source>Original: %1 dB</source>
@@ -5609,11 +5383,6 @@ Por favor, escolha outro nome.</translation>
     <message>
         <source>Untagged Tracks</source>
         <translation>Faixas sem etiquetas</translation>
-    </message>
-    <message>
-        <source>%1 (Corrupt tags?)</source>
-        <comment>filename (Corrupt tags?)</comment>
-        <translation type="unfinished">%1 (Etiquetas corrompidas?)</translation>
     </message>
 </context>
 <context>
@@ -5736,7 +5505,8 @@ Por favor, escolha outro nome.</translation>
     </message>
     <message>
         <source>%1 (via MPD)</source>
-        <translation type="vanished">%1 (via MPD)</translation>
+        <comment>scrobbler name (via MPD)</comment>
+        <translation>%1 (via MPD)</translation>
     </message>
     <message>
         <source>Scrobble using:</source>
@@ -5745,18 +5515,6 @@ Por favor, escolha outro nome.</translation>
     <message>
         <source>Scrobble tracks</source>
         <translation>Faixas Scrobble</translation>
-    </message>
-    <message>
-        <source>%1 (via MPD)</source>
-        <comment>scrobbler name (via MPD)</comment>
-        <translation type="unfinished">%1 (via MPD)</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: Faixa Scrobble</translation>
     </message>
 </context>
 <context>
@@ -6627,16 +6385,8 @@ Sobrescrevê-la?</translation>
         <translation>Erro ao baixar &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="vanished">Instalar/atualizar os provedores de fluxo selecionados?</translation>
-    </message>
-    <message>
         <source>Failed to install &apos;%1&apos;</source>
         <translation>Não foi possível instalar &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="vanished">Instalar os provedores de fluxo selecionados?</translation>
     </message>
     <message>
         <source>Abort installation/update?</source>
@@ -6657,10 +6407,6 @@ Sobrescrevê-la?</translation>
     <message>
         <source>Downloading %1</source>
         <translation>Baixando %1</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="vanished">Atualizar os provedores de fluxo selecionados?</translation>
     </message>
     <message>
         <source>Installing/updating %1</source>
@@ -6744,7 +6490,8 @@ Sobrescrevê-la?</translation>
     </message>
     <message>
         <source>Digitally Imported</source>
-        <translation type="vanished">Importado digitalmente</translation>
+        <comment>Service name</comment>
+        <translation>Importado digitalmente</translation>
     </message>
     <message>
         <source>Failed to create &apos;%1&apos;!</source>
@@ -6821,11 +6568,6 @@ Sobrescrevê-la?</translation>
     <message>
         <source>Already bookmarked</source>
         <translation>Já está marcado</translation>
-    </message>
-    <message>
-        <source>Digitally Imported</source>
-        <comment>Service name</comment>
-        <translation type="unfinished">Importado digitalmente</translation>
     </message>
 </context>
 <context>
@@ -7130,7 +6872,8 @@ Sobrescrevê-la?</translation>
     </message>
     <message>
         <source>%1 (Corrupt tags?)</source>
-        <translation type="vanished">%1 (Etiquetas corrompidas?)</translation>
+        <comment>filename (Corrupt tags?)</comment>
+        <translation>%1 (Etiquetas corrompidas?)</translation>
     </message>
     <message>
         <source>Adjust the value of each track number by:</source>
@@ -7311,11 +7054,6 @@ Sobrescrevê-la?</translation>
     <message>
         <source>Song rating has not been read from MPD!</source>
         <translation>A qualificação da música não foi lida pelo MPD!</translation>
-    </message>
-    <message>
-        <source>%1 (Corrupt tags?)</source>
-        <comment>filename (Corrupt tags?)</comment>
-        <translation type="unfinished">%1 (Etiquetas corrompidas?)</translation>
     </message>
 </context>
 <context>
@@ -7539,21 +7277,13 @@ Se você renomear um arquivo (ou a pasta que o contém), a classificação assoc
     <name>WikipediaEngine</name>
     <message>
         <source>album|score|soundtrack</source>
-        <translation type="vanished">álbum|pontuação|trilhasonora</translation>
-    </message>
-    <message>
-        <source>artist|band|singer|vocalist|musician</source>
-        <translation type="vanished">artista|banda|cantor|vocalista|musicista</translation>
+        <comment>Search pattern for an album, separated by |</comment>
+        <translation>álbum|pontuação|trilhasonora</translation>
     </message>
     <message>
         <source>artist|band|singer|vocalist|musician</source>
         <comment>Search pattern for an artist or band, separated by |</comment>
-        <translation type="unfinished">artista|banda|cantor|vocalista|musicista</translation>
-    </message>
-    <message>
-        <source>album|score|soundtrack</source>
-        <comment>Search pattern for an album, separated by |</comment>
-        <translation type="unfinished">álbum|pontuação|trilhasonora</translation>
+        <translation>artista|banda|cantor|vocalista|musicista</translation>
     </message>
 </context>
 <context>

@@ -974,11 +974,7 @@ Väliaikaistiedostoa ei voitu ladata!</translation>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">Kuvat (*.png *.jpg)</translation>
+        <translation>Kuvat (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
@@ -1031,21 +1027,6 @@ Tiedostoa ei voitu kopioida kohteeseen ”%1”!</translation>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation>Etsitään…</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Säveltäjä:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Esittäjä:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artisti:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Albumi:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Vuosi:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1252,16 +1233,6 @@ Tiedostoa ei voitu kopioida kohteeseen ”%1”!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation>Älä kopioi kansikuvia</translation>
@@ -1314,6 +1285,16 @@ Tiedostoa ei voitu kopioida kohteeseen ”%1”!</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2170,10 +2151,6 @@ Tätä ei voi kumota.</translation>
         <translation>Cantata ryhmittelee kappaleet albumeiksi albumin artisti -tunnisteella, jos se on asetettu, muuten artistitunnisteella. Jos sinulla on useamman artistin albumeja, sinun &lt;b&gt;täytyy&lt;/b&gt; asettaa albumin artisti -tunniste, jotta ryhmittely toimisi oikein. Tällöin kannattaa käyttää ilmausta ”Useita artisteja”.</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="vanished">&lt;b&gt;Varoitus:&lt;/b&gt; Et ole ”users”-ryhmän jäsen. Cantata (kansikuvien ja sanojen tallennus oikein käyttöoikeuksin) toimii paremmin, jos lisäät itsesi (tai ylläpitäjä lisää sinut) tähän ryhmään. Jos lisäät itsesi, sinun on kirjauduttava ulos ja takaisin sisään, jotta muutos astuu voimaan.</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
         <source>Not Connected</source>
         <translation>Ei yhteyttä</translation>
@@ -2651,20 +2628,12 @@ Tätä ei voi kumota.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="220"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ellei tiedostonimeä ole määritetty, Cantata käyttää oletusnimeä &lt;code&gt;cover&lt;/code&gt;. Tätä käytetään ladattaessa kansikuvia tai kun musiikkia lisätään kirjastoon eri laitteilta.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="224"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="vanished">Ellei tiedostonimeä ole määritetty, Cantata käyttää oletusnimeä &lt;code&gt;cover&lt;/code&gt;. Tätä käytetään ladattaessa kansikuvia tai kun musiikkia lisätään kirjastoon eri laitteilta.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="vanished">Ellei tiedostonimeä ole määritetty, Cantata käyttää oletusnimeä &lt;code&gt;cover&lt;/code&gt;. Tätä käytetään ladattaessa kansikuvia.</translation>
+        <translation type="unfinished">Ellei tiedostonimeä ole määritetty, Cantata käyttää oletusnimeä &lt;code&gt;cover&lt;/code&gt;. Tätä käytetään ladattaessa kansikuvia.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="438"/>
@@ -4380,14 +4349,14 @@ Tätä ei voi kumota.</translation>
         <translation>Häivytys kappaleiden välillä:</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation>ReplayGain:</translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation> s</translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation>ReplayGain:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -4666,6 +4635,16 @@ Tätä ei voi kumota.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation>Dynaaminen soittolista</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation>Älykäs soittolista</translation>
+    </message>
+    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
         <source>Each playlist requires a unique name, enter that above.
 
@@ -4689,16 +4668,6 @@ Use the settings below to restrict the range of songs added.</source>
         <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Descending</source>
         <translation type="unfinished">Laskeva</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation>Dynaaminen soittolista</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation>Älykäs soittolista</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
@@ -5053,11 +5022,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">Anna podcastin verkko-osoite alle ja paina ”Lataa”</translation>
+        <translation type="unfinished">Anna podcastin verkko-osoite alle ja paina ”Lataa”</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -5152,39 +5117,9 @@ Overwrite?</source>
         <translation>Perutaanko tilaus ”%1”?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">Haluatko ladata valitut podcast-jaksot?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">Perutaanko podcast-jaksojen lataus (sekä nykyinen että jonossa olevat)?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Haluatko poistaa valittujen podcast-jaksojen ladatut tiedostot?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">Haluatko merkitse valitut podcast-jaksot uusiksi?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">Haluatko merkitä valitut podcast-jaksot kuunnelluiksi?</translation>
-    </message>
-    <message>
-        <source>Refresh all subscriptions?</source>
-        <translation type="vanished">Virkistetäänkö kaikki tilaukset?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -5205,6 +5140,16 @@ Overwrite?</source>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
         <translation>Virkistä valitut</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6493,26 +6438,6 @@ Valitse toinen nimi.</translation>
         <translation>Käyttäjä:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="vanished">Verkkoalue:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Salasana:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="vanished">Jako:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="vanished">Jos asetat tähän salasanan, se tallennetaan &lt;b&gt;salaamattomana&lt;/b&gt; Cantatan asetustiedostoon. Aseta salasanaksi ”-”, niin Cantata kysyy salasanaa aina jakoa käytettäessä.</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="vanished">Palvelun nimi:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -6547,19 +6472,6 @@ Valitse toinen nimi.</translation>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="vanished">Käytettävissä</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="vanished">Ei käytettävissä</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation type="unfinished"></translation>
@@ -6576,13 +6488,18 @@ Valitse toinen nimi.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6959,13 +6876,6 @@ Valitse toinen nimi.</translation>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation>Ei todennettu</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: lähetä kappaletiedot</translation>
     </message>
 </context>
 <context>
@@ -8058,11 +7968,6 @@ Korvataanko se?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation type="unfinished"></translation>
@@ -8083,6 +7988,11 @@ Korvataanko se?</translation>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

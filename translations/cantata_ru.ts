@@ -6036,14 +6036,6 @@ Continue with the default settings?</source>
         <source>Saving cache</source>
         <translation type="unfinished">Сохранение кеша</translation>
     </message>
-    <message>
-        <source>Calculating...</source>
-        <translation type="obsolete">Вычисление...</translation>
-    </message>
-    <message>
-        <source>Time remaining:</source>
-        <translation type="obsolete">Оставшееся время:</translation>
-    </message>
 </context>
 <context>
     <name>AlbumDetails</name>
@@ -6673,11 +6665,7 @@ Could not download to temporary file!</source>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="obsolete">Изображения (*.png *.jpg)</translation>
+        <translation type="unfinished">Изображения (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
@@ -6730,21 +6718,6 @@ Could not copy file to &apos;%1&apos;!</source>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation type="unfinished">Идёт поиск...</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Автор музыки:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Исполнитель:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Исполнитель:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Альбом:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Год:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -6951,16 +6924,6 @@ Could not copy file to &apos;%1&apos;!</source>
         <translation type="unfinished">Перекодирование</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation type="unfinished">Перекодировать только если исходный файл имеет другой формат</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation type="unfinished">Не копировать обложки</translation>
@@ -7013,6 +6976,16 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation type="unfinished">Перекодировать только если исходный файл имеет другой формат</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7458,11 +7431,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="126"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remote dynamizer is not running.</source>
-        <translation type="obsolete">Удалённый dynamizer не запущен</translation>
+        <translation type="unfinished">Удалённый dynamizer не работает. Cantata требует для поддержки динамических плейлистов под Windows, чтобы свего скрипт «cantata-dynamic» работал на сервере MPD.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="160"/>
@@ -7477,28 +7446,6 @@ This cannot be undone.</source>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="161"/>
         <source>Remove Dynamic Rules</source>
         <translation type="unfinished">Удалить динамические правила</translation>
-    </message>
-</context>
-<context>
-    <name>FancyTabWidget</name>
-    <message>
-        <source>Configure...</source>
-        <translation type="obsolete">Настроить...</translation>
-    </message>
-</context>
-<context>
-    <name>FileSettings</name>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="obsolete">Сохранять загруженные тексты песен в папке с музыкой</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="obsolete">Сохранять загруженный фон/оформление в папке с музыкой</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="obsolete">Если в параметрах Cantata указано хранить слова песен, обложки дисков или фоновое оформление внутри папки с музыкой, но у пользователя нет доступа на запись в эту папку, то Cantata будет сохранять эти файлы в папке кеша пользователя.</translation>
     </message>
 </context>
 <context>
@@ -7694,25 +7641,6 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>FolderPage</name>
-    <message>
-        <source>Open In File Manager</source>
-        <translation type="obsolete">Открыть в файловом менеджере</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to delete the selected songs?
-
-This cannot be undone.</source>
-        <translation type="obsolete">Точно удалить выбранные песни?
-
-Это действие нельзя будет отменить.</translation>
-    </message>
-    <message>
-        <source>Delete Songs</source>
-        <translation type="obsolete">Удалить песни</translation>
-    </message>
-</context>
-<context>
     <name>FsDevice</name>
     <message>
         <location filename="../devices/fsdevice.cpp" line="679"/>
@@ -7784,22 +7712,14 @@ This cannot be undone.</source>
         <translation type="unfinished">Добро пожаловать в программу Cantata!</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata — это дружественный к пользователю и богатый функционалом клиент для Music Player Daemon (MPD). MPD — это гибкое и мощное серверное приложение для проигрывания музыки.&lt;/p&gt;&lt;p&gt;Подробности об MPD можно найти на сайте MPD: &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Данный мастер проведёт вас по базовым настройкам, которые необходимы для правильной работы Cantata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Добро пожаловать в программу Cantata!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Cantata — это дружественный к пользователю и богатый функционалом клиент для Music Player Daemon (MPD). MPD — это гибкое и мощное серверное приложение для проигрывания музыки.&lt;/p&gt;&lt;p&gt;Подробности об MPD можно найти на сайте MPD: &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Данный мастер проведёт вас по базовым настройкам, которые необходимы для правильной работы Cantata.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
         <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Добро пожаловать в программу Cantata!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -7895,7 +7815,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Получить недостающие обложки</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
@@ -7906,26 +7826,6 @@ This cannot be undone.</source>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Cantata загружает отсутствующие обложки и слова песен из Интернета.&lt;/p&gt;&lt;p&gt;Для каждого загруженного элемента необходимо подтверждать, сохранять ли его в папке с музыкой или в папках с персональным кешем пользователя&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="obsolete">Сохранять загруженные тексты песен в папке с музыкой</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="obsolete">Сохранять загруженный фон/оформление в папке с музыкой</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="obsolete">Если в параметрах Cantata указано хранить слова песен, обложки дисков или фоновое оформление внутри папки с музыкой, но у пользователя нет доступа на запись в эту папку, то Cantata будет сохранять эти файлы в папке кеша пользователя.</translation>
-    </message>
-    <message>
-        <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="obsolete">Параметром для «Папки с музыкой» указан адрес HTTP, но в настоящий момент Cantata не может загружать файлы на внешние серверы HTTP. Поэтому параметры, указанные выше, нужно оставить без изменений.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="722"/>
@@ -7941,10 +7841,6 @@ This cannot be undone.</source>
         <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation type="unfinished">Cantata группирует треки в альбомы с помощью тега «AlbumArtist», если он указан. В противном случае будет использован тег «Исполнитель». При наличии альбома с несколькими исполнителями, тег «AlbumArtist» &lt;b&gt;должен&lt;/b&gt; быть указан для корректной работы группировки треков. В этом сценарии рекомендуется использовать  тег «Несколько исполнителей».</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="obsolete">&lt;b&gt;Предупреждение:&lt;/b&gt; вы не являетесь членом группы &apos;users&apos;. Функционал программы Cantata улучшится (сохранение с правильными правами обложек, слов песен и т.п.) если вы (или ваш администратор) добавите своего пользователя в эту группу. Если вы будете делать это самостоятельно, то затем, для применения настройки, будет необходимо закончить текущий сеанс пользователя и снова войти в систему.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
@@ -8263,7 +8159,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="644"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Получить недостающие обложки</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="651"/>
@@ -8273,7 +8169,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>Filename:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Имя файла:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="668"/>
@@ -8291,10 +8187,6 @@ This cannot be undone.</source>
         <translation type="unfinished">Общее</translation>
     </message>
     <message>
-        <source>Fetch missing covers from Last.fm</source>
-        <translation type="obsolete">Получить недостающие обложки из Last.fm</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="712"/>
         <source>Show delete action in context menus</source>
         <translation type="unfinished">Показать действие удаления в контекстных меню</translation>
@@ -8305,28 +8197,9 @@ This cannot be undone.</source>
         <translation type="unfinished">Включать одним щелчком</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="775"/>
-        <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
-&lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be &apos;flickable&apos;&lt;/li&gt;&lt;li&gt;To drag items, you will need to &apos;touch&apos; the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will only be a few pixels wide&lt;/li&gt;&lt;li&gt;Actions (e.g. &apos;Add To Play Queue&apos;) will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;li&gt;Spin buttons will have + and - buttons at the side of the text field&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Это действие изменит интерфейс Cantata следующим образом:
-&lt;ul&gt;&lt;li&gt;Кнопки проигрывания и управления станут на 33% шире&lt;/li&gt;&lt;li&gt;Окна будут «скользить» при прокрутке&lt;/li&gt;&lt;li&gt;Чтобы протащить элемент, нужно будет «прикоснуться» к верхнему левому углу&lt;/li&gt;&lt;li&gt;Панели прокрутки будут всего несколько пикселей в ширину&lt;/li&gt;&lt;li&gt;Действия, (например, «Добавить в очередь воспроизведения») всегда будут видимыми (а не только когда элемент находится точно под курсором)&lt;/li&gt;&lt;li&gt;Кнопки увеличения/уменьшения будут иметь дополнительные кнопочки «+» и «-» сбоку текстового поля&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Make interface more touch friendly</source>
-        <translation type="obsolete">Более дружественный сенсорный интерфейс</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="726"/>
         <source>Show song information tooltips</source>
         <translation type="unfinished">Показывать подсказки с информацией о песне</translation>
-    </message>
-    <message>
-        <source>Support retina displays</source>
-        <translation type="obsolete">Поддержка дисплеев Retina</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="733"/>
@@ -8344,12 +8217,9 @@ This cannot be undone.</source>
         <translation type="unfinished">Изменение языкового параметра требует перезапуска Cantata</translation>
     </message>
     <message>
-        <source>Changing the &apos;touch friendly&apos; setting will require a re-start of Cantata.</source>
-        <translation type="obsolete">Изменение параметра «Более дружественный сенсорный интерфейс» требует перезапуска Cantata</translation>
-    </message>
-    <message>
-        <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
-        <translation type="obsolete">Включение поддержки для дисплеев Retina сделает иконки более чёткими на дисплеях Retina, и более расплывчатыми на других устройствах. Изменение этого параметра потребует перезапуска Cantata.</translation>
+        <location filename="../gui/interfacesettings.ui" line="775"/>
+        <source>Changing the style setting will require a re-start of Cantata.</source>
+        <translation type="unfinished">Изменение параметра стиля требует перезапуска Cantata</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="149"/>
@@ -9115,13 +8985,9 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation type="unfinished">Найти в очереди на воспроизведение</translation>
     </message>
     <message>
-        <source>Play Stream</source>
-        <translation type="obsolete">Воспроизводить поток</translation>
-    </message>
-    <message>
         <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Воспроизводить поток вывода HTTP</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
@@ -9533,10 +9399,6 @@ This cannot be undone.</source>
         <translation type="unfinished">Обновление папок...</translation>
     </message>
     <message>
-        <source>Updating files...</source>
-        <translation type="obsolete">Обновление файлов...</translation>
-    </message>
-    <message>
         <location filename="../devices/mtpdevice.cpp" line="317"/>
         <source>Updating tracks...</source>
         <translation type="unfinished">Обновление треков...</translation>
@@ -9646,12 +9508,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
         <source>Copy To Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Скопировать в буфер обмена</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
         <source>Now Playing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Проигрывается</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="459"/>
@@ -9671,10 +9533,6 @@ This cannot be undone.</source>
         <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
         <source>%1 kHz</source>
         <translation type="unfinished">%1 кГц</translation>
-    </message>
-    <message>
-        <source>(Stream)</source>
-        <translation type="obsolete">(Поток)</translation>
     </message>
 </context>
 <context>
@@ -10192,14 +10050,14 @@ This cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation type="unfinished"> s</translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -10398,13 +10256,9 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <source>Name of Dynamic Rules</source>
-        <translation type="obsolete">Имя динамических правил</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Имя плейлиста</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -10482,23 +10336,14 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <source>Dynamic Rules</source>
-        <translation type="obsolete">Динамические правила</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation type="unfinished">Динамический плейлист</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation type="obsolete">Нет</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
-        <source>No Limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
-        <source>About dynamic rules</source>
-        <translation type="unfinished">О динамических правилах</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation type="unfinished">Смарт-плейлист</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
@@ -10507,6 +10352,12 @@ This cannot be undone.</source>
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
 
 Use the settings below to restrict the range of songs added.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
+        <source>No Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10520,19 +10371,14 @@ Use the settings below to restrict the range of songs added.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation type="unfinished">Смарт-плейлист</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
         <source>Number of songs:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
+        <source>About dynamic rules</source>
+        <translation type="unfinished">О динамических правилах</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="358"/>
@@ -10605,89 +10451,6 @@ Overwrite?</source>
         <location filename="../models/playlistsmodel.cpp" line="356"/>
         <source>Smart Playlist</source>
         <translation type="unfinished">Смарт-плейлист</translation>
-    </message>
-</context>
-<context>
-    <name>Plurals</name>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>треков: %n</numerusform>
-            <numerusform>треков: %n</numerusform>
-            <numerusform>треков: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>треков: %n (%1)</numerusform>
-            <numerusform>треков: %n (%1)</numerusform>
-            <numerusform>треков: %n (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>альбомов: %n</numerusform>
-            <numerusform>альбомов: %n</numerusform>
-            <numerusform>альбомов: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>исполнителей: %n</numerusform>
-            <numerusform>исполнителей: %n</numerusform>
-            <numerusform>исполнителей: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>потоков: %n</numerusform>
-            <numerusform>потоков: %n</numerusform>
-            <numerusform>потоков: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>элементов: %n</numerusform>
-            <numerusform>элементов: %n</numerusform>
-            <numerusform>элементов: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>подкаст: %n</numerusform>
-            <numerusform>подкаст: %n</numerusform>
-            <numerusform>подкаст: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>подкастов: %n</numerusform>
-            <numerusform>подкастов: %n</numerusform>
-            <numerusform>подкастов: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>серий: %n</numerusform>
-            <numerusform>серий: %n</numerusform>
-            <numerusform>серий: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>Доступно обновлений: %n</numerusform>
-            <numerusform>Доступно обновлений: %n</numerusform>
-            <numerusform>Доступно обновлений: %n</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -10965,11 +10728,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="obsolete">Введи ниже адрес URL подкаста и нажмите «Загрузить»</translation>
+        <translation type="unfinished">Введи ниже адрес URL подкаста и нажмите «Загрузить», или нажмите значок папки для загрузки локального файла подкаста.</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -11060,35 +10819,9 @@ Overwrite?</source>
         <translation type="unfinished">Отменить подписку на «%1»?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="obsolete">Загрузить выбранные серии подкаста?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="obsolete">Отменить загрузку серий подкаста (как текущую, так и стоящие в очереди на загрузку)?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation type="unfinished">Удалить загруженные файлы выбранной серии подкаста?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="obsolete">Отметить выбранные серии подкаста как новые?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="obsolete">Отметить выбранные серии подкаста как уже прослушанные?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -11108,6 +10841,16 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11422,11 +11165,7 @@ Overwrite?</source>
     <message>
         <location filename="../devices/encoders.cpp" line="271"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="obsolete">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Уровень сжатия&lt;/a&gt; — это целое число со значением от 0 до 8, представляющее оптимальное соотношение между размером файла и скоростью сжатия во время кодирования в формат &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Уровень сжатия, равный &lt;b&gt;0&lt;/b&gt;, даёт самое короткое время сжатия, но создаёт относительно большой файл.&lt;br/&gt;С другой стороны, уровень сжатия &lt;b&gt;8&lt;/b&gt; потребует много времени на процесс сжатия, но размер созданного файла будет самым маленьким.&lt;br/&gt;Поскольку, по определению, FLAC — это кодек со сжатием без потерь, то качество аудио на выходе не изменится, вне зависимости от уровня сжатия.&lt;br/&gt;Кроме того, уровни сжатия более &lt;b&gt;5&lt;/b&gt; очень сильно увеличивают время сжатия, но лишь незначительно уменьшают размер файла по сравнению с более низкими уровнями сжатия, и поэтому не рекомендуются.</translation>
+        <translation type="unfinished">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Уровень сжатия&lt;/a&gt; — это целое число со значением от 0 до 8, представляющее оптимальное соотношение между размером файла и скоростью сжатия во время кодирования в формат &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Уровень сжатия, равный &lt;b&gt;0&lt;/b&gt;, даёт самое короткое время сжатия, но создаёт относительно большой файл.&lt;br/&gt;С другой стороны, уровень сжатия &lt;b&gt;8&lt;/b&gt; потребует много времени на процесс сжатия, но размер созданного файла будет самым маленьким.&lt;br/&gt;Поскольку, по определению, FLAC — это кодек со сжатием без потерь, то качество аудио на выходе не изменится, вне зависимости от уровня сжатия.&lt;br/&gt;Кроме того, уровни сжатия более &lt;b&gt;5&lt;/b&gt; очень сильно увеличивают время сжатия, но лишь незначительно уменьшают размер файла по сравнению с более низкими уровнями сжатия, и поэтому не рекомендуются.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="286"/>
@@ -11640,61 +11379,6 @@ width x height</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 Tracks</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 треков</translation>
-    </message>
-    <message>
-        <source>1 Track (%1)</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 трек (%1)</translation>
-    </message>
-    <message>
-        <source>%1 Tracks (%2)</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 треков (%2)</translation>
-    </message>
-    <message>
-        <source>%1 Albums</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 альбомов</translation>
-    </message>
-    <message>
-        <source>%1 Artists</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 исполнителей</translation>
-    </message>
-    <message>
-        <source>%1 Streams</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 потоков</translation>
-    </message>
-    <message>
-        <source>%1 Entries</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 элементов</translation>
-    </message>
-    <message>
-        <source>%1 Rules</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 правил</translation>
-    </message>
-    <message>
-        <source>%1 Podcasts</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 подкастов</translation>
-    </message>
-    <message>
-        <source>%1 Episodes</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 серий</translation>
-    </message>
-    <message>
-        <source>%1 Updates available</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Доступно обновлений: %1</translation>
-    </message>
-    <message>
         <location filename="../gui/stdactions.cpp" line="85"/>
         <source>Previous Track</source>
         <translation type="unfinished">Предыдущий трек</translation>
@@ -11895,11 +11579,6 @@ width x height</comment>
         <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation type="unfinished">По умолчанию</translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot;</source>
-        <comment>name (host)</comment>
-        <translation type="obsolete">«%1»</translation>
     </message>
     <message>
         <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
@@ -12239,86 +11918,6 @@ width x height</comment>
         <source>Categorized</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>треков: %n</numerusform>
-            <numerusform>треков: %n</numerusform>
-            <numerusform>треков: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>треков: %n (%1)</numerusform>
-            <numerusform>треков: %n (%1)</numerusform>
-            <numerusform>треков: %n (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>альбомов: %n</numerusform>
-            <numerusform>альбомов: %n</numerusform>
-            <numerusform>альбомов: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>исполнителей: %n</numerusform>
-            <numerusform>исполнителей: %n</numerusform>
-            <numerusform>исполнителей: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>потоков: %n</numerusform>
-            <numerusform>потоков: %n</numerusform>
-            <numerusform>потоков: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>элементов: %n</numerusform>
-            <numerusform>элементов: %n</numerusform>
-            <numerusform>элементов: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>подкаст: %n</numerusform>
-            <numerusform>подкаст: %n</numerusform>
-            <numerusform>подкаст: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>подкастов: %n</numerusform>
-            <numerusform>подкастов: %n</numerusform>
-            <numerusform>подкастов: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>серий: %n</numerusform>
-            <numerusform>серий: %n</numerusform>
-            <numerusform>серий: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>Доступно обновлений: %n</numerusform>
-            <numerusform>Доступно обновлений: %n</numerusform>
-            <numerusform>Доступно обновлений: %n</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpd - MPD communication</source>
@@ -12541,26 +12140,6 @@ Please choose a different name.</source>
         <translation type="unfinished">Пользователь:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="obsolete">Домен:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="obsolete">Пароль:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="obsolete">Общий ресурс:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="obsolete">Введённый здесь пароль будет храниться &lt;b&gt;незашифрованным&lt;/b&gt; в конфигурационном файле Cantata. Чтобы заставить Cantata запрашивать пароль при каждой попытке доступа к общим ресурсам, укажите пароль «-».</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="obsolete">Имя сервиса:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -12595,27 +12174,6 @@ Please choose a different name.</source>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="obsolete">Доступно</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="obsolete">Недоступно</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="obsolete">Сбой определения подробностей подключения для %1</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation type="unfinished">Соединение...</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="obsolete">Запрос паролей не работает, если cantata была запущена из командной строки.</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation type="unfinished">Требуемое приложение ssh-askpass не установлено. Оно необходимо для ввода паролей.</translation>
@@ -12632,14 +12190,19 @@ Please choose a different name.</source>
         <translation type="unfinished">«sshfs» не установлен</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation type="unfinished">Отключение...</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation type="unfinished">Соединение...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation type="unfinished">«fusermount» не установлен</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation type="unfinished">Отключение...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -12866,10 +12429,6 @@ Please choose a different name.</source>
 <context>
     <name>RulesPlaylists</name>
     <message>
-        <source> - Rating: %1..%2</source>
-        <translation type="obsolete"> - Рейтинг: %1..%2</translation>
-    </message>
-    <message>
         <location filename="../playlists/rulesplaylists.cpp" line="96"/>
         <source>Album Artist</source>
         <translation type="unfinished">Исполнитель альбома</translation>
@@ -12931,7 +12490,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="173"/>
         <source>, Rating: %1..%2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">, Рейтинг: %1..%2</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="176"/>
@@ -13028,13 +12587,6 @@ Please choose a different name.</source>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation type="unfinished">Вход не выполнен</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="obsolete">%1: скробблить треки</translation>
     </message>
 </context>
 <context>
@@ -13247,14 +12799,6 @@ This cannot be undone.</source>
         <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation type="unfinished">Папка с музыкой:</translation>
-    </message>
-    <message>
-        <source>Cover filename:</source>
-        <translation type="obsolete">Имя файла обложки:</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Имя файла (без расширения) для сохранения загруженных обложек.&lt;br/&gt;Если поле не заполнено, используется &apos;cover&apos;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% будет заменён на значение исполнителя текущей песни, а %album% — на название альбома.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
@@ -14141,23 +13685,6 @@ Overwrite?</source>
         <translation type="unfinished">Сбой загрузки «%1»</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="obsolete">Установить/обновить выбранные источники потоков?</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="obsolete">Установить выбранные источники потоков?</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="obsolete">Обновить выбранные источники потоков?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation type="unfinished">Установка/Обновление</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation type="unfinished">Прервать установку/обновление?</translation>
@@ -14180,6 +13707,11 @@ Overwrite?</source>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation type="unfinished">Идёт загрузка %1</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation type="unfinished">Установка/Обновление</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>
@@ -14520,11 +14052,7 @@ Overwrite?</source>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
         <source>Failed to open package file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed top open package file.</source>
-        <translation type="obsolete">Сбой открытия файла пакета</translation>
+        <translation type="unfinished">Сбой открытия файла пакета</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>
@@ -15185,10 +14713,6 @@ If you rename a file (or the folder it is within), then the rating associated wi
         <location filename="../gui/trayitem.cpp" line="182"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
-    </message>
-    <message>
-        <source>Now playing</source>
-        <translation type="obsolete">Проигрывается</translation>
     </message>
 </context>
 <context>

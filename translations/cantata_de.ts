@@ -4211,14 +4211,6 @@ Mit Standardeinstellungen fortfahren?</translation>
         <source>Saving cache</source>
         <translation>Speichere Cache</translation>
     </message>
-    <message>
-        <source>Calculating...</source>
-        <translation type="obsolete">Berechne...</translation>
-    </message>
-    <message>
-        <source>Time remaining:</source>
-        <translation type="obsolete">Verbleibende Zeit:</translation>
-    </message>
 </context>
 <context>
     <name>AlbumDetails</name>
@@ -4846,11 +4838,7 @@ Konnte nicht in temporäre Datei herunterladen.</translation>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">Bilder (*.png *.jpg)</translation>
+        <translation>Bilder (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
@@ -4903,21 +4891,6 @@ Konnte die Datei nicht nach ‚%1‘ kopieren.</translation>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation>Suche …</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Komponist:&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Ausführender Künstler:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Interpret:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Jahr:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -5116,26 +5089,12 @@ Konnte die Datei nicht nach ‚%1‘ kopieren.</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="195"/>
         <source>If an artist name begins with &apos;The&apos;, then append this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="vanished">Wenn ein Interpretenname mit „The“ beginnt, hänge dies im Ordnernamen hinten an, z. B. „The Beatles“ wird zu „Beatles, The“</translation>
+        <translation type="unfinished">Wenn ein Interpretenname mit „The“ beginnt, hänge dies im Ordnernamen hinten an, z. B. „The Beatles“ wird zu „Beatles, The“</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
         <source>Transcoding</source>
         <translation>Umwandeln</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation>Nur umwandeln, wenn Quelldatei ein anderes Format besitzt</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
@@ -5190,6 +5149,16 @@ Konnte die Datei nicht nach ‚%1‘ kopieren.</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation>Nur umwandeln, wenn Quelldatei ein anderes Format besitzt</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5517,123 +5486,16 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
 </context>
 <context>
-    <name>Dynamic</name>
-    <message>
-        <source>Start Dynamic Playlist</source>
-        <translation type="vanished">Dynamische Wiedergabeliste starten</translation>
-    </message>
-    <message>
-        <source>Stop Dynamic Mode</source>
-        <translation type="vanished">Dynamischen Modus stoppen</translation>
-    </message>
-    <message>
-        <source>Dynamic Playlists</source>
-        <translation type="vanished">Dynamische Wiedergabelisten</translation>
-    </message>
-    <message>
-        <source>Dynamically generated playlists</source>
-        <translation type="vanished">Dynamisch generierte Wiedergabelisten</translation>
-    </message>
-    <message>
-        <source> - Rating: %1..%2</source>
-        <translation type="vanished"> – Bewertung: %1..%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="vanished">
-            <numerusform>Eine Regel</numerusform>
-            <numerusform>%n Regeln</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
-        <translation type="vanished">Du musst ‚perl‘ auf deinem System installieren, um den dynamischen Modus von Cantata benutzen zu können.</translation>
-    </message>
-    <message>
-        <source>Failed to locate rules file - %1</source>
-        <translation type="vanished">Finden der Regeldatei fehlgeschlagen – %1</translation>
-    </message>
-    <message>
-        <source>Failed to remove previous rules file - %1</source>
-        <translation type="vanished">Entfernen der bestehenden Regeldatei fehlgeschlagen – %1</translation>
-    </message>
-    <message>
-        <source>Failed to install rules file - %1 -&gt; %2</source>
-        <translation type="vanished">Installieren der Regeldatei fehlgeschlagen – %1 → %2</translation>
-    </message>
-    <message>
-        <source>Dynamizer has been terminated.</source>
-        <translation type="vanished">Dynamizer wurde beendet.</translation>
-    </message>
-    <message>
-        <source>Awaiting response for previous command. (%1)</source>
-        <translation type="vanished">Warte auf Antwort vom vorherigen Befehl. (%1)</translation>
-    </message>
-    <message>
-        <source>Saving rule</source>
-        <translation type="vanished">Speichere Regel</translation>
-    </message>
-    <message>
-        <source>Deleting rule</source>
-        <translation type="vanished">Lösche Regel</translation>
-    </message>
-    <message>
-        <source>Failed to save %1. (%2)</source>
-        <translation type="vanished">Speichern von %1 fehlgeschlagen. (%2)</translation>
-    </message>
-    <message>
-        <source>Failed to delete rules file. (%1)</source>
-        <translation type="vanished">Löschen der Regeldatei fehlgeschlagen. (%1)</translation>
-    </message>
-    <message>
-        <source>Failed to control dynamizer state. (%1)</source>
-        <translation type="vanished">Setzen des Dynamizer-Status fehlgeschlagen. (%1)</translation>
-    </message>
-    <message>
-        <source>Failed to set the current dynamic rules. (%1)</source>
-        <translation type="vanished">Setzen der dynamischen Regeln fehlgeschlagen. (%1)</translation>
-    </message>
-</context>
-<context>
-    <name>DynamicPage</name>
-    <message>
-        <source>Add</source>
-        <translation type="vanished">Hinzufügen</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation type="vanished">Bearbeiten</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="vanished">Entfernen</translation>
-    </message>
-    <message>
-        <source>Remote dynamizer is not running.</source>
-        <translation type="vanished">Entfernter Dynamizer ist nicht aktiv.</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to remove the selected rules?
-
-This cannot be undone.</source>
-        <translation type="vanished">Bist du sicher, dass du die ausgewählten Regeln entfernen möchtest? Dies kann nicht rückgängig gemacht werden.</translation>
-    </message>
-    <message>
-        <source>Remove Dynamic Rules</source>
-        <translation type="vanished">Dynamische Regeln entfernen</translation>
-    </message>
-</context>
-<context>
     <name>DynamicPlaylists</name>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="143"/>
         <source>Start Dynamic Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dynamische Wiedergabeliste starten</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="144"/>
         <source>Stop Dynamic Mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dynamischen Modus stoppen</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="154"/>
@@ -5648,22 +5510,22 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="215"/>
         <source>You need to install &quot;perl&quot; on your system in order for Cantata&apos;s dynamic mode to function.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Du musst ‚perl‘ auf deinem System installieren, um den dynamischen Modus von Cantata benutzen zu können.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="222"/>
         <source>Failed to locate rules file - %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Finden der Regeldatei fehlgeschlagen – %1</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="230"/>
         <source>Failed to remove previous rules file - %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Entfernen der bestehenden Regeldatei fehlgeschlagen – %1</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="235"/>
         <source>Failed to install rules file - %1 -&gt; %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Installieren der Regeldatei fehlgeschlagen – %1 → %2</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="386"/>
@@ -5673,12 +5535,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="497"/>
         <source>Dynamizer has been terminated.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dynamizer wurde beendet.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="543"/>
         <source>Awaiting response for previous command. (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Warte auf Antwort vom vorherigen Befehl. (%1)</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="543"/>
@@ -5699,17 +5561,17 @@ This cannot be undone.</source>
         <location filename="../playlists/dynamicplaylists.cpp" line="664"/>
         <location filename="../playlists/dynamicplaylists.cpp" line="667"/>
         <source>Failed to delete rules file. (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Löschen der Regeldatei fehlgeschlagen. (%1)</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="674"/>
         <source>Failed to control dynamizer state. (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Setzen des Dynamizer-Status fehlgeschlagen. (%1)</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="681"/>
         <source>Failed to set the current dynamic rules. (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Setzen der dynamischen Regeln fehlgeschlagen. (%1)</translation>
     </message>
 </context>
 <context>
@@ -5742,11 +5604,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="126"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remote dynamizer is not running.</source>
-        <translation type="obsolete">Entfernter Dynamizer ist nicht aktiv.</translation>
+        <translation type="unfinished">Entfernter Dynamizer ist nicht aktiv.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="160"/>
@@ -5758,217 +5616,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="161"/>
         <source>Remove Dynamic Rules</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DynamicRule</name>
-    <message>
-        <source>Type:</source>
-        <translation type="vanished">Typ:</translation>
-    </message>
-    <message>
-        <source>Include songs that match the following:</source>
-        <translation type="vanished">Stücke einbeziehen, auf welche folgendes zutrifft:</translation>
-    </message>
-    <message>
-        <source>Exclude songs that match the following:</source>
-        <translation type="vanished">Stücke ausschließen, auf welche folgendes zutrifft:</translation>
-    </message>
-    <message>
-        <source>Artist:</source>
-        <translation type="vanished">Interpret:</translation>
-    </message>
-    <message>
-        <source>Artists similar to:</source>
-        <translation type="vanished">Interpreten ähnlich zu:</translation>
-    </message>
-    <message>
-        <source>Album Artist:</source>
-        <translation type="vanished">Album-Interpret:</translation>
-    </message>
-    <message>
-        <source>Composer:</source>
-        <translation type="vanished">Komponist:</translation>
-    </message>
-    <message>
-        <source>Album:</source>
-        <translation type="vanished">Album:</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Titel:</translation>
-    </message>
-    <message>
-        <source>Genre</source>
-        <translation type="vanished">Genre</translation>
-    </message>
-    <message>
-        <source>From Year:</source>
-        <translation type="vanished">Von Jahr:</translation>
-    </message>
-    <message>
-        <source>Any</source>
-        <translation type="vanished">Egal</translation>
-    </message>
-    <message>
-        <source>To Year:</source>
-        <translation type="vanished">Bis Jahr:</translation>
-    </message>
-    <message>
-        <source>Comment:</source>
-        <translation type="vanished">Kommentar:</translation>
-    </message>
-    <message>
-        <source>Filename / path:</source>
-        <translation type="vanished">Dateiname/Pfad</translation>
-    </message>
-    <message>
-        <source>Exact match</source>
-        <translation type="vanished">Exakter Treffer</translation>
-    </message>
-    <message>
-        <source>Only enter values for the tags you wish to be search on.</source>
-        <translation type="vanished">Gib nur für die Tags etwas ein, über die du suchen willst.</translation>
-    </message>
-    <message>
-        <source>For genre, end string with an asterisk to match various genres. e.g &apos;rock*&apos; matches &apos;Hard Rock&apos; and &apos;Rock and Roll&apos;.</source>
-        <translation type="vanished">Schließe den Suchbegriff für das Genre mit einem Sternchen ab, um mehrere Genres zu finden; z. B: trifft ‚rock*‘ ‚Hard Rock‘ und ‚Rock and Roll‘.</translation>
-    </message>
-</context>
-<context>
-    <name>DynamicRuleDialog</name>
-    <message>
-        <source>Dynamic Rule</source>
-        <translation type="vanished">Dynamische Regel</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="vanished">Hinzufügen</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;&lt;b&gt;ERROR&lt;/b&gt;: &apos;From Year&apos; should be less than &apos;To Year&apos;&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;&lt;b&gt;Fehler:&lt;/b&gt; ‚Von Jahr‘ muss kleiner sein als ‚Bis Jahr‘&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Date range is too large (can only be a maximum of %1 years)&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;&lt;b&gt;Fehler:&lt;/b&gt; Zeitraum ist zu lang (kann nur maximal %1 Jahre betragen)&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; You can only match on filename / path if &apos;Exact match&apos; is &lt;b&gt;not&lt;/b&gt; checked&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;&lt;b&gt;Fehler:&lt;/b&gt; Du kannst nur über Dateiname/Pfad suchen, wenn ‚exakter Treffer‘ &lt;b&gt;nicht&lt;/b&gt; gewählt ist&lt;/i&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>DynamicRules</name>
-    <message>
-        <source>Name of Dynamic Rules</source>
-        <translation type="vanished">Name der dynamischen Regeln</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="vanished">Hinzufügen</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation type="vanished">Bearbeiten</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="vanished">Entfernen</translation>
-    </message>
-    <message>
-        <source>Songs with ratings between:</source>
-        <translation type="vanished">Stücke mit Bewertung zwischen:</translation>
-    </message>
-    <message>
-        <source> - </source>
-        <translation type="vanished"> – </translation>
-    </message>
-    <message>
-        <source>Songs with duration between:</source>
-        <translation type="vanished">Stücke mit Länge zwischen:</translation>
-    </message>
-    <message>
-        <source> seconds</source>
-        <translation type="vanished"> Sekunden</translation>
-    </message>
-    <message>
-        <source>About Rules</source>
-        <translation type="vanished">Über Regeln</translation>
-    </message>
-</context>
-<context>
-    <name>DynamicRulesDialog</name>
-    <message>
-        <source>Dynamic Rules</source>
-        <translation type="vanished">Dynamische Regeln</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="obsolete">Keine</translation>
-    </message>
-    <message>
-        <source>No Limit</source>
-        <translation type="vanished">Keine Grenze</translation>
-    </message>
-    <message>
-        <source>About dynamic rules</source>
-        <translation type="vanished">Über dynamische Regeln</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with 10 entries. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Cantata wird deine Bibliothek nach allen gelisteten Regeln abfragen. Die Liste der &lt;i&gt;Einbeziehen&lt;/i&gt;-Regeln wird verwendet, um eine Sammlung von Stücken zu generieren, die verwendet werden können. Die Liste der &lt;i&gt;Ausschließen&lt;/i&gt;-Regeln wird verwendet, um eine Sammlung von Stücken zu generieren, die nicht verwendet werden können. Sind keine &lt;i&gt;Einschließen&lt;/i&gt;-Regeln gesetzt, so wird Cantata annehmen, dass alle Stücke (außer denen nach &lt;i&gt;Ausschließen&lt;/i&gt;-Regeln) verwendet werden können.&lt;/p&gt;&lt;p&gt;Um z. B. Cantata nach ‚Rock-Stücke von Wibble ODER Stücke von „Diverse Interpreten“‘ suchen zu lassen, bräuchtest du Folgendes: &lt;ul&gt;&lt;li&gt;Einschließen Album-Interpret=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Einschließen Album-Interpret=Diverse Interpreten&lt;/li&gt;&lt;/ul&gt; Um Cantata nach Stücke von Wibble aber nicht aus dem Album Abc‘ such zu lassen, bräuchtest du Folgendes: &lt;ul&gt;&lt;li&gt;Einschließen Album-Interpret=Wibble&lt;/li&gt;&lt;li&gt;Ausschließen Album-Interpret=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Nachdem die Sammlung verwendbarer Stücke generiert worden ist, wird Cantata zufällig Stücke auswählen, um die aktuelle Wiedergabeliste stets mit 10 Einträgen gefüllt zu halten. Sind Grenzen für die Bewertung angegeben, so werden nur Stücke ausgewählt, deren Bewertung innerhalb dieser Grenzen liegt. Entsprechend, wenn Grenzen für die Stücklänge gesetzt sind.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Failed to save %1</source>
-        <translation type="vanished">Speichern von %1 fehlgeschlagen.</translation>
-    </message>
-    <message>
-        <source>A set of rules named &apos;%1&apos; already exists!
-
-Overwrite?</source>
-        <translation type="vanished">Eine Regelliste mit dem Namen ‚%1‘ existiert bereits.
-
-Überschreiben?</translation>
-    </message>
-    <message>
-        <source>Overwrite Rules</source>
-        <translation type="vanished">Regeln überschreiben</translation>
-    </message>
-    <message>
-        <source>Saving %1</source>
-        <translation type="vanished">Speichere %1</translation>
-    </message>
-</context>
-<context>
-    <name>FancyTabWidget</name>
-    <message>
-        <source>Configure...</source>
-        <translation type="obsolete">Einstellungen…</translation>
-    </message>
-</context>
-<context>
-    <name>FileSettings</name>
-    <message>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="vanished">Speichere heruntergeladene Coverbilder, Interpreten- und Komponistenbilder im Musikverzeichnis</translation>
-    </message>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="vanished">Speichere heruntergeladene Liedtexte im Musikverzeichnis</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="vanished">Speichere heruntergeladene Hintergrundbilder im Musikverzeichnis</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="vanished">Wenn du wählst, dass Cantata Coverbilder, Liedtexte oder Hintergrundbilder im Musikverzeichnis speichern soll, du aber keine Schreibrechte für dieses Verzeichnis hast, so wird Cantata die Dateien in deinem persönlichen Zwischenspeicherverzeichnis speichern.</translation>
-    </message>
-    <message>
-        <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="vanished">Cantata kann Hintergrund-, Interpreten- und Komponistenbilder nur dann in der Musikverzeichnis-Hierarchie speichern, wenn diese 2 Ebenen tief ist, d. h. ‚Interpret/Album/Stücke‘.</translation>
+        <translation type="unfinished">Dynamische Regeln entfernen</translation>
     </message>
 </context>
 <context>
@@ -6164,25 +5812,6 @@ Overwrite?</source>
     </message>
 </context>
 <context>
-    <name>FolderPage</name>
-    <message>
-        <source>Open In File Manager</source>
-        <translation type="vanished">Im Dateimanager öffnen</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to delete the selected songs?
-
-This cannot be undone.</source>
-        <translation type="vanished">Bist du sicher, dass du die ausgewählten Stücke löschen möchtest?
-
-Dies kann nicht rückgängig gemacht werden.</translation>
-    </message>
-    <message>
-        <source>Delete Songs</source>
-        <translation type="vanished">Stücke löschen</translation>
-    </message>
-</context>
-<context>
     <name>FsDevice</name>
     <message>
         <location filename="../devices/fsdevice.cpp" line="679"/>
@@ -6253,22 +5882,14 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation>Willkommen bei Cantata</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata ist ein funktionsreicher, benutzerfreundlicher Client für Music Player Daemon (MPD). MPD ist eine flexible, mächtige Server-Anwendung für Musikwiedergabe.&lt;/p&gt;&lt;p&gt;Für mehr Informationen über MPD an sich wende dich bitte an die MPD-Website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Dieser ‚Wizard‘ wird dich durch die grundlegenden Einstellungen führen, die für ein Funktionieren von Cantata notwendig sind.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Willkommen bei Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Cantata ist ein funktionsreicher, benutzerfreundlicher Client für Music Player Daemon (MPD). MPD ist eine flexible, mächtige Server-Anwendung für Musikwiedergabe.&lt;/p&gt;&lt;p&gt;Für mehr Informationen über MPD an sich wende dich bitte an die MPD-Website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Dieser ‚Wizard‘ wird dich durch die grundlegenden Einstellungen führen, die für ein Funktionieren von Cantata notwendig sind.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
         <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Willkommen bei Cantata&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -6364,7 +5985,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fehlende Coverbilder herunterladen</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
@@ -6375,38 +5996,6 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Covers and Lyrics</source>
-        <translation type="vanished">Coverbilder und Liedtexte</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Cantata wird fehlende Coverbilder und Liedtexte aus dem Internet herunterladen.&lt;/p&gt;&lt;p&gt;Bitte entscheide für beide jeweils, ob Cantata die entsprechenden Dateien im Musikverzeichnis oder in deinem persönlichen Zwischenspeicher-/Konfigurationsverzeichnis ablegen soll.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="vanished">Speichere heruntergeladene Cover-, Interpreten- und Komponistenbilder im Musikverzeichnis</translation>
-    </message>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="vanished">Speichere heruntergeladene Liedtexte im Musikverzeichnis</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="vanished">Speichere heruntergeladene Hintergrundbilder im Musikverzeichnis</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="vanished">Wenn du wählst, dass Cantata Coverbilder, Liedtexte oder Hintergrundbilder im Musikverzeichnis speichern soll, du aber keine Schreibrechte für dieses Verzeichnis hast, so wird Cantata die Dateien in deinem persönlichen Zwischenspeicherverzeichnis speichern.</translation>
-    </message>
-    <message>
-        <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="vanished">Cantata kann Hintergrund-, Interpreten- und Komponistenbilder nur dann in der Musikverzeichnis-Hierarchie speichern, wenn diese 2 Ebenen tief ist, d. h. ‚Interpret/Album/Stücke‘.</translation>
-    </message>
-    <message>
-        <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="vanished">Das Musikverzeichnis ist auf eine HTTP-Adresse gesetzt und Cantata kann derzeit Dateien nicht auf externe HTTP-Server hochladen. Die obige Einstellung sollte daher nicht gesetzt werden.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="722"/>
@@ -6422,10 +6011,6 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation>Cantata wird Stücke zu Alben gruppieren, indem es den ‚Album-Interpret‘-Tag verwendet, sofern er gesetzt ist, und andernfalls den ‚Interpret‘-Tag verwenden. Falls du Alben mit mehreren Interpreten hast, &lt;b&gt;musst&lt;/b&gt; du den ‚Album-Interpret‘-Tag setzen, damit das Gruppieren richtig funktioniert. Es empfiehlt sich, hier „Diverse Interpreten“ o. ä. zu setzen.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="vanished">&lt;b&gt;Achtung:&lt;/b&gt; Du bist aktuell nicht Mitglied der ‚users‘-Gruppe. Cantata wird besser funktionieren (Albencover, Texte usw. mit den richtigen Berechtigungen speichern), wenn du (oder der Systemverwalter) dich dieser Gruppe hinzufügst. Wenn du dich selbst hinzufügst, musst du dich erneut anmelden, damit die Änderungen aktiv werden.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
@@ -6709,12 +6294,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="563"/>
         <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;. You may enter a comma separated list of folder names (without leading or trailing path separators) below.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Falls du in deiner Sammlung viele Interpreten mit nur einem Stück hast, kann es lästig sein, für jeden von diesen einen eigenen Eintrag in der Interpretenliste zu haben. Um das zu umgehen, kannst du solche Einzelstücke in einen gemeinsamen Ordner stecken und dessen Name unten angeben; Cantata gruppiert diese Stücke dann unter einem Album namens „Einzelne Stücke“ mit dem Album-Interpret „Diverse Interpreten“.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="573"/>
         <source>Comma separated list of folders that contain single track files...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ordner mit Einzelstücken …</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="583"/>
@@ -6724,7 +6309,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="589"/>
         <source>CUE files:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cue-Dateien:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="599"/>
@@ -6734,7 +6319,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="612"/>
         <source>Changing &apos;Artist &amp; Album Sorting&apos;, &apos;Single Tracks&apos;, or &apos;CUE files&apos; will require a DB refresh in order to take effect. Changing &apos;Composer Support&apos; or &apos;Year tag&apos; will require restarting Cantata.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Die Veränderung obiger Einstellungen macht eine Aktualisierung der Datenbank (und möglicherweise einen Neustart von Cantata) notwendig, um wirksam zu werden.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="633"/>
@@ -6744,7 +6329,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="644"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fehlende Coverbilder herunterladen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="651"/>
@@ -6754,12 +6339,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>Filename:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dateiname:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="668"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Dateiname (ohne Endung) zum Speichern der Cover.&lt;br/&gt;Sollte der Dateiname leer sein wird &apos;cover&apos; benutzt&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% wird ersetzt durch den Albumkünstler des aktuellen Stückes und %album% wird ersetzt durch den Albumnamen.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="677"/>
@@ -6767,33 +6352,9 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
-        <translation type="vanished">Falls du in deiner Sammlung viele Interpreten mit nur einem Stück hast, kann es lästig sein, für jeden von diesen einen eigenen Eintrag in der Interpretenliste zu haben. Um das zu umgehen, kannst du solche Einzelstücke in einen gemeinsamen Ordner stecken und dessen Name unten angeben; Cantata gruppiert diese Stücke dann unter einem Album namens „Einzelne Stücke“ mit dem Album-Interpret „Diverse Interpreten“.</translation>
-    </message>
-    <message>
-        <source>Folder that contains single track files...</source>
-        <translation type="vanished">Ordner mit Einzelstücken …</translation>
-    </message>
-    <message>
-        <source>CUE Files</source>
-        <translation type="vanished">Cue-Dateien</translation>
-    </message>
-    <message>
-        <source>A cue file is a metadata file which describes how the tracks of a CD are laid out.</source>
-        <translation type="vanished">Eine Cue-Datei ist eine Metadaten-Datei, die die Aufteilung der Stücke einer CD beschreibt.</translation>
-    </message>
-    <message>
-        <source>Changing any of the above will require a DB refresh (and possibly restarting Cantata) in order to take affect.</source>
-        <translation type="vanished">Die Veränderung obiger Einstellungen macht eine Aktualisierung der Datenbank (und möglicherweise einen Neustart von Cantata) notwendig, um wirksam zu werden.</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="701"/>
         <source>General</source>
         <translation>Allgemein</translation>
-    </message>
-    <message>
-        <source>Fetch missing covers from Last.fm</source>
-        <translation type="vanished">Fehlende Coverbilder von Last.fm herunterladen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="712"/>
@@ -6828,7 +6389,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="775"/>
         <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Das Ändern der Optik macht einen Neustart von Cantata notwendig.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="149"/>
@@ -6929,12 +6490,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="220"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wenn ‚Dateiname für Coverbilder‘ nicht gesetzt ist, dann wird Cantata die Statndardeinstellung &lt;code&gt;cover&lt;/code&gt; verwenden.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="224"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wenn ‚Dateiname für Coverbilder‘ nicht gesetzt ist, dann wird Cantata die Statndardeinstellung &lt;code&gt;cover&lt;/code&gt; verwenden.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="438"/>
@@ -7235,7 +6796,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/localfolderpage.cpp" line="46"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Im Dateimanager öffnen</translation>
     </message>
 </context>
 <context>
@@ -7596,13 +7157,9 @@ Wenn die Suche einen neuen Liedtext findet, dann wird dieser mit dem ursprüngli
         <translation>In Warteschlage suchen</translation>
     </message>
     <message>
-        <source>Play Stream</source>
-        <translation type="vanished">Stream abspielen</translation>
-    </message>
-    <message>
         <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">HTTP-Stream abspielen</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
@@ -7953,7 +7510,7 @@ Zu dieser hinzufügen?</translation>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="44"/>
         <source>Open In File Manager</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Im Dateimanager öffnen</translation>
     </message>
     <message>
         <location filename="../gui/mpdbrowsepage.cpp" line="82"/>
@@ -8010,10 +7567,6 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../devices/mtpdevice.cpp" line="296"/>
         <source>Updating folders...</source>
         <translation>Aktualisiere Ordner …</translation>
-    </message>
-    <message>
-        <source>Updating files...</source>
-        <translation type="obsolete">Aktualisiere Dateien...</translation>
     </message>
     <message>
         <location filename="../devices/mtpdevice.cpp" line="317"/>
@@ -8145,10 +7698,6 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
         <source>%1 kHz</source>
         <translation>%1 kHz</translation>
-    </message>
-    <message>
-        <source>(Stream)</source>
-        <translation type="vanished">(Stream)</translation>
     </message>
 </context>
 <context>
@@ -8616,13 +8165,9 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation>Wiedergabe</translation>
     </message>
     <message>
-        <source>Fa&amp;deout on stop:</source>
-        <translation type="vanished">Beim Stoppen aus&amp;blenden</translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
         <source>Fadeout on stop:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Beim Stoppen ausblenden</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="48"/>
@@ -8665,16 +8210,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="112"/>
         <source>Crossfade between tracks:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Crossfade between tracks:</source>
-        <translation type="vanished">Zwischen Stücken &amp;überblenden:</translation>
+        <translation type="unfinished">Zwischen Stücken überblenden:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
@@ -8682,8 +8218,9 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation> s</translation>
     </message>
     <message>
-        <source>Replay &amp;gain:</source>
-        <translation type="vanished">Replay &amp;Gain</translation>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation type="unfinished">Replay Gain:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -8751,32 +8288,32 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../playlists/playlistrule.ui" line="26"/>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Typ:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="37"/>
         <source>Include songs that match the following:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stücke einbeziehen, auf welche folgendes zutrifft:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="42"/>
         <source>Exclude songs that match the following:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stücke ausschließen, auf welche folgendes zutrifft:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="50"/>
         <source>Artist:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Interpret:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="63"/>
         <source>Artists similar to:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Interpreten ähnlich zu:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="76"/>
         <source>Album Artist:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Album-Interpret:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="89"/>
@@ -8807,12 +8344,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../playlists/playlistrule.ui" line="157"/>
         <location filename="../playlists/playlistrule.ui" line="180"/>
         <source>Any</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Egal</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="164"/>
         <source>To Year:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bis Jahr:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="187"/>
@@ -8855,7 +8392,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="45"/>
         <source>Smart Rule</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Intelligente Regel</translation>
     </message>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="165"/>
@@ -8866,12 +8403,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="243"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR&lt;/b&gt;: &apos;From Year&apos; should be less than &apos;To Year&apos;&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;i&gt;&lt;b&gt;Fehler:&lt;/b&gt; ‚Von Jahr‘ muss kleiner sein als ‚Bis Jahr‘&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="246"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; Date range is too large (can only be a maximum of %1 years)&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;i&gt;&lt;b&gt;Fehler:&lt;/b&gt; Zeitraum ist zu lang (kann nur maximal %1 Jahre betragen)&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="251"/>
@@ -8882,13 +8419,9 @@ Dies kann nicht rückgängig gemacht werden.</translation>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <source>Name of Dynamic Rules</source>
-        <translation type="obsolete">Name der dynamischen Regeln</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Name der Wiedergabeliste</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -8930,7 +8463,7 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../playlists/playlistrules.ui" line="160"/>
         <location filename="../playlists/playlistrules.ui" line="180"/>
         <source> seconds</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> Sekunden</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="208"/>
@@ -8966,8 +8499,14 @@ Dies kann nicht rückgängig gemacht werden.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <source>Dynamic Rules</source>
-        <translation type="obsolete">Dynamische Regeln</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation type="unfinished">Dynamische Wiedergabeliste</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation type="unfinished">Intelligente Wiedergabeliste</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
@@ -8995,16 +8534,6 @@ Use the settings below to restrict the range of songs added.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation type="unfinished">Intelligente Wiedergabeliste</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
         <source>Number of songs:</source>
         <translation type="unfinished"></translation>
@@ -9017,7 +8546,7 @@ Use the settings below to restrict the range of songs added.</source>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="358"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Cantata wird deine Bibliothek nach allen gelisteten Regeln abfragen. Die Liste der &lt;i&gt;Einbeziehen&lt;/i&gt;-Regeln wird verwendet, um eine Sammlung von Stücken zu generieren, die verwendet werden können. Die Liste der &lt;i&gt;Ausschließen&lt;/i&gt;-Regeln wird verwendet, um eine Sammlung von Stücken zu generieren, die nicht verwendet werden können. Sind keine &lt;i&gt;Einschließen&lt;/i&gt;-Regeln gesetzt, so wird Cantata annehmen, dass alle Stücke (außer denen nach &lt;i&gt;Ausschließen&lt;/i&gt;-Regeln) verwendet werden können.&lt;/p&gt;&lt;p&gt;Um z. B. Cantata nach ‚Rock-Stücke von Wibble ODER Stücke von „Diverse Interpreten“‘ suchen zu lassen, bräuchtest du Folgendes: &lt;ul&gt;&lt;li&gt;Einschließen Album-Interpret=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Einschließen Album-Interpret=Diverse Interpreten&lt;/li&gt;&lt;/ul&gt; Um Cantata nach Stücke von Wibble aber nicht aus dem Album Abc‘ such zu lassen, bräuchtest du Folgendes: &lt;ul&gt;&lt;li&gt;Einschließen Album-Interpret=Wibble&lt;/li&gt;&lt;li&gt;Ausschließen Album-Interpret=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;Nachdem die Sammlung verwendbarer Stücke generiert worden ist, wird Cantata zufällig Stücke auswählen, um die aktuelle Wiedergabeliste stets mit 10 Einträgen gefüllt zu halten. Sind Grenzen für die Bewertung angegeben, so werden nur Stücke ausgewählt, deren Bewertung innerhalb dieser Grenzen liegt. Entsprechend, wenn Grenzen für die Stücklänge gesetzt sind.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="373"/>
@@ -9032,7 +8561,7 @@ Use the settings below to restrict the range of songs added.</source>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="409"/>
         <source>Failed to save %1</source>
-        <translation type="unfinished">Speichern von %1 fehlgeschlagen. {1?}</translation>
+        <translation type="unfinished">Speichern von %1 fehlgeschlagen.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="427"/>
@@ -9046,7 +8575,7 @@ Overwrite?</source>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="428"/>
         <source>Overwrite Rules</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Regeln überschreiben</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="473"/>
@@ -9084,79 +8613,6 @@ Overwrite?</source>
         <location filename="../models/playlistsmodel.cpp" line="356"/>
         <source>Smart Playlist</source>
         <translation>Intelligente Wiedergabeliste</translation>
-    </message>
-</context>
-<context>
-    <name>Plurals</name>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Stück</numerusform>
-            <numerusform>%n Stücke</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Stück (%1)</numerusform>
-            <numerusform>%n Tracks (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Album</numerusform>
-            <numerusform>%n Alben</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Künstler</numerusform>
-            <numerusform>%n Künstler</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Stream</numerusform>
-            <numerusform>%n Streams</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Eintrag</numerusform>
-            <numerusform>%n Einträge</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>Eine Regel</numerusform>
-            <numerusform>%n Regeln</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Podcast</numerusform>
-            <numerusform>%n Podcasts</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>Eine Episode</numerusform>
-            <numerusform>%n Episoden</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>1 Update available</numerusform>
-            <numerusform>%n Updates available</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -9432,11 +8888,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">Gib unten eine Podcast-URL ein und klicke ‚Laden‘</translation>
+        <translation type="unfinished">Gib unten eine Podcast-URL ein und klicke ‚Laden‘, oder klicke auf das Ordner-Symbol um eine lokale Podcast-Datei zu laden.</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -9531,39 +8983,9 @@ Overwrite?</source>
         <translation>‚%1‘-Abonnement entfernen?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">Willst du die ausgewählten Podcast-Episoden herunterladen?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">Downloads von Podcast-Episoden abbrechen (sowohl laufende als auch ausstehende)?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Willst du die heruntergeladenen Dateien der ausgewählten Podcast-Episoden löschen?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">Willst du die ausgewählten Podcast-Episoden als neu markieren?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">Willst du die ausgewählten Podcast-Episoden als gehört markieren?</translation>
-    </message>
-    <message>
-        <source>Refresh all subscriptions?</source>
-        <translation type="vanished">Alle Abonnements aktualisieren?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -9584,6 +9006,16 @@ Overwrite?</source>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
         <translation>Ausgewählte aktualisieren</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9615,14 +9047,6 @@ Overwrite?</source>
         <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Playback Settings</source>
         <translation>Einstellungen zur Wiedergabe</translation>
-    </message>
-    <message>
-        <source>Downloaded Files</source>
-        <translation type="vanished">Heruntergeladene Dateien</translation>
-    </message>
-    <message>
-        <source>Downloaded Files Settings</source>
-        <translation type="vanished">Einstellungen zu heruntergeladenen Dateien</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="76"/>
@@ -9905,11 +9329,7 @@ Overwrite?</source>
     <message>
         <location filename="../devices/encoders.cpp" line="271"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="vanished">Der &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Kompressionsgrad&lt;/a&gt; ist ein Zahlenwert zwischen 0 and 8, welcher einen Kompromiss zwischen Dateigröße und Kompressionsgeschwindigkeit während der Kodierung mit&lt;b&gt;FLAC&lt;/b&gt; darstellt.&lt;br/&gt; Einstellen der Kompressionsrate auf &lt;b&gt;0&lt;/ b&gt; liefert die kürzeste Zeit, aber die Kompression erzeugt eine vergleichsweise große Datei.&lt;br/&gt;Auf der anderen Seite arbeitet eine Kompression von &lt;b&gt;8&lt;/b&gt; sehr langsam, erzeugt aber eine kleinere Datei.&lt;br/&gt;Beachten Sie, dass FLAC per Definition ein verlustfreier Codec ist. Die Audio-Qualität der Ausgabe ist unabhängig von der Kompression.&lt;br/&gt;Ein Komprimierungsgrad über &lt;b&gt;5&lt;/b&gt; erhöht erheblich die Kompressionszeit, wird aber kaum kleinere Dateien erstellen.</translation>
+        <translation type="unfinished">Der &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Kompressionsgrad&lt;/a&gt; ist ein Zahlenwert zwischen 0 and 8, welcher einen Kompromiss zwischen Dateigröße und Kompressionsgeschwindigkeit während der Kodierung mit&lt;b&gt;FLAC&lt;/b&gt; darstellt.&lt;br/&gt; Einstellen der Kompressionsrate auf &lt;b&gt;0&lt;/ b&gt; liefert die kürzeste Zeit, aber die Kompression erzeugt eine vergleichsweise große Datei.&lt;br/&gt;Auf der anderen Seite arbeitet eine Kompression von &lt;b&gt;8&lt;/b&gt; sehr langsam, erzeugt aber eine kleinere Datei.&lt;br/&gt;Beachten Sie, dass FLAC per Definition ein verlustfreier Codec ist. Die Audio-Qualität der Ausgabe ist unabhängig von der Kompression.&lt;br/&gt;Ein Komprimierungsgrad über &lt;b&gt;5&lt;/b&gt; erhöht erheblich die Kompressionszeit, wird aber kaum kleinere Dateien erstellen.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="286"/>
@@ -10123,56 +9543,6 @@ width x height</comment>
         <translation>Nicht aufführen</translation>
     </message>
     <message>
-        <source>%1 Tracks</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Stücke</translation>
-    </message>
-    <message>
-        <source>1 Track (%1)</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">Ein Stück (%1)</translation>
-    </message>
-    <message>
-        <source>%1 Tracks (%2)</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Stücke (%2)</translation>
-    </message>
-    <message>
-        <source>%1 Albums</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Alben</translation>
-    </message>
-    <message>
-        <source>%1 Artists</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Künstler</translation>
-    </message>
-    <message>
-        <source>%1 Streams</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Streams</translation>
-    </message>
-    <message>
-        <source>%1 Entries</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Einträge</translation>
-    </message>
-    <message>
-        <source>%1 Rules</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Regeln</translation>
-    </message>
-    <message>
-        <source>%1 Podcasts</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Podcasts</translation>
-    </message>
-    <message>
-        <source>%1 Episodes</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Episoden</translation>
-    </message>
-    <message>
         <location filename="../gui/stdactions.cpp" line="85"/>
         <source>Previous Track</source>
         <translation>Vorheriges Stück</translation>
@@ -10373,11 +9743,6 @@ width x height</comment>
         <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation>Voreinstellung</translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot;</source>
-        <comment>name (host)</comment>
-        <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
@@ -10717,76 +10082,6 @@ width x height</comment>
         <source>Categorized</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Stück</numerusform>
-            <numerusform>%n Stücke</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Stück (%1)</numerusform>
-            <numerusform>%n Tracks (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Album</numerusform>
-            <numerusform>%n Alben</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Künstler</numerusform>
-            <numerusform>%n Künstler</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Stream</numerusform>
-            <numerusform>%n Streams</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Eintrag</numerusform>
-            <numerusform>%n Einträge</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>Eine Regel</numerusform>
-            <numerusform>%n Regeln</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>Ein Podcast</numerusform>
-            <numerusform>%n Podcasts</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>Eine Episode</numerusform>
-            <numerusform>%n Episoden</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>1 Update available</numerusform>
-            <numerusform>%n Updates available</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpd - MPD communication</source>
@@ -11009,26 +10304,6 @@ Bitte wähle einen anderen Namen.</translation>
         <translation>Benutzer:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="vanished">Domain:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Kennwort:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="vanished">Freigabe:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="vanished">Wenn du hier ein Kennwort eingibst, wird es &lt;b&gt;unverschlüsselt&lt;/b&gt; in der Cantata-Konfigurationsdatei gespeichert. Damit Cantata nach dem Kennwort fragt, bevor es die Freigabe öffnet, setze das Kennwort auf „-“.</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="vanished">Name des Diensts:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -11063,27 +10338,6 @@ Bitte wähle einen anderen Namen.</translation>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="vanished">Verfügbar</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="vanished">Nicht verfügbar</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="vanished">Auflösen der Verbindungsdetails zu %1 fehlgeschlagen.</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation>Verbinde …</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="vanished">Passwortabfrage funktioniert nicht, wenn Cantata von der Kommandozeile gestartet wird.</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation>Keine passende ssh-askpass-Anwendung installiert. Dies wird benötigt, um Passwörter eingeben zu können.</translation>
@@ -11100,14 +10354,19 @@ Bitte wähle einen anderen Namen.</translation>
         <translation>‚sshfs‘ ist nicht installiert.</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation>Trenne Verbindung …</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation>Verbinde …</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation>‚fusermount‘ ist nicht installiert.</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation>Trenne Verbindung …</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -11394,7 +10653,7 @@ Bitte wähle einen anderen Namen.</translation>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="173"/>
         <source>, Rating: %1..%2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">, Bewertung: %1..%2</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="176"/>
@@ -11491,13 +10750,6 @@ Bitte wähle einen anderen Namen.</translation>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation>Nicht authentifiziert</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: Stücke scrobbeln</translation>
     </message>
 </context>
 <context>
@@ -11711,14 +10963,6 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <translation>Musikverzeichnis:</translation>
     </message>
     <message>
-        <source>Cover filename:</source>
-        <translation type="vanished">Dateiname für Coverbilder:</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Dateiname (ohne Endung) zum Speichern der Coverbilder.&lt;br/&gt;Ist der Dateiname leer, wird „cover“ verwendet.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% wird ersetzt durch den Album-Interpreten des aktuellen Stücks, %album% durch den Titel des Albums.&lt;/i&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
         <translation>HTTP-Stream-URL:</translation>
@@ -11741,20 +10985,12 @@ Dies kann nicht rückgängig gemacht werden.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="172"/>
         <source>Auto update:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Update automatisch:</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto update</source>
-        <translation type="vanished">Update automatisch:</translation>
-    </message>
-    <message>
-        <source>If the server detects modifications automatically, there is no need to send an update command for certain actions.</source>
-        <translation type="vanished">Wenn der Server Änderungen automatisch erkennt, ist es nicht nötig, dass für manche Aktionen ein &quot;update&quot; Kommando gesendet wird.</translation>
+        <translation type="unfinished">Wenn der Server Änderungen automatisch erkennt, ist es nicht nötig, dass für manche Aktionen ein &quot;update&quot; Kommando gesendet wird.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="185"/>
@@ -11765,10 +11001,6 @@ Dies kann nicht rückgängig gemacht werden.</translation>
         <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>Die Einstellung ‚Musikverzeichnis‘ wird verwendet, um Coverbilder nachzuschlagen. Es kann auf eine HTTP-URL gesetzt werden, wenn MPD auf einem anderen Rechner läuft und die Coverbilder über HTTP verfügbar sind. Wenn die Einstellung nicht auf eine HTTP-URL gesetzt ist und du Schreibrechte für dieses Verzeichnis (und seine Unterverzeichnisse) besitzt, dann wird Cantata heruntergeladene Coverbilder in dem entsprechenden Verzeichnis des Albums speichern.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation type="vanished">Wenn ‚Dateiname für Coverbilder‘ nicht gesetzt ist, dann wird Cantata die Statndardeinstellung &lt;code&gt;cover&lt;/code&gt; verwenden.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="201"/>
@@ -12612,23 +11844,6 @@ Overwrite?</source>
         <translation>Herunterladen von ‚%1‘ fehlgeschlagen</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="vanished">Ausgewählte Stream-Anbieter installieren/aktualisieren?</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="vanished">Ausgewählte Stream-Anbieter installieren?</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="vanished">Ausgewählte Stream-Anbieter aktualisieren?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation>Installieren/aktualisieren</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation>Installation/Aktualisierung abbrechen?</translation>
@@ -12650,6 +11865,11 @@ Overwrite?</source>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation>Lade %1 herunter</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation>Installieren/aktualisieren</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>
@@ -12988,11 +12208,7 @@ Overwrite?</source>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
         <source>Failed to open package file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed top open package file.</source>
-        <translation type="vanished">Öffnen der Paketdatei fehlgeschlagen.</translation>
+        <translation type="unfinished">Öffnen der Paketdatei fehlgeschlagen.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>
@@ -13653,10 +12869,6 @@ Wenn du eine Datei (oder den Ordner, der sie enthält) umbenennst, geht die mit 
         <location filename="../gui/trayitem.cpp" line="182"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
-    </message>
-    <message>
-        <source>Now playing</source>
-        <translation type="vanished">Spielt gerade</translation>
     </message>
 </context>
 <context>

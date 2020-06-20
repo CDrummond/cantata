@@ -6610,14 +6610,6 @@ Pokračovat s výchozím nastavením?</translation>
         <source>Saving cache</source>
         <translation>Ukládá se vyrovnávací paměť</translation>
     </message>
-    <message>
-        <source>Calculating...</source>
-        <translation type="obsolete">Počítá se...</translation>
-    </message>
-    <message>
-        <source>Time remaining:</source>
-        <translation type="obsolete">Zbývající čas:</translation>
-    </message>
 </context>
 <context>
     <name>AlbumDetails</name>
@@ -7250,10 +7242,6 @@ Nepodařilo se stáhnout do dočasného souboru!</translation>
         <translation>Obrázky (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">Obrázky (*.png *.jpg)</translation>
-    </message>
-    <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
         <source>File is already in list!</source>
         <translation>Soubor je již v seznamu!</translation>
@@ -7304,21 +7292,6 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation>Hledá se...</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Skladatel:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Účinkující:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Umělec:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Rok: &lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -7520,23 +7493,9 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
         <translation>Pokud začíná jméno umělce na The, potom je připojit k názvu složky, např. z The Beatles se stane Beatles, The</translation>
     </message>
     <message>
-        <source>If an artist name begins with &apos;The&apos;, then prepend this in the folder name. e.g. &apos;The Beatles&apos; becomes &apos;Beatles, The&apos;</source>
-        <translation type="vanished">Pokud začíná jméno umělce na The, potom je připojit před název složky, např. z The Beatles se stane Beatles, The</translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.ui" line="205"/>
         <source>Transcoding</source>
         <translation>Překódování</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation>Překódovat pouze, když zdrojový soubor je v jiném formátu</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation>Překódovat pouze, když zdrojový soubor je ve formátu FLAC/WAV</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
@@ -7592,6 +7551,16 @@ Nepodařilo se zkopírovat soubor do &apos;%1&apos;!</translation>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
         <translation>Překódovat vždy</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation>Překódovat pouze, když zdrojový soubor je v jiném formátu</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
+        <translation>Překódovat pouze, když zdrojový soubor je ve formátu FLAC/WAV</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
@@ -8039,10 +8008,6 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Vzdálený dynamizátor neběží. Pro podporu dynamických seznamů skladeb v operačním systému Windows Cantata vyžaduje, aby na serveru MPD běžel její skript &apos;cantata-dynamic&apos;.</translation>
     </message>
     <message>
-        <source>Remote dynamizer is not running.</source>
-        <translation type="vanished">Vzdálený dynamizátor neběží.</translation>
-    </message>
-    <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="160"/>
         <source>Are you sure you wish to remove the selected rules?
 
@@ -8055,36 +8020,6 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="161"/>
         <source>Remove Dynamic Rules</source>
         <translation>Odstranit dynamická pravidla</translation>
-    </message>
-</context>
-<context>
-    <name>FancyTabWidget</name>
-    <message>
-        <source>Configure...</source>
-        <translation type="obsolete">Nastavit...</translation>
-    </message>
-</context>
-<context>
-    <name>FileSettings</name>
-    <message>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="vanished">Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
-    </message>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="vanished">Uložit stažená slova písně ve složce s hudbou</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="vanished">Uložit stažená pozadí ve složce s hudbou</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="vanished">Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
-    </message>
-    <message>
-        <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="vanished">Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
     </message>
 </context>
 <context>
@@ -8280,25 +8215,6 @@ Tento krok nelze vrátit zpět.</translation>
     </message>
 </context>
 <context>
-    <name>FolderPage</name>
-    <message>
-        <source>Open In File Manager</source>
-        <translation type="vanished">Otevřít ve správci souborů</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to delete the selected songs?
-
-This cannot be undone.</source>
-        <translation type="vanished">Opravdu chcete odstranit vybrané písně?
-
-Tento krok nelze vrátit zpět.</translation>
-    </message>
-    <message>
-        <source>Delete Songs</source>
-        <translation type="vanished">Smazat písně</translation>
-    </message>
-</context>
-<context>
     <name>FsDevice</name>
     <message>
         <location filename="../devices/fsdevice.cpp" line="679"/>
@@ -8368,14 +8284,6 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/initialsettingswizard.ui" line="46"/>
         <source>Welcome to Cantata</source>
         <translation>Vítejte v Cantatě</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata je klient pro Music Player Daemon (MPD). MPD je program pružný, schopný, běžící na pozadí (server), k přehrávání hudby.&lt;/p&gt;&lt;p&gt;Více informací o MPD naleznete na stránkách MPD &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede základními nastaveními, která jsou potřeba pro to, aby Cantata pracovala správně.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vítejte v Cantatě&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
@@ -8494,38 +8402,6 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Pokud se rozhodnete, že má Cantata ukládat obaly do složky s hudbou, a nemáte přístupová práva pro zápis do této složky (nebo to musíte nastavit jako adresu HTTP), Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
     </message>
     <message>
-        <source>Covers and Lyrics</source>
-        <translation type="vanished">Obaly a slova písně</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Cantata stáhne chybějící obaly a texty písní z internetu.&lt;/p&gt;&lt;p&gt;U každého, prosím, potvrďte, zda chcete, aby Cantata soubory ukládala ve složce s hudbou, nebo ve vašich osobních složkách s vyrovnávací pamětí/pro ukládání nastavení.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Save downloaded covers, artist, and composer images, in music folder</source>
-        <translation type="vanished">Uložit stažené obaly, umělce a obrázky skladatelů ve složce s hudbou</translation>
-    </message>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="vanished">Uložit stažená slova písně ve složce s hudbou</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="vanished">Uložit stažená pozadí ve složce s hudbou</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="vanished">Pokud se rozhodnete, že má Cantata ukládat obaly, texty písní nebo obrázky pozadí do složky s hudbou, a nemáte přístupová práva pro zápis do této složky, Cantata se vrátí k zapisování souborů do vaší osobní složky pro ukládání vyrovnávací paměti.</translation>
-    </message>
-    <message>
-        <source>Cantata can only save backdrops, artist, and composer images within the music folder hierarchy if this is 2 levels deep. i.e. &apos;Artist/Album/Tracks&apos;.</source>
-        <translation type="vanished">Cantata může pozadí, umělce a obrázky skladatelů ukládat ve složkách s hudbou a jejich podsložkách, pouze pokud tato hierarchie jde jen do dvou úrovní dolů. (např. &apos;Umělec/Album/Skladby&apos;.</translation>
-    </message>
-    <message>
-        <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="vanished">Složka s hudbou je nastavena na adresu HTTP a Cantata v současnosti nedokáže nahrávat soubory na vnější servery HTTP. Z tohoto důvodu by se nastavení výše měla ponechat zakázána.</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.ui" line="722"/>
         <source>Finished!</source>
         <translation>Dokončeno!</translation>
@@ -8539,10 +8415,6 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation>Cantata skladby seskupí do alb pomocí značky AlbumUmělec, pokud je to tak nastaveno, jinak použije značku Umělec. Pokud máte alba s více umělci, &lt;b&gt;musíte&lt;/b&gt; nastavit značku AlbumUmělec, aby při seskupování pracovala správně. Při této možnosti se doporučuje použít Různí umělci.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="vanished">&lt;b&gt;Varování:&lt;/b&gt; Nyní nejste členem skupiny uživatelé (users). Cantata bude pracovat lépe (ukládání obalů alb, textů písní atd. se správnými oprávněními), pokud vy (nebo váš správce systému) přidáte sebe sama do této skupiny. Pokud přidáte sebe sama, budete se muset odhlásit a zase přihlásit, aby se tato změna projevila.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
@@ -8884,33 +8756,9 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Pokud povolíte Uložit stažené obaly ve složce s hudbou, může být potřeba vyprázdnění vyrovnávací paměti všech předchozích obalů, aby se vynutilo stažení nových obalů. Na další podrobnosti se podívejte v nastavení pro vyrovnávací paměť.</translation>
     </message>
     <message>
-        <source>If you have a lot of artists in your collection that only contain a single track, then it can be cumbersome for each of these to have their own entry in the list of artists. As a work-around for this, if you place these tracks into a separate folder, and enter this folder name below, then Cantata will group these under an album named &apos;Single Tracks&apos; with an album artist of &apos;Various Artists&apos;</source>
-        <translation type="vanished">pokud máte ve své sbírce mnoho umělců, kteří mají jen jednu skladbu, potom může být těžkopádné mít pro každého z nich jejich vlastní záznam v seznamu umělců. Můžete to obejít tím, že tyto skladby umístíte do samostatné složky a níže zadáte název této složky. Potom bude Cantata tyto seskupovat pod albem nazvaným Jednotlivé skladby s umělcem alba Různí umělci</translation>
-    </message>
-    <message>
-        <source>Folder that contains single track files...</source>
-        <translation type="vanished">Složka, která obsahuje soubory s jednotlivými skladbami...</translation>
-    </message>
-    <message>
-        <source>CUE Files</source>
-        <translation type="vanished">Soubory CUE</translation>
-    </message>
-    <message>
-        <source>A cue file is a metadata file which describes how the tracks of a CD are laid out.</source>
-        <translation type="vanished">Soubor CUE je soubor s popisnými údaji, který popisuje, jak jsou skladby na CD rozloženy.</translation>
-    </message>
-    <message>
-        <source>Changing any of the above will require a DB refresh (and possibly restarting Cantata) in order to take affect.</source>
-        <translation type="vanished">Změna čehokoli výše bude vyžadovat obnovení databáze (a možná opětovné spuštění Cantaty), aby se tato změna projevila.</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="701"/>
         <source>General</source>
         <translation>Obecné</translation>
-    </message>
-    <message>
-        <source>Fetch missing covers from Last.fm</source>
-        <translation type="vanished">Natáhnout chybějící obaly z Last.fm</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="712"/>
@@ -8923,28 +8771,9 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Vynutit zapnutí položek jedním klepnutím</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="775"/>
-        <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation>Změna nastavení stylu vyžaduje opětovné spuštění Cantaty.</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
-&lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be &apos;flickable&apos;&lt;/li&gt;&lt;li&gt;To drag items, you will need to &apos;touch&apos; the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will only be a few pixels wide&lt;/li&gt;&lt;li&gt;Actions (e.g. &apos;Add To Play Queue&apos;) will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;li&gt;Spin buttons will have + and - buttons at the side of the text field&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Toto změní rozhraní Cantaty, jak je to popsáno dále:
-&lt;ul&gt;&lt;li&gt;Tlačítka pro přehrávání a ovládání budou o 33 % širší&lt;/li&gt;&lt;li&gt;Pohledy budou odstrčitelné.&lt;/li&gt;&lt;li&gt;Pro táhnutí položek budete potřebovat najet do horního levého rohu&lt;/li&gt;&lt;li&gt;Posuvníky budou široké jen několik pixelů&lt;/li&gt;&lt;li&gt;Činnosti (např. Přidat do řady skladeb k přehrání) budou vždy viditelné (ne jen tehdy, když je položka pod myší)&lt;/li&gt;&lt;li&gt;Otočná tlačítka budou mít tlačítka + a - na straně textového pole.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Make interface more touch friendly</source>
-        <translation type="obsolete">Udělat rozhraní dotekově přátelštější</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="726"/>
         <source>Show song information tooltips</source>
         <translation>Ukázat nástrojové rady s informacemi k písni</translation>
-    </message>
-    <message>
-        <source>Support retina displays</source>
-        <translation type="vanished">Podpora pro obrazovky retina (sítnice)</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="733"/>
@@ -8962,12 +8791,9 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Změna nastavení jazyka vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
-        <source>Changing the &apos;touch friendly&apos; setting will require a re-start of Cantata.</source>
-        <translation type="obsolete">Změna nastavení rozhraní na dotykově přátelské vyžaduje opětovné spuštění Cantaty.</translation>
-    </message>
-    <message>
-        <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
-        <translation type="vanished">Povolení podpory pro obrazovky retina (retina = sítnice; obrazovky s vyšší hustotou pixelů, než jakou měly předchozí modely, firma Apple) povede k ostřejším ikonám na obrazovkách typu &quot;retina&quot;, ale může vést k méně ostrým ikonám na obrazovkách, které typu &quot;retina&quot; nejsou. Změna tohoto nastavení vyžaduje opětovné spuštění Cantaty.</translation>
+        <location filename="../gui/interfacesettings.ui" line="775"/>
+        <source>Changing the style setting will require a re-start of Cantata.</source>
+        <translation>Změna nastavení stylu vyžaduje opětovné spuštění Cantaty.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="149"/>
@@ -9074,14 +8900,6 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/interfacesettings.cpp" line="224"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
         <translation>Pokud není pro Název souboru zadáno žádné nastavení, Cantata použije výchozí &lt;code&gt;obal&lt;/code&gt;. Tento název souboru se používá při stahování obalů, nebo při přidávání hudby do knihovny ze zařízení.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="vanished">Pokud není pro Název souboru zadáno žádné nastavení, Cantata použije výchozí &lt;code&gt;obal&lt;/code&gt;. Tento název souboru se používá při stahování obalů, nebo při přidávání hudby do knihovny ze zařízení.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="vanished">Pokud není pro Název souboru zadáno žádné nastavení, Cantata použije výchozí &lt;code&gt;obal&lt;/code&gt;. Tento název souboru se používá při stahování obalů.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="438"/>
@@ -9595,8 +9413,9 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <translation>Nastavit Cantatu...</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation type="vanished">Nastavení</translation>
+        <location filename="../gui/mainwindow.cpp" line="254"/>
+        <source>Preferences...</source>
+        <translation>Nastavení...</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="257"/>
@@ -9742,8 +9561,9 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <translation>Hledat v řadě skladeb k přehrání</translation>
     </message>
     <message>
-        <source>Play Stream</source>
-        <translation type="vanished">Přehrát proud</translation>
+        <location filename="../gui/mainwindow.cpp" line="328"/>
+        <source>Play HTTP Output Stream</source>
+        <translation>Přehrát vysílání s výstupem HTTP</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
@@ -9764,28 +9584,6 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
         <location filename="../gui/mainwindow.cpp" line="337"/>
         <source>Track</source>
         <translation>Skladba</translation>
-    </message>
-    <message>
-        <source>Locate In Library / Artist</source>
-        <translation type="vanished">Najít v knihovna/umělec</translation>
-    </message>
-    <message>
-        <source>Locate In Library / Album</source>
-        <translation type="vanished">Najít v knihovna/album</translation>
-    </message>
-    <message>
-        <source>Locate In Library / Track</source>
-        <translation type="vanished">Najít v knihovna/skladba</translation>
-    </message>
-    <message>
-        <location filename="../gui/mainwindow.cpp" line="254"/>
-        <source>Preferences...</source>
-        <translation>Nastavení...</translation>
-    </message>
-    <message>
-        <location filename="../gui/mainwindow.cpp" line="328"/>
-        <source>Play HTTP Output Stream</source>
-        <translation>Přehrát vysílání s výstupem HTTP</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="349"/>
@@ -10177,10 +9975,6 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Obnovují se složky...</translation>
     </message>
     <message>
-        <source>Updating files...</source>
-        <translation type="obsolete">Obnovují se soubory...</translation>
-    </message>
-    <message>
         <location filename="../devices/mtpdevice.cpp" line="317"/>
         <source>Updating tracks...</source>
         <translation>Obnovují se skladby...</translation>
@@ -10315,10 +10109,6 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
         <source>%1 kHz</source>
         <translation>%1 kHz</translation>
-    </message>
-    <message>
-        <source>(Stream)</source>
-        <translation type="vanished">(Proud)</translation>
     </message>
 </context>
 <context>
@@ -10788,10 +10578,6 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Přehrávání</translation>
     </message>
     <message>
-        <source>Fa&amp;deout on stop:</source>
-        <translation type="vanished">Postupné &amp;zeslabení zvuku při zastavení:</translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="38"/>
         <source>Fadeout on stop:</source>
         <translation>Postupné zeslabení zvuku při zastavení:</translation>
@@ -10840,22 +10626,14 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Prolínání mezi skladbami:</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation>Vyrovnání hlasitosti:</translation>
-    </message>
-    <message>
-        <source>&amp;Crossfade between tracks:</source>
-        <translation type="vanished">&amp;Prolínání mezi skladbami:</translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation> s</translation>
     </message>
     <message>
-        <source>Replay &amp;gain:</source>
-        <translation type="vanished">Vyrovnání &amp;hlasitosti:</translation>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation>Vyrovnání hlasitosti:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -11054,10 +10832,6 @@ Tento krok nelze vrátit zpět.</translation>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <source>Name of Dynamic Rules</source>
-        <translation type="vanished">Název pro dynamická pravidla</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
         <translation>Název seznamu skladeb</translation>
@@ -11138,27 +10912,14 @@ Tento krok nelze vrátit zpět.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <source>Dynamic Rules</source>
-        <translation type="vanished">Dynamická pravidla</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation>Dynamický seznamy skladeb</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation type="obsolete">Žádné</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
-        <source>No Limit</source>
-        <translation>Bez omezení</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
-        <source>About dynamic rules</source>
-        <translation>O dynamických pravidlech</translation>
-    </message>
-    <message>
-        <source>Smart Rules</source>
-        <translation type="vanished">Chytrá pravidla</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation>Chytrý seznam skladeb</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
@@ -11174,6 +10935,12 @@ Použijte tlačítko Přidat pro přidání pravidla, kterým budete řídit, kt
 Použijte nastavení níže k omezení rozsahu přidaných písní.</translation>
     </message>
     <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
+        <source>No Limit</source>
+        <translation>Bez omezení</translation>
+    </message>
+    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="202"/>
         <source>Ascending</source>
         <translation>Vzestupně</translation>
@@ -11184,23 +10951,14 @@ Použijte nastavení níže k omezení rozsahu přidaných písní.</translation
         <translation>Sestupně</translation>
     </message>
     <message>
-        <source>Name of Smart Rules</source>
-        <translation type="vanished">Název chytrých pravidel</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation>Dynamický seznamy skladeb</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation>Chytrý seznam skladeb</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
         <source>Number of songs:</source>
         <translation>Počet písní:</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
+        <source>About dynamic rules</source>
+        <translation>O dynamických pravidlech</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="358"/>
@@ -11273,89 +11031,6 @@ Přepsat?</translation>
         <location filename="../models/playlistsmodel.cpp" line="356"/>
         <source>Smart Playlist</source>
         <translation>Chytrý seznam skladeb</translation>
-    </message>
-</context>
-<context>
-    <name>Plurals</name>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>Skladby: %n</numerusform>
-            <numerusform>Skladby: %n</numerusform>
-            <numerusform>Skladby: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>Skladby: %n (%1)</numerusform>
-            <numerusform>Skladby: %n (%1)</numerusform>
-            <numerusform>Skladby: %n (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>Alba: %n</numerusform>
-            <numerusform>Alba: %n</numerusform>
-            <numerusform>Alba: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>Umělci: %n</numerusform>
-            <numerusform>Umělci: %n</numerusform>
-            <numerusform>Umělci: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>Proudy: %n</numerusform>
-            <numerusform>Proudy: %n</numerusform>
-            <numerusform>Proudy: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>Položky: %n</numerusform>
-            <numerusform>Položky: %n</numerusform>
-            <numerusform>Položky: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>Pravidla: %n</numerusform>
-            <numerusform>Pravidla: %n</numerusform>
-            <numerusform>Pravidla: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>Záznamy: %n</numerusform>
-            <numerusform>Záznamy: %n</numerusform>
-            <numerusform>Záznamy: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>Díly: %n</numerusform>
-            <numerusform>Díly: %n</numerusform>
-            <numerusform>Díly: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>Jedna aktualizace dostupná</numerusform>
-            <numerusform>%n aktualizací dostupných</numerusform>
-            <numerusform>%n aktualizací dostupných</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -11636,10 +11311,6 @@ Přepsat?</translation>
         <translation>Zadejte adresu (URL) níže a stiskněte Nahrát, nebo stiskněte ikonu složky pro nahrání místního souboru se zvukovým záznamem.</translation>
     </message>
     <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">Zadejte adresu zvukového záznamu (URL) níže a stiskněte Nahrát</translation>
-    </message>
-    <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
         <source>Invalid URL!</source>
         <translation>Neplatná adresa (URL)!</translation>
@@ -11732,39 +11403,9 @@ Přepsat?</translation>
         <translation>Odhlásit odběr z &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation>Vyvést odběry záznamu</translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation>Nepodařilo se vyvést!</translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">Chcete stáhnout vybrané díly zvukového záznamu?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">Zrušit stahování dílů zvukového záznamu (nynější a všechny zařazené)?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Chcete smazat stažené soubory vybraných dílů zvukového záznamu?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">Chcete označit vybrané díly zvukového záznamu jako nové?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">Chcete označit vybrané díly zvukového záznamu jako poslechnuté?</translation>
-    </message>
-    <message>
-        <source>Refresh all subscriptions?</source>
-        <translation type="vanished">Obnovit všechny odběry?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -11785,6 +11426,16 @@ Přepsat?</translation>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
         <translation>Obnovit vybrané</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation>Vyvést odběry záznamu</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
+        <translation>Nepodařilo se vyvést!</translation>
     </message>
 </context>
 <context>
@@ -11816,14 +11467,6 @@ Přepsat?</translation>
         <location filename="../gui/preferencesdialog.cpp" line="75"/>
         <source>Playback Settings</source>
         <translation>Nastavení přehrávání</translation>
-    </message>
-    <message>
-        <source>Downloaded Files</source>
-        <translation type="vanished">Stažené soubory</translation>
-    </message>
-    <message>
-        <source>Downloaded Files Settings</source>
-        <translation type="vanished">Nastavení pro stažené soubory</translation>
     </message>
     <message>
         <location filename="../gui/preferencesdialog.cpp" line="76"/>
@@ -12109,10 +11752,6 @@ Přepsat?</translation>
         <translation>&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Úroveň komprimace&lt;/a&gt; je hodnota celého čísla ležící mezi 0 a 8, která představuje vyvážení mezi velikostí souboru a rychlostí komprimace během kódování s &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Nastavení úrovně komprimace na &lt;b&gt;0&lt;/b&gt; dává nejkratší čas komprimace, ale způsobuje srovnatelně velký soubor&lt;br/&gt;Na druhou stranu úroveň zhuštění &lt;b&gt;8&lt;/b&gt; dělá komprimaci docela pomalou,ale vytvoří nejmenší soubor.&lt;br/&gt;Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na úroveň komprimace.&lt;br/&gt;Úrovně nad &lt;b&gt;5&lt;/b&gt; kromě toho napínavě zvyšují čas komprimace, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se.</translation>
     </message>
     <message>
-        <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="vanished">&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Úroveň komprimace&lt;/a&gt; je hodnota celého čísla ležící mezi 0 a 8, která představuje vyvážení mezi velikostí souboru a rychlostí komprimace během kódování s &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Nastavení úrovně komprimace na &lt;b&gt;0&lt;/b&gt; dává nejkratší čas komprimace, ale způsobuje srovnatelně velký soubor&lt;br/&gt;Na druhou stranu úroveň zhuštění &lt;b&gt;8&lt;/b&gt; dělá komprimaci docela pomalou,ale vytvoří nejmenší soubor.&lt;br/&gt;Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na úroveň komprimace.&lt;br/&gt;Úrovně nad &lt;b&gt;5&lt;/b&gt; kromě toho napínavě zvyšují čas komprimace, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se.</translation>
-    </message>
-    <message>
         <location filename="../devices/encoders.cpp" line="286"/>
         <source>Compression level</source>
         <translation>Úroveň komprimace</translation>
@@ -12324,61 +11963,6 @@ width x height</comment>
         <translation>Neuvádět</translation>
     </message>
     <message>
-        <source>%1 Tracks</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Skladby: %1</translation>
-    </message>
-    <message>
-        <source>1 Track (%1)</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">Skladby: 1 (%1)</translation>
-    </message>
-    <message>
-        <source>%1 Tracks (%2)</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Skladby: %1 (%2)</translation>
-    </message>
-    <message>
-        <source>%1 Albums</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Alba: %1</translation>
-    </message>
-    <message>
-        <source>%1 Artists</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Umělci: %1</translation>
-    </message>
-    <message>
-        <source>%1 Streams</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Proudy: %1</translation>
-    </message>
-    <message>
-        <source>%1 Entries</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Položky: %1</translation>
-    </message>
-    <message>
-        <source>%1 Rules</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Pravidla: %1</translation>
-    </message>
-    <message>
-        <source>%1 Podcasts</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Záznamy: %1</translation>
-    </message>
-    <message>
-        <source>%1 Episodes</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">Díly: %1</translation>
-    </message>
-    <message>
-        <source>%1 Updates available</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 aktualizací dostupných</translation>
-    </message>
-    <message>
         <location filename="../gui/stdactions.cpp" line="85"/>
         <source>Previous Track</source>
         <translation>Předchozí skladba</translation>
@@ -12579,11 +12163,6 @@ width x height</comment>
         <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation>Výchozí</translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot;</source>
-        <comment>name (host)</comment>
-        <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
@@ -12923,86 +12502,6 @@ width x height</comment>
         <source>Categorized</source>
         <translation>Roztříděno do skupin</translation>
     </message>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>Skladby: %n</numerusform>
-            <numerusform>Skladby: %n</numerusform>
-            <numerusform>Skladby: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>Skladby: %n (%1)</numerusform>
-            <numerusform>Skladby: %n (%1)</numerusform>
-            <numerusform>Skladby: %n (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>Alba: %n</numerusform>
-            <numerusform>Alba: %n</numerusform>
-            <numerusform>Alba: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>Umělci: %n</numerusform>
-            <numerusform>Umělci: %n</numerusform>
-            <numerusform>Umělci: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>Proudy: %n</numerusform>
-            <numerusform>Proudy: %n</numerusform>
-            <numerusform>Proudy: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>Položky: %n</numerusform>
-            <numerusform>Položky: %n</numerusform>
-            <numerusform>Položky: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>Pravidla: %n</numerusform>
-            <numerusform>Pravidla: %n</numerusform>
-            <numerusform>Pravidla: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>Záznamy: %n</numerusform>
-            <numerusform>Záznamy: %n</numerusform>
-            <numerusform>Záznamy: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>Díly: %n</numerusform>
-            <numerusform>Díly: %n</numerusform>
-            <numerusform>Díly: %n</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>Jedna aktualizace dostupná</numerusform>
-            <numerusform>%n aktualizací dostupných</numerusform>
-            <numerusform>%n aktualizací dostupných</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpd - MPD communication</source>
@@ -13226,26 +12725,6 @@ Vyberte, prosím, jiný název.</translation>
         <translation>Uživatel:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="vanished">Doména:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Heslo:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="vanished">Sdílení:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="vanished">Pokud zde zadáte heslo, bude uloženo &lt;b&gt;nezašifrované&lt;/b&gt; v souboru s nastavením pro Cantatu. Aby Cantata vyzvala k zadání hesla před přístupem k sdílení, nastavte heslo na &apos;-&apos;</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="vanished">Název služby:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -13280,27 +12759,6 @@ Vyberte, prosím, jiný název.</translation>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="vanished">Dostupné</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="vanished">Nedostupné</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="vanished">Nepodařilo se vyřešit podrobnosti připojení pro %1</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation>Připojuje se...</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="vanished">Výzva k zadání hesla nepracuje, když je Cantata spuštěna z příkazového řádku.</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation>Žádný vhodný program ssh-askpass není nainstalován! Toto je vyžadováno pro zadávání hesel.</translation>
@@ -13317,14 +12775,19 @@ Vyberte, prosím, jiný název.</translation>
         <translation>&quot;sshfs&quot; není nainstalován!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation>Odpojuje se...</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation>Připojuje se...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation>&quot;fusermount&quot; není nainstalován!</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation>Odpojuje se...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -13551,10 +13014,6 @@ Vyberte, prosím, jiný název.</translation>
 <context>
     <name>RulesPlaylists</name>
     <message>
-        <source> - Rating: %1..%2</source>
-        <translation type="vanished"> - Hodnocení: %1...%2</translation>
-    </message>
-    <message>
         <location filename="../playlists/rulesplaylists.cpp" line="96"/>
         <source>Album Artist</source>
         <translation>Umělec alba</translation>
@@ -13713,13 +13172,6 @@ Vyberte, prosím, jiný název.</translation>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation>Pravost neověřena</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: Odesílat informace o skladbách</translation>
     </message>
 </context>
 <context>
@@ -13934,14 +13386,6 @@ Tento krok nelze vrátit zpět.</translation>
         <translation>Složka s hudbou:</translation>
     </message>
     <message>
-        <source>Cover filename:</source>
-        <translation type="vanished">Název souboru obalu:</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.&lt;br/&gt; Jestliže bude ponecháno prázdné, použije se &quot;cover&quot;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% bude nahrazen umělcem alba současné písně, a %album% bude nahrazeno názvem alba.&lt;/i&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../gui/serversettings.ui" line="139"/>
         <source>HTTP stream URL:</source>
         <translation>Adresa (URL) vysílání (datového proudu) HTTP:</translation>
@@ -13980,10 +13424,6 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
         <translation>Nastavení pro hudební složku je používáno k vyhledání obrázků obalů. Může být nastaveno na adresu (URL) HTTP, pokud je vaše MPD na jiném stroji a obaly jsou přístupné přes HTTP. Pokud není nastaveno na adresu (URL) HTTP a vy máte i oprávnění pro zápis do této složky (a jejích podsložek), Cantata uloží všechny stažené obaly do příslušné složky s albem.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Cover filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;</source>
-        <translation type="vanished">Pokud není nastaveno žádné nastavení pro název souboru s obalem, pak bude Cantata používat výchozí &lt;code&gt;obal&lt;/code&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="201"/>
@@ -14830,23 +14270,6 @@ Přepsat?</translation>
         <translation>Nepodařilo se stáhnout &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="vanished">Nainstalovat/Aktualizovat poskytovatele vybraných proudů?</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="vanished">Nainstalovat poskytovatele vybraných proudů?</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="vanished">Aktualizovat poskytovatele vybraných proudů?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation>Instalovat/Aktualizovat</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation>Zrušit instalaci/aktualizaci?</translation>
@@ -14869,6 +14292,11 @@ Přepsat?</translation>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation>Stahuje se %1</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation>Instalovat/Aktualizovat</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>
@@ -15210,10 +14638,6 @@ Přepsat?</translation>
         <location filename="../streams/streamssettings.cpp" line="181"/>
         <source>Failed to open package file.</source>
         <translation>Nepodařilo se otevřít soubor s balíčkem.</translation>
-    </message>
-    <message>
-        <source>Failed top open package file.</source>
-        <translation type="vanished">Nepodařilo se otevřít soubor s balíčkem.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>
@@ -15874,10 +15298,6 @@ Pokud soubor přejmenujete (nebo složku, v níž je), potom bude hodnocení spo
         <location filename="../gui/trayitem.cpp" line="182"/>
         <source>Cantata</source>
         <translation>Cantata</translation>
-    </message>
-    <message>
-        <source>Now playing</source>
-        <translation type="vanished">Nyní se hraje</translation>
     </message>
 </context>
 <context>

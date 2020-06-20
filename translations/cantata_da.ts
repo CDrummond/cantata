@@ -978,10 +978,6 @@ Kunne ikke downloade til midlertidig fil!</translation>
         <translation>Billeder (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">Billeder (*.png *.jpg)</translation>
-    </message>
-    <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
         <source>File is already in list!</source>
         <translation>Filen er allerede i listen!</translation>
@@ -1032,37 +1028,6 @@ Kunne ikke kopiere fil til &apos;%1&apos;!</translation>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation>Søger...</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Kunstner:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Albumkunstner:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Komponist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Optræder:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;År:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Kunstner:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;År:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1269,16 +1234,6 @@ Kunne ikke kopiere fil til &apos;%1&apos;!</translation>
         <translation>Transkodning</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation>Transkod kun hvis kildefil er af et andet format</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation>Transkod kun hvis kilder er FLAC/WAV</translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation>Kopiér ikke covers</translation>
@@ -1332,6 +1287,16 @@ Kunne ikke kopiere fil til &apos;%1&apos;!</translation>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
         <translation>Transkod altid</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation>Transkod kun hvis kildefil er af et andet format</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
+        <translation>Transkod kun hvis kilder er FLAC/WAV</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
@@ -2187,10 +2152,6 @@ Det kan ikke fortrydes.</translation>
         <translation>Cantata grupperer spor i albummer ved at bruge &apos;Albumkunstner&apos;-mærkatet hvis det er sat, ellers bruges &apos;Kunstner&apos;-mærkatet. Hvis du har albummer med flere kunstnere, så &lt;b&gt;skal&lt;/b&gt; du sætte &apos;Albumkunstner&apos;-mærkatet for at grupperingen kan virke korrekt. I dette scenarie foreslås det at bruge &apos;Diverse kunstnere&apos;.</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="vanished">&lt;b&gt;Advarsel:&lt;/b&gt; Du er på nuværende tidspunkt ikke medlem af &apos;users&apos;-gruppen. Cantata virker bedre (gemme albumcovers, sangtekster, osv. med de korrekte tilladelser) hvis du (eller din administrator) tilføjer dig selv til gruppen. Hvis du tilføjer dig selv, så skal du logge ud og ind igen før det træder i kraft.</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
         <source>Not Connected</source>
         <translation>Ikke forbundet</translation>
@@ -2674,14 +2635,6 @@ Det kan ikke fortrydes.</translation>
         <location filename="../gui/interfacesettings.cpp" line="224"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
         <translation>Hvis ikke der er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers. Den skal angives &lt;b&gt;uden&lt;/b&gt; en endelse.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="vanished">Hvis ikke der er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers eller når der tilføjes musik til dit bibliotek fra enheder.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="vanished">Hvis ikke der er angivet nogen indstilling til &apos;Filnavn&apos;, så bruger Cantata &lt;code&gt;cover&lt;/code&gt; som standard. Filnavnet bruges ved download af covers.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="438"/>
@@ -4399,14 +4352,14 @@ Det kan ikke fortrydes.</translation>
         <translation>Crossfade mellem spor:</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation>Replay gain:</translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation> s</translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation>Replay gain:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -4685,6 +4638,16 @@ Det kan ikke fortrydes.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation>Dynamisk afspilningsliste</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation>Smart afspilningsliste</translation>
+    </message>
+    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
         <source>Each playlist requires a unique name, enter that above.
 
@@ -4712,16 +4675,6 @@ Brug indstillingen nedenfor for at begrænse området af sange som tilføjes.</t
         <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Descending</source>
         <translation>Faldende</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation>Dynamisk afspilningsliste</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation>Smart afspilningsliste</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
@@ -5081,10 +5034,6 @@ Overskriv?</translation>
         <translation>Indtast podcast-URL nedenfor og tryk på &apos;Indlæs&apos; eller tryk på mappeikonet for at indlæse en lokal podcast-fil.</translation>
     </message>
     <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">Indtast podcast-URL nedenfor og tryk på &apos;Indlæs&apos;</translation>
-    </message>
-    <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
         <source>Invalid URL!</source>
         <translation>Ugyldig URL!</translation>
@@ -5177,39 +5126,9 @@ Overskriv?</translation>
         <translation>Fjern abonnering fra &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation>Eksportér Podcast-abonneringer</translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation>Eksport mislykkedes!</translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">Vil du downloade de valgte podcast-episoder?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">Annuller downloads af podcast-episoder (både nuværende og i kø)?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Vil du slete de downloadede filer af de valgte podcast-episoder?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">Vil du mærke de valgte podcast-episoder som nye?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">Vil du mærke de valgte podcast-episoder som lyttede?</translation>
-    </message>
-    <message>
-        <source>Refresh all subscriptions?</source>
-        <translation type="vanished">Genopfrisk alle abonneringer?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -5230,6 +5149,16 @@ Overskriv?</translation>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
         <translation>Genopfrisk valgte</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation>Eksportér Podcast-abonneringer</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
+        <translation>Eksport mislykkedes!</translation>
     </message>
 </context>
 <context>
@@ -6519,26 +6448,6 @@ Vælg venligst et andet navn.</translation>
         <translation>Bruger:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="vanished">Domæne:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Adgangskode:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="vanished">Share:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="vanished">Hvis du indtaster din adgangskode her, så vil den blive lagret &lt;b&gt;ukrypteret&lt;/b&gt; i Cantata&apos;s konfigurationsfil. Sæt adgangskoden til &apos;-&apos; hvis Cantata skal spørge om adgangskoden inden share&apos;en tilgås</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="vanished">Tjenestenavn:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -6573,27 +6482,6 @@ Vælg venligst et andet navn.</translation>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="vanished">Tilgængelig</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="vanished">Ikke tilgængelig</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="vanished">Kunne ikke løse forbindelsesdetaljer for %1</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation>Opretter forbindelse...</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="vanished">Der kan ikke spørges efter adgangskode når cantata startes fra kommandolinjen.</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation>Der er ikke installeret noget egnet ssh-askpass-program! Det kræves for at indtaste adgangskoder.</translation>
@@ -6610,14 +6498,19 @@ Vælg venligst et andet navn.</translation>
         <translation>&quot;sshfs&quot; er ikke installeret!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation>Afbryder forbindelsen...</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation>Opretter forbindelse...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation>&quot;fusermount&quot; er ikke installeret!</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation>Afbryder forbindelsen...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -7001,13 +6894,6 @@ Vælg venligst et andet navn.</translation>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation>Ikke autentificeret</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: Scrobble-spor</translation>
     </message>
 </context>
 <context>
@@ -8102,23 +7988,6 @@ Overskriv?</translation>
         <translation>Kunne ikke downloade &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="vanished">Installer/opdater de valgte strømudbydere?</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="vanished">Installer de valgte strømudbydere?</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="vanished">Opdater de valgte strømudbydere?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation>Installer/opdater</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation>Afbryd installation/opdatering?</translation>
@@ -8140,6 +8009,11 @@ Overskriv?</translation>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation>Downloader %1</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation>Installer/opdater</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>

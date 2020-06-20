@@ -5199,14 +5199,6 @@ Continue with the default settings?</source>
         <source>Saving cache</source>
         <translation type="unfinished">Guardando almacén</translation>
     </message>
-    <message>
-        <source>Calculating...</source>
-        <translation type="obsolete">Calculando...</translation>
-    </message>
-    <message>
-        <source>Time remaining:</source>
-        <translation type="obsolete">Tiempo restante:</translation>
-    </message>
 </context>
 <context>
     <name>AlbumDetails</name>
@@ -5832,11 +5824,7 @@ Could not download to temporary file!</source>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="obsolete">Imágenes (*.png *.jpg)</translation>
+        <translation type="unfinished">Imágenes (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
@@ -5883,17 +5871,6 @@ Could not copy file to &apos;%1&apos;!</source>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation type="unfinished">Buscando...</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Compositor:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artista:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Álbum:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Año:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -6100,16 +6077,6 @@ Could not copy file to &apos;%1&apos;!</source>
         <translation type="unfinished">Transcodificación</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation type="unfinished">Solo transcodificar si el fichero fuente tiene un formato diferente</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation type="unfinished">No copiar carátulas</translation>
@@ -6162,6 +6129,16 @@ Could not copy file to &apos;%1&apos;!</source>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation type="unfinished">Solo transcodificar si el fichero fuente tiene un formato diferente</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6605,11 +6582,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="126"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remote dynamizer is not running.</source>
-        <translation type="obsolete">El dinamizador remoto no está activo.</translation>
+        <translation type="unfinished">El dinamizador remoto no está activo. Para admitir listas de reproducción dinámicas en Windows, Cantata requiere que su script &apos;cantata-dynamic&apos; se ejecute en el servidor MPD.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="160"/>
@@ -6622,24 +6595,6 @@ This cannot be undone.</source>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="161"/>
         <source>Remove Dynamic Rules</source>
         <translation type="unfinished">Eliminar normas dinámicas</translation>
-    </message>
-</context>
-<context>
-    <name>FancyTabWidget</name>
-    <message>
-        <source>Configure...</source>
-        <translation type="obsolete">Configurar...</translation>
-    </message>
-</context>
-<context>
-    <name>FileSettings</name>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="obsolete">Guardar letras descargadas en el directorio de música</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="obsolete">Guardar fondos descargados en el directorio de música</translation>
     </message>
 </context>
 <context>
@@ -6835,17 +6790,6 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>FolderPage</name>
-    <message>
-        <source>Open In File Manager</source>
-        <translation type="obsolete">Abrir en el explorador de ficheros</translation>
-    </message>
-    <message>
-        <source>Delete Songs</source>
-        <translation type="obsolete">Eliminar canciones</translation>
-    </message>
-</context>
-<context>
     <name>FsDevice</name>
     <message>
         <location filename="../devices/fsdevice.cpp" line="679"/>
@@ -6916,10 +6860,6 @@ This cannot be undone.</source>
         <translation type="unfinished">Bienvenido a Cantata</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bienvenido a Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
@@ -6927,7 +6867,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
         <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Bienvenido a Cantata&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -7023,7 +6963,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obtener carátulas faltantes</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
@@ -7034,18 +6974,6 @@ This cannot be undone.</source>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Cantata descargará las carátulas faltantes y las letras desde Internet.&lt;/p&gt;&lt;p&gt;Para cada uno de ellos, confirme si se desea que Cantata guarde los ficheros pertinentes dentro del directorio de música, o dentro de sus directorios personales cache/config.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="obsolete">Guardar letras descargadas en el directorio de música</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="obsolete">Guardar fondos descargados en el directorio de música</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="722"/>
@@ -7061,10 +6989,6 @@ This cannot be undone.</source>
         <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="obsolete">&lt;b&gt;Advertencia:&lt;/b&gt; No es un miembro del grupo «users». Cantata funciona mejor (almacenar portadas de álbum, letras y más con los permisos adecuados) si Ud. o el administrador incluyen al usuario en el grupo. Si añade su propio usuario tendrá que reiniciar la sesión para que tenga efecto.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
@@ -7383,7 +7307,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="644"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obtener carátulas faltantes</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="651"/>
@@ -7393,7 +7317,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>Filename:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nombre de fichero:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="668"/>
@@ -7411,10 +7335,6 @@ This cannot be undone.</source>
         <translation type="unfinished">General</translation>
     </message>
     <message>
-        <source>Fetch missing covers from Last.fm</source>
-        <translation type="obsolete">Obtener carátulas faltantes de Last.fm</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="712"/>
         <source>Show delete action in context menus</source>
         <translation type="unfinished">Mostrar la acción de eliminar en menús contextuales</translation>
@@ -7423,15 +7343,6 @@ This cannot be undone.</source>
         <location filename="../gui/interfacesettings.ui" line="719"/>
         <source>Enforce single-click activation of items</source>
         <translation type="unfinished">Forzar la activación con un solo clic de los elementos</translation>
-    </message>
-    <message>
-        <location filename="../gui/interfacesettings.ui" line="775"/>
-        <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Make interface more touch friendly</source>
-        <translation type="obsolete">Adaptar la interfaz a una interacción táctil</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="726"/>
@@ -7451,6 +7362,11 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="768"/>
         <source>Changing the language setting will require a re-start of Cantata.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/interfacesettings.ui" line="775"/>
+        <source>Changing the style setting will require a re-start of Cantata.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8067,10 +7983,6 @@ Si está búsqueda ofrece letras nuevas, seguirán asociadas al título de la ca
         <translation type="unfinished">Configurar Cantata...</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation type="obsolete">Preferencias</translation>
-    </message>
-    <message>
         <location filename="../gui/mainwindow.cpp" line="254"/>
         <source>Preferences...</source>
         <translation type="unfinished">Preferencias...</translation>
@@ -8219,13 +8131,9 @@ Si está búsqueda ofrece letras nuevas, seguirán asociadas al título de la ca
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Play Stream</source>
-        <translation type="obsolete">Reproducir flujo</translation>
-    </message>
-    <message>
         <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reproducir flujo de salida HTTP</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
@@ -8629,10 +8537,6 @@ This cannot be undone.</source>
         <translation type="unfinished">Actualizando directorios...</translation>
     </message>
     <message>
-        <source>Updating files...</source>
-        <translation type="obsolete">Actualizando ficheros...</translation>
-    </message>
-    <message>
         <location filename="../devices/mtpdevice.cpp" line="317"/>
         <source>Updating tracks...</source>
         <translation type="unfinished">Actualizando pistas...</translation>
@@ -8738,12 +8642,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
         <source>Copy To Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Copiar al portapapeles</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
         <source>Now Playing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">En reproducción</translation>
     </message>
     <message>
         <location filename="../widgets/nowplayingwidget.cpp" line="459"/>
@@ -8762,10 +8666,6 @@ This cannot be undone.</source>
         <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
         <source>%1 kHz</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>(Stream)</source>
-        <translation type="obsolete">(Flujo)</translation>
     </message>
 </context>
 <context>
@@ -9281,14 +9181,14 @@ This cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation type="unfinished"> s</translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation type="unfinished">Ganancia de reproducción:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -9460,7 +9360,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="45"/>
         <source>Smart Rule</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Norma inteligente</translation>
     </message>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="165"/>
@@ -9487,13 +9387,9 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <source>Name of Dynamic Rules</source>
-        <translation type="obsolete">Nombre de las normas dinámicas</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nombre de la lista de reproducción</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -9571,23 +9467,14 @@ This cannot be undone.</source>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <source>Dynamic Rules</source>
-        <translation type="obsolete">Normas dinámicas</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation type="unfinished">Lista de reproducción dinámica</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation type="obsolete">Ninguno</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
-        <source>No Limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
-        <source>About dynamic rules</source>
-        <translation type="unfinished"></translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation type="unfinished">Lista de reproducción inteligente</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
@@ -9596,6 +9483,12 @@ This cannot be undone.</source>
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
 
 Use the settings below to restrict the range of songs added.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
+        <source>No Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9609,18 +9502,13 @@ Use the settings below to restrict the range of songs added.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
+        <source>Number of songs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation type="unfinished">Lista de reproducción inteligente</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
-        <source>Number of songs:</source>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
+        <source>About dynamic rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9691,79 +9579,6 @@ Overwrite?</source>
         <location filename="../models/playlistsmodel.cpp" line="356"/>
         <source>Smart Playlist</source>
         <translation type="unfinished">Lista de reproducción inteligente</translation>
-    </message>
-</context>
-<context>
-    <name>Plurals</name>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Pista</numerusform>
-            <numerusform>%n pistas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>1 pista (%1)</numerusform>
-            <numerusform>%n pistas (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Álbum</numerusform>
-            <numerusform>%n álbumes</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Artista</numerusform>
-            <numerusform>%n artistas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Flujo</numerusform>
-            <numerusform>%n flujos</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Entrada</numerusform>
-            <numerusform>%n entradas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 norma</numerusform>
-            <numerusform>%n normas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Podcast</numerusform>
-            <numerusform>%n Podcast</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Episodio</numerusform>
-            <numerusform>%n Episodios</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>1 actualización disponible</numerusform>
-            <numerusform>%n actualizaciones disponibles</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -10039,11 +9854,7 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="obsolete">Introduzca a continuación la URL de podcast y pulse &apos;Cargar&apos;</translation>
+        <translation type="unfinished">Introduzca a continuación la URL de podcast y pulse &apos;Cargar&apos;, o presione el ícono de la carpeta para cargar un archivo de podcast local.</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -10134,20 +9945,6 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="obsolete">¿Desea descargar los episodios de podcast seleccionados?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation type="unfinished">¿Desea eliminar los ficheros descargados de los episodios de podcast seleccionados?</translation>
@@ -10170,6 +9967,16 @@ Overwrite?</source>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -10484,11 +10291,7 @@ Overwrite?</source>
     <message>
         <location filename="../devices/encoders.cpp" line="271"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="obsolete">El &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;nivel de compresión&lt;/a&gt; es un valor entero entre cero y ocho que representa la relación entre el tamaño del fichero y la velocidad de compresión al codificar con &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Definir el nivel de compresión como &lt;b&gt;0&lt;/b&gt; ofrece un tiempo de compresión menor pero genera un fichero comparativamente más grande.&lt;br/&gt;Por otra parte, un nivel de compresión de &lt;b&gt;8&lt;/b&gt; ralentiza la compresión pero genera un fichero más pequeño.&lt;br/&gt;Tenga en cuenta que debido a que FLAC es por definición un códec sin pérdida de datos, la calidad de audio de la salida es idéntica sin importar el nivel de compresión.&lt;br/&gt;Así mismo, los niveles superiores a &lt;b&gt;5&lt;/b&gt; aumentan sustancialmente el tiempo de compresión pero generan un fichero superficialmente menor, y no se recomiendan.</translation>
+        <translation type="unfinished">El &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;nivel de compresión&lt;/a&gt; es un valor entero entre cero y ocho que representa la relación entre el tamaño del fichero y la velocidad de compresión al codificar con &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Definir el nivel de compresión como &lt;b&gt;0&lt;/b&gt; ofrece un tiempo de compresión menor pero genera un fichero comparativamente más grande.&lt;br/&gt;Por otra parte, un nivel de compresión de &lt;b&gt;8&lt;/b&gt; ralentiza la compresión pero genera un fichero más pequeño.&lt;br/&gt;Tenga en cuenta que debido a que FLAC es por definición un códec sin pérdida de datos, la calidad de audio de la salida es idéntica sin importar el nivel de compresión.&lt;br/&gt;Así mismo, los niveles superiores a &lt;b&gt;5&lt;/b&gt; aumentan sustancialmente el tiempo de compresión pero generan un fichero superficialmente menor, y no se recomiendan.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="286"/>
@@ -10702,61 +10505,6 @@ width x height</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 Tracks</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 pistas</translation>
-    </message>
-    <message>
-        <source>1 Track (%1)</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 pista (%1)</translation>
-    </message>
-    <message>
-        <source>%1 Tracks (%2)</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 pistas (%2)</translation>
-    </message>
-    <message>
-        <source>%1 Albums</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 álbumes</translation>
-    </message>
-    <message>
-        <source>%1 Artists</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 artistas</translation>
-    </message>
-    <message>
-        <source>%1 Streams</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 flujos</translation>
-    </message>
-    <message>
-        <source>%1 Entries</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 entradas</translation>
-    </message>
-    <message>
-        <source>%1 Rules</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 normas</translation>
-    </message>
-    <message>
-        <source>%1 Podcasts</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Podcasts</translation>
-    </message>
-    <message>
-        <source>%1 Episodes</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Episodios</translation>
-    </message>
-    <message>
-        <source>%1 Updates available</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 actualizaciones disponibles</translation>
-    </message>
-    <message>
         <location filename="../gui/stdactions.cpp" line="85"/>
         <source>Previous Track</source>
         <translation type="unfinished">Pista anterior</translation>
@@ -10957,11 +10705,6 @@ width x height</comment>
         <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation type="unfinished">Predefinido</translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot;</source>
-        <comment>name (host)</comment>
-        <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
@@ -11301,76 +11044,6 @@ width x height</comment>
         <source>Categorized</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Pista</numerusform>
-            <numerusform>%n pistas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>1 pista (%1)</numerusform>
-            <numerusform>%n pistas (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Álbum</numerusform>
-            <numerusform>%n álbumes</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Artista</numerusform>
-            <numerusform>%n artistas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Flujo</numerusform>
-            <numerusform>%n flujos</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Entrada</numerusform>
-            <numerusform>%n entradas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 norma</numerusform>
-            <numerusform>%n normas</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Podcast</numerusform>
-            <numerusform>%n Podcast</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>1 Episodio</numerusform>
-            <numerusform>%n Episodios</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>1 actualización disponible</numerusform>
-            <numerusform>%n actualizaciones disponibles</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpd - MPD communication</source>
@@ -11591,22 +11264,6 @@ Please choose a different name.</source>
         <translation type="unfinished">Usuario:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="obsolete">Dominio:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="obsolete">Contraseña:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="obsolete">Recurso compartido:</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="obsolete">Nombre del servicio:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -11641,27 +11298,6 @@ Please choose a different name.</source>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="obsolete">Disponible</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="obsolete">No disponible</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="obsolete">Fallo al determinar los detalles de conexión para %1</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation type="unfinished">Conectando...</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="obsolete">La petición de contraseña no funciona cuando cantata se ejecuta desde la línea de órdenes.</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation type="unfinished">No se ha detectado ninguna aplicación «ssh-askpass» adecuada. Se requiere para introducir contraseñas.</translation>
@@ -11678,14 +11314,19 @@ Please choose a different name.</source>
         <translation type="unfinished">sshfs no está instalado.</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation type="unfinished">Desconectando...</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation type="unfinished">Conectando...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation type="unfinished">fusermount no está instalado.</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation type="unfinished">Desconectando...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -12072,13 +11713,6 @@ Please choose a different name.</source>
     </message>
 </context>
 <context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="obsolete">%1: Registrar pistas escuchadas</translation>
-    </message>
-</context>
-<context>
     <name>SearchModel</name>
     <message>
         <location filename="../models/searchmodel.cpp" line="90"/>
@@ -12285,14 +11919,6 @@ This cannot be undone.</source>
         <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation type="unfinished">Directorio de música:</translation>
-    </message>
-    <message>
-        <source>Cover filename:</source>
-        <translation type="obsolete">Nombre de fichero de carátula:</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Nombre de fichero (sin extensión) para guardar las carátulas descargadas.&lt;br/&gt;Si no se define, se utiliza «cover».&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% se sustituirá por el artista de álbum de la canción actual, y %album% se sustituirá por el nombre del álbum.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
@@ -13166,11 +12792,6 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation type="unfinished">Instalar/Actualizar</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation type="unfinished">¿Desea cancelar la instalación/actualización?</translation>
@@ -13192,6 +12813,11 @@ Overwrite?</source>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation type="unfinished">Descargando %1</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation type="unfinished">Instalar/Actualizar</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>
@@ -14187,10 +13813,6 @@ If you rename a file (or the folder it is within), then the rating associated wi
         <location filename="../gui/trayitem.cpp" line="182"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
-    </message>
-    <message>
-        <source>Now playing</source>
-        <translation type="obsolete">En reproducción</translation>
     </message>
 </context>
 <context>

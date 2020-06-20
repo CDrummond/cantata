@@ -6016,14 +6016,6 @@ Folytassuk az alapbeállításokkal?</translation>
         <source>Saving cache</source>
         <translation type="unfinished">A cache mentése</translation>
     </message>
-    <message>
-        <source>Calculating...</source>
-        <translation type="obsolete">Számol...</translation>
-    </message>
-    <message>
-        <source>Time remaining:</source>
-        <translation type="obsolete">Hátralévő idő:</translation>
-    </message>
 </context>
 <context>
     <name>AlbumDetails</name>
@@ -6651,11 +6643,7 @@ Nem tudom letölteni az átmeneti fájlt!</translation>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="obsolete">Képek (*.png *.jpg)</translation>
+        <translation type="unfinished">Képek (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
@@ -6708,21 +6696,6 @@ Nem sikerült ebbe: &apos;%1&apos; másolni a fájlt!</translation>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation type="unfinished">Keresés...</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Zeneszerző:&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Előadó&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="obsolete">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Előadó:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Év:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -6929,16 +6902,6 @@ Nem sikerült ebbe: &apos;%1&apos; másolni a fájlt!</translation>
         <translation type="unfinished">Átkódolás</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation type="unfinished">Átkódolás csak akkor, ha a forrásfájl eltérő formátumú</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation type="unfinished">Ne másolja a borítókat</translation>
@@ -6991,6 +6954,16 @@ Nem sikerült ebbe: &apos;%1&apos; másolni a fájlt!</translation>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation type="unfinished">Átkódolás csak akkor, ha a forrásfájl eltérő formátumú</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7436,11 +7409,7 @@ Ezt nem lehet visszavonni!</translation>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="126"/>
         <source>Remote dynamizer is not running. In order to support &apos;dynamic&apos; playlists under Windows, Cantata requires its &apos;cantata-dynamic&apos; script to be running on the MPD server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remote dynamizer is not running.</source>
-        <translation type="obsolete">A távoli dinamizáló nem fut.</translation>
+        <translation type="unfinished">A távoli dinamizáló nem fut.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="160"/>
@@ -7455,28 +7424,6 @@ Ezt nem lehet visszavonni.</translation>
         <location filename="../playlists/dynamicplaylistspage.cpp" line="161"/>
         <source>Remove Dynamic Rules</source>
         <translation type="unfinished">Dinamikaszabályok eltávolítása</translation>
-    </message>
-</context>
-<context>
-    <name>FancyTabWidget</name>
-    <message>
-        <source>Configure...</source>
-        <translation type="obsolete">Beállítás...</translation>
-    </message>
-</context>
-<context>
-    <name>FileSettings</name>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="obsolete">Letöltött dalszövegek mentése a zenekönyvtárban</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="obsolete">Letöltött hátterek mentése a a zenekönyvtárban</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="obsolete">Ha a Cantata-t választod borítók, szövegek, vagy hátterek zenekönyvtárban tárolására és nincs írási jogod arra, akkor a Cantata átirányítja a személyes cache könyvtáradba a mentést.</translation>
     </message>
 </context>
 <context>
@@ -7672,25 +7619,6 @@ Ezt nem lehet visszavonni.</translation>
     </message>
 </context>
 <context>
-    <name>FolderPage</name>
-    <message>
-        <source>Open In File Manager</source>
-        <translation type="obsolete">Megnyitás fájlkezelőben</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to delete the selected songs?
-
-This cannot be undone.</source>
-        <translation type="obsolete">Biztosan törölni szeretnéd a kiválasztott dalokat?
-
-Ezt nem lehet visszavonni!</translation>
-    </message>
-    <message>
-        <source>Delete Songs</source>
-        <translation type="obsolete">Dalok törlése</translation>
-    </message>
-</context>
-<context>
     <name>FsDevice</name>
     <message>
         <location filename="../devices/fsdevice.cpp" line="679"/>
@@ -7760,22 +7688,14 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Légy üdvözölve a Cantata-ban</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata zenelejátszó kiszolgálóhoz (MPD) való, sokrétű és felhasználóbarát. Az MPD rugalmas, nagy tudású kiszolgáló oldali zenelejátszó alkalmazás.&lt;/p&gt;&lt;p&gt;Az MPD-ről további információk az MPD honlapján &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Ez a varázs végigvezet a Cantata megfelelő működéséhez szükséges alapbeállításokon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to Cantata&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Légy üdvözölve a Cantata-ban.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.ui" line="69"/>
         <source>&lt;p&gt;Cantata is a feature-rich and user friendly client for Music Player Daemon (MPD). MPD is a flexible, powerful, server-side application for playing music.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This &apos;wizard&apos; will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Cantata zenelejátszó kiszolgálóhoz (MPD) való, sokrétű és felhasználóbarát. Az MPD rugalmas, nagy tudású kiszolgáló oldali zenelejátszó alkalmazás.&lt;/p&gt;&lt;p&gt;Az MPD-ről további információk az MPD honlapján &lt;a href=&quot;http://www.musicpd.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.musicpd.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Ez a varázs végigvezet a Cantata megfelelő működéséhez szükséges alapbeállításokon.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="108"/>
         <source>&lt;p&gt;Welcome to Cantata&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Légy üdvözölve a Cantata-ban&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="134"/>
@@ -7871,7 +7791,7 @@ Ezt nem lehet visszavonni!</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="678"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A hiányzó borítók letöltése</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="685"/>
@@ -7882,26 +7802,6 @@ Ezt nem lehet visszavonni!</translation>
         <location filename="../gui/initialsettingswizard.ui" line="692"/>
         <source>If you elect to have Cantata store covers within the music folder, and you do not have write access to this folder (or you have set this as a HTTP address), then Cantata will revert to saving the files in your personal cache folder.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Cantata az Internetről letölti a hiányzó borítókat és dalszövegeket.&lt;/p&gt;&lt;p&gt;Ezek mindegyikéhez külön nyugtázni kell, hogy a Cantata az adott fájlokat a zenekönyvtárban, vagy a személyes cache, vagy config könyvtáradba mentse.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Save downloaded lyrics in music folder</source>
-        <translation type="obsolete">Letöltött dalszövegek mentése a zenekönyvtárban</translation>
-    </message>
-    <message>
-        <source>Save downloaded backdrops in music folder</source>
-        <translation type="obsolete">Letöltött hátterek mentése a a zenekönyvtárban</translation>
-    </message>
-    <message>
-        <source>If you elect to have Cantata store covers, lyrics, or backdrops, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder.</source>
-        <translation type="obsolete">Ha a Cantata-t választod borítók, szövegek, vagy hátterek zenekönyvtárban tárolására és nincs írási jogod arra, akkor a Cantata átirányítja a személyes cache könyvtáradba a mentést.</translation>
-    </message>
-    <message>
-        <source>The &apos;Music folder&apos; is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left un-checked.</source>
-        <translation type="obsolete">A &apos;Zenekönyvtár&apos; HTTP-címre mutat és a Cantata aktuálisan nem képes feltölteni fájlokat a külső HTTP szerverre. Ezért a fenti beállításokat kijelöletlenül kell hagyni. </translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="722"/>
@@ -7917,10 +7817,6 @@ Ezt nem lehet visszavonni!</translation>
         <location filename="../gui/initialsettingswizard.ui" line="777"/>
         <source>Cantata will groups tracks into albums by using the &apos;AlbumArtist&apos; tag if it is set, otherwise it will fallback to the &apos;Artist&apos; tag. If you have albums with multiple artists, you &lt;b&gt;must&lt;/b&gt; set the &apos;AlbumArtist&apos; tag for the grouping to function correctly. It is suggested to use &apos;Various Artists&apos; in this scenario.</source>
         <translation type="unfinished">A Cantata a számokat albumba rendezi az &apos;AlbumElőadó&apos; címke alapján, ha van, ellenkező esetben az &apos;Előadó&apos; címkét használja. Ha az album válogatás, akkor az &apos;AlbumElőadó&apos; a működéshez a címkét a csoportosításhoz &lt;b&gt;be kell&lt;/b&gt; állítani. A &apos;Válogatás&apos; használata javasolt ez esetben. </translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="obsolete">&lt;b&gt;Figyelmeztetés: jelenleg a felhasználói csoport tagja vagy. A Cantata jobban fog működni (album borítók, dalszövegek stb. mentésében megfelelő jogosultságok mellett), ha te (vagy a rendszergazdád) hozzá ad(od magad) ehhez a csoporthoz. Ha te adod magad hozzá, akkor ki, és be kell jelentkezned ezek életbe léptetéséhez.</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
@@ -8239,7 +8135,7 @@ Ezt nem lehet visszavonni!</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="644"/>
         <source>Fetch missing covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A hiányzó borítók letöltése</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="651"/>
@@ -8249,12 +8145,12 @@ Ezt nem lehet visszavonni!</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="658"/>
         <source>Filename:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fájlnév:</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="668"/>
         <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;Fájlnév (kiterjesztés nélkül) lementi a borítót aszerint.&lt;br/&gt;Ha üresen marad &apos;borítót&apos; használja.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;A jelenlegi számnál az %előadó% album előadóra kerül lecserélésre, és az %album% pedig az album nevére.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Fájlnév (kiterjesztés nélkül) lementi a borítót aszerint.&lt;br/&gt;Ha üresen marad &apos;borítót&apos; használja.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;A jelenlegi számnál az %artist% album előadóra kerül lecserélésre, és az %album% pedig az album nevére.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="677"/>
@@ -8267,10 +8163,6 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Általános:</translation>
     </message>
     <message>
-        <source>Fetch missing covers from Last.fm</source>
-        <translation type="obsolete">A hiányzó borítók letöltése a Last.fm-ről</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="712"/>
         <source>Show delete action in context menus</source>
         <translation type="unfinished">Törlési művelet megjelenítése a helyi menükben</translation>
@@ -8281,28 +8173,9 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Egykattintásos elemaktiválás alkalmazása</translation>
     </message>
     <message>
-        <location filename="../gui/interfacesettings.ui" line="775"/>
-        <source>Changing the style setting will require a re-start of Cantata.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;This will change Cantata&apos;s interface as detailed:
-&lt;ul&gt;&lt;li&gt;Playback, and control, buttons will be 33% wider&lt;/li&gt;&lt;li&gt;Views will be &apos;flickable&apos;&lt;/li&gt;&lt;li&gt;To drag items, you will need to &apos;touch&apos; the top-left corner&lt;/li&gt;&lt;li&gt;Scrollbars will only be a few pixels wide&lt;/li&gt;&lt;li&gt;Actions (e.g. &apos;Add To Play Queue&apos;) will always be visible (not just when item is under mouse)&lt;/li&gt;&lt;li&gt;Spin buttons will have + and - buttons at the side of the text field&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Ez a Cantata megjelenését az alábbiak szerint megváltoztatja:
-&lt;ul&gt;&lt;li&gt;a Lejátszás és szabályozó gombok 33%-kal szélesebbek&lt;/li&gt;&lt;li&gt;a nézetek &apos;válthatóak&apos;&lt;/li&gt;&lt;li&gt;elemek vonszolásához a bal felső sarok &apos;érintése&apos; szükséges&lt;/li&gt;&lt;li&gt;a görgetősáv csak pár pixel széles&lt;/li&gt;&lt;li&gt;a műveletek (pl.. &apos;Lejátszási sorhoz fűz&apos;) mindig látható (nem csak ha az egérmutató rajta van)&lt;/li&gt;&lt;li&gt;a tekerés gomboknál a felirat mellett + és - jelek&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Make interface more touch friendly</source>
-        <translation type="obsolete">A felületet alakítsd sokkal érintésbarátabbra</translation>
-    </message>
-    <message>
         <location filename="../gui/interfacesettings.ui" line="726"/>
         <source>Show song information tooltips</source>
         <translation type="unfinished">Dalinformációk-tipp megjelenítése</translation>
-    </message>
-    <message>
-        <source>Support retina displays</source>
-        <translation type="obsolete">Retina megjelenítők támogatása</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="733"/>
@@ -8320,12 +8193,9 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">A nyelvi beállítások változtatása a Cantata újraindítását igényli.</translation>
     </message>
     <message>
-        <source>Changing the &apos;touch friendly&apos; setting will require a re-start of Cantata.</source>
-        <translation type="obsolete">Az &apos;Érintésbarát&apos; beállítás változtatása a Cantata újraindítását igényli.</translation>
-    </message>
-    <message>
-        <source>Enabling support for retina displays will produce sharper icons on the retina display, but may produce less sharp icons on non-retina displays. Changing this setting will require a re-start of Cantata.</source>
-        <translation type="obsolete">A retina megjelenítő-támogatás bekapcsolása a retina képernyőkön élesebb ikonokat eredményez, de a nem retina képernyőkön az ikonok elmosódottabbak lehetnek. A változtatás a Cantata újraindítását igényli.</translation>
+        <location filename="../gui/interfacesettings.ui" line="775"/>
+        <source>Changing the style setting will require a re-start of Cantata.</source>
+        <translation type="unfinished">A stílus beállítások változtatása a Cantata újraindítását igényli.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="149"/>
@@ -8943,10 +8813,6 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
         <translation type="unfinished">Cantata beállítása...</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation type="obsolete">Testreszabás</translation>
-    </message>
-    <message>
         <location filename="../gui/mainwindow.cpp" line="254"/>
         <source>Preferences...</source>
         <translation type="unfinished">Testreszabás...</translation>
@@ -9095,13 +8961,9 @@ Ha a kereső új dalszöveget talál, hozzákapcsolható az eredeti dalhoz és e
         <translation type="unfinished">Keresés a lejátszási sorban</translation>
     </message>
     <message>
-        <source>Play Stream</source>
-        <translation type="obsolete">Hangfolyam (stream) lejátszása</translation>
-    </message>
-    <message>
         <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Play HTTP Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hangfolyam (HTTP output stream) lejátszása</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="334"/>
@@ -9509,10 +9371,6 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished">Könyvtárak frissítése</translation>
     </message>
     <message>
-        <source>Updating files...</source>
-        <translation type="obsolete">Fájlok frissítése...</translation>
-    </message>
-    <message>
         <location filename="../devices/mtpdevice.cpp" line="317"/>
         <source>Updating tracks...</source>
         <translation type="unfinished">számok frissítése...</translation>
@@ -9637,10 +9495,6 @@ Ezt nem lehet visszavonni!</translation>
         <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
         <source>%1 kHz</source>
         <translation type="unfinished">%1 kHz</translation>
-    </message>
-    <message>
-        <source>(Stream)</source>
-        <translation type="obsolete">(Stream)</translation>
     </message>
 </context>
 <context>
@@ -10154,14 +10008,14 @@ Ezt nem lehet visszavonni!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation type="unfinished">s</translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -10333,7 +10187,7 @@ Ezt nem lehet visszavonni!</translation>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="45"/>
         <source>Smart Rule</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Okos szabály</translation>
     </message>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="165"/>
@@ -10360,13 +10214,9 @@ Ezt nem lehet visszavonni!</translation>
 <context>
     <name>PlaylistRules</name>
     <message>
-        <source>Name of Dynamic Rules</source>
-        <translation type="obsolete">A dinamikus szabályok neve</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrules.ui" line="39"/>
         <source>Name of playlist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A lejátszási lista neve</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="71"/>
@@ -10444,23 +10294,14 @@ Ezt nem lehet visszavonni!</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
-        <source>Dynamic Rules</source>
-        <translation type="obsolete">Dinamikaszabályok</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation type="unfinished">Dinamikus lejátszási lista</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation type="obsolete">Nincs</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
-        <source>No Limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
-        <source>About dynamic rules</source>
-        <translation type="unfinished">A dinamikus szabályokról</translation>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation type="unfinished">Okos lejátszási lista</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
@@ -10469,6 +10310,12 @@ Ezt nem lehet visszavonni!</translation>
 Use the &apos;Add&apos; button to add a &apos;rule&apos; to control which artists, genres, etc you want included in the playlist. Any rules added will be listed here. A playlist with no rules will use songs from your whole music library.
 
 Use the settings below to restrict the range of songs added.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="183"/>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="184"/>
+        <source>No Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10482,19 +10329,14 @@ Use the settings below to restrict the range of songs added.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation type="unfinished">Okos lejátszási lista</translation>
-    </message>
-    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
         <source>Number of songs:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="356"/>
+        <source>About dynamic rules</source>
+        <translation type="unfinished">A dinamikus szabályokról</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="358"/>
@@ -10565,69 +10407,6 @@ Felülírjam?</translation>
         <location filename="../models/playlistsmodel.cpp" line="356"/>
         <source>Smart Playlist</source>
         <translation type="unfinished">Okos lejátszási lista</translation>
-    </message>
-</context>
-<context>
-    <name>Plurals</name>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Szám</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>%n Szám (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Album</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Előadó</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Stream</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Tétel</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Szabály</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Podcast</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Rész</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>%n frissítés érhető el</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -10901,11 +10680,7 @@ Felülírjam?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="obsolete">Írd be a podcast URL-jét és &apos;Betölt&apos; gombot nyomd le.</translation>
+        <translation type="unfinished">Írd be a podcast URL-jét és &apos;Betölt&apos; gombot nyomd le.</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -10996,35 +10771,9 @@ Felülírjam?</translation>
         <translation type="unfinished">Leiratkozol a(z) &apos;%1&apos;-ről?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="obsolete">Biztosan eltávolítanád a kiválasztott %1 podcast epizódot?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="obsolete">Podcast-rész letöltését megszakítja (mind a folyamatban lévőt, mind a várakozót)?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation type="unfinished">Letörölnéd a következő kiválasztott podcast részek letöltött fájljait?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="obsolete">Megjelölöd a kiválasztott podcast-részt újnak?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="obsolete">Megjelölöd a kiválasztott podcast-részt meghallgatottnak?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -11044,6 +10793,16 @@ Felülírjam?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11358,11 +11117,7 @@ Felülírjam?</translation>
     <message>
         <location filename="../devices/encoders.cpp" line="271"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt; Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="obsolete">A FLAC &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;tömörítési szintjét&lt;/a&gt; 0 és 8 közötti egész érték jelzi a  &lt;b&gt;FLAC&lt;/b&gt; általi a kódolás során a fájl mérete és a tömörítés sebessége közötti kompromisszumot. &lt;br/&gt;A tömörítés szintjét &lt;b&gt;0&lt;/b&gt;-ra állítva a tömörítési idő rövid lesz, de viszonylag nagy fájlt eredményez. &lt;br/&gt;Más részről ha a tömörítés szintje &lt;b&gt;8&lt;b&gt;, a tömörítés nagyon lassú lesz, de a legkisebb mérete adja. &lt;br/&gt; Mellesleg, mivel definíciója szerint a FLAC veszteségmentes kódoló, a kimeneti hangfájl minősége a tömörítés értékétől függetlenül azonos lesz.&lt;/br&gt;Minden &lt;b&gt;5&lt;b&gt; fölötti érték miközben drámaian növeli a tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem ajánlott.</translation>
+        <translation type="unfinished">A FLAC &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;tömörítési szintjét&lt;/a&gt; 0 és 8 közötti egész érték jelzi a  &lt;b&gt;FLAC&lt;/b&gt; általi a kódolás során a fájl mérete és a tömörítés sebessége közötti kompromisszumot. &lt;br/&gt;A tömörítés szintjét &lt;b&gt;0&lt;/b&gt;-ra állítva a tömörítési idő rövid lesz, de viszonylag nagy fájlt eredményez. &lt;br/&gt;Más részről ha a tömörítés szintje &lt;b&gt;8&lt;b&gt;, a tömörítés nagyon lassú lesz, de a legkisebb mérete adja. &lt;br/&gt; Mellesleg, mivel definíciója szerint a FLAC veszteségmentes kódoló, a kimeneti hangfájl minősége a tömörítés értékétől függetlenül azonos lesz.&lt;/br&gt;Minden &lt;b&gt;5&lt;b&gt; fölötti érték miközben drámaian növeli a tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem ajánlott.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="286"/>
@@ -11576,91 +11331,6 @@ width x height</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>1 Track</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 Szám</translation>
-    </message>
-    <message>
-        <source>%1 Tracks</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Számok</translation>
-    </message>
-    <message>
-        <source>1 Track (%1)</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 Szám (%1)</translation>
-    </message>
-    <message>
-        <source>%1 Tracks (%2)</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Számok (%2)</translation>
-    </message>
-    <message>
-        <source>1 Album</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 Album</translation>
-    </message>
-    <message>
-        <source>%1 Albums</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Album</translation>
-    </message>
-    <message>
-        <source>1 Artist</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 Előadó</translation>
-    </message>
-    <message>
-        <source>%1 Artists</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Előadók</translation>
-    </message>
-    <message>
-        <source>%1 Streams</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Stream-ek</translation>
-    </message>
-    <message>
-        <source>%1 Entries</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Tételek</translation>
-    </message>
-    <message>
-        <source>1 Rule</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 Szabály</translation>
-    </message>
-    <message>
-        <source>%1 Rules</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Szabályok</translation>
-    </message>
-    <message>
-        <source>1 Podcast</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 Podcast</translation>
-    </message>
-    <message>
-        <source>%1 Podcasts</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Podcast</translation>
-    </message>
-    <message>
-        <source>1 Episode</source>
-        <comment>Singular</comment>
-        <translation type="obsolete">1 Rész</translation>
-    </message>
-    <message>
-        <source>%1 Episodes</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 Részek</translation>
-    </message>
-    <message>
-        <source>%1 Updates available</source>
-        <comment>Plural (N!=1)</comment>
-        <translation type="obsolete">%1 számú frissítés érhető el</translation>
-    </message>
-    <message>
         <location filename="../gui/stdactions.cpp" line="85"/>
         <source>Previous Track</source>
         <translation type="unfinished">Előző szám</translation>
@@ -11861,11 +11531,6 @@ width x height</comment>
         <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
         <source>Default</source>
         <translation type="unfinished">Alapbeállítás</translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot;</source>
-        <comment>name (host)</comment>
-        <translation type="obsolete">&quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
@@ -12205,66 +11870,6 @@ width x height</comment>
         <source>Categorized</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>%n Track(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Szám</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Tracks (%1)</source>
-        <translation type="obsolete">
-            <numerusform>%n Szám (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Album(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Album</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Artist(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Előadó</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Stream(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Stream</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Entry(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Tétel</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Rule(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Szabály</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Podcast(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Podcast</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Episode(s)</source>
-        <translation type="obsolete">
-            <numerusform>%n Rész</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="obsolete">
-            <numerusform>%n frissítés érhető el</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../gui/main.cpp" line="138"/>
         <source>mpd - MPD communication</source>
@@ -12487,26 +12092,6 @@ Kérlek válassz másik nevet.</translation>
         <translation type="unfinished">Felhasználó:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="obsolete">Kiszolgáló:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="obsolete">Jelszó:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="obsolete">Megosztás:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="obsolete">Az itt beírt jelszót &lt;b&gt;titkosítatlanul&lt;/b&gt; tárolja a Cantata beállító fájljában. Ha a megosztás előtt akarod a jelszót bekéretni, akkor azt állítsd &apos;-&apos; -ra.</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="obsolete">Szolgáltatás neve:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -12541,27 +12126,6 @@ Kérlek válassz másik nevet.</translation>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="obsolete">Elérhető</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="obsolete">Nem elérhető</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="obsolete">Nem sikerült megállapítani a csatlakozási részleteket erre %1</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation type="unfinished">Csatlakozás...</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="obsolete">A jelszóbekérés nem működik, amikor a Cantata-t parancssorból indítják.</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation type="unfinished">Nincs megfelelő ssh-jelszóbekérő alkalmazás telepítve. A jelszó beviteléhez szükséges.</translation>
@@ -12578,14 +12142,19 @@ Kérlek válassz másik nevet.</translation>
         <translation type="unfinished">&quot;sshfs&quot; nincs telepítve!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation type="unfinished">Leválasztás...</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation type="unfinished">Csatlakozás...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation type="unfinished">&quot;fusermount&quot; nincs telepítve!</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation type="unfinished">Leválasztás...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -12812,10 +12381,6 @@ Kérlek válassz másik nevet.</translation>
 <context>
     <name>RulesPlaylists</name>
     <message>
-        <source> - Rating: %1..%2</source>
-        <translation type="obsolete"> - Besorolás: %1..%2</translation>
-    </message>
-    <message>
         <location filename="../playlists/rulesplaylists.cpp" line="96"/>
         <source>Album Artist</source>
         <translation type="unfinished">Album előadója</translation>
@@ -12875,7 +12440,7 @@ Kérlek válassz másik nevet.</translation>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="173"/>
         <source>, Rating: %1..%2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">, Besorolás: %1..%2</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="176"/>
@@ -12972,13 +12537,6 @@ Kérlek válassz másik nevet.</translation>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation type="unfinished">Nincs azonosítva</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="obsolete">%1: számok feljegyzése</translation>
     </message>
 </context>
 <context>
@@ -13189,14 +12747,6 @@ Ezt nem lehet visszavonni!</translation>
         <location filename="../gui/serversettings.ui" line="253"/>
         <source>Music folder:</source>
         <translation type="unfinished">Zenekönyvtár:</translation>
-    </message>
-    <message>
-        <source>Cover filename:</source>
-        <translation type="obsolete">Borító fájlneve:</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Filename (without extension) to save downloaded covers as.&lt;br/&gt;If left blank &apos;cover&apos; will be used.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist% will be replaced with album artist of the current song, and %album% will be replaced with the album name.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt;Fájlnév (kiterjesztés nélkül) lementi a borítót aszerint.&lt;br/&gt;Ha üresen marad &apos;borítót&apos; használja.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;A jelenlegi számnál az %előadó% album előadóra kerül lecserélésre, és az %album% pedig az album nevére.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="139"/>
@@ -14077,23 +13627,6 @@ Felülírod?</translation>
         <translation type="unfinished">A(z) &apos;%1&apos; letöltése sikertelen</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="obsolete">A kiválasztott adatfolyam-szolgáltatókat telepíti, vagy frissíti?</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="obsolete">A kiválasztott adatfolyam-szolgáltatókat telepíti?</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="obsolete">A kiválasztott adatfolyam-szolgáltatókat frissíti?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation type="unfinished">Telepít, frissít</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation type="unfinished">Telepítés, frissítés megszakítása?</translation>
@@ -14114,6 +13647,11 @@ Felülírod?</translation>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation type="unfinished">Letöltés %1</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation type="unfinished">Telepít, frissít</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>
@@ -14450,11 +13988,7 @@ Felülírja?</translation>
     <message>
         <location filename="../streams/streamssettings.cpp" line="181"/>
         <source>Failed to open package file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed top open package file.</source>
-        <translation type="obsolete">A csomagfájl megnyitása sikertelen.</translation>
+        <translation type="unfinished">A csomagfájl megnyitása sikertelen.</translation>
     </message>
     <message>
         <location filename="../streams/streamssettings.cpp" line="201"/>
@@ -15115,10 +14649,6 @@ Ha a fájlt (vagy a könyvtárat, amiben van) átnevezed, akkor a dalra vonatkoz
         <location filename="../gui/trayitem.cpp" line="182"/>
         <source>Cantata</source>
         <translation type="unfinished">Cantata</translation>
-    </message>
-    <message>
-        <source>Now playing</source>
-        <translation type="obsolete">Most megy</translation>
     </message>
 </context>
 <context>

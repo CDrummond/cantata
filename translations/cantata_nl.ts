@@ -973,11 +973,7 @@ Could not download to temporary file!</source>
     <message>
         <location filename="../gui/coverdialog.cpp" line="812"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Images (*.png *.jpg)</source>
-        <translation type="vanished">Afbeeldingen (*.png *.jpg)</translation>
+        <translation>Afbeeldingen (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="816"/>
@@ -1030,21 +1026,6 @@ bestand kan niet worden gekopieerd naar &apos;%1&apos;!</translation>
         <location filename="../gui/coverdialog.cpp" line="1334"/>
         <source>Searching...</source>
         <translation>Bezig met zoeken...</translation>
-    </message>
-</context>
-<context>
-    <name>CoverLabel</name>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Composer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Componist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Performer:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Uitvoerend artiest:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artist:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Year:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Artiest:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Album:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;&lt;b&gt;Jaar:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1251,16 +1232,6 @@ bestand kan niet worden gekopieerd naar &apos;%1&apos;!</translation>
         <translation>Converteren</translation>
     </message>
     <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
-        <source>Only transcode if source file is of a different format</source>
-        <translation>Alleen converteren als bronbestand een ander formaat is</translation>
-    </message>
-    <message>
-        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
-        <source>Only transcode if source is FLAC/WAV</source>
-        <translation>Alleen converteren als bronbestand FLAC of WAV is</translation>
-    </message>
-    <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="83"/>
         <source>Don&apos;t copy covers</source>
         <translation>Hoezen niet kopiëren</translation>
@@ -1314,6 +1285,16 @@ bestand kan niet worden gekopieerd naar &apos;%1&apos;!</translation>
         <location filename="../devices/devicepropertieswidget.cpp" line="222"/>
         <source>Always transcode</source>
         <translation>Altijd converteren</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="223"/>
+        <source>Only transcode if source file is of a different format</source>
+        <translation>Alleen converteren als bronbestand een ander formaat is</translation>
+    </message>
+    <message>
+        <location filename="../devices/devicepropertieswidget.cpp" line="224"/>
+        <source>Only transcode if source is FLAC/WAV</source>
+        <translation>Alleen converteren als bronbestand FLAC of WAV is</translation>
     </message>
     <message>
         <location filename="../devices/devicepropertieswidget.cpp" line="235"/>
@@ -2169,10 +2150,6 @@ Dit kan niet ongedaan worden gemaakt.</translation>
         <translation>Cantata groepeert nummers onder albums als de albumartiest-tag is ingesteld. Als dat niet het geval is, dan wordt de artiest-tag gebruikt. Als je albums hebt met meerdere artiesten, dan &lt;b&gt;moet&lt;/b&gt; je de albumartiest-tag instellen om juiste groepen samen te stellen. Cantata raadt dan aan om de tag &apos;Verschillende artiesten&apos; te gebruiken.</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the &apos;users&apos; group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</source>
-        <translation type="vanished">&lt;b&gt;Waarschuwing:&lt;/b&gt; je maakt momenteel geen deel uit van de systeemgroep &apos;users&apos;. Cantata werkt beter (opslaan van albumhoezen, songteksten, etc. met de juiste rechten) als je (of je admin) jezelf toevoegt aan deze groep. Als je dit zelf doet, dan moet je uit- en inloggen om dit toe te passen.</translation>
-    </message>
-    <message>
         <location filename="../gui/initialsettingswizard.cpp" line="61"/>
         <source>Not Connected</source>
         <translation>Niet verbonden</translation>
@@ -2650,20 +2627,12 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="220"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>Als je niks opgeeft als bestandsnaam, dan gebruikt Cantata de standaardnaam &lt;code&gt;cover&lt;/code&gt;. Deze bestandsnaam wordt gebruikt bij het downloaden van hoezen en het toevoegen van muziek aan je verzameling. Dit moet worden aangegeven &lt;b&gt;zonder&lt;/b&gt; een extensie.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="224"/>
         <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers. This should be specified &lt;b&gt;without&lt;/b&gt; an extension.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers, or when adding music to your library from devices.</source>
-        <translation type="vanished">Als je niks opgeeft als bestandsnaam, dan gebruikt Cantata de standaardnaam &lt;code&gt;cover&lt;/code&gt;. Deze bestandsnaam wordt gebruikt bij het downloaden van hoezen en het toevoegen van muziek aan je verzameling.</translation>
-    </message>
-    <message>
-        <source>If no setting is specified for &apos;Filename&apos;, then Cantata will use a default of &lt;code&gt;cover&lt;/code&gt;. This filename is used when downloading covers.</source>
-        <translation type="vanished">Als je niks opgeeft als bestandsnaam, dan gebruikt Cantata de standaardnaam &lt;code&gt;cover&lt;/code&gt;. Deze bestandsnaam wordt gebruikt bij het downloaden van hoezen.</translation>
+        <translation>Als je niks opgeeft als bestandsnaam, dan gebruikt Cantata de standaardnaam &lt;code&gt;cover&lt;/code&gt;. Deze bestandsnaam wordt gebruikt bij het downloaden van hoezen. Dit moet worden aangegeven &lt;b&gt;zonder&lt;/b&gt; een extensie.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="438"/>
@@ -4381,14 +4350,14 @@ Dit kan niet ongedaan worden gemaakt.</translation>
         <translation>Vloeiende overgang tussen nummers:</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.ui" line="135"/>
-        <source>Replay gain:</source>
-        <translation>ReplayGain:</translation>
-    </message>
-    <message>
         <location filename="../gui/playbacksettings.ui" line="125"/>
         <source> s</source>
         <translation> s</translation>
+    </message>
+    <message>
+        <location filename="../gui/playbacksettings.ui" line="135"/>
+        <source>Replay gain:</source>
+        <translation>ReplayGain:</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="178"/>
@@ -4667,6 +4636,16 @@ Dit kan niet ongedaan worden gemaakt.</translation>
 <context>
     <name>PlaylistRulesDialog</name>
     <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Dynamic Playlist</source>
+        <translation>Dynamische afspeellijst</translation>
+    </message>
+    <message>
+        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
+        <source>Smart Playlist</source>
+        <translation>Slimme afspeellijst</translation>
+    </message>
+    <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="169"/>
         <source>Each playlist requires a unique name, enter that above.
 
@@ -4694,16 +4673,6 @@ Gebruik onderstaande instellingen om het aantal nummers te beperken.</translatio
         <location filename="../playlists/playlistrulesdialog.cpp" line="203"/>
         <source>Descending</source>
         <translation>Aflopend</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Dynamic Playlist</source>
-        <translation>Dynamische afspeellijst</translation>
-    </message>
-    <message>
-        <location filename="../playlists/playlistrulesdialog.cpp" line="150"/>
-        <source>Smart Playlist</source>
-        <translation>Slimme afspeellijst</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="213"/>
@@ -5060,11 +5029,7 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter podcast URL below, and press &apos;Load&apos;</source>
-        <translation type="vanished">Voer hieronder een podcast-url in en klik op &apos;Laden&apos;</translation>
+        <translation type="unfinished">Voer hieronder een podcast-url in en klik op &apos;Laden&apos;, of druk op het mappictogram om een lokaal podcastbestand te laden.</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -5159,39 +5124,9 @@ Wil je deze overschrijven?</translation>
         <translation>Wil je je deabonneren op &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../online/podcastwidget.cpp" line="311"/>
-        <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../online/podcastwidget.cpp" line="317"/>
-        <source>Export failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you wish to download the selected podcast episodes?</source>
-        <translation type="vanished">Wil je de geselecteerde afleveringen downloaden?</translation>
-    </message>
-    <message>
-        <source>Cancel podcast episode downloads (both current and any that are queued)?</source>
-        <translation type="vanished">Wil je de downloads afbreken (zowel lopende als die in de wachtrij)?</translation>
-    </message>
-    <message>
         <location filename="../online/podcastwidget.cpp" line="220"/>
         <source>Do you wish to the delete downloaded files of the selected podcast episodes?</source>
         <translation>Wil je de gedownloade bestanden van de geselecteerde afleveringen verwijderen?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as new?</source>
-        <translation type="vanished">Wil je de geselecteerde afleveringen markeren als nieuw?</translation>
-    </message>
-    <message>
-        <source>Do you wish to mark the selected podcast episodes as listened?</source>
-        <translation type="vanished">Wil je de geselecteerde afleveringen markeren als beluisterd?</translation>
-    </message>
-    <message>
-        <source>Refresh all subscriptions?</source>
-        <translation type="vanished">Wil je alle abonnementen vernieuwen?</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="288"/>
@@ -5212,6 +5147,16 @@ Wil je deze overschrijven?</translation>
         <location filename="../online/podcastwidget.cpp" line="288"/>
         <source>Refresh Selected</source>
         <translation>Geselecteerde vernieuwen</translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="311"/>
+        <source>Export Podcast Subscriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../online/podcastwidget.cpp" line="317"/>
+        <source>Export failed!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6501,26 +6446,6 @@ Kies een andere naam.</translation>
         <translation>Gebruiker:</translation>
     </message>
     <message>
-        <source>Domain:</source>
-        <translation type="vanished">Domein:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Wachtwoord:</translation>
-    </message>
-    <message>
-        <source>Share:</source>
-        <translation type="vanished">Deling:</translation>
-    </message>
-    <message>
-        <source>If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata&apos;s config file. To have Cantata prompt for the password before accessing the share, set the password to &apos;-&apos;</source>
-        <translation type="vanished">Als je hier je wachtwoord invoert, dan wordt het &lt;b&gt;onversleuteld&lt;/b&gt; opgeslagen in Cantata&apos;s configuratiebestand. Als je wilt dat Cantata je om je wachtwoord vraagt voordat je de deling gaat verkennen, stel het wachtwoord dan in op &apos;-&apos;</translation>
-    </message>
-    <message>
-        <source>Service name:</source>
-        <translation type="vanished">Naam van dienst:</translation>
-    </message>
-    <message>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="115"/>
         <location filename="../devices/remotedevicepropertieswidget.ui" line="173"/>
         <source>Folder:</source>
@@ -6555,27 +6480,6 @@ Kies een andere naam.</translation>
 <context>
     <name>RemoteFsDevice</name>
     <message>
-        <source>Available</source>
-        <translation type="vanished">Beschikbaar</translation>
-    </message>
-    <message>
-        <source>Not Available</source>
-        <translation type="vanished">Niet beschikbaar</translation>
-    </message>
-    <message>
-        <source>Failed to resolve connection details for %1</source>
-        <translation type="vanished">Kan de verbindingsgegevens van %1 niet ophalen</translation>
-    </message>
-    <message>
-        <location filename="../devices/remotefsdevice.cpp" line="299"/>
-        <source>Connecting...</source>
-        <translation>Bezig met aankoppelen...</translation>
-    </message>
-    <message>
-        <source>Password prompting does not work when cantata is started from the commandline.</source>
-        <translation type="vanished">Het wachtwoordvenster werkt niet als je Cantata start via de opdrachtregel.</translation>
-    </message>
-    <message>
         <location filename="../devices/remotefsdevice.cpp" line="266"/>
         <source>No suitable ssh-askpass application installed! This is required for entering passwords.</source>
         <translation>Geen goede ssh-askpass-toepassing geïnsalleerd! Dit is vereist voor het invoeren van wachtwoorden.</translation>
@@ -6592,14 +6496,19 @@ Kies een andere naam.</translation>
         <translation>&apos;sshfs&apos; is niet geïnstalleerd!</translation>
     </message>
     <message>
-        <location filename="../devices/remotefsdevice.cpp" line="342"/>
-        <source>Disconnecting...</source>
-        <translation>Bezig met ontkoppelen...</translation>
+        <location filename="../devices/remotefsdevice.cpp" line="299"/>
+        <source>Connecting...</source>
+        <translation>Bezig met aankoppelen...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="336"/>
         <source>&quot;fusermount&quot; is not installed!</source>
         <translation>&apos;fusermount&apos; is niet geïnstalleerd!</translation>
+    </message>
+    <message>
+        <location filename="../devices/remotefsdevice.cpp" line="342"/>
+        <source>Disconnecting...</source>
+        <translation>Bezig met ontkoppelen...</translation>
     </message>
     <message>
         <location filename="../devices/remotefsdevice.cpp" line="357"/>
@@ -6983,13 +6892,6 @@ Kies een andere naam.</translation>
         <location filename="../scrobbling/scrobblingsettings.cpp" line="131"/>
         <source>Not Authenticated</source>
         <translation>Niet-geauthenticeerd</translation>
-    </message>
-</context>
-<context>
-    <name>ScrobblingStatus</name>
-    <message>
-        <source>%1: Scrobble Tracks</source>
-        <translation type="vanished">%1: nummers scrobblen</translation>
     </message>
 </context>
 <context>
@@ -8084,23 +7986,6 @@ Wil je deze overschrijven?</translation>
         <translation>Kan &apos;%1&apos; niet downloaden</translation>
     </message>
     <message>
-        <source>Install/update the selected stream providers?</source>
-        <translation type="vanished">Wil je de geselecteerde streamingsdiensten installeren/bijwerken?</translation>
-    </message>
-    <message>
-        <source>Install the selected stream providers?</source>
-        <translation type="vanished">Wil je de geselecteerde streamingsdiensten installeren?</translation>
-    </message>
-    <message>
-        <source>Update the selected stream providers?</source>
-        <translation type="vanished">Wil je de geselecteerde streamingsdiensten bijwerken?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation>Installeren/Bijwerken</translation>
-    </message>
-    <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
         <source>Abort installation/update?</source>
         <translation>Wil je de installatie/update afbreken?</translation>
@@ -8122,6 +8007,11 @@ Wil je deze overschrijven?</translation>
         <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
         <source>Downloading %1</source>
         <translation>Bezig met downloaden van %1</translation>
+    </message>
+    <message>
+        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
+        <source>Install/Update</source>
+        <translation>Installeren/Bijwerken</translation>
     </message>
     <message>
         <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>

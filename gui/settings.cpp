@@ -556,12 +556,12 @@ bool Settings::useCddb()
 #ifdef CDDB_FOUND
 QString Settings::cddbHost()
 {
-    return cfg.get("cddbHost", QString("freedb.freedb.org"));
+    return cfg.get("cddbHost", QString("gnudb.gnudb.org"));
 }
 
 int Settings::cddbPort()
 {
-    return cfg.get("cddbPort", 8880);
+    return cfg.get("cddbPort", 80);
 }
 #endif
 

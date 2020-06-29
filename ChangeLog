@@ -36,6 +36,7 @@
     queue to play them next.
 25. Also show metadata of the current track in the context view if 'title' or
     'artist' are missing, but do not try to fetch information nor lyrics.
+26. Switch from freedb.org to gnudb.org
 
 2.4.1
 -----

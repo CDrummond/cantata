@@ -5369,133 +5369,133 @@ Overskriv?</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="81"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;&lt;b&gt;AAC&lt;/b&gt;-koderen, som bruges af Cantata, understøtter en &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variabel bithastighed (VBR)&lt;/a&gt;-indstilling, hvilket betyder at bithastighedens værdi svinger langs sporet, baseret på lydindholdets kompleksitet. Mere komplekse intervaller af data kodes med en højere bithastighed end mindre komplekse. Denne fremgangsmåde giver en samlet bedre kvalitet og en mindre fil end at have en konstant bithastighed gennem hele sporet.&lt;br&gt;Af denne årsag er bithastighedens værdi i skyderen blot et estimat af den &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;gennemsnitlige bithastighed&lt;/a&gt; af det kodet spor.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under &lt;b&gt;120kb/s&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;200kb/s&lt;/b&gt; er nok overkill.</translation>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;&lt;b&gt;AAC&lt;/b&gt;-koderen, som bruges af Cantata, understøtter en &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variabel bithastighed (VBR)&lt;/a&gt;-indstilling, hvilket betyder at bithastighedens værdi svinger langs sporet, baseret på lydindholdets kompleksitet. Mere komplekse intervaller af data kodes med en højere bithastighed end mindre komplekse. Denne fremgangsmåde giver en samlet bedre kvalitet og en mindre fil end at have en konstant bithastighed gennem hele sporet.&lt;br&gt;Af denne årsag er bithastighedens værdi i skyderen blot et estimat af den &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;gennemsnitlige bithastighed&lt;/a&gt; af det kodet spor.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under &lt;b&gt;100kb/s&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;200kb/s&lt;/b&gt; er nok overkill.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="99"/>
-        <location filename="../devices/encoders.cpp" line="151"/>
+        <location filename="../devices/encoders.cpp" line="152"/>
         <source>Expected average bitrate for variable bitrate encoding</source>
         <translation>Ventet gennemsnitlig bithastighed for variabel bithastighed kodning</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="111"/>
-        <location filename="../devices/encoders.cpp" line="162"/>
-        <location filename="../devices/encoders.cpp" line="205"/>
-        <location filename="../devices/encoders.cpp" line="239"/>
-        <location filename="../devices/encoders.cpp" line="297"/>
-        <location filename="../devices/encoders.cpp" line="331"/>
+        <location filename="../devices/encoders.cpp" line="163"/>
+        <location filename="../devices/encoders.cpp" line="206"/>
+        <location filename="../devices/encoders.cpp" line="240"/>
+        <location filename="../devices/encoders.cpp" line="298"/>
+        <location filename="../devices/encoders.cpp" line="332"/>
         <source>Smaller file</source>
         <translation>Mindre fil</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="112"/>
-        <location filename="../devices/encoders.cpp" line="163"/>
-        <location filename="../devices/encoders.cpp" line="206"/>
-        <location filename="../devices/encoders.cpp" line="240"/>
-        <location filename="../devices/encoders.cpp" line="332"/>
+        <location filename="../devices/encoders.cpp" line="164"/>
+        <location filename="../devices/encoders.cpp" line="207"/>
+        <location filename="../devices/encoders.cpp" line="241"/>
+        <location filename="../devices/encoders.cpp" line="333"/>
         <source>Better sound quality</source>
         <translation>Bedre lydkvalitet</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="130"/>
+        <location filename="../devices/encoders.cpp" line="131"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) is a patented digital audio codec using a form of lossy data compression.&lt;br&gt;In spite of its shortcomings, it is a common format for consumer audio storage, and is widely supported on portable music players.</source>
         <translation>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) er et patenteret lyd-codec som bruger en form for datakompression med tab.&lt;br&gt;Til trods for sine begrænsninger er det et almindeligt format for forbrugere til lagring af lyd, og understøttes bredte på transportable musikafspillere.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="134"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;205kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;&lt;b&gt;MP3&lt;/b&gt;-koderen, som bruges af Cantata, understøtter en &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variabel bithastighed (VBR)&lt;/a&gt;-indstilling, hvilket betyder at bithastighedens værdi svinger langs sporet, baseret på lydindholdets kompleksitet. Mere komplekse intervaller af data kodes med en højere bithastighed end mindre komplekse. Denne fremgangsmåde giver en samlet bedre kvalitet og en mindre fil end at have en konstant bithastighed gennem hele sporet.&lt;br&gt;Af denne årsag er bithastighedens værdi i skyderen blot et estimat af den gennemsnitlige bithastighed af det kodet spor.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under &lt;b&gt;120kb/s&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;205kb/s&lt;/b&gt; er nok overkill.</translation>
+        <location filename="../devices/encoders.cpp" line="135"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;220kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;&lt;b&gt;MP3&lt;/b&gt;-koderen, som bruges af Cantata, understøtter en &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variabel bithastighed (VBR)&lt;/a&gt;-indstilling, hvilket betyder at bithastighedens værdi svinger langs sporet, baseret på lydindholdets kompleksitet. Mere komplekse intervaller af data kodes med en højere bithastighed end mindre komplekse. Denne fremgangsmåde giver en samlet bedre kvalitet og en mindre fil end at have en konstant bithastighed gennem hele sporet.&lt;br&gt;Af denne årsag er bithastighedens værdi i skyderen blot et estimat af den gennemsnitlige bithastighed af det kodet spor.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under &lt;b&gt;120kb/s&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;220kb/s&lt;/b&gt; er nok overkill.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="166"/>
+        <location filename="../devices/encoders.cpp" line="167"/>
         <source>Ogg Vorbis</source>
         <translation>Ogg Vorbis</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="167"/>
+        <location filename="../devices/encoders.cpp" line="168"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; is an open and royalty-free audio codec for lossy audio compression.&lt;br&gt;It produces smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around excellent choice, especially for portable music players that support it.</source>
         <translation>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; er et åbent og royalty-free lyd-codec til lydkompression med tab.&lt;br&gt;Den producerer mindre filer end MP3 ved tilsvarende eller højere kvalitet. Ogg Vorbis er et fremragende valg til det meste, specielt på transportable musikafspillere som understøtter det.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="172"/>
+        <location filename="../devices/encoders.cpp" line="173"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Vorbis&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;The Vorbis encoder uses a quality rating between -1 and 10 to define a certain expected audio quality level. The bitrate measure in this slider is just a rough estimate (provided by Vorbis) of the average bitrate of the encoded track given a quality value. In fact, with newer and more efficient Vorbis versions the actual bitrate is even lower.&lt;br&gt;&lt;b&gt;5&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;3&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;8&lt;/b&gt; is probably overkill.</source>
         <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;&lt;b&gt;Vorbis&lt;/b&gt;-koderen, som bruges af Cantata, understøtter en &lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;variabel bithastighed (VBR)&lt;/a&gt;-indstilling, hvilket betyder at bithastighedens værdi svinger langs sporet, baseret på lydindholdets kompleksitet. Mere komplekse intervaller af data kodes med en højere bithastighed end mindre komplekse. Denne fremgangsmåde giver en samlet bedre kvalitet og en mindre fil end at have en konstant bithastighed gennem hele sporet.&lt;br&gt;Vorbis-koderen bruger en kvalitetsklassificering mellem -1 og 10 til at definere et bestemt ventede lydkvalitetsniveau. Bithastighedsmålingen i skyderen et blot et groft estimat (leveret af Vorbis) af den gennemsnitlige bithastigheden for det kodet spor som gives en kvalitetsværdi. Der er faktisk nyere og mere effektive Vorbis-versioner  hvor bithastigheden er lavere.&lt;br&gt;&lt;b&gt;5&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under &lt;b&gt;3&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;8&lt;/b&gt; er nok overkill.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="192"/>
+        <location filename="../devices/encoders.cpp" line="193"/>
         <source>Quality rating</source>
         <translation>Kvalitetsklassificering</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="209"/>
+        <location filename="../devices/encoders.cpp" line="210"/>
         <source>Opus</source>
         <translation>Opus</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="210"/>
+        <location filename="../devices/encoders.cpp" line="211"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; is a patent-free digital audio codec using a form of lossy data compression.</source>
         <translation>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; er et patentfrit digitalt lyd-codec som bruger en form for datakompression med tab.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="212"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;&lt;b&gt;Opus&lt;/b&gt;-koderen, som bruges af Cantata, understøtter en &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variabel bithastighed (VBR)&lt;/a&gt;-indstilling, hvilket betyder at bithastighedens værdi svinger langs sporet, baseret på lydindholdets kompleksitet. Mere komplekse intervaller af data kodes med en højere bithastighed end mindre komplekse. Denne fremgangsmåde giver en samlet bedre kvalitet og en mindre fil end at have en konstant bithastighed gennem hele sporet.&lt;br&gt;Af denne årsag er bithastighedens værdi i skyderen blot et estimat af den gennemsnitlige bithastighed af det kodet spor.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under&lt;b&gt;100kb/s&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;256kb/s&lt;/b&gt; er nok overkill.</translation>
+        <location filename="../devices/encoders.cpp" line="213"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;96kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;&lt;b&gt;Opus&lt;/b&gt;-koderen, som bruges af Cantata, understøtter en &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variabel bithastighed (VBR)&lt;/a&gt;-indstilling, hvilket betyder at bithastighedens værdi svinger langs sporet, baseret på lydindholdets kompleksitet. Mere komplekse intervaller af data kodes med en højere bithastighed end mindre komplekse. Denne fremgangsmåde giver en samlet bedre kvalitet og en mindre fil end at have en konstant bithastighed gennem hele sporet.&lt;br&gt;Af denne årsag er bithastighedens værdi i skyderen blot et estimat af den gennemsnitlige bithastighed af det kodet spor.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under&lt;b&gt;96kb/s&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;256kb/s&lt;/b&gt; er nok overkill.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="116"/>
-        <location filename="../devices/encoders.cpp" line="229"/>
-        <location filename="../devices/encoders.cpp" line="322"/>
+        <location filename="../devices/encoders.cpp" line="230"/>
+        <location filename="../devices/encoders.cpp" line="323"/>
         <source>Bitrate</source>
         <translation>Bithastighed</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="250"/>
+        <location filename="../devices/encoders.cpp" line="251"/>
         <source>Apple Lossless</source>
         <translation>Apple Lossless</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="251"/>
+        <location filename="../devices/encoders.cpp" line="252"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) is an audio codec for lossless compression of digital music.&lt;br&gt;Recommended only for Apple music players and players that do not support FLAC.</source>
         <translation>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) er et lyd-codec til tabsfri kompression af digital musik.&lt;br&gt;Anbefales kun til Apple-musikafspillere og afspillere som ikke understøtter FLAC.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="266"/>
+        <location filename="../devices/encoders.cpp" line="267"/>
         <source>FLAC</source>
         <translation>FLAC</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="267"/>
+        <location filename="../devices/encoders.cpp" line="268"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) is an open and royalty-free codec for lossless compression of digital music.&lt;br&gt;If you wish to store your music without compromising on audio quality, FLAC is an excellent choice.</source>
         <translation>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) er et åbent og royalty-free codec til tabsfri kompression af digital musik.&lt;br&gt;FLAC er et godt valg, hvis du vil lagre din musik uden at gå på kompromi med lydkvaliteten.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="271"/>
+        <location filename="../devices/encoders.cpp" line="272"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
         <translation>&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;Kompressionsniveauet&lt;/a&gt; er en heltalsværdi mellem 0 og 8 om repræsenterer afvejningen mellem filstørrelse og kompressionshastighed ved kodning med &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Sættes kompressionsniveauet til &lt;b&gt;0&lt;/b&gt; giver det den korteste kompressionstid men genererer en forholdsmæssig stor fil.&lt;br/&gt;På den anden side gør et kompressionsniveau på &lt;b&gt;8&lt;/b&gt; kompressionen ret langsom men producerer den mindste fil.&lt;br/&gt;Bemærk at eftersom FLAC pr. definition er et tabsfrit codec, er lydkvaliteten af outputtet præcist det samme uanset kompressionsniveauet.&lt;br/&gt;Desuden giver niveauer over &lt;b&gt;5&lt;/b&gt; drastisk højere kompressionstid, men opretter kun en lidt mindre fil, og anbefales ikke.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="286"/>
+        <location filename="../devices/encoders.cpp" line="287"/>
         <source>Compression level</source>
         <translation>Kompressionsniveau</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="296"/>
+        <location filename="../devices/encoders.cpp" line="297"/>
         <source>Faster compression</source>
         <translation>Hurtigere kompression</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="303"/>
+        <location filename="../devices/encoders.cpp" line="304"/>
         <source>Windows Media Audio</source>
         <translation>Windows Media Audio</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="304"/>
+        <location filename="../devices/encoders.cpp" line="305"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) is a proprietary codec developed by Microsoft for lossy audio compression.&lt;br&gt;Recommended only for portable music players that do not support Ogg Vorbis.</source>
         <translation>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) er et proprietært codec som er udviklet af Microsoft til lydkompression med tab.&lt;br&gt;Anbefales kun til transportable musikafspillere som ikke understøtter Ogg Vorbis.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="308"/>
+        <location filename="../devices/encoders.cpp" line="309"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;Due to the limitations of the proprietary &lt;b&gt;WMA&lt;/b&gt; format and the difficulty of reverse-engineering a proprietary encoder, the WMA encoder used by Cantata sets a &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;constant bitrate (CBR)&lt;/a&gt; setting.&lt;br&gt;For this reason, the bitrate measure in this slider is a pretty accurate estimate of the bitrate of the encoded track.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;112kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;182kb/s&lt;/b&gt; is probably overkill.</source>
         <translation>Bithastigheden er en målestok for mængden af data som bruges til at repræsentere ét sekund af lydsporet.&lt;br&gt;Pga. begrænsningerne af det proprietære &lt;b&gt;WMA&lt;/b&gt;-format og besværet med &quot;reverse-engineering&quot; af en proprietær koder, sætter WMA-koderen, som bruges af Cantata, en &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;constant bitrate (CBR)&lt;/a&gt;-indstilling.&lt;br&gt;Derfor er bithastighedsmålingen i skyderen et ret præcis estimat af bithastigheden for det kodet spor.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; er et godt valg til at lytte til musik på en transportabel afspiller.&lt;br/&gt;Alt under &lt;b&gt;112kb/s&lt;/b&gt; er måske for ringe til musik, og alt over &lt;b&gt;182kb/s&lt;/b&gt; er nok overkill.</translation>
     </message>

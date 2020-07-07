@@ -11014,135 +11014,135 @@ Felülírjam?</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="81"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt; A Cantata által használt &lt;b&gt;AAC&lt;/b&gt; kódoló támogatj a &lt;a href=http://hu.wikipedia.org/wiki/Változó_bitráta&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint az állandó bitráta a szám egésze során. &lt;br&gt;Ezért a csúszkán lévő bitrátaérték csak becslése &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;az átlagos értéknek &lt;b&gt;150kb/s&lt;/b&gt; jó választás zenék hordozható lejátszókon történő hallgatására. &lt;br/&gt;Bármi &lt;b&gt;120kb/s&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;200kb/s&lt;/b&gt; fölött túlzó lehet.</translation>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt;A Cantata által használt &lt;b&gt;AAC&lt;/b&gt; kódoló támogatj a &lt;a href=http://hu.wikipedia.org/wiki/Változó_bitráta&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint az állandó bitráta a szám egésze során.&lt;br&gt;Ezért a csúszkán lévő bitrátaérték csak becslése &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;az átlagos értéknek &lt;b&gt;150kb/s&lt;/b&gt; jó választás zenék hordozható lejátszókon történő hallgatására.&lt;br/&gt;Bármi &lt;b&gt;100kb/s&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;200kb/s&lt;/b&gt; fölött túlzó lehet.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="99"/>
-        <location filename="../devices/encoders.cpp" line="151"/>
+        <location filename="../devices/encoders.cpp" line="152"/>
         <source>Expected average bitrate for variable bitrate encoding</source>
         <translation type="unfinished">Változó bitrátás kódolás várható bitrátája</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="111"/>
-        <location filename="../devices/encoders.cpp" line="162"/>
-        <location filename="../devices/encoders.cpp" line="205"/>
-        <location filename="../devices/encoders.cpp" line="239"/>
-        <location filename="../devices/encoders.cpp" line="297"/>
-        <location filename="../devices/encoders.cpp" line="331"/>
+        <location filename="../devices/encoders.cpp" line="163"/>
+        <location filename="../devices/encoders.cpp" line="206"/>
+        <location filename="../devices/encoders.cpp" line="240"/>
+        <location filename="../devices/encoders.cpp" line="298"/>
+        <location filename="../devices/encoders.cpp" line="332"/>
         <source>Smaller file</source>
         <translation type="unfinished">Kisebb fájl</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="112"/>
-        <location filename="../devices/encoders.cpp" line="163"/>
-        <location filename="../devices/encoders.cpp" line="206"/>
-        <location filename="../devices/encoders.cpp" line="240"/>
-        <location filename="../devices/encoders.cpp" line="332"/>
+        <location filename="../devices/encoders.cpp" line="164"/>
+        <location filename="../devices/encoders.cpp" line="207"/>
+        <location filename="../devices/encoders.cpp" line="241"/>
+        <location filename="../devices/encoders.cpp" line="333"/>
         <source>Better sound quality</source>
         <translation type="unfinished">Jobb hangminőség</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="130"/>
+        <location filename="../devices/encoders.cpp" line="131"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) is a patented digital audio codec using a form of lossy data compression.&lt;br&gt;In spite of its shortcomings, it is a common format for consumer audio storage, and is widely supported on portable music players.</source>
-        <translation type="unfinished">&lt;a href=http://hu.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) veszteséges adattömörítést alkalmazó szabadalmaztatott digitális hang codec, &lt;br&gt;Tökéletlenségei ellenére a felhasználói hang tárolás elterjedt formátuma, és a hordozható zenejátszók széles köre támogatja. </translation>
+        <translation type="unfinished">&lt;a href=http://hu.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) veszteséges adattömörítést alkalmazó szabadalmaztatott digitális hang codec.&lt;br&gt;Tökéletlenségei ellenére a felhasználói hang tárolás elterjedt formátuma, és a hordozható zenejátszók széles köre támogatja. </translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="134"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;205kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt; A Cantata által használt &lt;b&gt;MP3&lt;/b&gt; kódoló támogatja a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint az állandó bitráta a szám egésze során. &lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; jó választás zenék hordozható lejátszókon történő hallgatására. &lt;br/&gt;Bármi &lt;b&gt;120kb/s&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;205kb/s&lt;/b&gt; fölött túlzó lehet.</translation>
+        <location filename="../devices/encoders.cpp" line="135"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;220kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt;A Cantata által használt &lt;b&gt;MP3&lt;/b&gt; kódoló támogatja a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint az állandó bitráta a szám egésze során.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; jó választás zenék hordozható lejátszókon történő hallgatására.&lt;br/&gt;Bármi &lt;b&gt;120kb/s&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;220kb/s&lt;/b&gt; fölött túlzó lehet.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="166"/>
+        <location filename="../devices/encoders.cpp" line="167"/>
         <source>Ogg Vorbis</source>
         <translation type="unfinished">Ogg Vorbis</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="167"/>
+        <location filename="../devices/encoders.cpp" line="168"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; is an open and royalty-free audio codec for lossy audio compression.&lt;br&gt;It produces smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around excellent choice, especially for portable music players that support it.</source>
-        <translation type="unfinished">&lt;a href=http://hu.wikipedia.org/wiki/Ogg&gt;Ogg Vorbis&lt;/a&gt; nyílt jogtiszta veszteséges hangtömörítő hang codec. &lt;br&gt; Az MP3-nál kisebb fájlokat produkál azonos, vagy jobb minőség  mellett. Az Ogg Vorbis általában kiváló választás, különösen azokat hordozható zenelejátszók esetén. </translation>
+        <translation type="unfinished">&lt;a href=http://hu.wikipedia.org/wiki/Ogg&gt;Ogg Vorbis&lt;/a&gt; nyílt jogtiszta veszteséges hangtömörítő hang codec.&lt;br&gt;Az MP3-nál kisebb fájlokat produkál azonos, vagy jobb minőség  mellett. Az Ogg Vorbis általában kiváló választás, különösen azokat hordozható zenelejátszók esetén. </translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="172"/>
+        <location filename="../devices/encoders.cpp" line="173"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Vorbis&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;The Vorbis encoder uses a quality rating between -1 and 10 to define a certain expected audio quality level. The bitrate measure in this slider is just a rough estimate (provided by Vorbis) of the average bitrate of the encoded track given a quality value. In fact, with newer and more efficient Vorbis versions the actual bitrate is even lower.&lt;br&gt;&lt;b&gt;5&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;3&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;8&lt;/b&gt; is probably overkill.</source>
-        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt; A Cantata által használt &lt;b&gt;Ogg Vorbis&lt;/b&gt; kódoló támogatja &lt;a href=http://hu.wikipedia.org/wiki/Vorbis&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek;ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint  az állandó bitráta a szám egésze során. &lt;br&gt;A Vorbis kódoló -1 és 10 közötti minőségi besorolást használ egy adott elvárt hangminőség meghatározására A bitráta érték a csúszkán csak durva becslése (Vorbis adja meg) a kódolt szám minőségének. A valóságban az újabb Vorbis verziók bitrátája ennél kisebb. &lt;b&gt;&lt;b&gt;5&lt;/b&gt; jó  választás zenék hordozható lejátszókon történő hallgatására. &lt;br/&gt;Bármi &lt;b&gt;3&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;8&lt;/b&gt; fölött túlzó lehet.</translation>
+        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt;A Cantata által használt &lt;b&gt;Ogg Vorbis&lt;/b&gt; kódoló támogatja &lt;a href=http://hu.wikipedia.org/wiki/Vorbis&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek;ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint  az állandó bitráta a szám egésze során.&lt;br&gt;A Vorbis kódoló -1 és 10 közötti minőségi besorolást használ egy adott elvárt hangminőség meghatározására A bitráta érték a csúszkán csak durva becslése (Vorbis adja meg) a kódolt szám minőségének. A valóságban az újabb Vorbis verziók bitrátája ennél kisebb. &lt;b&gt;&lt;b&gt;5&lt;/b&gt; jó  választás zenék hordozható lejátszókon történő hallgatására.&lt;br/&gt;Bármi &lt;b&gt;3&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;8&lt;/b&gt; fölött túlzó lehet.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="192"/>
+        <location filename="../devices/encoders.cpp" line="193"/>
         <source>Quality rating</source>
         <translation type="unfinished">Minőségi besorolás</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="209"/>
+        <location filename="../devices/encoders.cpp" line="210"/>
         <source>Opus</source>
         <translation type="unfinished">Opus</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="210"/>
+        <location filename="../devices/encoders.cpp" line="211"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; is a patent-free digital audio codec using a form of lossy data compression.</source>
         <translation type="unfinished">&lt;a href=http://hu.wikipedia.org/wiki/Opus_(hangformátum)&gt;Opus&lt;/a&gt; szabadalommentes, veszteséges adattömörítést alkalmazó digitális audio codec.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="212"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt; A Cantata által használt &lt;b&gt;Opus&lt;/b&gt; kódoló támogatja a &lt;a href=http://hu.wikipedia.org/wiki/Változó_bitráta&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint a szám egésze során állandó bitráta. &lt;br&gt;Ezért a csúszkán lévő bitrátaérték csak becslése az átkódolt szám átlagos bitrátájának.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; jó választás zenék hordozható lejátszókon történő hallgatására. &lt;br/&gt;Bármi &lt;b&gt;100kb/s&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;256kb/s&lt;/b&gt; fölött túlzó lehet.</translation>
+        <location filename="../devices/encoders.cpp" line="213"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;96kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt;A Cantata által használt &lt;b&gt;Opus&lt;/b&gt; kódoló támogatja a &lt;a href=http://hu.wikipedia.org/wiki/Változó_bitráta&gt;változó bitráta (VBR)&lt;/a&gt; beállítását, ami azt jelenti, hogy értéke változik a szám során, annak megfelelően, hogy a hanganyag tartalma mennyire összetett. A komplexebb adatszakaszok magasabb bitrátával lesznek kódolva, mint a kevésbé komplexek; ez a megközelítés egyszerre produkál jobb minőséget és kisebb fájlt, mint a szám egésze során állandó bitráta.&lt;br&gt;Ezért a csúszkán lévő bitrátaérték csak becslése az átkódolt szám átlagos bitrátájának.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; jó választás zenék hordozható lejátszókon történő hallgatására.&lt;br/&gt;Bármi &lt;b&gt;96kb/s&lt;/b&gt; alatt bárki számára alkalmatlan lehet és bármi &lt;b&gt;256kb/s&lt;/b&gt; fölött túlzó lehet.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="116"/>
-        <location filename="../devices/encoders.cpp" line="229"/>
-        <location filename="../devices/encoders.cpp" line="322"/>
+        <location filename="../devices/encoders.cpp" line="230"/>
+        <location filename="../devices/encoders.cpp" line="323"/>
         <source>Bitrate</source>
         <translation type="unfinished">Bitráta</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="250"/>
+        <location filename="../devices/encoders.cpp" line="251"/>
         <source>Apple Lossless</source>
         <translation type="unfinished">Apple veszteségmentes</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="251"/>
+        <location filename="../devices/encoders.cpp" line="252"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) is an audio codec for lossless compression of digital music.&lt;br&gt;Recommended only for Apple music players and players that do not support FLAC.</source>
-        <translation type="unfinished">&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) veszteségmentes digitális zenetömörítő audio codec. &lt;br&gt;Csak a FLAC-ot nem támogató Apple zenelejátszók és lejátszók számára javasolt </translation>
+        <translation type="unfinished">&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) veszteségmentes digitális zenetömörítő audio codec.&lt;br&gt;Csak a FLAC-ot nem támogató Apple zenelejátszók és lejátszók számára javasolt </translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="266"/>
+        <location filename="../devices/encoders.cpp" line="267"/>
         <source>FLAC</source>
         <translation type="unfinished">FLAC</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="267"/>
+        <location filename="../devices/encoders.cpp" line="268"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) is an open and royalty-free codec for lossless compression of digital music.&lt;br&gt;If you wish to store your music without compromising on audio quality, FLAC is an excellent choice.</source>
-        <translation type="unfinished">&lt;a href=http://hu.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) egy veszteségmentes, nyílt és jogdíjmentes digitális zenetömörítő codec. &lt;br&gt;Ha a zenédet hangminőség-romlás nélkül akarod tárolni, FLAC kitűnő választás.</translation>
+        <translation type="unfinished">&lt;a href=http://hu.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) egy veszteségmentes, nyílt és jogdíjmentes digitális zenetömörítő codec.&lt;br&gt;Ha a zenédet hangminőség-romlás nélkül akarod tárolni, FLAC kitűnő választás.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="271"/>
+        <location filename="../devices/encoders.cpp" line="272"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation type="unfinished">A FLAC &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;tömörítési szintjét&lt;/a&gt; 0 és 8 közötti egész érték jelzi a  &lt;b&gt;FLAC&lt;/b&gt; általi a kódolás során a fájl mérete és a tömörítés sebessége közötti kompromisszumot. &lt;br/&gt;A tömörítés szintjét &lt;b&gt;0&lt;/b&gt;-ra állítva a tömörítési idő rövid lesz, de viszonylag nagy fájlt eredményez. &lt;br/&gt;Más részről ha a tömörítés szintje &lt;b&gt;8&lt;b&gt;, a tömörítés nagyon lassú lesz, de a legkisebb mérete adja. &lt;br/&gt; Mellesleg, mivel definíciója szerint a FLAC veszteségmentes kódoló, a kimeneti hangfájl minősége a tömörítés értékétől függetlenül azonos lesz.&lt;/br&gt;Minden &lt;b&gt;5&lt;b&gt; fölötti érték miközben drámaian növeli a tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem ajánlott.</translation>
+        <translation type="unfinished">A FLAC &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;tömörítési szintjét&lt;/a&gt; 0 és 8 közötti egész érték jelzi a  &lt;b&gt;FLAC&lt;/b&gt; általi a kódolás során a fájl mérete és a tömörítés sebessége közötti kompromisszumot.&lt;br/&gt;A tömörítés szintjét &lt;b&gt;0&lt;/b&gt;-ra állítva a tömörítési idő rövid lesz, de viszonylag nagy fájlt eredményez.&lt;br/&gt;Más részről ha a tömörítés szintje &lt;b&gt;8&lt;b&gt;, a tömörítés nagyon lassú lesz, de a legkisebb mérete adja.&lt;br/&gt; Mellesleg, mivel definíciója szerint a FLAC veszteségmentes kódoló, a kimeneti hangfájl minősége a tömörítés értékétől függetlenül azonos lesz.&lt;/br&gt;Minden &lt;b&gt;5&lt;b&gt; fölötti érték miközben drámaian növeli a tömörítési időt, a fájlméret csak kicsit lesz kisebb és nem ajánlott.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="286"/>
+        <location filename="../devices/encoders.cpp" line="287"/>
         <source>Compression level</source>
         <translation type="unfinished">Tömörítési szint</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="296"/>
+        <location filename="../devices/encoders.cpp" line="297"/>
         <source>Faster compression</source>
         <translation type="unfinished">Gyorsabb tömörítés</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="303"/>
+        <location filename="../devices/encoders.cpp" line="304"/>
         <source>Windows Media Audio</source>
         <translation type="unfinished">Windows Media Audio</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="304"/>
+        <location filename="../devices/encoders.cpp" line="305"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) is a proprietary codec developed by Microsoft for lossy audio compression.&lt;br&gt;Recommended only for portable music players that do not support Ogg Vorbis.</source>
-        <translation type="unfinished">&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) Microsoft által kifejlesztett, szabadalmaztatott veszteséges hangtömörítési eljárás. &lt;br&gt;Csak azon hordozható zenejátszók esetén ajánlott, amelyek nem támogatják az Ogg Vorbis-t.</translation>
+        <translation type="unfinished">&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) Microsoft által kifejlesztett, szabadalmaztatott veszteséges hangtömörítési eljárás.&lt;br&gt;Csak azon hordozható zenejátszók esetén ajánlott, amelyek nem támogatják az Ogg Vorbis-t.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="308"/>
+        <location filename="../devices/encoders.cpp" line="309"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;Due to the limitations of the proprietary &lt;b&gt;WMA&lt;/b&gt; format and the difficulty of reverse-engineering a proprietary encoder, the WMA encoder used by Cantata sets a &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;constant bitrate (CBR)&lt;/a&gt; setting.&lt;br&gt;For this reason, the bitrate measure in this slider is a pretty accurate estimate of the bitrate of the encoded track.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;112kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;182kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt; A szabadalmi korlátozások és a jogvédett kódoló visszafejtésének nehézségei következtében a Cantata által használt &lt;b&gt;WMA&lt;/b&gt; kódoló  &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;állandó bitrátát (CBR)&lt;/a&gt; alkalmaz. &lt;br&gt;Ennek következtében a csúszkán a szám kódolásának jelzett bitrátája elég pontos becslés. &lt;br&gt;&lt;b&gt;136kb/s&lt;!b&gt; jó választás zenék hordozható lejátszón történő hallgatására. &lt;br&gt;Minden  &lt;b&gt;112kb/s&lt;/b&gt; alatt nem kielégítő zenét eredményez és bármi &lt;b&gt;182kb/s&lt;/b&gt; fölött valószínűleg túllövés.</translation>
+        <translation type="unfinished">A bitráta az adatminőség mérésére szolgál a szám egy másodpercére vonatkoztatva.&lt;br&gt;A szabadalmi korlátozások és a jogvédett kódoló visszafejtésének nehézségei következtében a Cantata által használt &lt;b&gt;WMA&lt;/b&gt; kódoló  &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;állandó bitrátát (CBR)&lt;/a&gt; alkalmaz.&lt;br&gt;Ennek következtében a csúszkán a szám kódolásának jelzett bitrátája elég pontos becslés.&lt;br&gt;&lt;b&gt;136kb/s&lt;!b&gt; jó választás zenék hordozható lejátszón történő hallgatására.&lt;br&gt;Minden  &lt;b&gt;112kb/s&lt;/b&gt; alatt nem kielégítő zenét eredményez és bármi &lt;b&gt;182kb/s&lt;/b&gt; fölött valószínűleg túllövés.</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="69"/>

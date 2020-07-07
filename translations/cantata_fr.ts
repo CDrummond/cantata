@@ -7226,7 +7226,7 @@ Cette action est définitive.</translation>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="217"/>
         <source>&lt;i&gt;Select this option if your music collection is not shared with others, and you wish Cantata to configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients (e.g. MPDroid)&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Choisissez cette option si votre collection de musique n&apos;est pas partagée et que vous voulez que Cantata contrôle MPD. Ce réglage est exclusif à Cantata. Les autres clients (tel MPDroid) &lt;b&gt;ne pourront pas &lt;/b&gt; y accéder.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Choisissez cette option si votre collection de musique n&apos;est pas partagée et que vous voulez que Cantata contrôle MPD. Ce réglage est exclusif à Cantata. Les autres clients (tel MPDroid) &lt;b&gt;ne pourront pas&lt;/b&gt; y accéder.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/initialsettingswizard.ui" line="236"/>
@@ -7420,7 +7420,7 @@ Cette action est définitive.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="125"/>
         <source>&lt;p&gt;Change to a small top bar (containing all views) when the window is narrow.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; Changer pour une petite barre en haut (contenant tout)quand la fenêtre est étroite.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Changer pour une petite barre en haut (contenant tout) quand la fenêtre est étroite.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="138"/>
@@ -7983,7 +7983,7 @@ Please choose another one.</source>
     <message>
         <location filename="../gui/librarypage.cpp" line="60"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation>Enrez un chaîne à rechercher. Pour filtrer par année, ajoutez &lt;i&gt;#année-fourchette&lt;/i&gt; à la chaîne. &lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; renvoie les pistes de 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; renvoie les pistes des années 80&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; recherche &lt;i&gt;Blah&lt;/i&gt; et ne renvoie que les pistes de 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Enrez un chaîne à rechercher. Pour filtrer par année, ajoutez &lt;i&gt;#année-fourchette&lt;/i&gt; à la chaîne.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; renvoie les pistes de 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; renvoie les pistes des années 80&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; recherche &lt;i&gt;Blah&lt;/i&gt; et ne renvoie que les pistes de 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/librarypage.cpp" line="66"/>
@@ -8559,7 +8559,7 @@ Si cette recherche donne de nouveaux résultats, ils seront toujours associés a
     <message>
         <location filename="../gui/mainwindow.cpp" line="494"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
-        <translation>Enrez un chaîne à rechercher. Pour filtrer par année, ajoutez &lt;i&gt;#année-fourchette&lt;/i&gt; à la chaîne. &lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; renvoie les pistes de 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; renvoie les pistes des années 80&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; recherche &lt;i&gt;Blah&lt;/i&gt; et ne renvoie que les pistes de 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Enrez un chaîne à rechercher. Pour filtrer par année, ajoutez &lt;i&gt;#année-fourchette&lt;/i&gt; à la chaîne.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; renvoie les pistes de 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; renvoie les pistes des années 80&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; recherche &lt;i&gt;Blah&lt;/i&gt; et ne renvoie que les pistes de 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="596"/>
@@ -10540,133 +10540,133 @@ Remplacer ?</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="81"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>Le &apos;bitrate&apos; est une mesure de la quantité de données utilisée pour représenter une seconde de musique.&lt;br&gt;l&apos;encodeur &lt;b&gt;AAC&lt;/b&gt;utilisé par Cantata supporte un paramète &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; ce qui signifie que le bitrate fluctue et est proportionnel à la complexité du contenu audio. Ctte approche conduit à une meilleure qualité pour un fichier plus petit. Pour cette raison, cette mesure de bitrate est une estimation du &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt; bitrate moyen&lt;/a&gt; de la piste encodée. &lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt;est un bon choix pour un appareil nomade.&lt;br/&gt;En dessous de &lt;b&gt;120kb/s&lt;/b&gt; sera insuffisant pour de la musique et au dessus de &lt;b&gt;200kb/s&lt;/b&gt; ne sert quasiment à rien.</translation>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation>Le &apos;bitrate&apos; est une mesure de la quantité de données utilisée pour représenter une seconde de musique.&lt;br&gt;l&apos;encodeur &lt;b&gt;AAC&lt;/b&gt;utilisé par Cantata supporte un paramète &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; ce qui signifie que le bitrate fluctue et est proportionnel à la complexité du contenu audio. Ctte approche conduit à une meilleure qualité pour un fichier plus petit. Pour cette raison, cette mesure de bitrate est une estimation du &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt; bitrate moyen&lt;/a&gt; de la piste encodée.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt;est un bon choix pour un appareil nomade.&lt;br/&gt;En dessous de &lt;b&gt;100kb/s&lt;/b&gt; sera insuffisant pour de la musique et au dessus de &lt;b&gt;200kb/s&lt;/b&gt; ne sert quasiment à rien.</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="99"/>
-        <location filename="../devices/encoders.cpp" line="151"/>
+        <location filename="../devices/encoders.cpp" line="152"/>
         <source>Expected average bitrate for variable bitrate encoding</source>
         <translation>Taux de compression moyen estimé pour un encodage à taux variable</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="111"/>
-        <location filename="../devices/encoders.cpp" line="162"/>
-        <location filename="../devices/encoders.cpp" line="205"/>
-        <location filename="../devices/encoders.cpp" line="239"/>
-        <location filename="../devices/encoders.cpp" line="297"/>
-        <location filename="../devices/encoders.cpp" line="331"/>
+        <location filename="../devices/encoders.cpp" line="163"/>
+        <location filename="../devices/encoders.cpp" line="206"/>
+        <location filename="../devices/encoders.cpp" line="240"/>
+        <location filename="../devices/encoders.cpp" line="298"/>
+        <location filename="../devices/encoders.cpp" line="332"/>
         <source>Smaller file</source>
         <translation>Fichier plus petit</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="112"/>
-        <location filename="../devices/encoders.cpp" line="163"/>
-        <location filename="../devices/encoders.cpp" line="206"/>
-        <location filename="../devices/encoders.cpp" line="240"/>
-        <location filename="../devices/encoders.cpp" line="332"/>
+        <location filename="../devices/encoders.cpp" line="164"/>
+        <location filename="../devices/encoders.cpp" line="207"/>
+        <location filename="../devices/encoders.cpp" line="241"/>
+        <location filename="../devices/encoders.cpp" line="333"/>
         <source>Better sound quality</source>
         <translation>Meilleure qualité audio.</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="130"/>
+        <location filename="../devices/encoders.cpp" line="131"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) is a patented digital audio codec using a form of lossy data compression.&lt;br&gt;In spite of its shortcomings, it is a common format for consumer audio storage, and is widely supported on portable music players.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="134"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;205kb/s&lt;/b&gt; is probably overkill.</source>
+        <location filename="../devices/encoders.cpp" line="135"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;220kb/s&lt;/b&gt; is probably overkill.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="166"/>
+        <location filename="../devices/encoders.cpp" line="167"/>
         <source>Ogg Vorbis</source>
         <translation>Ogg Vorbis</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="167"/>
+        <location filename="../devices/encoders.cpp" line="168"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; is an open and royalty-free audio codec for lossy audio compression.&lt;br&gt;It produces smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around excellent choice, especially for portable music players that support it.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="172"/>
+        <location filename="../devices/encoders.cpp" line="173"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Vorbis&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;The Vorbis encoder uses a quality rating between -1 and 10 to define a certain expected audio quality level. The bitrate measure in this slider is just a rough estimate (provided by Vorbis) of the average bitrate of the encoded track given a quality value. In fact, with newer and more efficient Vorbis versions the actual bitrate is even lower.&lt;br&gt;&lt;b&gt;5&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;3&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;8&lt;/b&gt; is probably overkill.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="192"/>
+        <location filename="../devices/encoders.cpp" line="193"/>
         <source>Quality rating</source>
         <translation>Niveau de qualité</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="209"/>
+        <location filename="../devices/encoders.cpp" line="210"/>
         <source>Opus</source>
         <translation>Opus</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="210"/>
+        <location filename="../devices/encoders.cpp" line="211"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; is a patent-free digital audio codec using a form of lossy data compression.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="212"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
+        <location filename="../devices/encoders.cpp" line="213"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;96kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="116"/>
-        <location filename="../devices/encoders.cpp" line="229"/>
-        <location filename="../devices/encoders.cpp" line="322"/>
+        <location filename="../devices/encoders.cpp" line="230"/>
+        <location filename="../devices/encoders.cpp" line="323"/>
         <source>Bitrate</source>
         <translation>Débit binaire</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="250"/>
+        <location filename="../devices/encoders.cpp" line="251"/>
         <source>Apple Lossless</source>
         <translation>Apple Lossless</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="251"/>
+        <location filename="../devices/encoders.cpp" line="252"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) is an audio codec for lossless compression of digital music.&lt;br&gt;Recommended only for Apple music players and players that do not support FLAC.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="266"/>
+        <location filename="../devices/encoders.cpp" line="267"/>
         <source>FLAC</source>
         <translation>FLAC</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="267"/>
+        <location filename="../devices/encoders.cpp" line="268"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) is an open and royalty-free codec for lossless compression of digital music.&lt;br&gt;If you wish to store your music without compromising on audio quality, FLAC is an excellent choice.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="271"/>
+        <location filename="../devices/encoders.cpp" line="272"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="286"/>
+        <location filename="../devices/encoders.cpp" line="287"/>
         <source>Compression level</source>
         <translation>Niveau de compression</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="296"/>
+        <location filename="../devices/encoders.cpp" line="297"/>
         <source>Faster compression</source>
         <translation>Compression rapide</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="303"/>
+        <location filename="../devices/encoders.cpp" line="304"/>
         <source>Windows Media Audio</source>
         <translation>Windows Media Audio</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="304"/>
+        <location filename="../devices/encoders.cpp" line="305"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) is a proprietary codec developed by Microsoft for lossy audio compression.&lt;br&gt;Recommended only for portable music players that do not support Ogg Vorbis.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="308"/>
+        <location filename="../devices/encoders.cpp" line="309"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;Due to the limitations of the proprietary &lt;b&gt;WMA&lt;/b&gt; format and the difficulty of reverse-engineering a proprietary encoder, the WMA encoder used by Cantata sets a &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;constant bitrate (CBR)&lt;/a&gt; setting.&lt;br&gt;For this reason, the bitrate measure in this slider is a pretty accurate estimate of the bitrate of the encoded track.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;112kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;182kb/s&lt;/b&gt; is probably overkill.</source>
         <translation></translation>
     </message>
@@ -12304,7 +12304,7 @@ Cette action est définitive.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; Choisissez cette option si votre serveur MPDdetecte les modifications (comme les fichiers ajoutés) automatiquement. Si c&apos;est le cas, il est inutile pour Cantata d&apos;envoyer des commandes de mise à jour pour certaines actions.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Choisissez cette option si votre serveur MPDdetecte les modifications (comme les fichiers ajoutés) automatiquement. Si c&apos;est le cas, il est inutile pour Cantata d&apos;envoyer des commandes de mise à jour pour certaines actions.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="185"/>

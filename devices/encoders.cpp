@@ -90,27 +90,27 @@ static void init()
                          "of the <a href=http://www.ffmpeg.org/faq.html#SEC21>average bitrate</a> of "
                          "the encoded track.<br>"
                          "<b>150kb/s</b> is a good choice for music listening on a portable player.<br/>"
-                         "Anything below <b>120kb/s</b> might be unsatisfactory for music and anything above "
+                         "Anything below <b>100kb/s</b> might be unsatisfactory for music and anything above "
                          "<b>200kb/s</b> is probably overkill."),
                     QLatin1String("m4a"),
                     command,
                     QLatin1String("libfaac"),
                     QLatin1String("-aq"),
                     QObject::tr("Expected average bitrate for variable bitrate encoding"),
-                    QList<Setting>() << Setting(QObject::tr(vbr).arg(25), 30)
-                                     << Setting(QObject::tr(vbr).arg(50), 55)
-                                     << Setting(QObject::tr(vbr).arg(70), 80)
-                                     << Setting(QObject::tr(vbr).arg(90), 105)
-                                     << Setting(QObject::tr(vbr).arg(120), 125)
-                                     << Setting(QObject::tr(vbr).arg(150), 155)
-                                     << Setting(QObject::tr(vbr).arg(170), 180)
-                                     << Setting(QObject::tr(vbr).arg(180), 205)
-                                     << Setting(QObject::tr(vbr).arg(190), 230)
-                                     << Setting(QObject::tr(vbr).arg(200), 255)
-                                     << Setting(QObject::tr(vbr).arg(210), 280),
+                    QList<Setting>() << Setting(QObject::tr(vbr).arg(55), 30)
+                                     << Setting(QObject::tr(vbr).arg(75), 55)
+                                     << Setting(QObject::tr(vbr).arg(100), 80)
+                                     << Setting(QObject::tr(vbr).arg(125), 105)
+                                     << Setting(QObject::tr(vbr).arg(150), 125)
+                                     << Setting(QObject::tr(vbr).arg(170), 155)
+                                     << Setting(QObject::tr(vbr).arg(180), 180)
+                                     << Setting(QObject::tr(vbr).arg(190), 205)
+                                     << Setting(QObject::tr(vbr).arg(200), 230)
+                                     << Setting(QObject::tr(vbr).arg(210), 255)
+                                     << Setting(QObject::tr(vbr).arg(220), 280),
                     QObject::tr("Smaller file"),
                     QObject::tr("Better sound quality"),
-                    5);
+                    4);
         Encoder aac(QLatin1String("AAC"),
                     aacFaac.description, aacFaac.tooltip, aacFaac.extension, aacFaac.app, QLatin1String("aac"),
                     QLatin1String("-b:a"), QObject::tr("Bitrate"),
@@ -120,12 +120,13 @@ static void init()
                                      << Setting(QObject::tr(cbr).arg(160), 160)
                                      << Setting(QObject::tr(cbr).arg(192), 192)
                                      << Setting(QObject::tr(cbr).arg(224), 224)
+                                     << Setting(QObject::tr(cbr).arg(256), 256)
                                      << Setting(QObject::tr(cbr).arg(320), 320)
-                                     << Setting(QObject::tr(cbr).arg(360), 360),
-                    aacFaac.low, aacFaac.high, 4, 1000);
+                                     << Setting(QObject::tr(cbr).arg(384), 384),
+                    aacFaac.low, aacFaac.high, 3, 1000);
         Encoder aacFdk(QLatin1String("AAC (libfdk_aac)"),
                     aac.description, aac.tooltip, aac.extension, aac.app, QLatin1String("libfdk_aac"),
-                    aac.param, aac.valueLabel, aac.values, aac.low, aac.high, 4);
+                    aac.param, aac.valueLabel, aac.values, aac.low, aac.high, 3);
         Encoder lame(QLatin1String("MP3"),
                     QObject::tr("<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) is "
                           "a patented digital audio codec using a form of lossy data compression."
@@ -143,25 +144,25 @@ static void init()
                          "of the average bitrate of the encoded track.<br>"
                          "<b>160kb/s</b> is a good choice for music listening on a portable player.<br/>"
                          "Anything below <b>120kb/s</b> might be unsatisfactory for music and anything above "
-                         "<b>205kb/s</b> is probably overkill."),
+                         "<b>220kb/s</b> is probably overkill."),
                     QLatin1String("mp3"),
                     command,
                     QLatin1String("libmp3lame"),
                     QLatin1String("-aq"),
                     QObject::tr("Expected average bitrate for variable bitrate encoding"),
-                    QList<Setting>() << Setting(QObject::tr(vbr).arg(80), 9)
-                                     << Setting(QObject::tr(vbr).arg(100), 8)
-                                     << Setting(QObject::tr(vbr).arg(120), 7)
-                                     << Setting(QObject::tr(vbr).arg(140), 6)
-                                     << Setting(QObject::tr(vbr).arg(160), 5)
-                                     << Setting(QObject::tr(vbr).arg(175), 4)
-                                     << Setting(QObject::tr(vbr).arg(190), 3)
-                                     << Setting(QObject::tr(vbr).arg(205), 2)
+                    QList<Setting>() << Setting(QObject::tr(vbr).arg(65), 9)
+                                     << Setting(QObject::tr(vbr).arg(85), 8)
+                                     << Setting(QObject::tr(vbr).arg(100), 7)
+                                     << Setting(QObject::tr(vbr).arg(120), 6)
+                                     << Setting(QObject::tr(vbr).arg(135), 5)
+                                     << Setting(QObject::tr(vbr).arg(160), 4)
+                                     << Setting(QObject::tr(vbr).arg(175), 3)
+                                     << Setting(QObject::tr(vbr).arg(190), 2)
                                      << Setting(QObject::tr(vbr).arg(220), 1)
                                      << Setting(QObject::tr(vbr).arg(240), 0),
                     QObject::tr("Smaller file"),
                     QObject::tr("Better sound quality"),
-                    4);
+                    5);
 
     Encoder ogg(QObject::tr("Ogg Vorbis"),
                    QObject::tr("<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> is an open "
@@ -201,7 +202,7 @@ static void init()
                                     << Setting(QObject::tr(quality).arg(7).arg(224), 7)
                                     << Setting(QObject::tr(quality).arg(8).arg(256), 8)
                                     << Setting(QObject::tr(quality).arg(9).arg(320), 9)
-                                    << Setting(QObject::tr(quality).arg(10).arg(500), 10),
+                                    << Setting(QObject::tr(quality).arg(10).arg(384), 10),
                    QObject::tr("Smaller file"),
                    QObject::tr("Better sound quality"),
                    6);
@@ -220,7 +221,7 @@ static void init()
                         "For this reason, the bitrate measure in this slider is just an estimate "
                         "of the average bitrate of the encoded track.<br>"
                         "<b>128kb/s</b> is a good choice for music listening on a portable player.<br/>"
-                        "Anything below <b>100kb/s</b> might be unsatisfactory for music and anything above "
+                        "Anything below <b>96kb/s</b> might be unsatisfactory for music and anything above "
                         "<b>256kb/s</b> is probably overkill."),
                    QLatin1String("opus"),
                    command,
@@ -235,10 +236,10 @@ static void init()
                                     << Setting(QObject::tr(vbr).arg(192), 192)
                                     << Setting(QObject::tr(vbr).arg(256), 256)
                                     << Setting(QObject::tr(vbr).arg(320), 320)
-                                    << Setting(QObject::tr(vbr).arg(360), 360),
+                                    << Setting(QObject::tr(vbr).arg(384), 384),
                    QObject::tr("Smaller file"),
                    QObject::tr("Better sound quality"),
-                   4,
+                   3,
                    1000);
 
         if (!command.isEmpty()) {
@@ -368,7 +369,7 @@ static void init()
             }
         }
 
-        insertCodec(QLatin1String("faac"), QLatin1String("-q"), QLatin1String("-o"), aac);
+        insertCodec(QLatin1String("faac"), QLatin1String("-q"), QLatin1String("-o"), aacFaac);
         insertCodec(QLatin1String("lame"), QLatin1String("-V"), QString(), lame);
         insertCodec(QLatin1String("oggenc"), QLatin1String("-q"), QLatin1String("-o"), ogg);
         insertCodec(QLatin1String("opusenc"), QLatin1String("--bitrate"), QString(), opus);

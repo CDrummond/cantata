@@ -4537,7 +4537,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../playlists/playlistruledialog.cpp" line="251"/>
         <source>&lt;i&gt;&lt;b&gt;ERROR:&lt;/b&gt; You can only match on filename / path if &apos;Exact match&apos; is &lt;b&gt;not&lt;/b&gt; checked&lt;/i&gt;</source>
-        <translation>&lt;i&gt;&lt;b&gt;エラー:&lt;/b&gt; 「完全一致」が&lt;b&gt;チェックされていない&lt;/b&gt; 場合のみ、ファイル名/パスで一致することができます &lt;/i&gt;</translation>
+        <translation>&lt;i&gt;&lt;b&gt;エラー:&lt;/b&gt; 「完全一致」が&lt;b&gt;チェックされていない&lt;/b&gt; 場合のみ、ファイル名/パスで一致することができます&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -4674,7 +4674,7 @@ Use the settings below to restrict the range of songs added.</source>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="358"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will randomly select songs to keep the play queue filled with specified number of entries (10 by default). If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; Cantataは、リストされているすべてのルールを使用してライブラリを照会します。 &lt;i&gt; include &lt;/i&gt;ルールのリストを使用して、使用可能な曲のセットを作成します。&lt;i&gt;exclude&lt;/i&gt;ルールのリストは、使用できない曲のセットを作成するために使用されます。&lt;i&gt; include &lt;/i&gt;ルールがない場合、Cantataはすべての曲（&lt;i&gt; exclude&lt;/i&gt;の曲を除く）を使用できると想定します。&lt;/p&gt;&lt;p&gt; 一例: Cantataに「Wibbleのロック曲またはさまざまなアーティストの曲」を検索させるには、次のものが必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibbleジャンル= Rock &lt;/li&gt; &lt;li&gt; Include AlbumArtist = Various Artists &lt;/li&gt; &lt;/ul&gt;Cantataに「アルバムAbcからではなくWibbleの曲」を検索させるには、以下が必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibble &lt;/li&gt; &lt;li&gt; Exclude アルバムアーティスト = Wibble アルバム = Abc &lt;/li&gt; &lt;/ul&gt;使用可能な曲のセットが作成された後、Cantataは曲をランダムに選択して、指定された数のエントリ（デフォルトでは10）で再生キューをいっぱいにします。 レーティングの範囲が指定されている場合、この範囲内のレーティングを持つ曲のみが使用されます（有効期間が設定されている場合も同様）。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Cantataは、リストされているすべてのルールを使用してライブラリを照会します。 &lt;i&gt; include &lt;/i&gt;ルールのリストを使用して、使用可能な曲のセットを作成します。&lt;i&gt;exclude&lt;/i&gt;ルールのリストは、使用できない曲のセットを作成するために使用されます。&lt;i&gt; include &lt;/i&gt;ルールがない場合、Cantataはすべての曲（&lt;i&gt; exclude&lt;/i&gt;の曲を除く）を使用できると想定します。&lt;/p&gt;&lt;p&gt;一例: Cantataに「Wibbleのロック曲またはさまざまなアーティストの曲」を検索させるには、次のものが必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibbleジャンル= Rock &lt;/li&gt; &lt;li&gt; Include AlbumArtist = Various Artists &lt;/li&gt; &lt;/ul&gt;Cantataに「アルバムAbcからではなくWibbleの曲」を検索させるには、以下が必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibble &lt;/li&gt; &lt;li&gt; Exclude アルバムアーティスト = Wibble アルバム = Abc &lt;/li&gt; &lt;/ul&gt;使用可能な曲のセットが作成された後、Cantataは曲をランダムに選択して、指定された数のエントリ（デフォルトでは10）で再生キューをいっぱいにします。 レーティングの範囲が指定されている場合、この範囲内のレーティングを持つ曲のみが使用されます（有効期間が設定されている場合も同様）。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="373"/>
@@ -4684,7 +4684,7 @@ Use the settings below to restrict the range of songs added.</source>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="375"/>
         <source>&lt;p&gt;Cantata will query your library using all of the rules listed. The list of &lt;i&gt;Include&lt;/i&gt; rules will be used to build a set of songs that can be used. The list of &lt;i&gt;Exclude&lt;/i&gt; rules will be used to build a set of songs that cannot be used. If there are no &lt;i&gt;Include&lt;/i&gt; rules, Cantata will assume that all songs (bar those from &lt;i&gt;Exclude&lt;/i&gt;) can be used.&lt;/p&gt;&lt;p&gt;e.g. to have Cantata look for &apos;Rock songs by Wibble OR songs by Various Artists&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;Include AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt; To have Cantata look for &apos;Songs by Wibble but not from album Abc&apos;, you would need the following: &lt;ul&gt;&lt;li&gt;Include AlbumArtist=Wibble&lt;/li&gt;&lt;li&gt;Exclude AlbumArtist=Wibble Album=Abc&lt;/li&gt;&lt;/ul&gt;After the set of usable songs has been created, Cantata will add the desired number of songs to the play queue. If a range of ratings has been specified, then only songs with a rating within this range will be used. Likewise, if a duration has been set.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; Cantataは、リストされているすべてのルールを使用してライブラリを照会します。 &lt;i&gt; Include &lt;/i&gt;ルールのリストを使用して、使用可能な曲のセットを作成します。 &lt;i&gt;exlude&lt;/i&gt;ルールのリストは、使用できない曲のセットを作成するために使用されます。 &lt;i&gt; Include &lt;/i&gt;ルールがない場合、Cantataはすべての曲（&lt;i&gt; Exclude &lt;/i&gt;の曲を除く）を使用できると想定します。&lt;/p&gt; &lt;p&gt; 一例: Cantataに「Wibbleのロック曲またはさまざまなアーティストの曲」を検索させるには、次のものが必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibbleジャンル= Rock &lt;/li&gt; &lt;li&gt; Include アルバムアーティスト = Various Artists &lt;/li&gt; &lt;/ul&gt; Cantataに「アルバムAbcからではなくWibbleの歌」を検索させるには、次のものが必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibble &lt;/li&gt; &lt;li&gt; Exclude アルバムアーティスト = Wibble アルバム = Abc &lt;/li&gt; &lt;/ul&gt;使用可能な曲のセットが作成された後、Cantataは再生キューに目的の数の曲を追加します。レーティングの範囲が指定されている場合、この範囲内のレーティングを持つ曲のみが使用されます（有効期間が設定されている場合も同様）。&lt;/ p&gt;</translation>
+        <translation>&lt;p&gt;Cantataは、リストされているすべてのルールを使用してライブラリを照会します。 &lt;i&gt; Include &lt;/i&gt;ルールのリストを使用して、使用可能な曲のセットを作成します。 &lt;i&gt;exlude&lt;/i&gt;ルールのリストは、使用できない曲のセットを作成するために使用されます。 &lt;i&gt; Include &lt;/i&gt;ルールがない場合、Cantataはすべての曲（&lt;i&gt; Exclude &lt;/i&gt;の曲を除く）を使用できると想定します。&lt;/p&gt;&lt;p&gt;一例: Cantataに「Wibbleのロック曲またはさまざまなアーティストの曲」を検索させるには、次のものが必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibbleジャンル= Rock &lt;/li&gt; &lt;li&gt; Include アルバムアーティスト = Various Artists &lt;/li&gt; &lt;/ul&gt; Cantataに「アルバムAbcからではなくWibbleの歌」を検索させるには、次のものが必要です。&lt;ul&gt; &lt;li&gt; Include アルバムアーティスト = Wibble &lt;/li&gt; &lt;li&gt; Exclude アルバムアーティスト = Wibble アルバム = Abc &lt;/li&gt; &lt;/ul&gt;使用可能な曲のセットが作成された後、Cantataは再生キューに目的の数の曲を追加します。レーティングの範囲が指定されている場合、この範囲内のレーティングを持つ曲のみが使用されます（有効期間が設定されている場合も同様）。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrulesdialog.cpp" line="409"/>
@@ -5349,135 +5349,135 @@ Overwrite?</source>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="81"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;Cantataで使用される&lt;b&gt; AAC &lt;/b&gt;エンコーダは、&lt;a href=&quot;http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&quot;&gt;可変ビットレート（VBR）&lt;/a&gt;の設定をサポートしており、これを使用した場合ビットレート値はオーディオコンテンツの複雑さに基づいてトラックに沿って変動します。データのより複雑な区間は、複雑でない区間よりも高いビットレートで符号化されます; このアプローチは、トラック全体で一定のビットレートを使用するよりも、全体的に優れた品質とファイルサイズを実現します。&lt;br&gt;このため、このスライダのビットレートの数値は、エンコードされたトラックの&lt;a href=&quot;http://www.ffmpeg.org/faq.html#SEC21&quot;&gt;平均ビットレート&lt;/a&gt;の見積もりにすぎません。&lt;br&gt;ポータブルプレーヤーで音楽を聴くには、&lt;b&gt;150kb/s&lt;/b&gt;が適しています。&lt;br/&gt;&lt;b&gt;120kb/s&lt;/b&gt;未満は音楽には不満足で、&lt;b&gt;200kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;AAC&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the &lt;a href=http://www.ffmpeg.org/faq.html#SEC21&gt;average bitrate&lt;/a&gt; of the encoded track.&lt;br&gt;&lt;b&gt;150kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;200kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;Cantataで使用される&lt;b&gt; AAC &lt;/b&gt;エンコーダは、&lt;a href=&quot;http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR&quot;&gt;可変ビットレート（VBR）&lt;/a&gt;の設定をサポートしており、これを使用した場合ビットレート値はオーディオコンテンツの複雑さに基づいてトラックに沿って変動します。データのより複雑な区間は、複雑でない区間よりも高いビットレートで符号化されます; このアプローチは、トラック全体で一定のビットレートを使用するよりも、全体的に優れた品質とファイルサイズを実現します。&lt;br&gt;このため、このスライダのビットレートの数値は、エンコードされたトラックの&lt;a href=&quot;http://www.ffmpeg.org/faq.html#SEC21&quot;&gt;平均ビットレート&lt;/a&gt;の見積もりにすぎません。&lt;br&gt;ポータブルプレーヤーで音楽を聴くには、&lt;b&gt;150kb/s&lt;/b&gt;が適しています。&lt;br/&gt;&lt;b&gt;100kb/s&lt;/b&gt;未満は音楽には不満足で、&lt;b&gt;200kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="99"/>
-        <location filename="../devices/encoders.cpp" line="151"/>
+        <location filename="../devices/encoders.cpp" line="152"/>
         <source>Expected average bitrate for variable bitrate encoding</source>
         <translation>可変ビットレート符号化の予想平均ビットレート</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="111"/>
-        <location filename="../devices/encoders.cpp" line="162"/>
-        <location filename="../devices/encoders.cpp" line="205"/>
-        <location filename="../devices/encoders.cpp" line="239"/>
-        <location filename="../devices/encoders.cpp" line="297"/>
-        <location filename="../devices/encoders.cpp" line="331"/>
+        <location filename="../devices/encoders.cpp" line="163"/>
+        <location filename="../devices/encoders.cpp" line="206"/>
+        <location filename="../devices/encoders.cpp" line="240"/>
+        <location filename="../devices/encoders.cpp" line="298"/>
+        <location filename="../devices/encoders.cpp" line="332"/>
         <source>Smaller file</source>
         <translation>より小さなファイル</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="112"/>
-        <location filename="../devices/encoders.cpp" line="163"/>
-        <location filename="../devices/encoders.cpp" line="206"/>
-        <location filename="../devices/encoders.cpp" line="240"/>
-        <location filename="../devices/encoders.cpp" line="332"/>
+        <location filename="../devices/encoders.cpp" line="164"/>
+        <location filename="../devices/encoders.cpp" line="207"/>
+        <location filename="../devices/encoders.cpp" line="241"/>
+        <location filename="../devices/encoders.cpp" line="333"/>
         <source>Better sound quality</source>
         <translation>より良いサウンド品質</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="130"/>
+        <location filename="../devices/encoders.cpp" line="131"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/MP3&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) is a patented digital audio codec using a form of lossy data compression.&lt;br&gt;In spite of its shortcomings, it is a common format for consumer audio storage, and is widely supported on portable music players.</source>
         <translation>&lt;a href=&quot;http://en.wikipedia.org/wiki/MP3&quot;&gt;MPEG Audio Layer 3&lt;/a&gt; (MP3) は、不可逆データ圧縮形式を使用した特許取得済みのデジタルオーディオコーデックです。&lt;br&gt;その欠点にもかかわらず、コンシューマオーディオストレージの一般的なフォーマットであり、携帯音楽プレーヤーで広くサポートされています。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="134"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;205kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;Cantataが使用する&lt;b&gt;MP3&lt;/b&gt;エンコーダは、&lt;a href=&quot;http://en.wikipedia.org/wiki/MP3#VBR&quot;&gt;可変ビットレート（VBR）&lt;/a&gt;の設定をサポートしており、ビットレート値は、オーディオコンテンツの複雑さに基づいてトラックに沿って変動します。データのより複雑な区間は、複雑でない区間よりも高いビットレートで符号化されます; このアプローチは、トラック全体で一定のビットレートを使用するよりも、全体的に優れた品質とファイルサイズを実現します。&lt;br&gt;このため、このスライダのビットレート測定値は、符号化されたトラックの平均ビットレートの推定値にすぎません。&lt;br&gt;&lt;b&gt; 160kb/s&lt;/b&gt;は、ポータブルプレーヤーで音楽を聴くのに適しています。&lt;b&gt;120kb/s&lt;/b&gt;未満は音楽に不満足かもしれませんし、&lt;b&gt;205kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
+        <location filename="../devices/encoders.cpp" line="135"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;MP3&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/MP3#VBR&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;160kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;120kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;220kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;Cantataが使用する&lt;b&gt;MP3&lt;/b&gt;エンコーダは、&lt;a href=&quot;http://en.wikipedia.org/wiki/MP3#VBR&quot;&gt;可変ビットレート（VBR）&lt;/a&gt;の設定をサポートしており、ビットレート値は、オーディオコンテンツの複雑さに基づいてトラックに沿って変動します。データのより複雑な区間は、複雑でない区間よりも高いビットレートで符号化されます; このアプローチは、トラック全体で一定のビットレートを使用するよりも、全体的に優れた品質とファイルサイズを実現します。&lt;br&gt;このため、このスライダのビットレート測定値は、符号化されたトラックの平均ビットレートの推定値にすぎません。&lt;br&gt;&lt;b&gt; 160kb/s&lt;/b&gt;は、ポータブルプレーヤーで音楽を聴くのに適しています。&lt;b&gt;120kb/s&lt;/b&gt;未満は音楽に不満足かもしれませんし、&lt;b&gt;220kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="166"/>
+        <location filename="../devices/encoders.cpp" line="167"/>
         <source>Ogg Vorbis</source>
         <translation>Ogg Vorbis</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="167"/>
+        <location filename="../devices/encoders.cpp" line="168"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Vorbis&gt;Ogg Vorbis&lt;/a&gt; is an open and royalty-free audio codec for lossy audio compression.&lt;br&gt;It produces smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around excellent choice, especially for portable music players that support it.</source>
         <translation>&lt;a href=&quot;http://en.wikipedia.org/wiki/Vorbis&quot;&gt;Ogg Vorbis&lt;/a&gt;は、非可逆オーディオ圧縮のためのオープンでロイヤリティフリーのオーディオコーデックです。&lt;br&gt;同等以上の品質でMP3よりも小さいファイルを作成します。Ogg Vorbisは、特にそれをサポートするポータブルミュージックプレイヤーにとって、万能の優れた選択肢です。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="172"/>
+        <location filename="../devices/encoders.cpp" line="173"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Vorbis&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;The Vorbis encoder uses a quality rating between -1 and 10 to define a certain expected audio quality level. The bitrate measure in this slider is just a rough estimate (provided by Vorbis) of the average bitrate of the encoded track given a quality value. In fact, with newer and more efficient Vorbis versions the actual bitrate is even lower.&lt;br&gt;&lt;b&gt;5&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;3&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;8&lt;/b&gt; is probably overkill.</source>
         <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;Cantataで使用される&lt;b&gt; Vorbis &lt;/b&gt;エンコーダは、&lt;a href=&quot;http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder&quot;&gt;可変ビットレート（VBR）&lt;/a&gt;の設定をサポートしており、ビットレート値は、オーディオコンテンツの複雑さに基づいてトラックに沿って変動します。データのより複雑な区間は、複雑でない区間よりも高いビットレートで符号化される。このアプローチは、トラック全体で一定のビットレートを使用するよりも、全体的に優れた品質とファイルサイズを実現します。&lt;br&gt;Vorbisエンコーダは、-1〜10の間の品質評価を使用して、特定の期待されるオーディオ品質レベルを定義します。このスライダのビットレート測定値は、品質値が与えられた符号化トラックの平均ビットレートの概算値（Vorbis提供）です。実際、より新しい、より効率的なVorbisバージョンでは、実際のビットレートはさらに低くなります。&lt;br&gt;&lt;b&gt;5&lt;/b&gt;は、ポータブルプレーヤーで音楽を聴くのに適しています。&lt;br/&gt;&lt;b&gt;3&lt;/b&gt;以下は音楽には不満足で、&lt;b&gt;8&lt;/b&gt;以上ははおそらく過剰です。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="192"/>
+        <location filename="../devices/encoders.cpp" line="193"/>
         <source>Quality rating</source>
         <translation>品質評価</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="209"/>
+        <location filename="../devices/encoders.cpp" line="210"/>
         <source>Opus</source>
         <translation>Opus</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="210"/>
+        <location filename="../devices/encoders.cpp" line="211"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Opus_(audio_format)&gt;Opus&lt;/a&gt; is a patent-free digital audio codec using a form of lossy data compression.</source>
         <translation>&lt;a href=&quot;http://en.wikipedia.org/wiki/Opus_(audio_format)&quot;&gt; Opus &lt;/a&gt;は、非可逆データ圧縮形式を使用した特許のないデジタルオーディオコーデックです。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="212"/>
-        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;100kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;Cantataが使用する&lt;b&gt; Opus &lt;/b&gt;エンコーダは、&lt;a href=&quot;http://en.wikipedia.org/wiki/Variable_bitrate&quot;&gt;可変ビットレート（VBR）&lt;/a&gt;設定をサポートしており、これは、ビットレート値 オーディオコンテンツの複雑さに基づいてトラックに沿って変動します。データのより複雑な区間は、複雑でない区間よりも高いビットレートで符号化されます。; このアプローチは、トラック全体で一定のビットレートを使用するよりも、全体的に優れた品質とファイルサイズを実現します。&lt;br&gt;このため、このスライダのビットレート測定値は、符号化されたトラックの平均ビットレートの推定値にすぎません。&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt;は、ポータブルプレーヤーで音楽を聴くのに適しています。&lt;br/&gt;&lt;b&gt;100kb/s&lt;/b&gt;未満は音楽に不満があり、&lt;b&gt;256kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
+        <location filename="../devices/encoders.cpp" line="213"/>
+        <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;The &lt;b&gt;Opus&lt;/b&gt; encoder used by Cantata supports a &lt;a href=http://en.wikipedia.org/wiki/Variable_bitrate&gt;variable bitrate (VBR)&lt;/a&gt; setting, which means that the bitrate value fluctuates along the track based on the complexity of the audio content. More complex intervals of data are encoded with a higher bitrate than less complex ones; this approach yields overall better quality and a smaller file than having a constant bitrate throughout the track.&lt;br&gt;For this reason, the bitrate measure in this slider is just an estimate of the average bitrate of the encoded track.&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;96kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;256kb/s&lt;/b&gt; is probably overkill.</source>
+        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;Cantataが使用する&lt;b&gt; Opus &lt;/b&gt;エンコーダは、&lt;a href=&quot;http://en.wikipedia.org/wiki/Variable_bitrate&quot;&gt;可変ビットレート（VBR）&lt;/a&gt;設定をサポートしており、これは、ビットレート値 オーディオコンテンツの複雑さに基づいてトラックに沿って変動します。データのより複雑な区間は、複雑でない区間よりも高いビットレートで符号化されます。; このアプローチは、トラック全体で一定のビットレートを使用するよりも、全体的に優れた品質とファイルサイズを実現します。&lt;br&gt;このため、このスライダのビットレート測定値は、符号化されたトラックの平均ビットレートの推定値にすぎません。&lt;br&gt;&lt;b&gt;128kb/s&lt;/b&gt;は、ポータブルプレーヤーで音楽を聴くのに適しています。&lt;br/&gt;&lt;b&gt;96kb/s&lt;/b&gt;未満は音楽に不満があり、&lt;b&gt;256kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
     </message>
     <message>
         <location filename="../devices/encoders.cpp" line="116"/>
-        <location filename="../devices/encoders.cpp" line="229"/>
-        <location filename="../devices/encoders.cpp" line="322"/>
+        <location filename="../devices/encoders.cpp" line="230"/>
+        <location filename="../devices/encoders.cpp" line="323"/>
         <source>Bitrate</source>
         <translation>ビットレート</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="250"/>
+        <location filename="../devices/encoders.cpp" line="251"/>
         <source>Apple Lossless</source>
         <translation>Apple Lossless</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="251"/>
+        <location filename="../devices/encoders.cpp" line="252"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Apple_Lossless&gt;Apple Lossless&lt;/a&gt; (ALAC) is an audio codec for lossless compression of digital music.&lt;br&gt;Recommended only for Apple music players and players that do not support FLAC.</source>
         <translation>&lt;a href=&quot;http://en.wikipedia.org/wiki/Apple_Lossless&quot;&gt; Apple Lossless &lt;/a&gt;（ALAC）は、デジタル音楽のロスレス圧縮のためのオーディオコーデックです。&lt;br&gt;Apple Music PlayerおよびFLACをサポートしないプレーヤにおすすめです。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="266"/>
+        <location filename="../devices/encoders.cpp" line="267"/>
         <source>FLAC</source>
         <translation>FLAC</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="267"/>
+        <location filename="../devices/encoders.cpp" line="268"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;Free Lossless Audio Codec&lt;/a&gt; (FLAC) is an open and royalty-free codec for lossless compression of digital music.&lt;br&gt;If you wish to store your music without compromising on audio quality, FLAC is an excellent choice.</source>
-        <translation>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;フリーロスレスオーディオコーデック&lt;/a&gt;（FLAC）は、デジタル音楽の可逆圧縮のためのオープンでロイヤリティフリーのコーデックです。&lt;br&gt; オーディオ品質を損なうことなく音楽を保存するには、FLACは優れた選択肢です。</translation>
+        <translation>&lt;a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec&gt;フリーロスレスオーディオコーデック&lt;/a&gt;（FLAC）は、デジタル音楽の可逆圧縮のためのオープンでロイヤリティフリーのコーデックです。&lt;br&gt;オーディオ品質を損なうことなく音楽を保存するには、FLACは優れた選択肢です。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="271"/>
+        <location filename="../devices/encoders.cpp" line="272"/>
         <source>The &lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;compression level&lt;/a&gt; is an integer value between 0 and 8 that represents the tradeoff between file size and compression speed while encoding with &lt;b&gt;FLAC&lt;/b&gt;.&lt;br/&gt;Setting the compression level to &lt;b&gt;0&lt;/b&gt; yields the shortest compression time but generates a comparably big file.&lt;br/&gt;On the other hand, a compression level of &lt;b&gt;8&lt;/b&gt; makes compression quite slow but produces the smallest file.&lt;br/&gt;Note that since FLAC is by definition a lossless codec, the audio quality of the output is exactly the same regardless of the compression level.&lt;br/&gt;Also, levels above &lt;b&gt;5&lt;/b&gt; dramatically increase compression time but create an only slightly smaller file, and are not recommended.</source>
-        <translation>&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;圧縮レベル&lt;/a&gt;は 0〜8 の整数値で、&lt;b&gt; FLACでエンコードする際のファイルサイズと圧縮速度のトレードオフを表します。 &lt;/b&gt;。&lt;br/&gt;圧縮レベルを&lt;b&gt; 0 &lt;/b&gt;に設定すると、圧縮時間は最短になりますが、比較的大きなファイルが生成されます。&lt;br/&gt;一方、&lt;b&gt;の圧縮レベル 8 &lt;/b&gt;は非常に圧縮時間を要しますが、最小のファイルを生成します。&lt;br/&gt; FLACは定義上ロスレスコーデックであるため、出力のオーディオ品質は圧縮レベルに関係なくまったく同じであることに注意してください。&lt;br/&gt; また、&lt;b&gt; 5 &lt;/b&gt;を超えるレベルでは圧縮時間が大幅に増加しますが、作成されるファイルはあまり縮小しないため、お勧めしません。</translation>
+        <translation>&lt;a href=http://flac.sourceforge.net/documentation_tools_flac.html&gt;圧縮レベル&lt;/a&gt;は 0〜8 の整数値で、&lt;b&gt; FLACでエンコードする際のファイルサイズと圧縮速度のトレードオフを表します。 &lt;/b&gt;&lt;br/&gt;圧縮レベルを&lt;b&gt; 0 &lt;/b&gt;に設定すると、圧縮時間は最短になりますが、比較的大きなファイルが生成されます。&lt;br/&gt;一方、&lt;b&gt;の圧縮レベル 8 &lt;/b&gt;は非常に圧縮時間を要しますが、最小のファイルを生成します。&lt;br/&gt;FLACは定義上ロスレスコーデックであるため、出力のオーディオ品質は圧縮レベルに関係なくまったく同じであることに注意してください。&lt;br/&gt;また、&lt;b&gt; 5 &lt;/b&gt;を超えるレベルでは圧縮時間が大幅に増加しますが、作成されるファイルはあまり縮小しないため、お勧めしません。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="286"/>
+        <location filename="../devices/encoders.cpp" line="287"/>
         <source>Compression level</source>
         <translation>圧縮レベル</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="296"/>
+        <location filename="../devices/encoders.cpp" line="297"/>
         <source>Faster compression</source>
         <translation>より早い圧縮</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="303"/>
+        <location filename="../devices/encoders.cpp" line="304"/>
         <source>Windows Media Audio</source>
         <translation>Windows Media Audio</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="304"/>
+        <location filename="../devices/encoders.cpp" line="305"/>
         <source>&lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio&gt;Windows Media Audio&lt;/a&gt; (WMA) is a proprietary codec developed by Microsoft for lossy audio compression.&lt;br&gt;Recommended only for portable music players that do not support Ogg Vorbis.</source>
         <translation>&lt;a href=&quot;http://en.wikipedia.org/wiki/Windows_Media_Audio&quot;&gt; Windows Media Audio &lt;/a&gt;（WMA）は、損失の多いオーディオ圧縮のためにMicrosoftによって開発された独自のコーデックです。&lt;br&gt;Ogg Vorbisをサポートしていない携帯音楽プレーヤーにのみおすすめです。</translation>
     </message>
     <message>
-        <location filename="../devices/encoders.cpp" line="308"/>
+        <location filename="../devices/encoders.cpp" line="309"/>
         <source>The bitrate is a measure of the quantity of data used to represent a second of the audio track.&lt;br&gt;Due to the limitations of the proprietary &lt;b&gt;WMA&lt;/b&gt; format and the difficulty of reverse-engineering a proprietary encoder, the WMA encoder used by Cantata sets a &lt;a href=http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&gt;constant bitrate (CBR)&lt;/a&gt; setting.&lt;br&gt;For this reason, the bitrate measure in this slider is a pretty accurate estimate of the bitrate of the encoded track.&lt;br&gt;&lt;b&gt;136kb/s&lt;/b&gt; is a good choice for music listening on a portable player.&lt;br/&gt;Anything below &lt;b&gt;112kb/s&lt;/b&gt; might be unsatisfactory for music and anything above &lt;b&gt;182kb/s&lt;/b&gt; is probably overkill.</source>
-        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;&lt;b&gt;WMA&lt;/b&gt;形式独自のの制限と独自エンコーダのリバースエンジニアリングの難しさのため、Cantataが使用するWMAエンコーダは&lt;a href=&quot;http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&quot;&gt;固定ビットレート (CBR)&lt;/a&gt; 設定のみ使用します。&lt;br&gt;この理由から、このスライダーのビットレートは、コード化されたトラックのビットレートのかなり正確な見積もりです。&lt;b&gt;136kb/s&lt;/b&gt;は、ポータブルプレーヤーでの音楽聴取に適しています。 &lt;br/&gt;&lt;b&gt;112kb/s&lt;/b&gt;未満は音楽には不満足で、&lt;b&gt;182kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
+        <translation>ビットレートは、そのオーディオトラックが1秒辺りに使用するデータの量の尺度を示しています。&lt;br&gt;&lt;b&gt;WMA&lt;/b&gt;形式独自のの制限と独自エンコーダのリバースエンジニアリングの難しさのため、Cantataが使用するWMAエンコーダは&lt;a href=&quot;http://en.wikipedia.org/wiki/Windows_Media_Audio#Windows_Media_Audio&quot;&gt;固定ビットレート (CBR)&lt;/a&gt; 設定のみ使用します。&lt;br&gt;この理由から、このスライダーのビットレートは、コード化されたトラックのビットレートのかなり正確な見積もりです。&lt;b&gt;136kb/s&lt;/b&gt;は、ポータブルプレーヤーでの音楽聴取に適しています。&lt;br/&gt;&lt;b&gt;112kb/s&lt;/b&gt;未満は音楽には不満足で、&lt;b&gt;182kb/s&lt;/b&gt;以上はおそらく過剰です。</translation>
     </message>
     <message>
         <location filename="../playlists/dynamicplaylists.cpp" line="69"/>
@@ -7107,7 +7107,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/serversettings.ui" line="182"/>
         <source>&lt;p&gt;Select this option if your MPD server detects modifications (e.g. newly added files) automatically. If so there is no need for Cantata to send update commands for certain actions.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; MPDサーバーが変更（たとえば、新しく追加されたファイル）を自動的に検出する場合、このオプションを選択します。 その場合、Cantataが特定のアクションの更新コマンドを送信する必要はありません。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;MPDサーバーが変更（たとえば、新しく追加されたファイル）を自動的に検出する場合、このオプションを選択します。 その場合、Cantataが特定のアクションの更新コマンドを送信する必要はありません。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="185"/>

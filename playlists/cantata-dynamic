@@ -465,9 +465,7 @@ sub readRules() {
                             }
                         }
                     } elsif ($key=~ m/^(IncludeUnrated)/) {
-                        if ($val > 0) {
-                            $includeUnrated = $val eq "true";
-                        }
+                        $includeUnrated = $val eq "true";
                     } elsif ($key=~ m/^(Duration)/) {
                         my @vals = split("-", $val);
                         if (scalar(@vals)==2) {
@@ -681,6 +679,9 @@ sub checkSongRatingInRange() {
     }
     my $file=shift;
     my @entries = &getEntries("sticker get song \"${file}\" rating", 'sticker');
+    if (@entries == 0 && $includeUnrated == 1) { # Song has no ratings, and unrated songs are included!
+        return 1;
+    }
     foreach my $entry (@entries) {
         if (1==&songRatingInRange($entry)) {
             return 1;

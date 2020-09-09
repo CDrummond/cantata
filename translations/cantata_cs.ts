@@ -5236,7 +5236,7 @@ i18n: ectx: property (text), widget (QLabel, ratingVarious)
         <extracomment>i18n: file: tags/tageditor.ui:210
 i18n: ectx: property (text), widget (PlainNoteLabel, label_7x)
 </extracomment>
-        <translation type="vanished">Více žánrů se musí oddělit čárkou (např. &apos;Rock;Hard Rock&apos;)</translation>
+        <translation type="vanished">Více žánrů se musí oddělit čárkou (např. &apos;Rock,Hard Rock&apos;)</translation>
     </message>
     <message>
         <source>Ratings are stored in an external database, and &lt;b&gt;not&lt;/b&gt; in the song&apos;s file.</source>

@@ -6,7 +6,7 @@
     <message>
         <location filename="../devices/actiondialog.ui" line="86"/>
         <source>Calculating size of files to be copied, please wait...</source>
-        <translation>Bezig met berekenen van grootte van bestaned; even geduld...</translation>
+        <translation>Bezig met berekenen van bestandsgroottes...</translation>
     </message>
     <message>
         <location filename="../devices/actiondialog.ui" line="180"/>
@@ -440,7 +440,7 @@ Wil je doorgaan met de standaardinstellingen?</translation>
         <location filename="../devices/albumdetailsdialog.cpp" line="142"/>
         <location filename="../devices/albumdetailsdialog.cpp" line="295"/>
         <source>Adjust Track Numbers</source>
-        <translation>Schijfnummers aanpassen</translation>
+        <translation>Volgnummers aanpassen</translation>
     </message>
     <message>
         <location filename="../devices/albumdetailsdialog.cpp" line="144"/>
@@ -482,7 +482,7 @@ Voorbeeld: als de titel &apos;Wiebel - Wobbel&apos; is, dan word de artiest geze
     <message>
         <location filename="../devices/albumdetailsdialog.cpp" line="295"/>
         <source>Adjust track number by:</source>
-        <translation>Schijfnummer aanpassen per:</translation>
+        <translation>Volgnummer aanpassen per:</translation>
     </message>
 </context>
 <context>
@@ -628,12 +628,12 @@ Voorbeeld: als de titel &apos;Wiebel - Wobbel&apos; is, dan word de artiest geze
     <message>
         <location filename="../devices/audiocdsettings.ui" line="117"/>
         <source>Read offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Leescompensatie:</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.ui" line="137"/>
         <source>&apos;Read offset&apos; is used so that cdparanoia knows what offset to use to rip complete tracks, and not lose the beginning or end of tracks. A comprehensive list of offset values for most CD-ROM and DVD drives is available at &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;Leescompensatie&apos; wordt gebruikt om cdparanoia op de hoogte te stellen van de compensatie die moet worden gebruikt om hele nummers te rippen zonder delen over te slaan. Een uitgebreide lijst met waarden voor de meeste cd- en dvd-lades is te vinden op &lt;a href=&quot;http://www.accuraterip.com/driveoffsets.htm&quot;&gt;http://www.accuraterip.com/driveoffsets.htm&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../devices/audiocdsettings.cpp" line="37"/>
@@ -930,7 +930,7 @@ Voorbeeld: als de titel &apos;Wiebel - Wobbel&apos; is, dan word de artiest geze
     <message>
         <location filename="../gui/coverdialog.cpp" line="426"/>
         <source>An image already exists for this composer, and the file is not writeable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze componist heeft al een afbeelding, maar het bestand is niet wegschrijfbaar.</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="427"/>
@@ -945,7 +945,7 @@ Voorbeeld: als de titel &apos;Wiebel - Wobbel&apos; is, dan word de artiest geze
     <message>
         <location filename="../gui/coverdialog.cpp" line="436"/>
         <source>&apos;%1&apos; Composer Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Componistafbeelding &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="438"/>
@@ -1831,7 +1831,7 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="151"/>
         <source>The track number.</source>
-        <translation>Het getal van het nummer op de schijf.</translation>
+        <translation>Het volgnummer.</translation>
     </message>
     <message>
         <location filename="../devices/filenameschemedialog.ui" line="154"/>
@@ -3826,8 +3826,8 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message numerus="yes">
         <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%n bit</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n bit</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -4052,7 +4052,7 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../context/othersettings.ui" line="177"/>
         <source>Do not auto-switch</source>
-        <translation>Niet automatisch overschakelen</translation>
+        <translation>0 ms (nooit)</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="180"/>
@@ -4072,12 +4072,12 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../context/othersettings.ui" line="203"/>
         <source>Save downloaded lyrics into music folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Opgehaalde songteksten opslaan in muziekmap</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="210"/>
         <source>Always collapse into a single pane</source>
-        <translation>Altijd slechts één paneel tonen</translation>
+        <translation>Altijd één paneel tonen</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="213"/>
@@ -4087,12 +4087,12 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../context/othersettings.ui" line="220"/>
         <source>Only show basic wikipedia text</source>
-        <translation>Alleen beknopte Wikipedia-tekst tonen</translation>
+        <translation>Beknopte Wikipedia-tekst tonen</translation>
     </message>
     <message>
         <location filename="../context/othersettings.ui" line="227"/>
         <source>Cantata only shows a trimmed down version of wikipedia pages (no images, links, etc). This trimming is not always 100% accurate, which is why Cantata defaults to only showing the introduction. If you elect to show the full article, then there may be parsing errors. You will also need to remove any currently cached articles (using the &apos;Cache&apos; page).</source>
-        <translation>Cantata toont slechts een beknopte versie van Wikipedia-pagina&apos;s (geen afbeeldingen, links, etc.). Het lukt niet altijd om dit helemaal goed te doen, dus toont Cantata alleen de inleiding. Als je het volledige artikel wilt, dan treden er mogelijk verwerkfouten op. Je moet tevens elk huidige gecached artikel verwijderen via de cache-pagina.</translation>
+        <translation>Cantata toont slechts een beknopte versie van Wikipedia-pagina&apos;s (geen afbeeldingen, links, etc.). Het lukt niet altijd om dit helemaal goed te doen, dus toont Cantata alleen de inleiding. Als je het volledige artikel wilt, dan treden er mogelijk verwerkfouten op. Je moet tevens elk huidige gecached artikel verwijderen via de cachepagina.</translation>
     </message>
     <message>
         <location filename="../context/othersettings.cpp" line="41"/>
@@ -4136,17 +4136,17 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="299"/>
         <source>Cannot add local files. Please enable in-built HTTP server, or configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan geen lokale bestanden toevoegen. Schakel de ingebouwde http-server in of stel in dat MPD lokale bestanden mag afspelen.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="301"/>
         <source>Cannot add local files. Please configure MPD for local file playback.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan geen lokale bestanden toevoegen. Stel in dat MPD lokale bestanden mag afspelen.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="316"/>
         <source>Unable to add local files. No suitable files found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan geen lokale bestanden toevoegen: geen geschikte bestanden aangetroffen.</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="372"/>
@@ -4278,12 +4278,12 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="457"/>
         <source>Track Number</source>
-        <translation>Titelnummer</translation>
+        <translation>Volgnummer</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="519"/>
         <source># (Track Number)</source>
-        <translation># (titelnummer)</translation>
+        <translation># (volgnummer)</translation>
     </message>
 </context>
 <context>
@@ -4367,12 +4367,12 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../gui/playbacksettings.ui" line="187"/>
         <source>Apply setting on connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen toepassen na verbinden</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="190"/>
         <source>&lt;p&gt;MPD resets (to the value in its config file) the replaygain mode setting each time it is restarted. Cantata can work-around this by setting MPD to use the value defined here each time Cantata connects to MPD.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;MPD herstelt (de waarde in het configuratiebestand) de replaygain-modusinstellingen na elke herstart. Cantata kan dit omzeilen door MPD de hier opgegeven waarde te laten gebruiken na elke MPD-verbinding.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="197"/>
@@ -4511,7 +4511,7 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../playlists/playlistrule.ui" line="248"/>
         <source>If &apos;Exact match&apos; is checked, then string values will be matched for exact values. Otherwise partial matches will also be inclued. e.g. &apos;AB&apos; would match &apos;ABBA&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Als &apos;Exacte overeenkomst&apos; is ingeschakeld, worden tekenreekswaarden overeengekomen met exacte waarden. Indien uitgeschakeld, worden ook delen overeengekomen. Voorbeeld: &apos;AB&apos; zou &apos;ABBA&apos; overeen laten komen.</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrule.ui" line="255"/>
@@ -4589,7 +4589,7 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../playlists/playlistrules.ui" line="144"/>
         <source>Include unrated</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongewaarderde nummers opnemen</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="151"/>
@@ -4610,7 +4610,7 @@ Dit kan niet ongedaan worden gemaakt.</translation>
     <message>
         <location filename="../playlists/playlistrules.ui" line="222"/>
         <source>Files added in the last:</source>
-        <translation>Bestanden die toegevoegd zijn in de laatste:</translation>
+        <translation>Bestanden die toegevoegd zijn in de afgelopen:</translation>
     </message>
     <message>
         <location filename="../playlists/playlistrules.ui" line="232"/>
@@ -5024,12 +5024,12 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="514"/>
         <source>Load local podcast file</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokaal podcastbestand laden</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="522"/>
         <source>Enter podcast URL below, and press &apos;Load&apos;, or press the folder icon to load a local podcast file.</source>
-        <translation type="unfinished">Voer hieronder een podcast-url in en klik op &apos;Laden&apos;, of druk op het mappictogram om een lokaal podcastbestand te laden.</translation>
+        <translation>Voer hieronder een podcast-url in en klik op &apos;Laden&apos;, of druk op het mappictogram om een lokaal podcastbestand te laden.</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="550"/>
@@ -5039,12 +5039,12 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="559"/>
         <source>Podcasts (*.xml, *.rss, *.opml</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcasts (*.xml, *.rss, *.opml</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="566"/>
         <source>Failed to read file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan het bestand niet uitlezen!</translation>
     </message>
     <message>
         <location filename="../online/podcastsearchdialog.cpp" line="573"/>
@@ -5106,7 +5106,7 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="54"/>
         <source>Export Current Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Huidige abonnementen exporteren</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="83"/>
@@ -5151,12 +5151,12 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../online/podcastwidget.cpp" line="311"/>
         <source>Export Podcast Subscriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcastabonnementen exporteren</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="317"/>
         <source>Export failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporteren mislukt!</translation>
     </message>
 </context>
 <context>
@@ -5925,7 +5925,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="615"/>
         <source>Track number</source>
-        <translation>Titelnummer</translation>
+        <translation>Volgnummer</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="618"/>
@@ -6236,7 +6236,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="140"/>
         <source>cue - Cue file parsing</source>
-        <translation type="unfinished"></translation>
+        <translation>cue - Cue-bestandsverwerking</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="141"/>
@@ -6341,7 +6341,7 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="169"/>
         <source>all - Enable all debug</source>
-        <translation type="unfinished"></translation>
+        <translation>alles - alle foutopsporing inschakelen</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="360"/>
@@ -6368,12 +6368,12 @@ width x height</comment>
     <message>
         <location filename="../gui/main.cpp" line="366"/>
         <source>Collection name</source>
-        <translation type="unfinished"></translation>
+        <translation>Verzamelingsnaam</translation>
     </message>
     <message>
         <location filename="../gui/main.cpp" line="367"/>
         <source>Start full screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Beeldvullend opstarten</translation>
     </message>
 </context>
 <context>
@@ -6772,7 +6772,7 @@ Kies een andere naam.</translation>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="103"/>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <translation>Titel</translation>
     </message>
     <message>
         <location filename="../playlists/rulesplaylists.cpp" line="104"/>
@@ -6899,7 +6899,7 @@ Kies een andere naam.</translation>
     <message>
         <location filename="../models/searchmodel.cpp" line="90"/>
         <source># (Track Number)</source>
-        <translation># (titelnummer)</translation>
+        <translation># (volgnummer)</translation>
     </message>
 </context>
 <context>
@@ -6919,14 +6919,14 @@ Kies een andere naam.</translation>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished">Weet je zeker dat je de geselecteerde nummers wilt verwijderen?
+        <translation>Weet je zeker dat je de geselecteerde nummers wilt verwijderen?
 
 Dit kan niet ongedaan worden gemaakt.</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="176"/>
         <source>Delete Songs</source>
-        <translation type="unfinished">Nummers verwijderen</translation>
+        <translation>Nummers verwijderen</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="248"/>
@@ -7486,7 +7486,7 @@ En zo ja, vanaf je schijf of opnieuw downloaden?</translation>
     <message>
         <location filename="../context/songview.cpp" line="219"/>
         <source>Failed to locate lyrics</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan de songtekst niet vinden</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="227"/>
@@ -7546,7 +7546,7 @@ En zo ja, vanaf je schijf of opnieuw downloaden?</translation>
         <location filename="../context/songview.cpp" line="540"/>
         <location filename="../context/songview.cpp" line="616"/>
         <source>Track number</source>
-        <translation>Titelnummer</translation>
+        <translation>Volgnummer</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="541"/>
@@ -7682,7 +7682,7 @@ En zo ja, vanaf je schijf of opnieuw downloaden?</translation>
     <message>
         <location filename="../context/songview.cpp" line="618"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Duur</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="620"/>
@@ -7692,7 +7692,7 @@ En zo ja, vanaf je schijf of opnieuw downloaden?</translation>
     <message>
         <location filename="../context/songview.cpp" line="621"/>
         <source>Original Year</source>
-        <translation type="unfinished">Jaar van uitgave</translation>
+        <translation>Jaar van uitgave</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="658"/>
@@ -7831,7 +7831,7 @@ En zo ja, vanaf je schijf of opnieuw downloaden?</translation>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="60"/>
         <source>Remove Invalid Tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige nummers verwijderen</translation>
     </message>
     <message>
         <location filename="../playlists/storedplaylistspage.cpp" line="87"/>
@@ -8039,7 +8039,7 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="49"/>
         <source>Community Radio Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Gemeenschapsradioverkenner</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="108"/>
@@ -8519,7 +8519,7 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../tags/tageditor.ui" line="119"/>
         <source>Track number:</source>
-        <translation>Titelnummer:</translation>
+        <translation>Volgnummer:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.ui" line="132"/>
@@ -8598,7 +8598,7 @@ Wil je deze overschrijven?</translation>
         <location filename="../tags/tageditor.cpp" line="220"/>
         <location filename="../tags/tageditor.cpp" line="722"/>
         <source>Adjust Track Numbers</source>
-        <translation>Schijfnummers aanpassen</translation>
+        <translation>Volgnummers aanpassen</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="222"/>
@@ -8679,12 +8679,12 @@ Wil je deze overschrijven?</translation>
     <message>
         <location filename="../tags/tageditor.cpp" line="722"/>
         <source>Adjust the value of each track number by:</source>
-        <translation>Waarde van elk nummer aanpassen per:</translation>
+        <translation>Waarde van elk volgnummer aanpassen per:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="723"/>
         <source>Adjust track number by:</source>
-        <translation>Titelnummer aanpassen per:</translation>
+        <translation>Volgnummer aanpassen per:</translation>
     </message>
     <message>
         <location filename="../tags/tageditor.cpp" line="753"/>

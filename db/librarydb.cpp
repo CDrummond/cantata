@@ -881,7 +881,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
     return albums;
 }
 
-QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId, const QString &genre, AlbumSort sort, bool useFilter)
+QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId, const QString &genre, AlbumSort sort, bool useFilter, int maxTracks)
 {
     DBUG << artistId << albumId << genre << sort;
     QList<Song> songs;
@@ -900,6 +900,9 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
             query.addWhere("genre", genre);
         } else if (useFilter && !genreFilter.isEmpty()) {
             query.addWhere("genre", genreFilter);
+        }
+        if (maxTracks != 1) {
+            query.setLimit(maxTracks);
         }
         query.exec();
         DBUG << query.executedQuery();

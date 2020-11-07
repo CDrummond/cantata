@@ -200,7 +200,7 @@ void AlbumView::getTrackListing()
     }
 
     if (songs.isEmpty()) {
-        songs=MpdLibraryModel::self()->getAlbumTracks(currentSong);
+        songs=MpdLibraryModel::self()->getAlbumTracks(currentSong, 500);
     }
 
     if (!songs.isEmpty()) {

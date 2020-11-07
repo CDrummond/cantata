@@ -1,3 +1,9 @@
+2.4.3
+-----
+1. Update Czech translation.
+2. Limit number of album tracks shown in context view to 500, thanks to
+   ccoors.
+
 2.4.2
 -----
 1. Correctly handle changing 'Basic' mode music folder.

@@ -34,13 +34,11 @@ ApiKeys::ApiKeys()
 {    
     defaultKeys[LastFm]="5a854b839b10f8d46e630e8287c2299b";
     defaultKeys[FanArt]="ee86404cb429fa27ac32a1a3c117b006";
-    defaultKeys[Dirble]="1035d2834bdc7195b8929ad7f70a8410f02c633e";
     defaultKeys[ShoutCast]="fa1669MuiRPorUBw";
     defaultKeys[SoundCloud]="0cb23dce473528973ce74815bd36a334";
 
     queryItems[LastFm]="api_key";
     queryItems[FanArt]="api_key";
-    queryItems[Dirble]="token";
     queryItems[ShoutCast]="k";
     queryItems[SoundCloud]="client_id";
     load();
@@ -75,7 +73,6 @@ QList<ApiKeys::Details> ApiKeys::getDetails()
     QList<Details> list;
     list.append(Details(LastFm, "LastFM", userKeys[LastFm], "https://www.last.fm/api"));
     list.append(Details(FanArt, "FanArt", userKeys[FanArt], "https://fanart.tv/get-an-api-key/"));
-    list.append(Details(Dirble, "Dirble", userKeys[Dirble], "https://dirble.com/developer/"));
     list.append(Details(ShoutCast, "SHOUTcast", userKeys[ShoutCast], "https://shoutcast.com/Developer"));
     list.append(Details(SoundCloud, "Soundcloud", userKeys[SoundCloud], "https://developers.soundcloud.com/"));
     return list;
@@ -146,14 +143,11 @@ bool ApiKeys::isLimitReached(const QNetworkReply *job, Service srv)
     }
 
     bool reached = false;
-    switch (srv) {
-    case Dirble:
-        reached = 299 ==job->error();
-        break;
-    // TODO: Error codes for other services???
-    default:
-        break;
-    }
+    // TODO: Error codes for services???
+    // switch (srv) {
+    // default:
+    //     break;
+    // }
 
     if (reached) {
         setLimitReached(srv);

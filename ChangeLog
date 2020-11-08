@@ -4,6 +4,7 @@
 2. Limit number of album tracks shown in context view to 500, thanks to
    ccoors.
 3. Fix Community Radio Browser search.
+4. Remove dirble from radio section, as its no longer active.
 
 2.4.2
 -----

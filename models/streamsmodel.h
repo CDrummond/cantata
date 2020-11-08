@@ -141,14 +141,6 @@ public:
         QString fullUrl() const override { return ApiKeys::self()->addKey(url, ApiKeys::ShoutCast); }
     };
 
-    struct DirbleCategoryItem : public CategoryItem
-    {
-        DirbleCategoryItem(const QString &u, const QString &n=QString(), CategoryItem *p=nullptr, const QIcon &i=QIcon(),
-                              const QString &cn=QString(), const QString &bn=QString())
-            : CategoryItem(u, n, p, i, cn, bn) { }
-        QString fullUrl() const override { return ApiKeys::self()->addKey(url, ApiKeys::Dirble); }
-    };
-
     struct ListenLiveCategoryItem : public CategoryItem
     {
         ListenLiveCategoryItem(const QString &u, const QString &n, CategoryItem *p, const QIcon &i, const QString &cn)
@@ -200,7 +192,6 @@ public:
     static const QString constSubDir;
     static const QString constCacheExt;
     static const QString constShoutCastHost;
-    static const QString constDirbleHost;
     static const QString constCommunityHost;
     static const QString constCompressedXmlFile;
     static const QString constXmlFile;
@@ -249,7 +240,6 @@ public:
     const QIcon & favouritesIcon() const { return favourites->icon; }
     bool isTuneIn(const CategoryItem *cat) const { return tuneIn==cat; }
     bool isShoutCast(const CategoryItem *cat) const { return shoutCast==cat; }
-    bool isDirble(const CategoryItem *cat) const { return dirble==cat; }
     CategoryItem * tuneInCat() const { return tuneIn; }
 
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
@@ -293,8 +283,6 @@ public:
     QList<Item *> parseShoutCastResponse(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseShoutCastLinks(QXmlStreamReader &doc, CategoryItem *cat);
     static QList<Item *> parseShoutCastStations(QXmlStreamReader &doc, CategoryItem *cat);
-    QList<Item *> parseDirbleResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl);
-    static QList<Item *> parseDirbleStations(QIODevice *dev, CategoryItem *cat);
     static QList<Item *> parseCommunityStations(QIODevice *dev, CategoryItem *cat);
     static Item * parseRadioTimeEntry(QXmlStreamReader &doc, CategoryItem *parent, bool parseSubText=false);
     static Item * parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent);
@@ -320,7 +308,6 @@ private:
     FavouritesCategoryItem *favourites;
     CategoryItem *tuneIn;
     CategoryItem *shoutCast;
-    CategoryItem *dirble;
     Action *addBookmarkAction;
     Action *addToFavouritesAction;
     Action *configureDiAction;

@@ -66,7 +66,6 @@ GLOBAL_STATIC(StreamsModel, instance)
 const QString StreamsModel::constSubDir=QLatin1String("streams");
 const QString StreamsModel::constCacheExt=QLatin1String(".xml.gz");
 const QString StreamsModel::constShoutCastHost=QLatin1String("api.shoutcast.com");
-const QString StreamsModel::constDirbleHost=QLatin1String("api.dirble.com");
 const QString StreamsModel::constCommunityHost=QLatin1String("all.api.radio-browser.info");
 const QString StreamsModel::constCompressedXmlFile=QLatin1String("streams.xml.gz");
 const QString StreamsModel::constXmlFile=QLatin1String("streams.xml");
@@ -86,7 +85,6 @@ static const QString constDiChannelListUrl=QLatin1String("http://")+constDiChann
 static const QString constDiStdUrl=QLatin1String("http://%1/public3/%2.pls");
 
 static QString constShoutCastUrl=QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/genre/primary?f=xml");
-static QString constDirbleUrl=QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/categories/primary");
 
 static const QLatin1String constBookmarksDir=QLatin1String("bookmarks");
 
@@ -498,9 +496,6 @@ StreamsModel::StreamsModel(QObject *parent)
     shoutCast=new ShoutCastCategoryItem(constShoutCastUrl, tr("ShoutCast"), root, MonoIcon::icon(":shoutcast.svg", col));
     shoutCast->configName="shoutcast";
     root->children.append(shoutCast);
-    dirble=new DirbleCategoryItem(constDirbleUrl, tr("Dirble"), root, MonoIcon::icon(":station.svg", col));
-    dirble->configName="dirble";
-    root->children.append(dirble);
     favourites=new FavouritesCategoryItem(constFavouritesUrl, tr("Favorites"), root, MonoIcon::icon(FontAwesome::heart, MonoIcon::constRed));
     root->children.append(favourites);
     loadInstalledProviders();
@@ -1028,7 +1023,7 @@ void StreamsModel::jobFinished()
         }
         jobs.remove(job);
 
-        // ShoutCast and Dirble have two jobs when listing a category - child categories and station list.
+        // ShoutCast has two jobs when listing a category - child categories and station list.
         // So, only set as fetched if both are finished.
         bool haveOtherJob=false;
         for (CategoryItem *c: jobs.values()) {
@@ -1058,8 +1053,6 @@ void StreamsModel::jobFinished()
                     newItems=parseDigitallyImportedResponse(job->actualJob(), cat);
                 } else if (constShoutCastHost==job->origUrl().host()) {
                     newItems=parseShoutCastResponse(job->actualJob(), cat);
-                } else if (constDirbleHost==job->origUrl().host()) {
-                    newItems=parseDirbleResponse(job->actualJob(), cat, job->property(constOrigUrlProperty).toString());
                 } else if (cat->isListenLive()) {
                     newItems=parseListenLiveResponse(job->actualJob(), cat);
                 }
@@ -1113,8 +1106,6 @@ void StreamsModel::jobFinished()
         } else {
             if (constShoutCastHost==job->origUrl().host()) {
                 ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::ShoutCast);
-            } else if (constDirbleHost==job->origUrl().host()) {
-                ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::Dirble);
             }
         }
         emit dataChanged(index, index);
@@ -1603,58 +1594,6 @@ QList<StreamsModel::Item *> StreamsModel::parseShoutCastStations(QXmlStreamReade
         }
     }
 
-    return newItems;
-}
-
-QList<StreamsModel::Item *> StreamsModel::parseDirbleResponse(QIODevice *dev, CategoryItem *cat, const QString &origUrl)
-{
-    if (origUrl.contains("/v2/category/") && origUrl.contains("/stations")) {
-        return parseDirbleStations(dev, cat);
-    }
-    QList<Item *> newItems;
-    QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
-
-    // Get categories...::f
-    if (!data.isEmpty()) {
-        for (const QVariant &d: data) {
-            QVariantMap map = d.toMap();
-            newItems.append(new DirbleCategoryItem(ApiKeys::self()->addKey(QLatin1String("http://")+constDirbleHost+QLatin1String("/v2/category/")+map["id"].toString()+
-                                                                           QLatin1String("/stations"), ApiKeys::Dirble),
-                                                   map["title"].toString(), cat));
-        }
-    }
-    return newItems;
-}
-
-QList<StreamsModel::Item *> StreamsModel::parseDirbleStations(QIODevice *dev, CategoryItem *cat)
-{
-    QList<Item *> newItems;
-    QVariantList data=QJsonDocument::fromJson(dev->readAll()).toVariant().toList();
-
-    QSet<QString> added;
-    for (const QVariant &d: data) {
-        QVariantMap map = d.toMap();
-        QString name=map["name"].toString().trimmed().simplified();
-        if (!name.isEmpty()) {
-            QVariantList streams=map["streams"].toList();
-            int bitrate=0;
-            QString url;
-            for (const QVariant &s: streams) {
-                QVariantMap streamMap=s.toMap();
-                int br=streamMap["bitrate"].toInt();
-                QString u=streamMap["stream"].toString().trimmed().simplified();
-                if (br>bitrate && !u.isEmpty()) {
-                    bitrate=br;
-                    url=u;
-                }
-            }
-
-            if (!url.isEmpty() && !added.contains(url)) {
-                added.insert(url);
-                newItems.append(new Item(url, name, cat, QString::number(bitrate)));
-            }
-        }
-    }
     return newItems;
 }
 

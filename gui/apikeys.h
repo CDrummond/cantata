@@ -42,7 +42,6 @@ public:
     enum Service {
         LastFm,
         FanArt,
-        Dirble,
         ShoutCast,
         SoundCloud,
 

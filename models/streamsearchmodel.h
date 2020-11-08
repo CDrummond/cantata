@@ -43,7 +43,6 @@ public:
         // DO NOT CHANGE ORDER!
         TuneIn,
         ShoutCast,
-        Dirble,
         CommunityRadio,
         NumCategories
     };

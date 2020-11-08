@@ -45,8 +45,7 @@ StreamSearchModel::StreamSearchModel(QObject *parent)
     // ORDER *MUST* MATCH Category ENUM!!!!!
     root->children.append(new StreamsModel::CategoryItem("http://opml.radiotime.com/Search.ashx", tr("TuneIn"), root, MonoIcon::icon(":tunein.svg", Utils::monoIconColor())));
     root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constShoutCastHost+QLatin1String("/legacy/genrelist"), tr("ShoutCast"), root, MonoIcon::icon(":shoutcast.svg", Utils::monoIconColor())));
-    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constDirbleHost+QLatin1String("/v2/search/"), tr("Dirble"), root, MonoIcon::icon(":station.svg", Utils::monoIconColor())));
-    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constCommunityHost+QLatin1String("/json/stations/byname/"), tr("Community Radio Browser"), root, MonoIcon::icon(FontAwesome::headphones, Utils::monoIconColor())));
+    root->children.append(new StreamsModel::CategoryItem(QLatin1String("http://")+StreamsModel::constCommunityHost+QLatin1String("/json/stations/byname/"), tr("Community Radio Browser"), root, MonoIcon::icon(":station.svg", Utils::monoIconColor())));
     icon = MonoIcon::icon(FontAwesome::search, Utils::monoIconColor());
 }
 
@@ -285,10 +284,6 @@ void StreamSearchModel::search(const QString &searchTerm, bool stationsOnly)
             query.addQueryItem("limit", QString::number(200));
             break;
         }
-        case Dirble:
-            searchUrl=QUrl(item->url+searchTerm);
-            ApiKeys::self()->addKey(query, ApiKeys::Dirble);
-            break;
         case CommunityRadio:
             searchUrl=QUrl(item->url+searchTerm);
             break;
@@ -339,7 +334,6 @@ void StreamSearchModel::jobFinished()
             switch(root->children.indexOf(i)) {
             case TuneIn:         newItems=StreamsModel::parseRadioTimeResponse(job->actualJob(), cat, true); break;
             case ShoutCast:      newItems=StreamsModel::parseShoutCastSearchResponse(job->actualJob(), cat); break;
-            case Dirble:         newItems=StreamsModel::parseDirbleStations(job->actualJob(), cat); break;
             case CommunityRadio: newItems=StreamsModel::parseCommunityStations(job->actualJob(), cat); break;
             default : break;
             }
@@ -351,7 +345,6 @@ void StreamSearchModel::jobFinished()
         } else {
             switch(root->children.indexOf(i)) {
             case ShoutCast: ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::ShoutCast); break;
-            case Dirble:    ApiKeys::self()->isLimitReached(job->actualJob(), ApiKeys::Dirble); break;
             default : break;
             }
         }

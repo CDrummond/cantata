@@ -324,7 +324,7 @@ QSet<QString> Settings::singleTracksFolders()
 
 MPDParseUtils::CueSupport Settings::cueSupport()
 {
-    return MPDParseUtils::toCueSupport(cfg.get("cueSupport", MPDParseUtils::toStr(MPDParseUtils::Cue_Parse)));
+    return MPDParseUtils::toCueSupport(cfg.get("cueSupport", MPDParseUtils::toStr(MPDParseUtils::Cue_Ignore)));
 }
 
 QStringList Settings::lyricProviders()

@@ -42,6 +42,7 @@
 #include <algorithm>
 
 //static const quint8 constOnlineDiscId=0xEE;
+static const QString constMpdQueue=QLatin1String(".cue/track"); // .cue.track0123
 
 const QString Song::constCddaProtocol=QLatin1String("/[cantata-cdda]/");
 const QString Song::constMopidyLocal=QLatin1String("local:track:");
@@ -816,6 +817,11 @@ QString Song::filePath(const QString &base) const
         return file;
     }
     QString fileName=decodePath(file, isCdda());
+    int mpdCueIdx = fileName.indexOf(constMpdQueue);
+    if (mpdCueIdx == fileName.length()-(constMpdQueue.length()+4))
+    {
+        fileName=fileName.mid(0, mpdCueIdx+4);
+    }
     if (!base.isEmpty() && !fileName.isEmpty() && !isNonMPD()) {
         bool haveAbsPath=fileName.startsWith("/") || fileName.contains(":/");
         if (!haveAbsPath) {
@@ -823,6 +829,11 @@ QString Song::filePath(const QString &base) const
         }
     }
     return fileName;
+}
+
+bool Song::isMpdCueTrack() const
+{
+    return file.indexOf(constMpdQueue)==file.length()-(constMpdQueue.length()+4);
 }
 
 QString Song::describe() const

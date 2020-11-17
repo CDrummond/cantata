@@ -2209,13 +2209,21 @@ bool MPDConnection::recursivelyListDir(const QString &dir, QList<Song> &songs)
                                     : ("lsinfo "+encodeName(dir)));
     if (response.ok) {
         QStringList subDirs;
-        MPDParseUtils::parseDirItems(response.data, details.dir, ver, songs, dir, subDirs, MPDParseUtils::Loc_Library);
-        if (songs.count()>=200){
-            QCoreApplication::processEvents();
-            QList<Song> *copy=new QList<Song>();
-            *copy << songs;
-            emit librarySongs(copy);
-            songs.clear();
+        QList<Song> dirSongs;
+        MPDParseUtils::parseDirItems(response.data, details.dir, ver, dirSongs, dir, subDirs, MPDParseUtils::Loc_Library);
+        // If we have only 1 sug dir and its ".cue" then this is (probably) MPD's trat CUE as a directory
+        // therefore we ignore any files in this directory as they will be the source files of the CUE
+        if (1!=subDirs.size() || !subDirs.at(0).endsWith(".cue")) {
+            songs+=dirSongs;
+            if (songs.count()>=200){
+                QCoreApplication::processEvents();
+                QList<Song> *copy=new QList<Song>();
+                *copy << songs;
+                emit librarySongs(copy);
+                songs.clear();
+            }
+        } else {
+            DBUG << "IGNORING:" << dirSongs.size() << "track(s) as they are source files of cue?" << subDirs.at(0);
         }
         for (const QString &sub: subDirs) {
             recursivelyListDir(sub, songs);

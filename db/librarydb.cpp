@@ -1226,19 +1226,8 @@ void LibraryDb::insertSongs(QList<Song> *songs)
         return;
     }
 
-    QSet<QString> mpdCueTrackDirs;
     for (const Song &s: *songs) {
-        if (s.isMpdCueTrack()) {
-            mpdCueTrackDirs.insert(Utils::getDir(s.filePath()));
-        }
         insertSong(s);
-    }
-
-    if (!mpdCueTrackDirs.isEmpty()) {
-        DBUG << "Remove non-MPD cue tracks";
-        for (const QString &d: mpdCueTrackDirs) {
-            QSqlQuery(*db).exec("delete from songs where file like '" + d + "%%' and not file like '" + d + "%%/%%'");
-        }
     }
     delete songs;
 }

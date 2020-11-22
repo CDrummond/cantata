@@ -46,6 +46,7 @@ public:
     unsigned int get(const QString &key, unsigned int def)       { return contains(key) ? value(key).toUInt() : def; }
     QByteArray   get(const QString &key, const QByteArray &def)  { return contains(key) ? value(key).toByteArray() : def; }
     QSize        get(const QString &key, const QSize &def)       { return contains(key) ? value(key).toSize() : def; }
+    QPoint       get(const QString &key, const QPoint &def)      { return contains(key) ? value(key).toPoint() : def; }
     QDateTime    get(const QString &key, const QDateTime &def)   { return contains(key) ? value(key).toDateTime() : def; }
     void         set(const QString &key, const QString &val)     { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, const char *val)        { if (!hasEntry(key) || get(key, QLatin1String(val))!=QLatin1String(val)) setValue(key, val); }
@@ -55,6 +56,7 @@ public:
     void         set(const QString &key, unsigned int val)       { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, const QByteArray &val)  { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, const QSize &val)       { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
+    void         set(const QString &key, const QPoint &val)      { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     void         set(const QString &key, const QDateTime &val)   { if (!hasEntry(key) || get(key, val)!=val) setValue(key, val); }
     bool         hasGroup(const QString &grp)                    { return -1!=childGroups().indexOf(grp); }
     void         removeGroup(const QString &grp)                 { remove(grp); }

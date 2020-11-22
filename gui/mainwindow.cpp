@@ -580,6 +580,11 @@ MainWindow::MainWindow(QWidget *parent)
         }
         if (fullScreenAction->isChecked()) {
             fullScreen();
+        } else {
+            QPoint p = Settings::self()->mainWindowPos();
+            if (!p.isNull()) {
+                move(p);
+            }
         }
     }
 
@@ -948,6 +953,7 @@ MainWindow::~MainWindow()
         }
         Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
         Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
+        Settings::self()->saveMainWindowPos(pos());
     }
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     Settings::self()->savePlayStream(streamPlayAction->isVisible() && streamPlayAction->isChecked());

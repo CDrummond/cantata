@@ -246,6 +246,11 @@ QSize Settings::mainWindowCollapsedSize()
     return cfg.get("mainWindowCollapsedSize", QSize());
 }
 
+QPoint Settings::mainWindowPos()
+{
+    return cfg.get("mainWindowPos", QPoint());
+}
+
 bool Settings::maximized()
 {
     return cfg.get("maximized", false);
@@ -782,6 +787,11 @@ void Settings::saveMainWindowCollapsedSize(const QSize &v)
     if (v.width()>16 && v.height()>16) {
         cfg.set("mainWindowCollapsedSize", v);
     }
+}
+
+void Settings::saveMainWindowPos(const QPoint &pos)
+{
+    return cfg.set("mainWindowPos", pos);
 }
 
 void Settings::saveUseSystemTray(bool v)

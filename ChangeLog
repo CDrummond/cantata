@@ -7,6 +7,7 @@
 4. Remove dirble from radio section, as its no longer active.
 5. Better handling of CUE tracks when MPD is set to list as directory.
 6. Disable CUE parsing in cantata by default, as MPD handles this better now.
+7. Remember, and restore, main window position.
 
 2.4.2
 -----

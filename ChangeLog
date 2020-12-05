@@ -9,6 +9,7 @@
 6. Disable CUE parsing in cantata by default, as MPD handles this better now.
 7. Remember, and restore, main window position.
 8. Disable categorized view, as its been reported to crash (#1530)
+9. Remove stream providers, as many broken.
 
 2.4.2
 -----

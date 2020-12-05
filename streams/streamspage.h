@@ -35,8 +35,6 @@
 class Action;
 class QAction;
 class NetworkReply;
-class ServiceStatusLabel;
-class StreamsSettings;
 
 struct StreamItem
 {
@@ -67,9 +65,6 @@ public Q_SLOTS:
     void addToFavourites(const QList<StreamItem> &items);
 
 private Q_SLOTS:
-    void configure();
-    void configureDi();
-    void diSettings();
     void importXml();
     void exportXml();
     void addStream();
@@ -77,7 +72,6 @@ private Q_SLOTS:
     void reload();
     void edit();
     void itemDoubleClicked(const QModelIndex &index);
-    void updateDiStatus();
     void expandFavourites();
     void addedToFavourites(const QString &name);
     void tuneInResolved();
@@ -89,7 +83,6 @@ private:
     void addToFavourites();
 
 private:
-    ServiceStatusLabel *diStatusLabel;
     Action *importAction;
     Action *exportAction;
     Action *addAction;
@@ -97,7 +90,6 @@ private:
     Action *searchAction;
     StreamsProxyModel proxy;
     QSet<NetworkJob *> resolveJobs;
-    StreamsSettings *settings;
     friend class StreamsPage;
 };
 

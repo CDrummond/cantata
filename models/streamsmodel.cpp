@@ -34,7 +34,6 @@
 #include "support/action.h"
 #include "gui/stdactions.h"
 #include "support/actioncollection.h"
-#include "digitallyimported.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "config.h"
 #include "support/globalstatic.h"
@@ -478,11 +477,6 @@ NetworkJob * StreamsModel::ShoutCastCategoryItem::fetchSecondardyUrl()
     return nullptr;
 }
 
-void StreamsModel::DiCategoryItem::addHeaders(QNetworkRequest &req)
-{
-    DigitallyImported::self()->addAuthHeader(req);
-}
-
 StreamsModel::StreamsModel(QObject *parent)
     : ActionModel(parent)
     , root(new CategoryItem(QString(), "root"))
@@ -498,10 +492,8 @@ StreamsModel::StreamsModel(QObject *parent)
     root->children.append(shoutCast);
     favourites=new FavouritesCategoryItem(constFavouritesUrl, tr("Favorites"), root, MonoIcon::icon(FontAwesome::heart, MonoIcon::constRed));
     root->children.append(favourites);
-    loadInstalledProviders();
     addBookmarkAction = new Action(Icons::self()->addBookmarkIcon, tr("Bookmark Category"), this);
     addToFavouritesAction = new Action(favouritesIcon(), tr("Add Stream To Favorites"), this);
-    configureDiAction = new Action(Icons::self()->configureIcon, tr("Configure Digitally Imported"), this);
     reloadAction = new Action(Icons::self()->reloadIcon, tr("Reload"), this);
 
     QSet<QString> hidden=Settings::self()->hiddenStreamCategories().toSet();
@@ -639,9 +631,6 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         QList<Action *> actions;
         if (item->isCategory()){
             const CategoryItem *cat=static_cast<const CategoryItem *>(item);
-            if (cat->isDi()) {
-                actions << configureDiAction;
-            }
             if (cat->canReload()) {
                 actions << reloadAction;
             }
@@ -705,12 +694,7 @@ void StreamsModel::fetchMore(const QModelIndex &index)
     if (item->isCategory() && !item->url.isEmpty()) {
         CategoryItem *cat=static_cast<CategoryItem *>(item);
         if (!cat->isFavourites() && !loadCache(cat)) {
-            QNetworkRequest req;
-            if (cat->isDi()) {
-                req=QNetworkRequest(constDiChannelListUrl.arg(cat->fullUrl().split(".").at(1)));
-            } else {
-                req=QNetworkRequest(cat->fullUrl());
-            }
+            QNetworkRequest req=QNetworkRequest(cat->fullUrl());
             cat->addHeaders(req);
             NetworkJob *job=NetworkAccessManager::self()->get(req);
             job->setProperty(constOrigUrlProperty, cat->fullUrl());
@@ -903,19 +887,13 @@ QModelIndex StreamsModel::favouritesIndex() const
     return createIndex(root->children.indexOf(favourites), 0, (void *)favourites);
 }
 
-static QString addDiHash(const StreamsModel::Item *item)
-{
-    return ( (item->parent && item->parent->isDi()) || DigitallyImported::self()->isDiUrl(item->fullUrl()) )
-            ? DigitallyImported::self()->modifyUrl(item->fullUrl()) : item->fullUrl();
-}
-
 QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const
 {
     QStringList fnames;
     for (const QModelIndex &index: indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
         if (!item->isCategory()) {
-            fnames << modifyUrl(addDiHash(item), addPrefix, addPrefix ? item->modifiedName() : item->name);
+            fnames << modifyUrl(item->fullUrl(), addPrefix, addPrefix ? item->modifiedName() : item->name);
         }
     }
 
@@ -951,12 +929,12 @@ QList<StreamsModel::Category> StreamsModel::getCategories() const
     QList<StreamsModel::Category> categories;
     for (Item *i: hiddenCategories) {
         categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
-                                   static_cast<CategoryItem *>(i)->isBuiltIn(), true, static_cast<CategoryItem *>(i)->isDi()));
+                                   static_cast<CategoryItem *>(i)->isBuiltIn(), true));
     }
     for (Item *i: root->children) {
         if (i!=favourites) {
             categories.append(Category(i->name, static_cast<CategoryItem *>(i)->icon, static_cast<CategoryItem *>(i)->configName,
-                                       static_cast<CategoryItem *>(i)->isBuiltIn(), false, static_cast<CategoryItem *>(i)->isDi()));
+                                       static_cast<CategoryItem *>(i)->isBuiltIn(), false));
         }
     }
     return categories;
@@ -1047,14 +1025,8 @@ void StreamsModel::jobFinished()
                     newItems=parseRadioTimeResponse(job->actualJob(), cat);
                 } else if (constIceCastUrl==url) {
                     newItems=parseIceCastResponse(job->actualJob(), cat);
-                } else if (cat->isSoma()) {
-                    newItems=parseSomaFmResponse(job->actualJob(), cat);
-                } else if (constDiChannelListHost==job->origUrl().host()) {
-                    newItems=parseDigitallyImportedResponse(job->actualJob(), cat);
                 } else if (constShoutCastHost==job->origUrl().host()) {
                     newItems=parseShoutCastResponse(job->actualJob(), cat);
-                } else if (cat->isListenLive()) {
-                    newItems=parseListenLiveResponse(job->actualJob(), cat);
                 }
             }
 
@@ -1350,187 +1322,6 @@ QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, C
     return newItems;
 }
 
-QList<StreamsModel::Item *> StreamsModel::parseSomaFmResponse(QIODevice *dev, CategoryItem *cat)
-{
-    QList<Item *> newItems;
-    QXmlStreamReader doc(dev);
-    while (!doc.atEnd()) {
-        doc.readNext();
-        if (doc.isStartElement() && QLatin1String("channel")==doc.name()) {
-            Item *item = parseSomaFmEntry(doc, cat);
-            if (item) {
-                newItems.append(item);
-            }
-        }
-    }
-    return newItems;
-}
-
-QList<StreamsModel::Item *> StreamsModel::parseDigitallyImportedResponse(QIODevice *dev, CategoryItem *cat)
-{
-    QList<Item *> newItems;
-    QVariantMap data=QJsonDocument::fromJson(dev->readAll()).toVariant().toMap();
-    QString listenHost=QLatin1String("listen.")+QUrl(cat->fullUrl()).host().remove("www.");
-
-    if (data.contains("channel_filters")) {
-        QVariantList filters = data["channel_filters"].toList();
-
-        for (const QVariant &filter: filters) {
-            // Find the filter called "All"
-            QVariantMap filterMap = filter.toMap();
-            if (filterMap.value("name", QString()).toString() != "All") {
-                continue;
-            }
-
-            // Add all its stations to the result
-            QVariantList channels = filterMap.value("channels", QVariantList()).toList();
-            for (const QVariant &channel: channels) {
-                QVariantMap channelMap = channel.toMap();
-                QString url=constDiStdUrl.arg(listenHost).arg(channelMap.value("key").toString());
-                newItems.append(new Item(url, channelMap.value("name").toString(), cat));
-            }
-
-            break;
-        }
-    }
-
-    return newItems;
-}
-
-struct ListenLiveStream {
-    enum Format {
-        Unknown,
-        WMA,
-        OGG,
-        MP3,
-        AAC
-    };
-
-    ListenLiveStream() : format(Unknown), bitrate(0) { }
-    bool operator<(const ListenLiveStream &o) const { return weight()>o.weight(); }
-
-    int weight() const { return ((bitrate&0xff)<<4)+(format&0x0f); }
-
-    void setFormat(const QString &f) {
-        if (QLatin1String("mp3")==f.toLower()) {
-            format=MP3;
-        } else if (QLatin1String("aacplus")==f.toLower()) {
-            format=AAC;
-        } else if (QLatin1String("ogg vorbis")==f.toLower()) {
-            format=OGG;
-        } else if (QLatin1String("windows media")==f.toLower()) {
-            format=WMA;
-        } else {
-            format=Unknown;
-        }
-    }
-
-    QString url;
-    Format format;
-    unsigned int bitrate;
-};
-
-struct ListenLiveStationEntry {
-    ListenLiveStationEntry() { clear(); }
-    void clear() { name=location=QString(); streams.clear(); }
-    QString name;
-    QString location;
-    QList<ListenLiveStream> streams;
-};
-
-static QString getString(QString &str, const QString &start, const QString &end)
-{
-    QString rv;
-    int b=str.indexOf(start);
-    int e=-1==b ? -1 : str.indexOf(end, b+start.length());
-    if (-1!=e) {
-        rv=str.mid(b+start.length(), e-(b+start.length())).trimmed();
-        str=str.mid(e+end.length());
-    }
-    return rv;
-}
-
-QList<StreamsModel::Item *> StreamsModel::parseListenLiveResponse(QIODevice *dev, CategoryItem *cat)
-{
-    QList<Item *> newItems;
-
-    if (dev) {
-        ListenLiveStationEntry entry;
-
-        while (!dev->atEnd()) {
-            QString line=QString::fromUtf8(dev->readLine()).trimmed().replace("> <", "><").replace("<td><b><a href", "<td><a href")
-                                                  .replace("</b></a></b>", "</b></a>").replace("<br />", "<br/>")
-                                                  .replace("</a> ,", "</a>,");
-            if ("<tr>"==line) {
-                entry.clear();
-            } else if (line.startsWith("<td><a href=")) {
-                if (entry.name.isEmpty()) {
-                    entry.name=getString(line, "<b>", "</b>");
-                    QString extra=getString(line, "</a>", "</td>");
-                    if (!extra.isEmpty()) {
-                        entry.name+=" "+extra;
-                    }
-                } else {
-                    // Station URLs...
-                    QString url;
-                    QString bitrate;
-                    int idx=0;
-                    do {
-                        url=getString(line, "href=\"", "\"");
-                        bitrate=getString(line, ">", " Kbps");
-                        bool sameFormatAsLast=line.startsWith("</a>,");
-                        if (!url.isEmpty() && !bitrate.isEmpty() && !url.startsWith(QLatin1String("javascript")) && idx<entry.streams.count()) {
-                            if (sameFormatAsLast && 0!=idx) {
-                                ListenLiveStream stream;
-                                stream.format=entry.streams[idx-1].format;
-                                entry.streams.insert(idx, stream);
-                            }
-                            entry.streams[idx].url=url;
-                            entry.streams[idx].bitrate=bitrate.toUInt();
-                            idx++;
-                        }
-                    } while (!url.isEmpty() && !bitrate.isEmpty());
-                }
-            } else if (line.startsWith("<td><img src")) {
-                // Station formats...
-                QString format;
-                do {
-                    format=getString(line, "alt=\"", "\"");
-                    if (!format.isEmpty()) {
-                        ListenLiveStream stream;
-                        stream.setFormat(format);
-                        entry.streams.append(stream);
-                    }
-                } while (!format.isEmpty());
-            } else if (line.startsWith("<td>")) {
-                if (entry.location.isEmpty()) {
-                    entry.location=getString(line, "<td>", "</td>");
-                }
-            } else if ("</tr>"==line) {
-                if (entry.streams.count()) {
-                    std::sort(entry.streams.begin(), entry.streams.end());
-                    QString name;
-                    QString url=entry.streams.at(0).url;
-
-                    if (QLatin1String("National")==entry.location || entry.name.endsWith(QLatin1Char('(')+entry.location+QLatin1Char(')'))) {
-                        name=entry.name;
-                    } else if (entry.name.endsWith(QLatin1Char(')'))) {
-                        name=entry.name.left(entry.name.length()-1)+QLatin1String(", ")+entry.location+QLatin1Char(')');
-                    } else {
-                        name=entry.name+QLatin1String(" (")+entry.location+QLatin1Char(')');
-                    }
-
-                    if (!name.isEmpty()) {
-                        newItems.append(new Item(url, name, cat));
-                    }
-                }
-            }
-        }
-    }
-
-    return newItems;
-}
-
 QList<StreamsModel::Item *> StreamsModel::parseShoutCastSearchResponse(QIODevice *dev, CategoryItem *cat)
 {
     QList<Item *> newItems;
@@ -1658,120 +1449,6 @@ StreamsModel::Item * StreamsModel::parseRadioTimeEntry(QXmlStreamReader &doc, Ca
     }
 
     return item;
-}
-
-StreamsModel::Item * StreamsModel::parseSomaFmEntry(QXmlStreamReader &doc, CategoryItem *parent)
-{
-    QString name;
-    QString url;
-    QString streamFormat;
-
-    while (!doc.atEnd()) {
-        doc.readNext();
-
-        if (QXmlStreamReader::StartElement==doc.tokenType()) {
-            QStringRef elem = doc.name();
-
-            if (QLatin1String("title")==elem) {
-                name=doc.readElementText().trimmed();
-            } else if (QLatin1String("fastpls")==elem) {
-                if (streamFormat.isEmpty() || QLatin1String("mp3")!=streamFormat) {
-                    streamFormat=doc.attributes().value("format").toString();
-                    url=doc.readElementText();
-                }
-            }
-        } else if (doc.isEndElement() && QLatin1String("channel")==doc.name()) {
-            break;
-        }
-    }
-
-    return name.isEmpty() || url.isEmpty() ? nullptr : new Item(url, name, parent);
-}
-
-void StreamsModel::loadInstalledProviders()
-{
-    QSet<QString> added;
-    QString dir=Utils::dataDir(StreamsModel::constSubDir);
-    QStringList subDirs=QDir(dir).entryList(QStringList() << "*", QDir::Dirs|QDir::Readable|QDir::NoDot|QDir::NoDotDot);
-    QStringList streamFiles=QStringList() << constCompressedXmlFile << constXmlFile << constSettingsFile;
-    for (const QString &sub: subDirs) {
-        if (!added.contains(sub)) {
-            for (const QString &streamFile: streamFiles) {
-                if (QFile::exists(dir+sub+Utils::constDirSep+streamFile)) {
-                    addInstalledProvider(sub, getExternalIcon(dir+sub), dir+sub+Utils::constDirSep+streamFile, false);
-                    added.insert(sub);
-                    break;
-                }
-            }
-        }
-    }
-}
-
-StreamsModel::CategoryItem * StreamsModel::addInstalledProvider(const QString &name, const QIcon &icon, const QString &streamsFileName, bool replace)
-{
-    CategoryItem *cat=nullptr;
-    if (streamsFileName.endsWith(constSettingsFile)) {
-        QFile file(streamsFileName);
-        if (file.open(QIODevice::ReadOnly)) {
-            QVariantMap map=QJsonDocument::fromJson(file.readAll()).toVariant().toMap();
-            QString type=map["type"].toString();
-            QString url=map["url"].toString();
-
-            if (!url.isEmpty() && !type.isEmpty()) {
-                QStringList toRemove=QStringList() << " " << "." << "/" << "\\" << "(" << ")";
-                QString cacheName=name;
-                for (const QString &rem: toRemove) {
-                    cacheName=cacheName.replace(rem, "");
-                }
-                cacheName=cacheName.toLower();
-                if (type=="di") {
-                    cat=new DiCategoryItem(url, name, root, icon, cacheName);
-                } else if (type=="soma") {
-                    cat=new SomaCategoryItem(url, name, root, icon, cacheName, map["modName"].toBool());
-                } else if (type=="listenlive") {
-                    cat=new ListenLiveCategoryItem(url, name, root, icon, cacheName);
-                }
-            }
-        }
-    } else {
-        cat=new XmlCategoryItem(name, root, icon, streamsFileName);
-    }
-
-    if (!cat) {
-        return nullptr;
-    }
-
-    cat->configName="x-"+name;
-
-    if (replace) {
-        // Remove any existing entry...
-        removeInstalledProvider(cat->configName);
-    }
-
-    if (replace) {
-        beginInsertRows(QModelIndex(), root->children.count(), root->children.count());
-        root->children.append(cat);
-        endInsertRows();
-    } else {
-        root->children.append(cat);
-    }
-    return cat;
-}
-
-void StreamsModel::removeInstalledProvider(const QString &key)
-{
-    for (Item *i: root->children) {
-        if (key==static_cast<CategoryItem *>(i)->configName) {
-            int row=root->children.indexOf(i);
-            if (row>=0) {
-                static_cast<CategoryItem *>(i)->removeCache();
-                beginRemoveRows(QModelIndex(), row, row);
-                delete root->children.takeAt(row);
-                endRemoveRows();
-            }
-            break;
-        }
-    }
 }
 
 QModelIndex StreamsModel::categoryIndex(const CategoryItem *cat) const

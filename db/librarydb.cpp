@@ -643,6 +643,9 @@ bool LibraryDb::init(const QString &dbFile)
 
 void LibraryDb::insertSong(const Song &s)
 {
+    if (!db) {
+        return;
+    }
     if (!insertSongQuery) {
         insertSongQuery=new QSqlQuery(*db);
         insertSongQuery->prepare("insert into songs(file, artist, artistId, albumArtist, artistSort, composer, album, albumId, albumSort, title, genre1, genre2, genre3, genre4, track, disc, time, year, origYear, type, lastModified) "
@@ -677,6 +680,10 @@ void LibraryDb::insertSong(const Song &s)
 QList<LibraryDb::Genre> LibraryDb::getGenres()
 {
     DBUG;
+    QList<LibraryDb::Genre> genres;
+    if (!db) {
+        return genres;
+    }
     QMap<QString, QSet<QString> > map;
     if (0!=currentVersion && db) {
         QString queryStr("distinct ");
@@ -699,7 +706,6 @@ QList<LibraryDb::Genre> LibraryDb::getGenres()
         }
     }
 
-    QList<LibraryDb::Genre> genres;
     QMap<QString, QSet<QString> >::ConstIterator it=map.constBegin();
     QMap<QString, QSet<QString> >::ConstIterator end=map.constEnd();
     for (; it!=end; ++it) {
@@ -713,6 +719,10 @@ QList<LibraryDb::Genre> LibraryDb::getGenres()
 QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
 {
     DBUG << genre;
+    QList<LibraryDb::Artist> artists;
+    if (!db) {
+        return artists;
+    }
     QMap<QString, QString> sortMap;
     QMap<QString, int> albumMap;
     if (0!=currentVersion && db) {
@@ -732,7 +742,6 @@ QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
         }
     }
 
-    QList<LibraryDb::Artist> artists;
     QMap<QString, int>::ConstIterator it=albumMap.constBegin();
     QMap<QString, int>::ConstIterator end=albumMap.constEnd();
     for (; it!=end; ++it) {
@@ -748,6 +757,9 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
     timer.start();
     DBUG << artistId << genre;
     QList<Album> albums;
+    if (!db) {
+        return albums;
+    }
     if (0!=currentVersion && db) {
         bool wantModified=AS_Modified==sort;
         bool wantArtist=artistId.isEmpty();
@@ -885,6 +897,9 @@ QList<Song> LibraryDb::getTracks(const QString &artistId, const QString &albumId
 {
     DBUG << artistId << albumId << genre << sort;
     QList<Song> songs;
+    if (!db) {
+        return songs;
+    }
     if (0!=currentVersion && db) {
         SqlQuery query("*", *db);
         if (useFilter) {

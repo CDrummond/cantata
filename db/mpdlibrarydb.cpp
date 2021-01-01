@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2017-2020 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2017-2021 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *

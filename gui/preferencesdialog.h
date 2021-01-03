@@ -42,7 +42,9 @@ class QStringList;
 #ifdef ENABLE_PROXY_CONFIG
 class ProxySettings;
 #endif
+#ifdef ENABLE_SCROBBLING
 class ScrobblingSettings;
+#endif
 class CustomActionsSettings;
 class ApiKeysSettings;
 
@@ -82,7 +84,9 @@ private:
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     AudioCdSettings *audiocd;
     #endif
+    #ifdef ENABLE_SCROBBLING
     ScrobblingSettings *scrobbling;
+    #endif
     CustomActionsSettings *custom;
     ApiKeysSettings *apiKeys;
 };

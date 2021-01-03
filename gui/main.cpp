@@ -56,7 +56,9 @@
 #include "context/ultimatelyricsprovider.h"
 #include "tags/taghelperiface.h"
 #include "context/contextwidget.h"
+#ifdef ENABLE_SCROBBLING
 #include "scrobbling/scrobbler.h"
+#endif
 #include "gui/mediakeys.h"
 #ifdef ENABLE_HTTP_STREAM_PLAYBACK
 #include "mpd-interface/httpstream.h"
@@ -150,7 +152,9 @@ static QString debugAreas()
             +QObject::tr("song-dialog - Song dialogs (tags, replaygain, organiser)")+QLatin1Char('\n')
             +QObject::tr("network-access - Network access")+QLatin1Char('\n')
             +QObject::tr("threads - Threads")+QLatin1Char('\n')
+            #ifdef ENABLE_SCROBBLING
             +QObject::tr("scrobbler - Scrobbling")+QLatin1Char('\n')
+            #endif
             +QObject::tr("sql - SQL access")+QLatin1Char('\n')
             +QObject::tr("media-keys - Media-keys")+QLatin1Char('\n')
             +QObject::tr("custom-actions - Custom actions")+QLatin1Char('\n')
@@ -224,9 +228,11 @@ static void installDebugMessageHandler(const QString &cmdLine)
         if (all || QLatin1String("threads")==area) {
             ThreadCleaner::enableDebug();
         }
+        #ifdef ENABLE_SCROBBLING
         if (all || QLatin1String("scrobbler")==area) {
             Scrobbler::enableDebug();
         }
+        #endif
         if (all || QLatin1String("sql")==area) {
             LibraryDb::enableDebug();
         }

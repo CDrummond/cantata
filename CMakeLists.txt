@@ -50,6 +50,7 @@ option(ENABLE_PROXY_CONFIG "Enable proxy config in settings dialog" ON)
 option(ENABLE_HTTP_SERVER "Enable internal HTTP server to play non-MPD files" ON)
 option(ENABLE_LIBVLC "Use libVLC for MPD HTTP stream playback (if ENABLE_HTTP_STREAM_PLAYBACK=ON)" OFF)
 option(ENABLE_CATEGORIZED_VIEW "Enable support for categorised view" OFF)
+option(ENABLE_SCROBBLING "Enable scrobbling" OFF)
 
 if (WIN32 OR APPLE OR HAIKU)
     option(ENABLE_DEVICES_SUPPORT "Enable suport for external devices" OFF)
@@ -349,14 +350,13 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     online/onlinesearchwidget.cpp online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
     online/podcastsettingsdialog.cpp online/podcastwidget.cpp online/onlinesearchservice.cpp
     db/onlinedb.cpp
-    scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblinglove.cpp
     http/httpserver.cpp)
 set(CANTATA_UIS ${CANTATA_UIS}
     gui/initialsettingswizard.ui gui/mainwindow.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
     context/togglelist.ui context/othersettings.ui
     streams/digitallyimportedsettings.ui streams/streamssettings.ui
     playlists/playlistrule.ui playlists/playlistrules.ui
-    widgets/itemview.ui scrobbling/scrobblingsettings.ui)
+    widgets/itemview.ui)
 
 if (ENABLE_CATEGORIZED_VIEW)
     set(CANTATA_SRCS ${CANTATA_SRCS} widgets/categorizedview.cpp)
@@ -364,6 +364,10 @@ endif ()
 if (ENABLE_SIMPLE_MPD_SUPPORT)
     set(CANTATA_SRCS ${CANTATA_SRCS} mpd-interface/mpduser.cpp)
 endif ()
+if (ENABLE_SCROBBLING)
+    set(CANTATA_SRCS ${CANTATA_SRCS} scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblinglove.cpp)
+    set(CANTATA_UIS ${CANTATA_UIS} scrobbling/scrobblingsettings.ui)
+endif()
 
 set(CANTATA_LIBS ${CANTATA_LIBS} support)
 

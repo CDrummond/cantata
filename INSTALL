@@ -26,7 +26,7 @@ The following options may be passed to CMake:
         they will contain extra debugging information.
 
     -ENABLE_CATEGORIZED_VIEW=ON
-        Enable categorized view. Can be disabled due to reported crash - #1530
+        Enable categorized view. Disabled due to reported crash - #1530
         Default: OFF
 
     -DENABLE_HTTP_STREAM_PLAYBACK=ON
@@ -49,6 +49,9 @@ The following options may be passed to CMake:
         system proxy settings are used.
         Default: ON
 
+    -DENABLE_SCROBBLING=ON
+        Enable scrobbling. Disabled due to auth failures - #1661
+        Default: OFF
 
     Linux specific:
 

@@ -39,7 +39,9 @@
 #include "devices/audiocdsettings.h"
 #endif
 #include "shortcutssettingspage.h"
+#ifdef ENABLE_SCROBBLING
 #include "scrobbling/scrobblingsettings.h"
+#endif
 #include "apikeyssettings.h"
 #include "support/monoicon.h"
 #include <QDesktopWidget>
@@ -61,21 +63,27 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     interface = new InterfaceSettings(this);
     context = new ContextSettings(this);
     cache = new CacheSettings(this);
+    #ifdef ENABLE_SCROBBLING
     scrobbling = new ScrobblingSettings(this);
+    #endif
     custom = new CustomActionsSettings(this);
     apiKeys = new ApiKeysSettings(this);
     server->load();
     playback->load();
     interface->load();
     context->load();
+    #ifdef ENABLE_SCROBBLING
     scrobbling->load();
+    #endif
     custom->load();
     QColor iconColor = Utils::clampColor(palette().text().color());
     addPage(QLatin1String("collection"), server, tr("Collection"), MonoIcon::icon(FontAwesome::music, iconColor), tr("Collection Settings"));
     addPage(QLatin1String("playback"), playback, tr("Playback"), MonoIcon::icon(FontAwesome::volumeup, iconColor), tr("Playback Settings"));
     addPage(QLatin1String("interface"), interface, tr("Interface"), MonoIcon::icon(FontAwesome::sliders, iconColor), tr("Interface Settings"));
     addPage(QLatin1String("info"), context, tr("Info"), MonoIcon::icon(FontAwesome::infocircle, iconColor), tr("Info View Settings"));
+    #ifdef ENABLE_SCROBBLING
     addPage(QLatin1String("scrobbling"), scrobbling, tr("Scrobbling"), MonoIcon::icon(FontAwesome::lastfm, iconColor), tr("Scrobbling Settings"));
+    #endif
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(0);
     audiocd->load();
@@ -136,7 +144,9 @@ void PreferencesDialog::writeSettings()
     audiocd->save();
     #endif
     context->save();
+    #ifdef ENABLE_SCROBBLING
     scrobbling->save();
+    #endif
     custom->save();
     apiKeys->save();
     Settings::self()->save();

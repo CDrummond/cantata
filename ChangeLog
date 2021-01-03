@@ -1,15 +1,16 @@
 2.4.3
 -----
-1. Update translations.
-2. Limit number of album tracks shown in context view to 500, thanks to
-   ccoors.
-3. Fix Community Radio Browser search.
-4. Remove dirble from radio section, as its no longer active.
-5. Better handling of CUE tracks when MPD is set to list as directory.
-6. Disable CUE parsing in cantata by default, as MPD handles this better now.
-7. Remember, and restore, main window position.
-8. Disable categorized view, as its been reported to crash (#1530)
-9. Remove stream providers, as many broken.
+ 1. Update translations.
+ 2. Limit number of album tracks shown in context view to 500, thanks to
+    ccoors.
+ 3. Fix Community Radio Browser search.
+ 4. Remove dirble from radio section, as its no longer active.
+ 5. Better handling of CUE tracks when MPD is set to list as directory.
+ 6. Disable CUE parsing in cantata by default, as MPD handles this better now.
+ 7. Remember, and restore, main window position.
+ 8. Disable categorized view, as its been reported to crash (#1530)
+ 9. Remove stream providers, as many broken.
+10. Disable scrollbing support, as auth changed.
 
 2.4.2
 -----

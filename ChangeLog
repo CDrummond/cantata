@@ -10,7 +10,7 @@
  7. Remember, and restore, main window position.
  8. Disable categorized view, as its been reported to crash (#1530)
  9. Remove stream providers, as many broken.
-10. Disable scrollbing support, as auth changed.
+10. Disable scrobbling support, as auth mechanism changed.
 
 2.4.2
 -----

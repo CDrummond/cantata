@@ -46,6 +46,7 @@
 #cmakedefine ENABLE_SIMPLE_MPD_SUPPORT 1
 #cmakedefine AVAHI_FOUND
 #cmakedefine ENABLE_CATEGORIZED_VIEW 1
+#cmakedefine ENABLE_SCROBBLING 1
 
 #cmakedefine HAVE_CDIO_PARANOIA_H 1
 #cmakedefine HAVE_CDIO_PARANOIA_PARANOIA_H 1

@@ -49,9 +49,9 @@ The following options may be passed to CMake:
         system proxy settings are used.
         Default: ON
 
-    -DENABLE_SCROBBLING=ON
-        Enable scrobbling. Disabled due to auth failures - #1661
-        Default: OFF
+    -DENABLE_SCROBBLING=OFF
+        Enable scrobbling.
+        Default: ON
 
     Linux specific:
 

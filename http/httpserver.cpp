@@ -256,22 +256,22 @@ Song HttpServer::decodeUrl(const QUrl &url) const
 
     if (q.hasQueryItem("cantata") && q.queryItemValue("cantata")=="song") {
         if (q.hasQueryItem("album")) {
-            s.album=q.queryItemValue("album");
+            s.album=q.queryItemValue("album", QUrl::FullyDecoded);
         }
         if (q.hasQueryItem("artist")) {
-            s.artist=q.queryItemValue("artist");
+            s.artist=q.queryItemValue("artist", QUrl::FullyDecoded);
         }
         if (q.hasQueryItem("albumartist")) {
-            s.albumartist=q.queryItemValue("albumartist");
+            s.albumartist=q.queryItemValue("albumartist", QUrl::FullyDecoded);
         }
         if (q.hasQueryItem("composer")) {
-            s.setComposer(q.queryItemValue("composer"));
+            s.setComposer(q.queryItemValue("composer", QUrl::FullyDecoded));
         }
         if (q.hasQueryItem("title")) {
-            s.title=q.queryItemValue("title");
+            s.title=q.queryItemValue("title", QUrl::FullyDecoded);
         }
         if (q.hasQueryItem("genre")) {
-            s.addGenre(q.queryItemValue("genre"));
+            s.addGenre(q.queryItemValue("genre", QUrl::FullyDecoded));
         }
         if (q.hasQueryItem("disc")) {
             s.disc=q.queryItemValue("disc").toInt();
@@ -289,10 +289,10 @@ Song HttpServer::decodeUrl(const QUrl &url) const
             s.id=q.queryItemValue("id").toInt();
         }
         if (q.hasQueryItem("onlineservice")) {
-            s.setIsFromOnlineService(q.queryItemValue("onlineservice"));
+            s.setIsFromOnlineService(q.queryItemValue("onlineservice", QUrl::FullyDecoded));
         }
         #ifdef Q_OS_WIN
-        s.file=fixWindowsPath(q.queryItemValue("file"));
+        s.file=fixWindowsPath(q.queryItemValue("file", QUrl::FullyDecoded));
         #else
         s.file=url.path();
         #endif

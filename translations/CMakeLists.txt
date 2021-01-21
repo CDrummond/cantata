@@ -4,9 +4,9 @@ foreach (TS_FILE ${TS_FILES})
     list(APPEND CANTATA_TRANS "${TRANS}")
 endforeach ()
 
-find_program(LRELEASE_EXECUTABLE lrelease PATHS /usr/lib64/qt5/bin/)
+find_package(Qt5LinguistTools ${QT_MIN_VERSION} QUIET)
 
-if (LRELEASE_EXECUTABLE)
+if (Qt5LinguistTools_FOUND)
     set(catalogname cantata)
     add_custom_target(translations ALL)
     foreach(TRANS ${CANTATA_TRANS})
@@ -14,7 +14,7 @@ if (LRELEASE_EXECUTABLE)
             set(CUR_TS_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${TRANS}.ts)
             set(CUR_QM_FILE ${CMAKE_CURRENT_BINARY_DIR}/${TRANS}.qm)
             add_custom_command(TARGET translations
-                COMMAND ${LRELEASE_EXECUTABLE} ARGS ${CUR_TS_FILE} -qm ${CUR_QM_FILE}
+                COMMAND ${Qt5_LRELEASE_EXECUTABLE} ARGS ${CUR_TS_FILE} -qm ${CUR_QM_FILE}
                 DEPENDS ${CUR_TS_FILE})
             if (WIN32)
                 install(FILES ${CUR_QM_FILE} DESTINATION ${CMAKE_INSTALL_PREFIX}/translations/)

@@ -24,6 +24,7 @@
 #ifndef AMAROK_FILETYPERESOLVER_H
 #define AMAROK_FILETYPERESOLVER_H
 
+#include "config.h"
 #include <taglib/fileref.h>
 
 namespace Meta

@@ -66,16 +66,16 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
             delete result;
             result = new TagLib::Ogg::FLAC::File(fileName, readProperties, propertiesStyle);
         }
-        if (!result->isValid()) {
-            delete result;
-            result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
-        }
         #ifdef TAGLIB_OPUS_FOUND
         if (!result->isValid()) {
             delete result;
             result = new TagLib::Ogg::Opus::File(fileName, readProperties, propertiesStyle);
         }
         #endif
+        if (!result->isValid()) {
+            delete result;
+            result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
+        }
     } else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b")
         || suffix == QLatin1String("m4p") || suffix == QLatin1String("mp4")
         /*|| suffix == QLatin1String("m4v") || suffix == QLatin1String("mp4v") */) {

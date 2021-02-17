@@ -1058,3 +1058,6 @@ void Utils::raiseWindow(QWidget *w)
     #endif
 }
 
+QSize Utils::minSize(const QSize &fst, const QSize &snd) {
+    return QSize(std::min(fst.width(), snd.width()), std::min(fst.height(), snd.height()));
+}

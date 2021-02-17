@@ -16,7 +16,9 @@
  */
 
 #include "findmpddialog.h"
+#include "support/utils.h"
 #include <QPushButton>
+#include <QScreen>
 
 FindMpdDialog::FindMpdDialog(QWidget *p)
     : QDialog(p)
@@ -28,7 +30,6 @@ FindMpdDialog::FindMpdDialog(QWidget *p)
     tableWidget->setHorizontalHeaderLabels({tr("Name"), tr("Address"), tr("Port")});
     tableWidget->resizeColumnToContents(0);
     tableWidget->resizeColumnToContents(1);
-
     QObject::connect(avahi.data(), &AvahiDiscovery::mpdFound, this, &FindMpdDialog::addMpd);
     QObject::connect(avahi.data(), &AvahiDiscovery::mpdRemoved, this, &FindMpdDialog::removeMpd);
     QObject::connect(this, &QDialog::accepted, this, &FindMpdDialog::okClicked);

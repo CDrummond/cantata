@@ -38,6 +38,7 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QTimer>
+#include <QScreen>
 
 enum Pages {
     PAGE_INTRO,
@@ -104,8 +105,8 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     if (sz.height()>(sz.width()*(highDpi ? 1.125 : 1.2))) {
         sz+=QSize(sz.height()*(highDpi ? 0.4 : 0.25), -(sz.height()*(highDpi ? 0.1 : 0.25)));
     }
-    resize(sz);
-    setMinimumSize(sz);
+    QSize screenSize = QApplication::primaryScreen()->availableSize();
+    resize(Utils::minSize(sz, screenSize));
     #endif
 
     #ifdef AVAHI_FOUND

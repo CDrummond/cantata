@@ -111,6 +111,7 @@ namespace Utils
     extern bool limitedHeight(QWidget *w);
     extern void resizeWindow(QWidget *w, bool preserveWidth=true, bool preserveHeight=true);
     extern void raiseWindow(QWidget *w);
+    extern QSize minSize(const QSize &fst, const QSize &snd);
 
     enum Desktop {
         KDE,

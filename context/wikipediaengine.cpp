@@ -249,6 +249,7 @@ static QString wikiToHtml(QString answer, bool introOnly, const QUrl &url)
     }
     answer.replace("&amp;nbsp;", " ");
     answer.replace("&ndash;", "-");
+    answer.replace("&amp;mdash;", "—");
     answer.replace("<br><h", "<h");
     if (introOnly) {
         end=answer.indexOf("==", 3);

@@ -135,9 +135,11 @@ public:
     void settings(Type top, LibraryDb::AlbumSort lib, LibraryDb::AlbumSort al);
     Type topLevel() const { return tl; }
     LibraryDb::AlbumSort libraryAlbumSort() const { return librarySort; }
+    LibraryDb::ArtistSort libraryArtistSort() const { return artistSort; }
     LibraryDb::AlbumSort albumAlbumSort() const { return albumSort; }
     void setTopLevel(Type t);
     void setLibraryAlbumSort(LibraryDb::AlbumSort s);
+    void setLibraryArtistSort(LibraryDb::ArtistSort s);
     void setAlbumAlbumSort(LibraryDb::AlbumSort s);
     virtual void load(Configuration &config);
     virtual void save(Configuration &config);
@@ -192,6 +194,7 @@ protected:
     CollectionItem *root;
     LibraryDb *db;
     LibraryDb::AlbumSort librarySort;
+    LibraryDb::ArtistSort artistSort;
     LibraryDb::AlbumSort albumSort;
     QStringList categories;
 };

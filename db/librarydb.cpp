@@ -50,6 +50,16 @@ LibraryDb::AlbumSort LibraryDb::toAlbumSort(const QString &str)
     return AS_AlArYr;
 }
 
+LibraryDb::ArtistSort LibraryDb::toArtistSort(const QString &str)
+{
+    for (int i=0; i<ArS_Count; ++i) {
+        if (artistSortStr((ArtistSort)i)==str) {
+            return (ArtistSort)i;
+        }
+    }
+    return ArS_Name;
+}
+
 QString LibraryDb::albumSortStr(AlbumSort m)
 {
     switch(m) {
@@ -63,6 +73,28 @@ QString LibraryDb::albumSortStr(AlbumSort m)
     case AS_ArYrAl:   return "aryral";
     case AS_AlYrAr:   return "alyral";
     case AS_YrArAl:   return "yraral";
+    }
+}
+
+QString LibraryDb::artistSortStr(ArtistSort m)
+{
+    switch(m) {
+    default:
+    case ArS_Name:       return "name";
+    case ArS_AlbumCount: return "albumcount";
+    }
+}
+
+static bool artistSortName(const LibraryDb::Artist &a, const LibraryDb::Artist &b) {
+    return a < b;
+}
+
+static bool artistSortAlbumCount(const LibraryDb::Artist &a, const LibraryDb::Artist &b) {
+    if (a.albumCount != b.albumCount) {
+        return a.albumCount > b.albumCount;
+    }
+    else {
+        return artistSortName(a, b);
     }
 }
 
@@ -716,7 +748,7 @@ QList<LibraryDb::Genre> LibraryDb::getGenres()
     return genres;
 }
 
-QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
+QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre, ArtistSort sort)
 {
     DBUG << genre;
     QList<LibraryDb::Artist> artists;
@@ -748,7 +780,15 @@ QList<LibraryDb::Artist> LibraryDb::getArtists(const QString &genre)
 //        DBUG << it.key();
         artists.append(Artist(it.key(), sortMap[it.key()], it.value()));
     }
-    std::sort(artists.begin(), artists.end());
+    switch (sort) {
+        default:
+        case ArS_Name:
+            std::sort(artists.begin(), artists.end(), artistSortName);
+            break;
+        case ArS_AlbumCount:
+            std::sort(artists.begin(), artists.end(), artistSortAlbumCount);
+            break;
+    }
     return artists;
 }
 

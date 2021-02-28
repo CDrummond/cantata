@@ -63,6 +63,7 @@ private Q_SLOTS:
     void modelReset();
     void groupByChanged();
     void libraryAlbumSortChanged();
+    void libraryArtistSortChanged();
     void albumAlbumSortChanged();
     void showArtistImagesChanged(bool u);
     void updateToPlayQueue(const QModelIndex &idx, bool replace);
@@ -78,6 +79,7 @@ private:
     QAction *viewAction;
     QAction *showArtistImagesAction;
     QAction *libraryAlbumSortAction;
+    QAction *libraryArtistSortAction;
     QAction *albumAlbumSortAction;
 };
 

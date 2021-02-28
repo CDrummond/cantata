@@ -56,9 +56,17 @@ public:
 
         AS_Count
     };
+    enum ArtistSort {
+        ArS_Name,
+        ArS_AlbumCount,
+
+        ArS_Count
+    };
 
     static AlbumSort toAlbumSort(const QString &str);
+    static ArtistSort toArtistSort(const QString &str);
     static QString albumSortStr(AlbumSort m);
+    static QString artistSortStr(ArtistSort m);
 
     struct Genre
     {
@@ -119,7 +127,7 @@ public:
     virtual bool init(const QString &dbFile);
     void insertSong(const Song &s);
     QList<Genre> getGenres();
-    QList<Artist> getArtists(const QString &genre=QString());
+    QList<Artist> getArtists(const QString &genre=QString(), ArtistSort sort=ArS_Name);
     QList<Album> getAlbums(const QString &artistId=QString(), const QString &genre=QString(), AlbumSort sort=AS_YrAlAr);
     QList<Song> getTracks(const QString &artistId, const QString &albumId, const QString &genre=QString(), AlbumSort sort=AS_YrAlAr, bool useFilter=true, int maxTracks=-1);
     QList<Song> getTracks(int rowFrom, int count);

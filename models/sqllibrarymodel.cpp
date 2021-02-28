@@ -122,6 +122,16 @@ void SqlLibraryModel::setLibraryAlbumSort(LibraryDb::AlbumSort s)
     }
 }
 
+void SqlLibraryModel::setLibraryArtistSort(LibraryDb::ArtistSort s)
+{
+    if (s!=artistSort) {
+        artistSort=s;
+        if (T_Album!=tl) {
+            libraryUpdated();
+        }
+    }
+}
+
 void SqlLibraryModel::setAlbumAlbumSort(LibraryDb::AlbumSort s)
 {
     if (s!=albumSort) {
@@ -135,12 +145,14 @@ void SqlLibraryModel::setAlbumAlbumSort(LibraryDb::AlbumSort s)
 static QLatin1String constGroupingKey("grouping");
 static QLatin1String constAlbumSortKey("albumSort");
 static QLatin1String constLibrarySortKey("librarySort");
+static QLatin1String constArtistSortKey("artistSort");
 
 void SqlLibraryModel::load(Configuration &config)
 {
     tl=toGrouping(config.get(constGroupingKey, groupingStr(tl)));
     albumSort=LibraryDb::toAlbumSort(config.get(constAlbumSortKey, LibraryDb::albumSortStr(albumSort)));
     librarySort=LibraryDb::toAlbumSort(config.get(constLibrarySortKey, LibraryDb::albumSortStr(librarySort)));
+    artistSort=LibraryDb::toArtistSort(config.get(constArtistSortKey, LibraryDb::artistSortStr(artistSort)));
 }
 
 void SqlLibraryModel::save(Configuration &config)
@@ -148,6 +160,7 @@ void SqlLibraryModel::save(Configuration &config)
     config.set(constGroupingKey, groupingStr(tl));
     config.set(constAlbumSortKey, LibraryDb::albumSortStr(albumSort));
     config.set(constLibrarySortKey, LibraryDb::albumSortStr(librarySort));
+    config.set(constArtistSortKey, LibraryDb::artistSortStr(artistSort));
 }
 
 void SqlLibraryModel::libraryUpdated()
@@ -166,7 +179,7 @@ void SqlLibraryModel::libraryUpdated()
         break;
     }
     case T_Artist: {
-        QList<LibraryDb::Artist> artists=db->getArtists();
+        QList<LibraryDb::Artist> artists=db->getArtists(QString(), artistSort);
         if (!artists.isEmpty())  {
             for (const LibraryDb::Artist &artist: artists) {
                 root->add(new CollectionItem(T_Artist, artist.name, artist.name, tr("%n Album(s)", "", artist.albumCount), root));
@@ -339,7 +352,7 @@ void SqlLibraryModel::fetchMore(const QModelIndex &index)
     case T_Root:
         break;
     case T_Genre: {
-        QList<LibraryDb::Artist> artists=db->getArtists(item->getId());
+        QList<LibraryDb::Artist> artists=db->getArtists(item->getId(), artistSort);
         if (!artists.isEmpty())  {
             beginInsertRows(index, 0, artists.count()-1);
             for (const LibraryDb::Artist &artist: artists) {

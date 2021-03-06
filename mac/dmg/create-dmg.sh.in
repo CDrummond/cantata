@@ -21,6 +21,10 @@ chmod go-rwx "$tempFolder/.DS_Store"
 ln -s /Applications "$tempFolder/Applications"
 cp -R "@CMAKE_INSTALL_PREFIX@/@MACOSX_BUNDLE_BUNDLE_NAME@.app" "$tempFolder"
 
+# Replace the code signatures after they were invalidated by install_name_tool
+# during the install phase
+codesign --force --deep --sign - "$tempFolder/@MACOSX_BUNDLE_BUNDLE_NAME@.app"
+
 # Create DMG file
 hdiutil makehybrid -hfs -hfs-volume-name @MACOSX_BUNDLE_BUNDLE_NAME@ -hfs-openfolder "$tempFolder" "$tempFolder" -o "$tempFile"
 hdiutil convert -format UDZO -imagekey zlib-level=9 "$tempFile" -o "$dmgFileName"

@@ -88,6 +88,9 @@
 #include "support/windowmanager.h"
 #include "support/osxstyle.h"
 #include "mac/dockmenu.h"
+#ifdef MAC_MEDIAPLAYER_FOUND
+#include "mac/macnowplaying.h"
+#endif
 #ifdef IOKIT_FOUND
 #include "mac/powermanagement.h"
 #endif
@@ -919,6 +922,9 @@ MainWindow::MainWindow(QWidget *parent)
     MediaKeys::self()->start();
     #ifdef Q_OS_MAC
     dockMenu=new DockMenu(this);
+    #endif
+    #ifdef MAC_MEDIAPLAYER_FOUND
+    macNowPlaying=new MacNowPlaying(this);
     #endif
     updateActionToolTips();
     CustomActions::self()->setMainWindow(this);
@@ -1847,6 +1853,9 @@ void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
             thumbnailTooolbar->updateCurrentSong(current);
         }
         #endif
+        #ifdef MAC_MEDIAPLAYER_FOUND
+        macNowPlaying->updateCurrentSong(current);
+        #endif
         context->update(current);
         trayItem->songChanged(song, isPlaying);
     }
@@ -1979,6 +1988,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
     #endif
     #ifdef Q_OS_MAC
     dockMenu->update(status);
+    #endif
+    #ifdef MAC_MEDIAPLAYER_FOUND
+    macNowPlaying->updateStatus(status);
     #endif
 }
 

@@ -72,6 +72,9 @@ class ThumbnailToolBar;
 #ifdef Q_OS_MAC
 class DockMenu;
 #endif
+#ifdef MAC_MEDIAPLAYER_FOUND
+class MacNowPlaying;
+#endif
 
 // Dummy classes so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
@@ -363,6 +366,9 @@ private:
     #endif
     #ifdef Q_OS_MAC
     DockMenu *dockMenu;
+    #endif
+    #ifdef MAC_MEDIAPLAYER_FOUND
+    MacNowPlaying *macNowPlaying;
     #endif
     friend class TrayItem;
 };

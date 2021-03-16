@@ -688,7 +688,7 @@ void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
 {
     QUrl url;
     QUrlQuery query;
-    url.setScheme("http");
+    url.setScheme("https");
     url.setHost(constGoogleHost);
     url.setPath("/images");
     query.addQueryItem("q", fixedQuery);
@@ -709,7 +709,7 @@ void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
     }
     QUrl url;
     QUrlQuery query;
-    url.setScheme("http");
+    url.setScheme("https");
     url.setHost(constSpotifyHost);
     url.setPath(isArtist||isComposer ? "/search/1/artist.json" : "/search/1/album.json");
     query.addQueryItem("q", fixedQuery);
@@ -726,7 +726,7 @@ void CoverDialog::sendITunesQuery(const QString &fixedQuery)
 
     QUrl url;
     QUrlQuery query;
-    url.setScheme("http");
+    url.setScheme("https");
     url.setHost(constITunesHost);
     url.setPath("/search");
     query.addQueryItem("term", fixedQuery);
@@ -741,7 +741,7 @@ void CoverDialog::sendDeezerQuery(const QString &fixedQuery)
 {
     QUrl url;
     QUrlQuery query;
-    url.setScheme("http");
+    url.setScheme("https");
     url.setHost(constDeezerHost);
     url.setPath(isArtist||isComposer ? "/search/artist" : "/search/album");
     query.addQueryItem("q", fixedQuery);

@@ -196,12 +196,14 @@ public:
         : CoverItem(u, tu, img, QLatin1String("Deezer"), parent)  { }
 };
 
+/*
 class SpotifyCover : public CoverItem
 {
 public:
     SpotifyCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
         : CoverItem(u, tu, img, QLatin1String("Spotify"), parent, 640, 640)  { }
 };
+*/
 
 class ITunesCover : public CoverItem
 {
@@ -446,7 +448,7 @@ static const char * constTypeProperty="type";
 static const char * constLastFmHost="ws.audioscrobbler.com";
 //static const char * constGoogleHost="images.google.com";
 static const char * constCoverArtArchiveHost="coverartarchive.org";
-static const char * constSpotifyHost="ws.spotify.com";
+//static const char * constSpotifyHost="ws.spotify.com";
 static const char * constITunesHost="itunes.apple.com";
 static const char * constDeezerHost="api.deezer.com";
 
@@ -472,8 +474,8 @@ void CoverDialog::queryJobFinished()
         //    parseGoogleQueryResponse(resp);
         } else if (constCoverArtArchiveHost==host) {
             parseCoverArtArchiveQueryResponse(resp);
-        } else if (constSpotifyHost==host) {
-            parseSpotifyQueryResponse(resp);
+        //} else if (constSpotifyHost==host) {
+        //    parseSpotifyQueryResponse(resp);
         } else if (constITunesHost==host) {
             parseITunesQueryResponse(resp);
         } else if (constDeezerHost==host) {
@@ -565,8 +567,8 @@ void CoverDialog::downloadJobFinished()
                 //                         reply->property(constHeightProperty).toInt(), reply->property(constSizeProperty).toInt(), list);
                 } else if (constCoverArtArchiveHost==host) {
                     item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
-                } else if (constSpotifyHost==host) {
-                    item=new SpotifyCover(reply->property(constLargeProperty).toString(), url, img, list);
+                //} else if (constSpotifyHost==host) {
+                //    item=new SpotifyCover(reply->property(constLargeProperty).toString(), url, img, list);
                 } else if (constITunesHost==host) {
                     item=new ITunesCover(reply->property(constLargeProperty).toString(), url, img, list);
                 } else if (constDeezerHost==host) {
@@ -663,7 +665,7 @@ void CoverDialog::sendQuery()
     sendLastFmQuery(fixedQuery, page);
     //sendGoogleQuery(fixedQuery, page);
     if (page==0) {
-        sendSpotifyQuery(fixedQuery);
+        //sendSpotifyQuery(fixedQuery);
         sendITunesQuery(fixedQuery);
         sendDeezerQuery(fixedQuery);
     }
@@ -703,6 +705,7 @@ void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
 }
 */
 
+/*
 void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
 {
     #ifdef QT_NO_SSL
@@ -721,6 +724,7 @@ void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
     sendQueryRequest(url);
     #endif
 }
+*/
 
 void CoverDialog::sendITunesQuery(const QString &fixedQuery)
 {
@@ -1037,6 +1041,7 @@ void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
     }
 }
 
+/*
 void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
 {
     QJsonParseError jsonParseError;
@@ -1067,6 +1072,7 @@ void CoverDialog::parseSpotifyQueryResponse(const QByteArray &resp)
         }
     }
 }
+*/
 
 void CoverDialog::parseITunesQueryResponse(const QByteArray &resp)
 {

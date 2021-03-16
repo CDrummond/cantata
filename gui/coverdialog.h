@@ -115,7 +115,7 @@ private Q_SLOTS:
 private:
     void sendLastFmQuery(const QString &fixedQuery, int page);
     //void sendGoogleQuery(const QString &fixedQuery, int page);
-    void sendSpotifyQuery(const QString &fixedQuery);
+    //void sendSpotifyQuery(const QString &fixedQuery);
     void sendITunesQuery(const QString &fixedQuery);
     void sendDeezerQuery(const QString &fixedQuery);
     CoverPreview *previewDialog();
@@ -127,7 +127,7 @@ private:
     void parseLastFmQueryResponse(const QByteArray &resp);
     //void parseGoogleQueryResponse(const QByteArray &resp);
     void parseCoverArtArchiveQueryResponse(const QByteArray &resp);
-    void parseSpotifyQueryResponse(const QByteArray &resp);
+    //void parseSpotifyQueryResponse(const QByteArray &resp);
     void parseITunesQueryResponse(const QByteArray &resp);
     void parseDeezerQueryResponse(const QByteArray &resp);
     void slotButtonClicked(int button) override;

@@ -11,6 +11,7 @@
  8. Disable categorized view, as its been reported to crash (#1530)
  9. Remove stream providers, as many broken.
 10. Fix decoding URLs when playing local files via in-built HTTP server.
+11. Remove option to select cover image providers, always use all.
 
 2.4.2
 -----

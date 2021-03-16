@@ -33,7 +33,6 @@
 #include "widgets/messageoverlay.h"
 #include "support/icon.h"
 #include "widgets/icons.h"
-#include "config.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QListWidget>
@@ -89,16 +88,6 @@ bool canUse(int w, int h)
     return w>90 && h>90 && (w==h || (h<=(w*1.1) && w<=(h*1.1)));
 }
 
-enum Providers {
-    Prov_LastFm   = 0x0001,
-    Prov_Google   = 0x0002,
-    Prov_CoverArt = 0x0004,
-    Prov_Deezer   = 0x0008,
-    Prov_Spotify  = 0x0010,
-    Prov_ITunes   = 0x0020,
-
-    Prov_All      = 0x003F
-};
 
 class CoverItem : public QListWidgetItem
 {
@@ -329,7 +318,6 @@ void CoverPreview::wheelEvent(QWheelEvent *event)
 CoverDialog::CoverDialog(QWidget *parent)
     : Dialog(parent, "CoverDialog")
     , existing(nullptr)
-    , currentQueryProviders(0)
     , preview(nullptr)
     , saving(false)
     , isArtist(false)
@@ -341,9 +329,6 @@ CoverDialog::CoverDialog(QWidget *parent)
     , showAction(nullptr)
     , removeAction(nullptr)
 {
-    Configuration cfg(objectName());
-    enabledProviders=cfg.get("enabledProviders", (int)Prov_All);
-
     iCount++;
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
@@ -386,26 +371,11 @@ CoverDialog::CoverDialog(QWidget *parent)
     addFileButton->setIcon(Icons::self()->folderListIcon);
     addFileButton->setAutoRaise(true);
 
-    configureButton->setIcon(Icons::self()->configureIcon);
-    configureButton->setAutoRaise(true);
-
-    QMenu *configMenu=new QMenu(configureButton);
-    addProvider(configMenu, QLatin1String("Last.fm"), Prov_LastFm, enabledProviders);
-    addProvider(configMenu, tr("CoverArt Archive"), Prov_CoverArt, enabledProviders);
-    addProvider(configMenu, QLatin1String("Google"), Prov_Google, enabledProviders);
-    addProvider(configMenu, QLatin1String("Deezer"), Prov_Deezer, enabledProviders);
-    addProvider(configMenu, QLatin1String("Spotify"), Prov_Spotify, enabledProviders);
-    addProvider(configMenu, QLatin1String("iTunes"), Prov_ITunes, enabledProviders);
-    configureButton->setMenu(configMenu);
-    configureButton->setPopupMode(QToolButton::InstantPopup);
     setAcceptDrops(true);
 }
 
 CoverDialog::~CoverDialog()
 {
-    Configuration cfg(objectName());
-    cfg.set("enabledProviders", enabledProviders);
-
     iCount--;
     cancelQuery();
     clearTempFiles();
@@ -660,7 +630,7 @@ void CoverDialog::sendQuery()
         return;
     }
 
-    if (currentQueryString==fixedQuery && enabledProviders==currentQueryProviders) {
+    if (currentQueryString==fixedQuery) {
         page++;
     } else {
         page=0;
@@ -688,24 +658,13 @@ void CoverDialog::sendQuery()
     }
 
     currentQueryString=fixedQuery;
-    if (enabledProviders&Prov_LastFm) {
-        sendLastFmQuery(fixedQuery, page);
-    }
-    if (enabledProviders&Prov_Google) {
-        sendGoogleQuery(fixedQuery, page);
-    }
+    sendLastFmQuery(fixedQuery, page);
+    sendGoogleQuery(fixedQuery, page);
     if (page==0) {
-        if (enabledProviders&Prov_Spotify) {
-            sendSpotifyQuery(fixedQuery);
-        }
-        if (enabledProviders&Prov_ITunes) {
-            sendITunesQuery(fixedQuery);
-        }
-        if (enabledProviders&Prov_Deezer) {
-            sendDeezerQuery(fixedQuery);
-        }
+        sendSpotifyQuery(fixedQuery);
+        sendITunesQuery(fixedQuery);
+        sendDeezerQuery(fixedQuery);
     }
-    currentQueryProviders=enabledProviders;
     setSearching(!currentQuery.isEmpty());
 }
 
@@ -865,27 +824,6 @@ void CoverDialog::removeImages()
     }
 }
 
-void CoverDialog::updateProviders()
-{
-    QAction *s=qobject_cast<QAction *>(sender());
-    enabledProviders=0;
-
-    if (s) {
-        if (Prov_LastFm==s->data().toUInt() && !s->isChecked()) {
-            providers[Prov_CoverArt]->setChecked(false);
-        } else if (Prov_CoverArt==s->data().toUInt() && s->isChecked()) {
-            providers[Prov_LastFm]->setChecked(true);
-        }
-    }
-
-    for (const QAction *act: configureButton->menu()->actions()) {
-        if (act->isChecked()) {
-            enabledProviders|=act->data().toUInt();
-        }
-    }
-    DBUG << enabledProviders;
-}
-
 void CoverDialog::clearTempFiles()
 {
     for (QTemporaryFile *file: tempFiles) {
@@ -1036,14 +974,12 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
         }
     }
 
-    if (enabledProviders&Prov_CoverArt) {
-        for (const QString &id: musicBrainzIds) {
-            QUrl coverartUrl;
-            coverartUrl.setScheme("http");
-            coverartUrl.setHost(constCoverArtArchiveHost);
-            coverartUrl.setPath("/release/"+id);
-            sendQueryRequest(coverartUrl);
-        }
+    for (const QString &id: musicBrainzIds) {
+        QUrl coverartUrl;
+        coverartUrl.setScheme("http");
+        coverartUrl.setHost(constCoverArtArchiveHost);
+        coverartUrl.setPath("/release/"+id);
+        sendQueryRequest(coverartUrl);
     }
 }
 
@@ -1336,16 +1272,6 @@ void CoverDialog::setSearching(bool s)
         spinner->stop();
         msgOverlay->setText(QString());
     }
-}
-
-void CoverDialog::addProvider(QMenu *mnu, const QString &name, int bit, int value)
-{
-    QAction *act=mnu->addAction(name);
-    act->setData(bit);
-    act->setCheckable(true);
-    act->setChecked(value&bit);
-    connect(act, SIGNAL(toggled(bool)), this, SLOT(updateProviders()));
-    providers.insert(bit, act);
 }
 
 #include "moc_coverdialog.cpp"

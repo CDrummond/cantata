@@ -111,7 +111,6 @@ private Q_SLOTS:
     void menuRequested(const QPoint &pos);
     void showImage();
     void removeImages();
-    void updateProviders();
 
 private:
     void sendLastFmQuery(const QString &fixedQuery, int page);
@@ -136,14 +135,11 @@ private:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void setSearching(bool s);
-    void addProvider(QMenu *mnu, const QString &name, int bit, int value);
 
 private:
-    int enabledProviders;
     Song song;
     ExistingCover *existing;
     QString currentQueryString;
-    int currentQueryProviders;
     QSet<NetworkJob *> currentQuery;
     QSet<QString> currentUrls;
     QSet<QString> currentLocalCovers;

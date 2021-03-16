@@ -12,6 +12,7 @@
  9. Remove stream providers, as many broken.
 10. Fix decoding URLs when playing local files via in-built HTTP server.
 11. Remove option to select cover image providers, always use all.
+12. Remove Google image search, not working.
 
 2.4.2
 -----

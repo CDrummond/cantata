@@ -173,12 +173,14 @@ public:
         : CoverItem(u, tu, img, QLatin1String("Last.fm"), parent) { }
 };
 
+/*
 class GoogleCover : public CoverItem
 {
 public:
     GoogleCover(const QString &u, const QString &tu, const QImage &img, int w, int h, int size, QListWidget *parent)
         : CoverItem(u, tu, img, QLatin1String("Google"), parent, w, h, size*1024) { }
 };
+*/
 
 class CoverArtArchiveCover : public CoverItem
 {
@@ -442,7 +444,7 @@ static const char * constHeightProperty="h";
 static const char * constSizeProperty="sz";
 static const char * constTypeProperty="type";
 static const char * constLastFmHost="ws.audioscrobbler.com";
-static const char * constGoogleHost="images.google.com";
+//static const char * constGoogleHost="images.google.com";
 static const char * constCoverArtArchiveHost="coverartarchive.org";
 static const char * constSpotifyHost="ws.spotify.com";
 static const char * constITunesHost="itunes.apple.com";
@@ -466,8 +468,8 @@ void CoverDialog::queryJobFinished()
         QByteArray resp=reply->readAll();
         if (constLastFmHost==host) {
             parseLastFmQueryResponse(resp);
-        } else if (constGoogleHost==host) {
-            parseGoogleQueryResponse(resp);
+        //} else if (constGoogleHost==host) {
+        //    parseGoogleQueryResponse(resp);
         } else if (constCoverArtArchiveHost==host) {
             parseCoverArtArchiveQueryResponse(resp);
         } else if (constSpotifyHost==host) {
@@ -558,9 +560,9 @@ void CoverDialog::downloadJobFinished()
                 img=cropImage(img, isArtist||isComposer);
                 if (constLastFmHost==host) {
                     item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
-                } else if (constGoogleHost==host) {
-                    item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
-                                         reply->property(constHeightProperty).toInt(), reply->property(constSizeProperty).toInt(), list);
+                //} else if (constGoogleHost==host) {
+                //    item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img, reply->property(constWidthProperty).toInt(),
+                //                         reply->property(constHeightProperty).toInt(), reply->property(constSizeProperty).toInt(), list);
                 } else if (constCoverArtArchiveHost==host) {
                     item=new CoverArtArchiveCover(reply->property(constLargeProperty).toString(), url, img, list);
                 } else if (constSpotifyHost==host) {
@@ -659,7 +661,7 @@ void CoverDialog::sendQuery()
 
     currentQueryString=fixedQuery;
     sendLastFmQuery(fixedQuery, page);
-    sendGoogleQuery(fixedQuery, page);
+    //sendGoogleQuery(fixedQuery, page);
     if (page==0) {
         sendSpotifyQuery(fixedQuery);
         sendITunesQuery(fixedQuery);
@@ -684,6 +686,7 @@ void CoverDialog::sendLastFmQuery(const QString &fixedQuery, int page)
     sendQueryRequest(url);
 }
 
+/*
 void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
 {
     QUrl url;
@@ -698,6 +701,7 @@ void CoverDialog::sendGoogleQuery(const QString &fixedQuery, int page)
     url.setQuery(query);
     sendQueryRequest(url);
 }
+*/
 
 void CoverDialog::sendSpotifyQuery(const QString &fixedQuery)
 {
@@ -983,6 +987,7 @@ void CoverDialog::parseLastFmQueryResponse(const QByteArray &resp)
     }
 }
 
+/*
 void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
 {
     // Code based on Audex CDDA Extractor
@@ -1005,6 +1010,7 @@ void CoverDialog::parseGoogleQueryResponse(const QByteArray &resp)
         pos += rx.matchedLength();
     }
 }
+*/
 
 void CoverDialog::parseCoverArtArchiveQueryResponse(const QByteArray &resp)
 {

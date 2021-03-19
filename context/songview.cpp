@@ -478,9 +478,7 @@ static QString createRow(const QString &key, const QString &value, bool htmlEsca
 {
     return value.isEmpty()
             ? QString()
-            : htmlEscape
-                ? QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(fixNewLine(value).toHtmlEscaped())
-                : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(fixNewLine(value));
+            : QString("<tr><td>%1:&nbsp;</td><td>%2</td></tr>").arg(key).arg(fixNewLine(htmlEscape ? value.toHtmlEscaped() : value));
 }
 
 struct MapEntry {

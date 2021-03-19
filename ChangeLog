@@ -14,6 +14,7 @@
 11. Remove option to select cover image providers, always use all.
 12. Remove Google and Spotify image search, not working.
 13. Allow smaller images in itemviews.
+14. Fix newlines showing as HTML tags in contextview.
 
 2.4.2
 -----

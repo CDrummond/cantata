@@ -688,7 +688,7 @@ const QLatin1String ItemView::constViewModeKey("viewMode");
 const QLatin1String ItemView::constStartClosedKey("startClosed");
 const QLatin1String ItemView::constSearchCategoryKey("searchCategory");
 
-static const double constMinZoom = 1.0;
+static const double constMinZoom = 0.5;
 static const double constMaxZoom = 4.0;
 static const double constZoomStep = 0.25;
 
@@ -785,7 +785,7 @@ void ItemView::load(Configuration &config)
     setStartClosed(config.get(constStartClosedKey, isStartClosed()));
     setSearchCategory(config.get(constSearchCategoryKey, searchCategory()));
     int zoom=config.get(constZoomKey, 100);
-    if (zoom>100) {
+    if (zoom>(constMinZoom*100)) {
         listView->setZoom(zoom/100.0);
     }
 }

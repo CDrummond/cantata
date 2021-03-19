@@ -13,6 +13,7 @@
 10. Fix decoding URLs when playing local files via in-built HTTP server.
 11. Remove option to select cover image providers, always use all.
 12. Remove Google and Spotify image search, not working.
+13. Allow smaller images in itemviews.
 
 2.4.2
 -----

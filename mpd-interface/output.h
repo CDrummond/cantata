@@ -39,6 +39,7 @@ struct Output
     Output & operator=(const Output &o) {
         id=o.id;
         enabled=o.enabled;
+        in_current_partition=o.in_current_partition;
         name=o.name;
         return *this;
     }
@@ -51,6 +52,7 @@ struct Output
 
     quint32 id;
     bool enabled;
+    bool in_current_partition{true};
     QString name;
 };
 

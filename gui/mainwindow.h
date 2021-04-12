@@ -147,6 +147,7 @@ Q_SIGNALS:
     void delPartition(QString name);
     void outputs();
     void enableOutput(quint32 id, bool);
+    void moveOutput(QString name);
     void setPriority(const QList<qint32> &ids, quint8 priority, bool decreasePriority);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void showPreferencesPage(const QString &page);
@@ -169,6 +170,7 @@ public Q_SLOTS:
     void commitDataRequest(QSessionManager &mgr);
     void updateSettings();
     void toggleOutput();
+    void moveOutputToThisPartition();
     void selectPartition();
     void createNewPartition();
     void deleteAPartition();

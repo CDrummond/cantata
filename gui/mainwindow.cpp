@@ -792,6 +792,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(newPartition(QString)), MPDConnection::self(), SLOT(newPartition(QString)));
     connect(this, SIGNAL(delPartition(QString)), MPDConnection::self(), SLOT(delPartition(QString)));
     connect(this, SIGNAL(enableOutput(quint32, bool)), MPDConnection::self(), SLOT(enableOutput(quint32, bool)));
+    connect(this, SIGNAL(moveOutput(QString)), MPDConnection::self(), SLOT(moveOutput(QString)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(play()));
@@ -1389,43 +1390,70 @@ void MainWindow::partitionsUpdated(const QList<Partition> &partitions)
 void MainWindow::outputsUpdated(const QList<Output> &outputs)
 {
     const char *constMpdConName="mpd-name";
+    const char *constMpdPartitionName="mpd-partition";
     const char *constMpdEnabledOuptuts="mpd-outputs";
     QString lastConn=property(constMpdConName).toString();
+    QString lastPart=property(constMpdPartitionName).toString();
     QString newConn=MPDConnection::self()->getDetails().name;
+    QString newPart=MPDConnection::self()->getDetails().partition;
     setProperty(constMpdConName, newConn);
+    setProperty(constMpdPartitionName, newPart);
     outputsAction->setVisible(true);
     QSet<QString> enabledMpd;
+    QSet<QString> inCurrentPartitionMpd;
+    QSet<QString> inOtherPartitionMpd;
     QSet<QString> lastEnabledMpd=QSet<QString>::fromList(property(constMpdEnabledOuptuts).toStringList());
-    QSet<QString> mpd;
     QSet<QString> menuItems;
+    QSet<QString> menuMoveableItems;
     QMenu *menu=outputsAction->menu();
     for (const Output &o: outputs) {
-        if (o.enabled) {
-            enabledMpd.insert(o.name);
+        if (o.in_current_partition) {
+            if (o.enabled) {
+                enabledMpd.insert(o.name);
+            }
+            inCurrentPartitionMpd.insert(o.name);
+        } else {
+            inOtherPartitionMpd.insert(o.name);
         }
-        mpd.insert(o.name);
     }
 
     for (QAction *act: menu->actions()) {
-        menuItems.insert(act->data().toString());
+        if (act->isCheckable()) {
+            menuItems.insert(act->data().toString());
+        } else if (act->menu() && act->data().toString()=="moveoutput") {
+            for (QAction *sub_act: act->menu()->actions()) {
+                menuMoveableItems.insert(sub_act->data().toString());
+            }
+        }
     }
 
-    if (menuItems!=mpd) {
+    if (menuItems!=inCurrentPartitionMpd || menuMoveableItems!=inOtherPartitionMpd) {
         menu->clear();
         QList<Output> out=outputs;
         std::sort(out.begin(), out.end());
         int i=Qt::Key_1;
         for (const Output &o: out) {
+            if (!o.in_current_partition) continue;
             QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
             act->setData(o.id);
             act->setCheckable(true);
             act->setChecked(o.enabled);
             act->setShortcut(Qt::ControlModifier+Qt::AltModifier+nextKey(i));
         }
+        menu->addSeparator();
+        QMenu* move_menu = menu->addMenu(tr("Move output to this partition"));
+        move_menu->menuAction()->setData("moveoutput");
+        move_menu->menuAction()->setVisible(inOtherPartitionMpd.count()>0);
+        for (const Output &o: out) {
+            if (o.in_current_partition) continue;
+            QAction *act=move_menu->addAction(o.name, this, SLOT(moveOutputToThisPartition()));
+            act->setData(o.name);
+        }
     } else {
         for (const Output &o: outputs) {
+            if (!o.in_current_partition) continue;
             for (QAction *act: menu->actions()) {
-                if (Utils::strippedText(act->text())==o.name) {
+                if (act->isCheckable() && Utils::strippedText(act->text())==o.name) {
                     act->setChecked(o.enabled);
                     break;
                 }
@@ -1433,7 +1461,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         }
     }
 
-    if (newConn==lastConn && enabledMpd!=lastEnabledMpd && !menuItems.isEmpty()) {
+    if (newConn==lastConn && newPart==lastPart && enabledMpd!=lastEnabledMpd && !menuItems.isEmpty()) {
         QSet<QString> switchedOn=enabledMpd-lastEnabledMpd;
         QSet<QString> switchedOff=lastEnabledMpd-enabledMpd;
 
@@ -1456,7 +1484,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         }
     }
     setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());
-    outputsAction->setVisible(outputs.count()>1);
+    outputsAction->setVisible(outputs.count()>0);
     trayItem->updateOutputs();
 }
 
@@ -1651,6 +1679,14 @@ void MainWindow::toggleOutput()
     QAction *act=qobject_cast<QAction *>(sender());
     if (act) {
         emit enableOutput(act->data().toUInt(), act->isChecked());
+    }
+}
+
+void MainWindow::moveOutputToThisPartition()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        emit moveOutput(act->data().toString());
     }
 }
 

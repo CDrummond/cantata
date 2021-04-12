@@ -81,6 +81,7 @@ static const QByteArray constPartitionKey("partition: ");
 static const QByteArray constOutputIdKey("outputid: ");
 static const QByteArray constOutputNameKey("outputname: ");
 static const QByteArray constOutputEnabledKey("outputenabled: ");
+static const QByteArray constOutputPluginKey("plugin: ");
 static const QByteArray constChangePosKey("cpos");
 static const QByteArray constChangeIdKey("Id");
 static const QByteArray constLastModifiedKey("Last-Modified: ");
@@ -808,13 +809,18 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
         if (line.startsWith(constOutputIdKey)) {
             if (!output.name.isEmpty()) {
                 outputs << output;
-                output.name=QString();
+                output=Output();
             }
             output.id=line.mid(constOutputIdKey.length()).toUInt();
         } else if (line.startsWith(constOutputNameKey)) {
             output.name=line.mid(constOutputNameKey.length());
         } else if (line.startsWith(constOutputEnabledKey)) {
             output.enabled=toBool(line.mid(constOutputEnabledKey.length()));
+        } else if (line.startsWith(constOutputPluginKey)) {
+            const QString plugin=line.mid(constOutputPluginKey.length());
+            if (plugin == "dummy") {
+                output.in_current_partition=false;
+            }
         }
     }
 

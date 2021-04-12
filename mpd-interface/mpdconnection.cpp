@@ -1767,13 +1767,44 @@ void MPDConnection::outputs()
 {
     Response response=sendCommand("outputs");
     if (response.ok) {
-        emit outputsUpdated(MPDParseUtils::parseOuputs(response.data));
+        QList<Output> outputs = MPDParseUtils::parseOuputs(response.data);
+
+        // We need to temporarily switch to the default partition in order
+        // to collect the details of all available outputs.
+        if (!details.partition.isEmpty() && details.partition != "default") {
+            QByteArray return_cmd = "partition " + encodeName(details.partition);
+            Response default_response=sendCommand("command_list_begin\npartition default\noutputs\n" + return_cmd + "\ncommand_list_end");
+            if (default_response.ok) {
+                QSet<QString> existing_names;
+                for (const Output &o: outputs) {
+                    existing_names << o.name;
+                }
+                QList<Output> default_outputs = MPDParseUtils::parseOuputs(default_response.data);
+                for (Output &o: default_outputs) {
+                    if (!existing_names.contains(o.name)) {
+                        o.in_current_partition = false;
+                        outputs << o;
+                    }
+                }
+            } else {
+                sendCommand(return_cmd);
+            }
+        }
+
+        emit outputsUpdated(outputs);
     }
 }
 
 void MPDConnection::enableOutput(quint32 id, bool enable)
 {
     if (sendCommand((enable ? "enableoutput " : "disableoutput ")+quote(id)).ok) {
+        outputs();
+    }
+}
+
+void MPDConnection::moveOutput(QString name)
+{
+    if (sendCommand("moveoutput " + encodeName(name)).ok) {
         outputs();
     }
 }

@@ -345,6 +345,7 @@ public Q_SLOTS:
     // Output
     void outputs();
     void enableOutput(quint32 id, bool enable);
+    void moveOutput(QString name);
 
     // Miscellaneous
     void getStats();

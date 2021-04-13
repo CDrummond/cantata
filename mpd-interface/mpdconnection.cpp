@@ -518,7 +518,7 @@ void MPDConnection::reconnect()
     time_t now=time(nullptr);
     ConnectionReturn status=connectToMPD();
     switch (status) {
-    case Success:        
+    case Success:
         // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
         if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
             sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
@@ -2033,7 +2033,7 @@ void MPDConnection::listStreams()
         QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Streams);
         for (const Song &song: songs) {
             streams.append(Stream(song.file, song.name()));
-        }    
+        }
     }
     clearError();
     emit streamList(streams);
@@ -2249,7 +2249,7 @@ QStringList MPDConnection::getPlaylistFiles(const QString &name)
         emit playlistInfoRetrieved(name, songs);
         for (const Song &s: songs) {
             files.append(s.file);
-        }    
+        }
     }
     return files;
 }

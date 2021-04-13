@@ -1531,7 +1531,7 @@ void MainWindow::paletteChanged()
 }
 
 void MainWindow::readSettings()
-{    
+{
     #ifdef QT_QTDBUS_FOUND
     // It appears as if the KDE MPRIS code does not like the MPRIS interface to be setup before the window is visible.
     // to work-around this, initMpris in the next event loop iteration.
@@ -1632,7 +1632,7 @@ void MainWindow::showServerInfo()
     long version=MPDConnection::self()->version();
     QDateTime dbUpdate;
     dbUpdate.setTime_t(MPDStats::self()->dbUpdate());
-    MessageBox::information(this, 
+    MessageBox::information(this,
                                   #ifdef Q_OS_MAC
                                   tr("Server Information")+QLatin1String("<br/><br/>")+
                                   #endif

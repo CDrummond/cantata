@@ -1105,6 +1105,9 @@ void MPDConnection::playListChanges()
     Response response=sendCommand(data, false);
     if (response.ok && status.ok && isPlayQueueIdValid()) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
+        if (lastUpdatePlayQueueVersion==sv.playlist) {
+            return; // Playlist is already up-to-date
+        }
         lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
         emitStatusUpdated(sv);
         QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);

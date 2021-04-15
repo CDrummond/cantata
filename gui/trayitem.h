@@ -68,6 +68,7 @@ public:
     #endif
     void songChanged(const Song &song, bool isPlaying);
     void updateConnections();
+    void updatePartitions();
     void updateOutputs();
 
 private Q_SLOTS:
@@ -83,6 +84,7 @@ private:
     Notify *notification;
     #endif
     Action *connectionsAction;
+    Action *partitionsAction;
     Action *outputsAction;
 
     #endif

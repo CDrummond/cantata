@@ -32,10 +32,12 @@
 #include <QHostAddress>
 #include <QNetworkProxy>
 #include <QStringList>
+#include <QQueue>
 #include <QSet>
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "song.h"
+#include "partition.h"
 #include "output.h"
 #include "playlist.h"
 #include "stream.h"
@@ -157,6 +159,7 @@ struct MPDConnectionDetails {
     QString hostname;
     quint16 port;
     QString password;
+    QString partition;
     QString dir;
     bool dirReadable;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
@@ -333,6 +336,12 @@ public Q_SLOTS:
     void stopPlaying(bool afterCurrent=false);
     void clearStopAfter();
 
+    // Partition
+    void listPartitions();
+    void changePartition(QString name);
+    void newPartition(QString name);
+    void delPartition(QString name);
+
     // Output
     void outputs();
     void enableOutput(quint32 id, bool enable);
@@ -394,6 +403,7 @@ Q_SIGNALS:
     void playlistUpdated(const QList<Song> &songs, bool isComplete);
     void statsUpdated(const MPDStatsValues &stats);
     void statusUpdated(const MPDStatusValues &status);
+    void partitionsUpdated(const QList<Partition> &partitions);
     void outputsUpdated(const QList<Output> &outputs);
     void librarySongs(QList<Song> *songs);
     void folderContents(const QString &folder, const QStringList &subFolders, const QList<Song> &songs);
@@ -498,6 +508,7 @@ private:
     MpdSocket idleSocket;
     QTimer *connTimer;
     QByteArray dynamicId;
+    QQueue<QByteArray> idleSocketCommandQueue;
 
     // The three items are used so that we can do quick playqueue updates...
     QList<qint32> playQueueIds;

@@ -166,6 +166,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.port=grp.get("port", name.isEmpty() ? mpdDefaults.port : 6600);
         details.dir=grp.getDirPath("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music");
         details.password=grp.get("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
+        details.partition=grp.get("partition", QString());
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         details.streamUrl=grp.get("streamUrl", QString());
         #endif
@@ -734,6 +735,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
         grp.setDirPath("dir", v.dir);
     }
     grp.set("passwd", v.password);
+    grp.set("partition", v.partition);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     grp.set("streamUrl", v.streamUrl);
     #endif

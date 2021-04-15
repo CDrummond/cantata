@@ -142,6 +142,9 @@ Q_SIGNALS:
     void setSeekId(qint32, quint32);
     void startPlayingSongId(qint32);
     void setVolume(int);
+    void changePartition(QString partition);
+    void newPartition(QString name);
+    void delPartition(QString name);
     void outputs();
     void enableOutput(quint32 id, bool);
     void setPriority(const QList<qint32> &ids, quint8 priority, bool decreasePriority);
@@ -166,6 +169,9 @@ public Q_SLOTS:
     void commitDataRequest(QSessionManager &mgr);
     void updateSettings();
     void toggleOutput();
+    void selectPartition();
+    void createNewPartition();
+    void deleteAPartition();
     void changeConnection();
     void connectToMpd();
     void connectToMpd(const MPDConnectionDetails &details);
@@ -240,6 +246,7 @@ public Q_SLOTS:
     void expandAll();
     void collapseAll();
     void checkMpdDir();
+    void partitionsUpdated(const QList<Partition> &outputs);
     void outputsUpdated(const QList<Output> &outputs);
     void updateConnectionsMenu();
     void controlConnectionsMenu(bool enable=true);
@@ -277,6 +284,7 @@ private:
     int prevPage;
     MPDState lastState;
     qint32 lastSongId;
+    QString lastPartition;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
     bool singlePane;
@@ -286,8 +294,10 @@ private:
     Action *doDbRefreshAction;
     Action *connectAction;
     Action *connectionsAction;
+    Action *partitionsAction;
     Action *outputsAction;
     QActionGroup *connectionsGroup;
+    QActionGroup *partitionsGroup;
     Action *stopAfterTrackAction;
     Action *addPlayQueueToStoredPlaylistAction;
     Action *clearPlayQueueAction;

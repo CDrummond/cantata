@@ -78,6 +78,7 @@ TrayItem::TrayItem(MainWindow *p)
     , notification(nullptr)
     #endif
     , connectionsAction(nullptr)
+    , partitionsAction(nullptr)
     , outputsAction(nullptr)
     #endif
 {
@@ -131,9 +132,12 @@ void TrayItem::setup()
     #ifndef Q_OS_MAC
     connectionsAction=new Action(Utils::strippedText(mw->connectionsAction->text()), this);
     connectionsAction->setVisible(false);
+    partitionsAction=new Action(Utils::strippedText(mw->partitionsAction->text()), this);
+    partitionsAction->setVisible(false);
     outputsAction=new Action(Utils::strippedText(mw->outputsAction->text()), this);
     outputsAction->setVisible(false);
     updateConnections();
+    updatePartitions();
     updateOutputs();
     #endif
 
@@ -155,6 +159,7 @@ void TrayItem::setup()
     #ifndef Q_OS_MAC
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(connectionsAction);
+    trayItemMenu->addAction(partitionsAction);
     trayItemMenu->addAction(outputsAction);
     #endif
     trayItemMenu->addSeparator();
@@ -273,6 +278,13 @@ void TrayItem::updateConnections()
 {
     #ifndef Q_OS_MAC
     copyMenu(mw->connectionsAction, connectionsAction);
+    #endif
+}
+
+void TrayItem::updatePartitions()
+{
+    #ifndef Q_OS_MAC
+    copyMenu(mw->partitionsAction, partitionsAction);
     #endif
 }
 

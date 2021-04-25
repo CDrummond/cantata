@@ -1914,7 +1914,14 @@ void MainWindow::updateWindowTitle()
 {
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
-    setWindowTitle(multipleConnections ? tr("Cantata (%1)").arg(connection) : "Cantata");
+    QString partition=MPDStatus::self()->partition();
+    setWindowTitle((multipleConnections && !partition.isEmpty())
+        ? tr("Cantata (%1) [%2]").arg(connection, partition)
+        : multipleConnections
+            ? tr("Cantata (%1)").arg(connection)
+            : !partition.isEmpty()
+                ? tr("Cantata [%1]").arg(partition)
+                : "Cantata");
 }
 
 void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
@@ -1993,6 +2000,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
     }
 
     if (status->partition()!=lastPartition) {
+        updateWindowTitle();
+
         for (QAction *act: partitionsAction->menu()->actions()) {
             if (act->isCheckable()) {
                 if (act->data().toString() == status->partition()) {

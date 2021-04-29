@@ -790,7 +790,7 @@ These steps assume the following structure:
 
 1. Install HomeBrew
 
-2. brew install cmake taglib ffmpeg openssl qt
+2. brew install cmake taglib ffmpeg openssl qt5
 
 3. Create the icon
 
@@ -800,7 +800,7 @@ These steps assume the following structure:
 From here you have a couple of options:
 
 Build via QtCreator
----------------------
+-------------------
 
 1. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
      ../src -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install
@@ -812,13 +812,15 @@ Build via QtCreator
 
 3. Build 'install' project via QtCreator
 
-Build via commandline 
------------------------
+Build via commandline
+---------------------
 
     cd build
-    cmake ../src -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(pwd)/../install
+    export Qt5_DIR="/usr/local/opt/qt5/lib/cmake"
+    cmake -S "../src" -B "./" -DCMAKE_INSTALL_PREFIX="../install" -DENABLE_TAGLIB=ON -DCMAKE_PREFIX_PATH="/usr/local/opt/qt5/;/usr/local/opt/qt5/lib/cmake/Qt5Widgets/" -DCMAKE_BUILD_TYPE=Release
     make
     make install
+
 
 Create Installer
 ----------------

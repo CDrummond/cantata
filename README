@@ -804,3 +804,11 @@ These steps assume the following structure:
     cmake -S "../src" -B "./" -DCMAKE_INSTALL_PREFIX="../install" -DENABLE_TAGLIB=ON -DCMAKE_PREFIX_PATH="/usr/local/opt/qt5/;/usr/local/opt/qt5/lib/cmake/Qt5Widgets/" -DCMAKE_BUILD_TYPE=Release
     make
     make install
+
+
+Create Installer
+----------------
+
+1. Go into the 'mac' folder within the build folder
+
+2. Run ./create-dmg.sh

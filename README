@@ -790,39 +790,17 @@ These steps assume the following structure:
 
 1. Install HomeBrew
 
-2. brew install cmake taglib ffmpeg openssl qt
+2. brew install cmake taglib ffmpeg openssl qt5
 
 3. Create the icon
 
     cd src/mac
     ./createicon.sh
 
-From here you have a couple of options:
-
-Build via QtCreator
----------------------
-
-1. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
-     ../src -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install
-
-2. Create an 'install' project in QtCreator
-  - Projects
-  - Add/Clone Selected
-  - Expand Build Steps, and select install
-
-3. Build 'install' project via QtCreator
-
-Build via commandline 
------------------------
+4. Build the software and create the Cantata.app mac app bundle
 
     cd build
-    cmake ../src -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(pwd)/../install
+    export Qt5_DIR="/usr/local/opt/qt5/lib/cmake"
+    cmake -S "../src" -B "./" -DCMAKE_INSTALL_PREFIX="../install" -DENABLE_TAGLIB=ON -DCMAKE_PREFIX_PATH="/usr/local/opt/qt5/;/usr/local/opt/qt5/lib/cmake/Qt5Widgets/" -DCMAKE_BUILD_TYPE=Release
     make
     make install
-
-Create Installer
-----------------
-
-1. Go into the 'mac' folder within the build folder
-
-2. Run ./create-dmg.sh

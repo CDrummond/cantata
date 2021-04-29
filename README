@@ -797,7 +797,23 @@ These steps assume the following structure:
     cd src/mac
     ./createicon.sh
 
-4. Build the software and create the Cantata.app mac app bundle
+From here you have a couple of options:
+
+Build via QtCreator
+-------------------
+
+1. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
+     ../src -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/../install
+
+2. Create an 'install' project in QtCreator
+  - Projects
+  - Add/Clone Selected
+  - Expand Build Steps, and select install
+
+3. Build 'install' project via QtCreator
+
+Build via commandline
+---------------------
 
     cd build
     export Qt5_DIR="/usr/local/opt/qt5/lib/cmake"

@@ -22,6 +22,7 @@ GenericName[pt_BR]=Reprodutor Multimídia
 GenericName[ru]=Клиент музыкального проигрывателя
 GenericName[sq]=Clienti player muzike
 GenericName[tr]=Muzik Çalıcı İstemcisi
+Comment=Listen and manage music collection
 Icon=cantata
 Exec=cantata %U
 Categories=Qt;KDE;AudioVideo;Player;

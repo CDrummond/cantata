@@ -1778,7 +1778,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs, bool isComplete)
 
     if (songs.isEmpty()) {
         updateCurrentSong(Song(), wasEmpty);
-    } else if (wasEmpty || current.isStandardStream()) {
+    } else if (wasEmpty || Song::Stream==current.type) {
         // Check to see if it has been updated...
         Song pqSong=PlayQueueModel::self()->getSongByRow(PlayQueueModel::self()->currentSongRow());
         if (wasEmpty || pqSong.isDifferent(current) ) {

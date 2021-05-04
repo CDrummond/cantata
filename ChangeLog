@@ -15,6 +15,8 @@
 12. Remove Google and Spotify image search, not working.
 13. Allow smaller images in itemviews.
 14. Fix newlines showing as HTML tags in contextview.
+15. Fix updating now-plying metadata for radio streams that transmit track
+    numbers.
 
 2.4.2
 -----

@@ -1427,7 +1427,7 @@ void MainWindow::updateConnectionsMenu()
         connectionsAction->setVisible(false);
     } else {
         connectionsAction->setVisible(true);
-        QString current=Settings::self()->currentConnection();
+        QString currentConn=Settings::self()->currentConnection();
         QSet<QString> cfg;
         QSet<QString> menuItems;
         QMenu *menu=connectionsAction->menu();
@@ -1437,7 +1437,7 @@ void MainWindow::updateConnectionsMenu()
 
         for (QAction *act: menu->actions()) {
             menuItems.insert(act->data().toString());
-            act->setChecked(act->data().toString()==current);
+            act->setChecked(act->data().toString()==currentConn);
         }
 
         if (menuItems!=cfg) {
@@ -1448,7 +1448,7 @@ void MainWindow::updateConnectionsMenu()
                 QAction *act=menu->addAction(d.getName(), this, SLOT(changeConnection()));
                 act->setData(d.name);
                 act->setCheckable(true);
-                act->setChecked(d.name==current);
+                act->setChecked(d.name==currentConn);
                 act->setActionGroup(connectionsGroup);
                 act->setShortcut(Qt::ControlModifier+nextKey(i));
             }
@@ -1778,7 +1778,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs, bool isComplete)
 
     if (songs.isEmpty()) {
         updateCurrentSong(Song(), wasEmpty);
-    } else if (wasEmpty || Song::Stream==current.type) {
+    } else {
         // Check to see if it has been updated...
         Song pqSong=PlayQueueModel::self()->getSongByRow(PlayQueueModel::self()->currentSongRow());
         if (wasEmpty || pqSong.isDifferent(current) ) {

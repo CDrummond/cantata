@@ -51,6 +51,7 @@ public:
 private:
     void init(bool create);
     int getPid();
+    void killProcess();
     bool controlMpd(bool stop);
 
 private:

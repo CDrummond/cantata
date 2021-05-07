@@ -337,22 +337,28 @@ int MPDUser::getPid()
     return pid;
 }
 
+void MPDUser::killProcess()
+{
+    int pid = getPid();
+    if (pid>0) {
+        ::kill(pid, SIGKILL);
+    }
+}
+
 bool MPDUser::controlMpd(bool stop)
 {
-    if (stop) {
-        int pid = getPid();
-        ::kill(pid, SIGKILL);
-        return !isRunning();
-    }
-
     QString confFile=Utils::dataDir(constDir, true)+constConfigFile;
     if (!QFile::exists(confFile)) {
+        if (stop) {
+            killProcess();
+        }
+
         return false;
     }
     QStringList args=QStringList() << confFile;
-    /*if (stop) {
+    if (stop) {
         args+="--kill";
-    } else*/ {
+    } else {
         // Ensure cache dir exists before starting MPD
         Utils::cacheDir(constDir, true);
         if (!pidFileName.isEmpty() && QFile::exists(pidFileName)) {
@@ -360,7 +366,18 @@ bool MPDUser::controlMpd(bool stop)
         }
     }
     bool started=QProcess::startDetached(mpdExe, args);
-    if (started && !stop) {
+    if (stop) {
+        // Wait (up to 2 seconds) for MPD to gracefully terminate
+        for (int i=0; i<40; ++i) {
+            Utils::msleep(50);
+            if (!isRunning()) {
+                return true;
+            }
+        }
+        // MPD did not terminate, so kill process
+        killProcess();
+        return !isRunning();
+    } else if (started) {
         for (int i=0; i<8; ++i) {
             Utils::msleep(250);
             if (0!=getPid()) {

@@ -17,6 +17,9 @@
 14. Fix newlines showing as HTML tags in contextview.
 15. Fix updating now-plying metadata for radio streams that transmit track
     numbers.
+16. When stopping Cantata controlled MPD instance, wait up to 2 seconds for
+    MPD to gracefully terminate (so config can be saved) before killing
+    process.
 
 2.4.2
 -----

@@ -555,7 +555,7 @@ elseif (APPLE)
     endif()
     add_subdirectory(mac)
     include(DeployQt5)
-    install(PROGRAMS ${CMAKE_INSTALL_PREFIX}/Cantata.app/Contents/MacOS/cantata DESTINATION ${MACOSX_BUNDLE_APP_DIR})
+    install(PROGRAMS ${CMAKE_BINARY_DIR}/cantata.app/Contents/MacOS/cantata DESTINATION ${MACOSX_BUNDLE_APP_DIR})
     # Create our own plist file to enable HighDPI support
     configure_file(mac/Info.plist.cmake ${CMAKE_CURRENT_BINARY_DIR}/mac/Info.plist)
     configure_file(mac/dmg/create-dmg.sh.in ${CMAKE_CURRENT_BINARY_DIR}/mac/create-dmg.sh)

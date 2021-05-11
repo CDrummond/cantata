@@ -1775,22 +1775,22 @@ void MPDConnection::outputs()
         // We need to temporarily switch to the default partition in order
         // to collect the details of all available outputs.
         if (!details.partition.isEmpty() && details.partition != "default") {
-            QByteArray return_cmd = "partition " + encodeName(details.partition);
-            Response default_response=sendCommand("command_list_begin\npartition default\noutputs\n" + return_cmd + "\ncommand_list_end");
-            if (default_response.ok) {
-                QSet<QString> existing_names;
+            QByteArray returnCmd = "partition " + encodeName(details.partition);
+            Response defaultResponse=sendCommand("command_list_begin\npartition default\noutputs\n" + returnCmd + "\ncommand_list_end");
+            if (defaultResponse.ok) {
+                QSet<QString> existingNames;
                 for (const Output &o: outputs) {
-                    existing_names << o.name;
+                    existingNames << o.name;
                 }
-                QList<Output> default_outputs = MPDParseUtils::parseOuputs(default_response.data);
-                for (Output &o: default_outputs) {
-                    if (!existing_names.contains(o.name)) {
+                QList<Output> defaultOutputs = MPDParseUtils::parseOuputs(defaultResponse.data);
+                for (Output &o: defaultOutputs) {
+                    if (!existingNames.contains(o.name)) {
                         o.inCurrentPartition = false;
                         outputs << o;
                     }
                 }
             } else {
-                sendCommand(return_cmd);
+                sendCommand(returnCmd);
             }
         }
 

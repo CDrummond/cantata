@@ -1435,7 +1435,9 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         std::sort(out.begin(), out.end());
         int i=Qt::Key_1;
         for (const Output &o: out) {
-            if (!o.inCurrentPartition) continue;
+            if (!o.inCurrentPartition) {
+                continue;
+            }
             QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
             act->setData(o.id);
             act->setCheckable(true);
@@ -1447,13 +1449,17 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         moveMenu->menuAction()->setData("moveoutput");
         moveMenu->menuAction()->setVisible(inOtherPartitionMpd.count()>0);
         for (const Output &o: out) {
-            if (o.inCurrentPartition) continue;
+            if (o.inCurrentPartition) {
+                continue;
+            }
             QAction *act=moveMenu->addAction(o.name, this, SLOT(moveOutputToThisPartition()));
             act->setData(o.name);
         }
     } else {
         for (const Output &o: outputs) {
-            if (!o.inCurrentPartition) continue;
+            if (!o.inCurrentPartition) {
+                continue;
+            }
             for (QAction *act: menu->actions()) {
                 if (act->isCheckable() && Utils::strippedText(act->text())==o.name) {
                     act->setChecked(o.enabled);

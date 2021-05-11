@@ -819,7 +819,7 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
         } else if (line.startsWith(constOutputPluginKey)) {
             const QString plugin=line.mid(constOutputPluginKey.length());
             if (plugin == "dummy") {
-                output.in_current_partition=false;
+                output.inCurrentPartition=false;
             }
         }
     }

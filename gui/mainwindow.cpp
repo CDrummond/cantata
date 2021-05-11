@@ -1407,7 +1407,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
     QSet<QString> menuMoveableItems;
     QMenu *menu=outputsAction->menu();
     for (const Output &o: outputs) {
-        if (o.in_current_partition) {
+        if (o.inCurrentPartition) {
             if (o.enabled) {
                 enabledMpd.insert(o.name);
             }
@@ -1421,8 +1421,8 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         if (act->isCheckable()) {
             menuItems.insert(act->data().toString());
         } else if (act->menu() && act->data().toString()=="moveoutput") {
-            for (QAction *sub_act: act->menu()->actions()) {
-                menuMoveableItems.insert(sub_act->data().toString());
+            for (QAction *subAct: act->menu()->actions()) {
+                menuMoveableItems.insert(subAct->data().toString());
             }
         }
     }
@@ -1433,7 +1433,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         std::sort(out.begin(), out.end());
         int i=Qt::Key_1;
         for (const Output &o: out) {
-            if (!o.in_current_partition) continue;
+            if (!o.inCurrentPartition) continue;
             QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
             act->setData(o.id);
             act->setCheckable(true);
@@ -1441,17 +1441,17 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
             act->setShortcut(Qt::ControlModifier+Qt::AltModifier+nextKey(i));
         }
         menu->addSeparator();
-        QMenu* move_menu = menu->addMenu(tr("Move output to this partition"));
-        move_menu->menuAction()->setData("moveoutput");
-        move_menu->menuAction()->setVisible(inOtherPartitionMpd.count()>0);
+        QMenu* moveMenu = menu->addMenu(tr("Move output to this partition"));
+        moveMenu->menuAction()->setData("moveoutput");
+        moveMenu->menuAction()->setVisible(inOtherPartitionMpd.count()>0);
         for (const Output &o: out) {
-            if (o.in_current_partition) continue;
-            QAction *act=move_menu->addAction(o.name, this, SLOT(moveOutputToThisPartition()));
+            if (o.inCurrentPartition) continue;
+            QAction *act=moveMenu->addAction(o.name, this, SLOT(moveOutputToThisPartition()));
             act->setData(o.name);
         }
     } else {
         for (const Output &o: outputs) {
-            if (!o.in_current_partition) continue;
+            if (!o.inCurrentPartition) continue;
             for (QAction *act: menu->actions()) {
                 if (act->isCheckable() && Utils::strippedText(act->text())==o.name) {
                     act->setChecked(o.enabled);
@@ -2008,8 +2008,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
                     act->setChecked(true);
                 }
             } else if (act->menu() && act->data().toString()=="deletepartition") {
-                for (QAction* sub_act: act->menu()->actions()) {
-                    sub_act->setVisible(sub_act->data().toString()!=status->partition());
+                for (QAction *subAct: act->menu()->actions()) {
+                    subAct->setVisible(subAct->data().toString()!=status->partition());
                 }
             }
         }

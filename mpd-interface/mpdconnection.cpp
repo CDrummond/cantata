@@ -1785,7 +1785,7 @@ void MPDConnection::outputs()
                 QList<Output> default_outputs = MPDParseUtils::parseOuputs(default_response.data);
                 for (Output &o: default_outputs) {
                     if (!existing_names.contains(o.name)) {
-                        o.in_current_partition = false;
+                        o.inCurrentPartition = false;
                         outputs << o;
                     }
                 }

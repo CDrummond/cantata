@@ -1700,7 +1700,7 @@ void MainWindow::selectPartition()
 
 void MainWindow::createNewPartition()
 {
-    QString name = InputDialog::getText(tr("Partition Name"), tr("Enter a name for the partition:"));
+    QString name = InputDialog::getText(tr("Partition Name"), tr("Enter a name for the partition:"), QString(), nullptr, this);
     if (!name.isEmpty()) {
         emit newPartition(name);
     }
@@ -1711,13 +1711,9 @@ void MainWindow::deleteAPartition()
     QAction *act=qobject_cast<QAction *>(sender());
     if (act) {
         QString name = act->data().toString();
-        if (MessageBox::Yes==MessageBox::warningYesNo(
-            this,
+        if (MessageBox::Yes==MessageBox::warningYesNo(this,
             tr("Are you sure you wish to remove partition \"%1\"?\n\nThis cannot be undone.").arg(name),
-            tr("Remove Partition"),
-            StdGuiItem::remove(),
-            StdGuiItem::cancel()
-        )) {
+            tr("Remove Partition"), StdGuiItem::remove(), StdGuiItem::cancel())) {
             emit delPartition(name);
         }
     }

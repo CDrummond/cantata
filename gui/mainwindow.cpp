@@ -1486,7 +1486,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         }
     }
     setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());
-    outputsAction->setVisible(outputs.count()>0);
+    outputsAction->setVisible(outputs.count()>1);
     trayItem->updateOutputs();
 }
 

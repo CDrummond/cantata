@@ -1,4 +1,4 @@
-2.4.3
+2.5.0
 -----
  1. Update translations.
  2. Limit number of album tracks shown in context view to 500, thanks to
@@ -20,6 +20,7 @@
 16. When stopping Cantata controlled MPD instance, wait up to 2 seconds for
     MPD to gracefully terminate (so config can be saved) before killing
     process.
+17. Add support for MPD's "Partitions" - implemented by dphoyes
 
 2.4.2
 -----

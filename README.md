@@ -25,6 +25,7 @@ A graphical (Qt5) client for MPD, supporting the following features:
  15. Playback of non-MPD songs - via simple in-built HTTP server.
  16. MPRISv2 DBUS interface.
  17. Ratings support.
+ 18. "Partitions" support.
 
 Cantata started off as a fork of QtMPC, however, the code (and user interface) is now *very* different to that of QtMPC.
 For more detailed information, please refer to the main [README](https://raw.githubusercontent.com/CDrummond/cantata/master/README)

@@ -1086,6 +1086,8 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
     refreshDbAction->setEnabled(connected);
     addStreamToPlayQueueAction->setEnabled(connected);
     addLocalFilesToPlayQueueAction->setEnabled(connected && (HttpServer::self()->isAlive() || MPDConnection::self()->localFilePlaybackSupported()));
+    partitionsAction->setVisible(connected && MPDConnection::self()->canUsePartitions());
+
     if (connected) {
         //if (!messageWidget->showingError()) {
             messageWidget->hide();

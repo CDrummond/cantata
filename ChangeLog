@@ -20,7 +20,8 @@
 16. When stopping Cantata controlled MPD instance, wait up to 2 seconds for
     MPD to gracefully terminate (so config can be saved) before killing
     process.
-17. Add support for MPD's "Partitions" - implemented by dphoyes
+17. Add support for MPD's "Partitions" - implemented by dphoyes. Requires MPD
+    0.22 or above.
 
 2.4.2
 -----

@@ -269,6 +269,7 @@ public:
     void setDirReadable() { details.setDirReadable(); }
     bool isConnected() const { return State_Connected==state; }
     bool canUsePriority() const { return ver>=CANTATA_MAKE_VERSION(0, 17, 0) && isMpd(); }
+    bool canUsePartitions() const { return ver>=CANTATA_MAKE_VERSION(0, 22, 0) && isMpd(); }
     const QSet<QString> & urlHandlers() const { return handlers; }
     const QSet<QString> & tags() const { return tagTypes; }
     bool composerTagSupported() const { return tagTypes.contains(QLatin1String("Composer")); }

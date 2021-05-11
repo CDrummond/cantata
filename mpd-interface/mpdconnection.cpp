@@ -79,6 +79,7 @@ static const QByteArray constIdlePlayerValue("player");
 static const QByteArray constIdleMixerValue("mixer");
 static const QByteArray constIdleOptionsValue("options");
 static const QByteArray constIdleOutputValue("output");
+static const QByteArray constIdlePartitionValue("partition");
 static const QByteArray constIdleStickerValue("sticker");
 static const QByteArray constIdleSubscriptionValue("subscription");
 static const QByteArray constIdleMessageValue("message");
@@ -228,6 +229,7 @@ MPDConnectionDetails & MPDConnectionDetails::operator=(const MPDConnectionDetail
     hostname=o.hostname;
     port=o.port;
     password=o.password;
+    partition=o.partition;
     dir=o.dir;
     dirReadable=o.dirReadable;
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
@@ -269,9 +271,11 @@ MPDConnection::MPDConnection()
 {
     qRegisterMetaType<time_t>("time_t");
     qRegisterMetaType<Song>("Song");
+    qRegisterMetaType<Partition>("Partition");
     qRegisterMetaType<Output>("Output");
     qRegisterMetaType<Playlist>("Playlist");
     qRegisterMetaType<QList<Song> >("QList<Song>");
+    qRegisterMetaType<QList<Partition> >("QList<Partition>");
     qRegisterMetaType<QList<Output> >("QList<Output>");
     qRegisterMetaType<QList<Playlist> >("QList<Playlist>");
     qRegisterMetaType<QList<quint32> >("QList<quint32>");
@@ -386,6 +390,15 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
                     DBUG << (void *)(&socket) << "password rejected";
                     socket.close();
                     return IncorrectPassword;
+                }
+            }
+
+            if (!details.partition.isEmpty()) {
+                DBUG << (void *)(&socket) << "setting partition...";
+                socket.write("partition "+encodeName(details.partition)+'\n');
+                socket.waitForBytesWritten(constSocketCommsTimeout);
+                if (!readReply(socket).ok) {
+                    DBUG << (void *)(&socket) << "partition rejected, staying on default";
                 }
             }
 
@@ -518,11 +531,12 @@ void MPDConnection::reconnect()
     time_t now=time(nullptr);
     ConnectionReturn status=connectToMPD();
     switch (status) {
-    case Success:        
+    case Success:
         // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
         if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
             sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
         }
+        listPartitions();
         getStatus();
         getStats();
         getUrlHandlers();
@@ -616,6 +630,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
                 sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
             }
             serverInfo.detect();
+            listPartitions();
             getStatus();
             getStats();
             getUrlHandlers();
@@ -680,6 +695,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         } else {
             // Refresh playqueue...
             reconnected=true;
+            listPartitions();
             playListInfo();
             getStatus();
             reconnected=false;
@@ -1089,6 +1105,9 @@ void MPDConnection::playListChanges()
     Response response=sendCommand(data, false);
     if (response.ok && status.ok && isPlayQueueIdValid()) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
+        if (lastUpdatePlayQueueVersion==sv.playlist) {
+            return; // Playlist is already up-to-date
+        }
         lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
         emitStatusUpdated(sv);
         QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);
@@ -1471,6 +1490,12 @@ void MPDConnection::getStatus()
     if (response.ok) {
         MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
         lastStatusPlayQueueVersion=sv.playlist;
+        if (details.partition != sv.partition) {
+            details.partition = sv.partition;
+            Settings::self()->saveConnectionDetails(details);
+            lastUpdatePlayQueueVersion=0;
+            playQueueIds.clear();
+        }
         if (currentSongId!=sv.songId) {
             stopVolumeFade();
         }
@@ -1673,6 +1698,8 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
                 getStatus();
                 getReplayGain();
                 statusUpdated=true;
+            } else if (constIdlePartitionValue==value) {
+                listPartitions();
             } else if (constIdleOutputValue==value) {
                 outputs();
             } else if (constIdleStickerValue==value) {
@@ -1687,22 +1714,100 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
         }
     }
 
+    while (!idleSocketCommandQueue.isEmpty()) {
+        idleSocket.write(idleSocketCommandQueue.dequeue()+'\n');
+        idleSocket.waitForBytesWritten();
+        readReply(idleSocket);
+    }
+
     DBUG << (void *)(&idleSocket) << "write idle";
     idleSocket.write("idle\n");
     idleSocket.waitForBytesWritten();
+}
+
+void MPDConnection::listPartitions()
+{
+    Response response=sendCommand("listpartitions", false);
+    if (response.ok) {
+        emit partitionsUpdated(MPDParseUtils::parsePartitions(response.data));
+    } else {
+        // Send an empty list to indicate lack of partition support for this MPD server.
+        emit partitionsUpdated({});
+    }
+}
+
+void MPDConnection::changePartition(QString name)
+{
+    stopVolumeFade();
+    toggleStopAfterCurrent(false);
+
+    QByteArray cmd = "partition " + encodeName(name);
+    if (sendCommand(cmd).ok) {
+        getStatus();
+        idleSocketCommandQueue.enqueue(cmd);
+        idleSocket.write("noidle\n");
+        idleSocket.waitForBytesWritten();
+    }
+}
+
+void MPDConnection::newPartition(QString name)
+{
+    QByteArray cmd = "newpartition " + encodeName(name);
+    if (sendCommand(cmd).ok) {
+        listPartitions();
+    }
+}
+
+void MPDConnection::delPartition(QString name)
+{
+    QByteArray cmd = "delpartition " + encodeName(name);
+    if (sendCommand(cmd).ok) {
+        listPartitions();
+    }
 }
 
 void MPDConnection::outputs()
 {
     Response response=sendCommand("outputs");
     if (response.ok) {
-        emit outputsUpdated(MPDParseUtils::parseOuputs(response.data));
+        QList<Output> outputs = MPDParseUtils::parseOuputs(response.data);
+
+        // We need to temporarily switch to the default partition in order
+        // to collect the details of all available outputs.
+        if (!details.partition.isEmpty() && details.partition != "default") {
+            QByteArray return_cmd = "partition " + encodeName(details.partition);
+            Response default_response=sendCommand("command_list_begin\npartition default\noutputs\n" + return_cmd + "\ncommand_list_end");
+            if (default_response.ok) {
+                QSet<QString> existing_names;
+                for (const Output &o: outputs) {
+                    existing_names << o.name;
+                }
+                QList<Output> default_outputs = MPDParseUtils::parseOuputs(default_response.data);
+                for (Output &o: default_outputs) {
+                    if (!existing_names.contains(o.name)) {
+                        o.in_current_partition = false;
+                        outputs << o;
+                    }
+                }
+            } else {
+                sendCommand(return_cmd);
+            }
+        }
+
+        emit outputsUpdated(outputs);
     }
 }
 
 void MPDConnection::enableOutput(quint32 id, bool enable)
 {
     if (sendCommand((enable ? "enableoutput " : "disableoutput ")+quote(id)).ok) {
+        outputs();
+    }
+}
+
+void MPDConnection::moveOutput(QString name)
+{
+    if (sendCommand("moveoutput " + encodeName(name)).ok) {
         outputs();
     }
 }
@@ -2033,7 +2138,7 @@ void MPDConnection::listStreams()
         QList<Song> songs=MPDParseUtils::parseSongs(response.data, MPDParseUtils::Loc_Streams);
         for (const Song &song: songs) {
             streams.append(Stream(song.file, song.name()));
-        }    
+        }
     }
     clearError();
     emit streamList(streams);
@@ -2249,7 +2354,7 @@ QStringList MPDConnection::getPlaylistFiles(const QString &name)
         emit playlistInfoRetrieved(name, songs);
         for (const Song &s: songs) {
             files.append(s.file);
-        }    
+        }
     }
     return files;
 }

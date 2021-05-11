@@ -278,6 +278,7 @@ MainWindow::MainWindow(QWidget *parent)
     refreshDbAction->setEnabled(false);
     connectAction = new Action(Icons::self()->connectIcon, tr("Connect"), this);
     connectionsAction = new Action(MonoIcon::icon(FontAwesome::server, iconCol), tr("Collection"), this);
+    partitionsAction = new Action(MonoIcon::icon(FontAwesome::columns, iconCol), tr("Partitions"), this);
     outputsAction = new Action(MonoIcon::icon(FontAwesome::volumeup, iconCol), tr("Outputs"), this);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", tr("Stop After Track"), Icons::self()->toolbarStopIcon);
 
@@ -371,6 +372,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
+    partitionsAction->setMenu(new QMenu(this));
+    partitionsGroup=new QActionGroup(partitionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu()->duplicate(nullptr));
@@ -611,6 +614,7 @@ MainWindow::MainWindow(QWidget *parent)
         addMenuAction(menu, refreshDbAction);
         menu->addSeparator();
         addMenuAction(menu, connectionsAction);
+        addMenuAction(menu, partitionsAction);
         addMenuAction(menu, outputsAction);
         #ifdef ENABLE_HTTP_STREAM_PLAYBACK
         addMenuAction(menu, streamPlayAction);
@@ -687,6 +691,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
+    mainMenu->addAction(partitionsAction);
     mainMenu->addAction(outputsAction);
     #ifdef ENABLE_HTTP_STREAM_PLAYBACK
     mainMenu->addAction(streamPlayAction);
@@ -781,8 +786,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(StdActions::self()->appendToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(appendToPlayQueueAndPlay()));
     connect(StdActions::self()->addToPlayQueueAndPlayAction, SIGNAL(triggered()), this, SLOT(addToPlayQueueAndPlay()));
     connect(StdActions::self()->insertAfterCurrentAction, SIGNAL(triggered()), this, SLOT(insertIntoPlayQueue()));
+    connect(MPDConnection::self(), SIGNAL(partitionsUpdated(const QList<Partition> &)), this, SLOT(partitionsUpdated(const QList<Partition> &)));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
+    connect(this, SIGNAL(changePartition(QString)), MPDConnection::self(), SLOT(changePartition(QString)));
+    connect(this, SIGNAL(newPartition(QString)), MPDConnection::self(), SLOT(newPartition(QString)));
+    connect(this, SIGNAL(delPartition(QString)), MPDConnection::self(), SLOT(delPartition(QString)));
     connect(this, SIGNAL(enableOutput(quint32, bool)), MPDConnection::self(), SLOT(enableOutput(quint32, bool)));
+    connect(this, SIGNAL(moveOutput(QString)), MPDConnection::self(), SLOT(moveOutput(QString)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(play()));
@@ -1346,46 +1356,104 @@ void MainWindow::checkMpdDir()
     }
 }
 
+
+void MainWindow::partitionsUpdated(const QList<Partition> &partitions)
+{
+    QMenu *menu=partitionsAction->menu();
+    menu->clear();
+
+    const QString &current = MPDStatus::self()->partition();
+    QList<Partition> sortedPartitions=partitions;
+    std::sort(sortedPartitions.begin(), sortedPartitions.end());
+    for (const Partition &p: sortedPartitions) {
+        QAction *act=menu->addAction(p.name, this, SLOT(selectPartition()));
+        act->setData(p.name);
+        act->setCheckable(true);
+        act->setChecked(p.name==current);
+        act->setActionGroup(partitionsGroup);
+    }
+    menu->addSeparator();
+    menu->addAction(tr("Create new partition"), this, SLOT(createNewPartition()));
+    QMenu* deleteMenu = menu->addMenu(tr("Remove partition"));
+    deleteMenu->menuAction()->setData("deletepartition");
+    for (const Partition &p: sortedPartitions) {
+        QAction *act=deleteMenu->addAction(p.name, this, SLOT(deleteAPartition()));
+        act->setData(p.name);
+        act->setVisible(p.name!=current);
+    }
+    deleteMenu->menuAction()->setVisible(deleteMenu->actions().count()>1);
+
+    partitionsAction->setVisible(partitions.count()>0);
+    trayItem->updatePartitions();
+}
+
 void MainWindow::outputsUpdated(const QList<Output> &outputs)
 {
     const char *constMpdConName="mpd-name";
+    const char *constMpdPartitionName="mpd-partition";
     const char *constMpdEnabledOuptuts="mpd-outputs";
     QString lastConn=property(constMpdConName).toString();
+    QString lastPart=property(constMpdPartitionName).toString();
     QString newConn=MPDConnection::self()->getDetails().name;
+    QString newPart=MPDConnection::self()->getDetails().partition;
     setProperty(constMpdConName, newConn);
+    setProperty(constMpdPartitionName, newPart);
     outputsAction->setVisible(true);
     QSet<QString> enabledMpd;
+    QSet<QString> inCurrentPartitionMpd;
+    QSet<QString> inOtherPartitionMpd;
     QSet<QString> lastEnabledMpd=QSet<QString>::fromList(property(constMpdEnabledOuptuts).toStringList());
-    QSet<QString> mpd;
     QSet<QString> menuItems;
+    QSet<QString> menuMoveableItems;
     QMenu *menu=outputsAction->menu();
     for (const Output &o: outputs) {
-        if (o.enabled) {
-            enabledMpd.insert(o.name);
+        if (o.in_current_partition) {
+            if (o.enabled) {
+                enabledMpd.insert(o.name);
+            }
+            inCurrentPartitionMpd.insert(o.name);
+        } else {
+            inOtherPartitionMpd.insert(o.name);
         }
-        mpd.insert(o.name);
     }
 
     for (QAction *act: menu->actions()) {
-        menuItems.insert(act->data().toString());
+        if (act->isCheckable()) {
+            menuItems.insert(act->data().toString());
+        } else if (act->menu() && act->data().toString()=="moveoutput") {
+            for (QAction *sub_act: act->menu()->actions()) {
+                menuMoveableItems.insert(sub_act->data().toString());
+            }
+        }
     }
 
-    if (menuItems!=mpd) {
+    if (menuItems!=inCurrentPartitionMpd || menuMoveableItems!=inOtherPartitionMpd) {
         menu->clear();
         QList<Output> out=outputs;
         std::sort(out.begin(), out.end());
         int i=Qt::Key_1;
         for (const Output &o: out) {
+            if (!o.in_current_partition) continue;
             QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
             act->setData(o.id);
             act->setCheckable(true);
             act->setChecked(o.enabled);
             act->setShortcut(Qt::ControlModifier+Qt::AltModifier+nextKey(i));
         }
+        menu->addSeparator();
+        QMenu* move_menu = menu->addMenu(tr("Move output to this partition"));
+        move_menu->menuAction()->setData("moveoutput");
+        move_menu->menuAction()->setVisible(inOtherPartitionMpd.count()>0);
+        for (const Output &o: out) {
+            if (o.in_current_partition) continue;
+            QAction *act=move_menu->addAction(o.name, this, SLOT(moveOutputToThisPartition()));
+            act->setData(o.name);
+        }
     } else {
         for (const Output &o: outputs) {
+            if (!o.in_current_partition) continue;
             for (QAction *act: menu->actions()) {
-                if (Utils::strippedText(act->text())==o.name) {
+                if (act->isCheckable() && Utils::strippedText(act->text())==o.name) {
                     act->setChecked(o.enabled);
                     break;
                 }
@@ -1393,7 +1461,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         }
     }
 
-    if (newConn==lastConn && enabledMpd!=lastEnabledMpd && !menuItems.isEmpty()) {
+    if (newConn==lastConn && newPart==lastPart && enabledMpd!=lastEnabledMpd && !menuItems.isEmpty()) {
         QSet<QString> switchedOn=enabledMpd-lastEnabledMpd;
         QSet<QString> switchedOff=lastEnabledMpd-enabledMpd;
 
@@ -1416,7 +1484,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         }
     }
     setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());
-    outputsAction->setVisible(outputs.count()>1);
+    outputsAction->setVisible(outputs.count()>0);
     trayItem->updateOutputs();
 }
 
@@ -1531,7 +1599,7 @@ void MainWindow::paletteChanged()
 }
 
 void MainWindow::readSettings()
-{    
+{
     #ifdef QT_QTDBUS_FOUND
     // It appears as if the KDE MPRIS code does not like the MPRIS interface to be setup before the window is visible.
     // to work-around this, initMpris in the next event loop iteration.
@@ -1614,6 +1682,47 @@ void MainWindow::toggleOutput()
     }
 }
 
+void MainWindow::moveOutputToThisPartition()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        emit moveOutput(act->data().toString());
+    }
+}
+
+void MainWindow::selectPartition()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        emit changePartition(act->data().toString());
+    }
+}
+
+void MainWindow::createNewPartition()
+{
+    QString name = InputDialog::getText(tr("Partition Name"), tr("Enter a name for the partition:"));
+    if (!name.isEmpty()) {
+        emit newPartition(name);
+    }
+}
+
+void MainWindow::deleteAPartition()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        QString name = act->data().toString();
+        if (MessageBox::Yes==MessageBox::warningYesNo(
+            this,
+            tr("Are you sure you wish to remove partition \"%1\"?\n\nThis cannot be undone.").arg(name),
+            tr("Remove Partition"),
+            StdGuiItem::remove(),
+            StdGuiItem::cancel()
+        )) {
+            emit delPartition(name);
+        }
+    }
+}
+
 void MainWindow::changeConnection()
 {
     QAction *act=qobject_cast<QAction *>(sender());
@@ -1632,7 +1741,7 @@ void MainWindow::showServerInfo()
     long version=MPDConnection::self()->version();
     QDateTime dbUpdate;
     dbUpdate.setTime_t(MPDStats::self()->dbUpdate());
-    MessageBox::information(this, 
+    MessageBox::information(this,
                                   #ifdef Q_OS_MAC
                                   tr("Server Information")+QLatin1String("<br/><br/>")+
                                   #endif
@@ -1805,7 +1914,14 @@ void MainWindow::updateWindowTitle()
 {
     bool multipleConnections=connectionsAction->isVisible();
     QString connection=MPDConnection::self()->getDetails().getName();
-    setWindowTitle(multipleConnections ? tr("Cantata (%1)").arg(connection) : "Cantata");
+    QString partition=MPDStatus::self()->partition();
+    setWindowTitle((multipleConnections && !partition.isEmpty())
+        ? tr("Cantata (%1) [%2]").arg(connection, partition)
+        : multipleConnections
+            ? tr("Cantata (%1)").arg(connection)
+            : !partition.isEmpty()
+                ? tr("Cantata [%1]").arg(partition)
+                : "Cantata");
 }
 
 void MainWindow::updateCurrentSong(Song song, bool wasEmpty)
@@ -1881,6 +1997,25 @@ void MainWindow::updateStatus(MPDStatus * const status)
 {
     if (!status->error().isEmpty()) {
         showError(tr("MPD reported the following error: %1").arg(status->error()));
+    }
+
+    if (status->partition()!=lastPartition) {
+        updateWindowTitle();
+
+        for (QAction *act: partitionsAction->menu()->actions()) {
+            if (act->isCheckable()) {
+                if (act->data().toString() == status->partition()) {
+                    act->setChecked(true);
+                }
+            } else if (act->menu() && act->data().toString()=="deletepartition") {
+                for (QAction* sub_act: act->menu()->actions()) {
+                    sub_act->setVisible(sub_act->data().toString()!=status->partition());
+                }
+            }
+        }
+
+        // SongIDs are not unique between partitions, so reset the play queue's state.
+        PlayQueueModel::self()->clear();
     }
 
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
@@ -1976,6 +2111,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
+    lastPartition = status->partition();
     #ifdef QT_QTDBUS_FOUND
     if (mpris) {
         mpris->updateStatus(status);

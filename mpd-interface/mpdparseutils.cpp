@@ -36,6 +36,7 @@
 #include "mpdstats.h"
 #include "playlist.h"
 #include "song.h"
+#include "partition.h"
 #include "output.h"
 #ifdef ENABLE_HTTP_SERVER
 #include "http/httpserver.h"
@@ -76,9 +77,11 @@ static const QByteArray constAlbumId("MUSICBRAINZ_ALBUMID: ");
 static const QByteArray constFileKey("file: ");
 static const QByteArray constPlaylistKey("playlist: ");
 static const QByteArray constDirectoryKey("directory: ");
+static const QByteArray constPartitionKey("partition: ");
 static const QByteArray constOutputIdKey("outputid: ");
 static const QByteArray constOutputNameKey("outputname: ");
 static const QByteArray constOutputEnabledKey("outputenabled: ");
+static const QByteArray constOutputPluginKey("plugin: ");
 static const QByteArray constChangePosKey("cpos");
 static const QByteArray constChangeIdKey("Id");
 static const QByteArray constLastModifiedKey("Last-Modified: ");
@@ -95,6 +98,7 @@ static const QByteArray constStatusConsumeKey("consume: ");
 static const QByteArray constStatusRepeatKey("repeat: ");
 static const QByteArray constStatusSingleKey("single: ");
 static const QByteArray constStatusRandomKey("random: ");
+static const QByteArray constStatusPartitionKey("partition: ");
 static const QByteArray constStatusPlaylistKey("playlist: ");
 static const QByteArray constStatusPlaylistLengthKey("playlistlength: ");
 static const QByteArray constStatusCrossfadeKey("xfade: ");
@@ -227,6 +231,8 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
             v.single=toBool(line.mid(constStatusSingleKey.length()));
         } else if (line.startsWith(constStatusRandomKey)) {
             v.random=toBool(line.mid(constStatusRandomKey.length()));
+        } else if (line.startsWith(constStatusPartitionKey)) {
+            v.partition=QString::fromUtf8(line.mid(constStatusPartitionKey.length()));
         } else if (line.startsWith(constStatusPlaylistKey)) {
             v.playlist=line.mid(constStatusPlaylistKey.length()).toUInt();
         } else if (line.startsWith(constStatusPlaylistLengthKey)) {
@@ -762,6 +768,33 @@ void MPDParseUtils::parseDirItems(const QByteArray &data, const QString &mpdDir,
     songList+=songs;
 }
 
+QList<Partition> MPDParseUtils::parsePartitions(const QByteArray &data)
+{
+    QList<Partition> partitions;
+    QList<QByteArray> lines = data.split('\n');
+    Partition part;
+
+    for (const QByteArray &line: lines) {
+        if (constOkValue==line) {
+            break;
+        }
+
+        if (line.startsWith(constPartitionKey)) {
+            if (!part.name.isEmpty()) {
+                partitions << part;
+                part=Partition();
+            }
+            part.name=line.mid(constPartitionKey.length());
+        }
+    }
+
+    if (!part.name.isEmpty()) {
+        partitions << part;
+    }
+
+    return partitions;
+}
+
 QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
 {
     QList<Output> outputs;
@@ -776,13 +809,18 @@ QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
         if (line.startsWith(constOutputIdKey)) {
             if (!output.name.isEmpty()) {
                 outputs << output;
-                output.name=QString();
+                output=Output();
             }
             output.id=line.mid(constOutputIdKey.length()).toUInt();
         } else if (line.startsWith(constOutputNameKey)) {
             output.name=line.mid(constOutputNameKey.length());
         } else if (line.startsWith(constOutputEnabledKey)) {
             output.enabled=toBool(line.mid(constOutputEnabledKey.length()));
+        } else if (line.startsWith(constOutputPluginKey)) {
+            const QString plugin=line.mid(constOutputPluginKey.length());
+            if (plugin == "dummy") {
+                output.in_current_partition=false;
+            }
         }
     }
 

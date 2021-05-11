@@ -43,6 +43,7 @@ struct MPDStatusValues {
         , repeat(false)
         , single(false)
         , random(false)
+        , partition("")
         , playlist(0)
         , playlistLength(0)
         , crossFade(0)
@@ -64,6 +65,7 @@ struct MPDStatusValues {
     bool repeat;
     bool single;
     bool random;
+    QString partition;
     quint32 playlist;
     quint32 playlistLength;
     qint32 crossFade;
@@ -98,6 +100,7 @@ public:
     bool repeat() const { return values.repeat; }
     bool single() const { return values.single; }
     bool random() const { return values.random; }
+    const QString & partition() const { return values.partition; }
     quint32 playlist() const { return values.playlist; }
     quint32 playlistLength() const { return values.playlistLength; }
     qint32 crossFade() const { return values.crossFade; }

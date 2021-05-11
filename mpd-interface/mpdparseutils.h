@@ -33,6 +33,7 @@
 #include "song.h"
 
 struct Playlist;
+struct Partition;
 struct Output;
 struct MPDStatsValues;
 struct MPDStatusValues;
@@ -88,6 +89,7 @@ namespace MPDParseUtils
     typedef QMap<QByteArray, QStringList> MessageMap;
     extern MessageMap parseMessages(const QByteArray &data);
     extern void parseDirItems(const QByteArray &data, const QString &mpdDir, long mpdVersion, QList<Song> &songList, const QString &dir, QStringList &subDirs, Location loc);
+    extern QList<Partition> parsePartitions(const QByteArray &data);
     extern QList<Output> parseOuputs(const QByteArray &data);
     extern QByteArray parseSticker(const QByteArray &data, const QByteArray &sticker);
     extern QList<Sticker> parseStickers(const QByteArray &data, const QByteArray &sticker);

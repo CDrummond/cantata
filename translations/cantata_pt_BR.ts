@@ -737,11 +737,11 @@ Se &apos;Título&apos; è &quot;Wibble - Wobble&quot;, então &apos;Artista&apos
     </message>
     <message>
         <source>Configure</source>
-        <translation>Configurar</translation>
+        <translation type="vanished">Configurar</translation>
     </message>
     <message>
         <source>CoverArt Archive</source>
-        <translation>Loja de Capas CorverArt</translation>
+        <translation type="vanished">Loja de Capas CorverArt</translation>
     </message>
     <message>
         <source>&apos;%1 - %2&apos; Album Cover</source>
@@ -1190,106 +1190,106 @@ Não será possível desfazer esta escolha.</translation>
     <name>DigitallyImported</name>
     <message>
         <source>Session expired</source>
-        <translation>Sessão expirada</translation>
+        <translation type="vanished">Sessão expirada</translation>
     </message>
     <message>
         <source>You do not have an active subscription</source>
-        <translation>Você não possui uma assinatura ativa</translation>
+        <translation type="vanished">Você não possui uma assinatura ativa</translation>
     </message>
     <message>
         <source>Not logged in</source>
-        <translation>Não registrado</translation>
+        <translation type="vanished">Não registrado</translation>
     </message>
     <message>
         <source>No subscriptions</source>
-        <translation>Nenhuma assinatura</translation>
+        <translation type="vanished">Nenhuma assinatura</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation>Erro desconhecido</translation>
+        <translation type="vanished">Erro desconhecido</translation>
     </message>
     <message>
         <source>Logged in (expiry:%1)</source>
-        <translation>Registrado (expira: %1)</translation>
+        <translation type="vanished">Registrado (expira: %1)</translation>
     </message>
     <message>
         <source>Logged in</source>
-        <translation>Registrado</translation>
+        <translation type="vanished">Registrado</translation>
     </message>
 </context>
 <context>
     <name>DigitallyImportedSettings</name>
     <message>
         <source>Login</source>
-        <translation>Acesso</translation>
+        <translation type="vanished">Acesso</translation>
     </message>
     <message>
         <source>Digitally Imported Settings</source>
-        <translation>Configurações de Importado digitalmente</translation>
+        <translation type="vanished">Configurações de Importado digitalmente</translation>
     </message>
     <message>
         <source>Authenticated</source>
-        <translation>Autenticado</translation>
+        <translation type="vanished">Autenticado</translation>
     </message>
     <message>
         <source>Not Authenticated</source>
-        <translation>Não autenticado</translation>
+        <translation type="vanished">Não autenticado</translation>
     </message>
     <message>
         <source>These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm</source>
-        <translation>Estas configurações se aplicam a Importado digitalmente, JazzRadio.com, RockRadio.com, e Sky.fm</translation>
+        <translation type="vanished">Estas configurações se aplicam a Importado digitalmente, JazzRadio.com, RockRadio.com, e Sky.fm</translation>
     </message>
     <message>
         <source>MP3 256k</source>
-        <translation>MP3 256k</translation>
+        <translation type="vanished">MP3 256k</translation>
     </message>
     <message>
         <source>Logout</source>
-        <translation>Encerrar</translation>
+        <translation type="vanished">Encerrar</translation>
     </message>
     <message>
         <source>AAC 128k</source>
-        <translation>AAC 128k</translation>
+        <translation type="vanished">AAC 128k</translation>
     </message>
     <message>
         <source>AAC 64k</source>
-        <translation>AAC 64k</translation>
+        <translation type="vanished">AAC 64k</translation>
     </message>
     <message>
         <source>Session expiry:</source>
-        <translation>Expiração da sessão:</translation>
+        <translation type="vanished">Expiração da sessão:</translation>
     </message>
     <message>
         <source>Authenticating...</source>
-        <translation>Autenticando...</translation>
+        <translation type="vanished">Autenticando...</translation>
     </message>
     <message>
         <source>You can listen for free without an account, but Premium members can listen to higher quality streams without advertisements. Visit &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; to upgrade to a premium account.</source>
-        <translation>Você pode gratuitamente ouvir sem necessidade de abrir uma conta, porém membros Premium podem ouvir transmissões de melhor qualidade e sem anúncios publicitários.. Visite &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; para uma conta aprimorada Premium. </translation>
+        <translation type="vanished">Você pode gratuitamente ouvir sem necessidade de abrir uma conta, porém membros Premium podem ouvir transmissões de melhor qualidade e sem anúncios publicitários.. Visite &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; para uma conta aprimorada Premium. </translation>
     </message>
     <message>
         <source>Status:</source>
-        <translation>Estado:</translation>
+        <translation type="vanished">Estado:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Senha:</translation>
+        <translation type="vanished">Senha:</translation>
     </message>
     <message>
         <source>Stream type:</source>
-        <translation>Tipo de fluxo:</translation>
+        <translation type="vanished">Tipo de fluxo:</translation>
     </message>
     <message>
         <source>Premium Account</source>
-        <translation>Conta Premium</translation>
+        <translation type="vanished">Conta Premium</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nome de usuário:</translation>
+        <translation type="vanished">Nome de usuário:</translation>
     </message>
     <message>
         <source>If you enter account details, then a &apos;DI&apos; status item will appear under the list of streams. This will indicate if you are logged in or not.</source>
-        <translation>Se você inserir os detalhes da conta, um item de status &apos;DI&apos; aparecerá na lista de fluxos. Isso indicará se você está ou não interligado ao serviço.</translation>
+        <translation type="vanished">Se você inserir os detalhes da conta, um item de status &apos;DI&apos; aparecerá na lista de fluxos. Isso indicará se você está ou não interligado ao serviço.</translation>
     </message>
 </context>
 <context>
@@ -2922,6 +2922,48 @@ Sair agora cancelará o download.</translation>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2018 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation type="vanished">&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Cliente de MPD.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2021 Craig Drummond&lt;br/&gt;Lançado sob licença &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</translation>
     </message>
+    <message>
+        <source>Partitions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move output to this partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Partition Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a name for the partition:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to remove partition &quot;%1&quot;?
+
+This cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove Partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cantata (%1) [%2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cantata [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MenuButton</name>
@@ -4457,7 +4499,7 @@ Sobrescrevè-lo?</translation>
     </message>
     <message>
         <source>Digitally Imported</source>
-        <translation>Importado digitalmente</translation>
+        <translation type="vanished">Importado digitalmente</translation>
     </message>
     <message>
         <source>Read more on wikipedia</source>
@@ -4634,7 +4676,7 @@ width x height (file size)</comment>
     </message>
     <message>
         <source>Local and National Radio (ListenLive)</source>
-        <translation>Rádio Local e Nacional (ListenLive)</translation>
+        <translation type="vanished">Rádio Local e Nacional (ListenLive)</translation>
     </message>
     <message>
         <source>Empty filename.</source>
@@ -5016,7 +5058,7 @@ width x height</comment>
     </message>
     <message>
         <source>General</source>
-        <translation>Geral</translation>
+        <translation type="vanished">Geral</translation>
     </message>
     <message>
         <source>Default Priority (0)</source>
@@ -5800,11 +5842,11 @@ Não será possível desfazer esta escolha.</translation>
     <name>ServiceStatusLabel</name>
     <message>
         <source>&lt;b&gt;NOT&lt;/b&gt; logged into %1</source>
-        <translation>&lt;b&gt;NÃO&lt;/b&gt; registrado em %1</translation>
+        <translation type="vanished">&lt;b&gt;NÃO&lt;/b&gt; registrado em %1</translation>
     </message>
     <message>
         <source>Logged into %1</source>
-        <translation>Registrado em %1</translation>
+        <translation type="vanished">Registrado em %1</translation>
     </message>
 </context>
 <context>
@@ -6359,66 +6401,66 @@ Sobrescrevê-la?</translation>
     <name>StreamProviderListDialog</name>
     <message>
         <source>Abort</source>
-        <translation>Interromper</translation>
+        <translation type="vanished">Interromper</translation>
     </message>
     <message>
         <source>Check the providers you wish to install/update.</source>
-        <translation>Verifique os provedores que você deseja instalar/atualizar.</translation>
+        <translation type="vanished">Verifique os provedores que você deseja instalar/atualizar.</translation>
     </message>
     <message>
         <source>Install/Update</source>
-        <translation>Instalar/Atualizar</translation>
+        <translation type="vanished">Instalar/Atualizar</translation>
     </message>
     <message>
         <source>Update all updateable providers</source>
-        <translation>Atualizar todos os provedores atualizáveis</translation>
+        <translation type="vanished">Atualizar todos os provedores atualizáveis</translation>
     </message>
     <message numerus="yes">
         <source>%n Update(s) available</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>%n Atualização disponível</numerusform>
             <numerusform>%n Atualizações disponíveis</numerusform>
         </translation>
     </message>
     <message>
         <source>Failed to download &apos;%1&apos;</source>
-        <translation>Erro ao baixar &apos;%1&apos;</translation>
+        <translation type="vanished">Erro ao baixar &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Failed to install &apos;%1&apos;</source>
-        <translation>Não foi possível instalar &apos;%1&apos;</translation>
+        <translation type="vanished">Não foi possível instalar &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Abort installation/update?</source>
-        <translation>Interromper a instalação/atualização?</translation>
+        <translation type="vanished">Interromper a instalação/atualização?</translation>
     </message>
     <message>
         <source>Failed to download list of stream providers!</source>
-        <translation>Não foi possível baixar a lista dos provedores de fluxo!</translation>
+        <translation type="vanished">Não foi possível baixar a lista dos provedores de fluxo!</translation>
     </message>
     <message>
         <source>Install/Update Stream Providers</source>
-        <translation>Instala/Atualiza provedores de fluxo</translation>
+        <translation type="vanished">Instala/Atualiza provedores de fluxo</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Instalado</translation>
+        <translation type="vanished">Instalado</translation>
     </message>
     <message>
         <source>Downloading %1</source>
-        <translation>Baixando %1</translation>
+        <translation type="vanished">Baixando %1</translation>
     </message>
     <message>
         <source>Installing/updating %1</source>
-        <translation>Instalando/atualizando %1</translation>
+        <translation type="vanished">Instalando/atualizando %1</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation>Atualização disponível</translation>
+        <translation type="vanished">Atualização disponível</translation>
     </message>
     <message>
         <source>Downloading list...</source>
-        <translation>Baixando a lista...</translation>
+        <translation type="vanished">Baixando a lista...</translation>
     </message>
 </context>
 <context>
@@ -6429,7 +6471,7 @@ Sobrescrevê-la?</translation>
     </message>
     <message>
         <source>Dirble</source>
-        <translation>Dirble</translation>
+        <translation type="vanished">Dirble</translation>
     </message>
     <message>
         <source>Not Loaded</source>
@@ -6491,7 +6533,7 @@ Sobrescrevê-la?</translation>
     <message>
         <source>Digitally Imported</source>
         <comment>Service name</comment>
-        <translation>Importado digitalmente</translation>
+        <translation type="vanished">Importado digitalmente</translation>
     </message>
     <message>
         <source>Failed to create &apos;%1&apos;!</source>
@@ -6499,7 +6541,7 @@ Sobrescrevê-la?</translation>
     </message>
     <message>
         <source>Configure</source>
-        <translation>Configurar</translation>
+        <translation type="vanished">Configurar</translation>
     </message>
     <message>
         <source>Stream &apos;%1&apos; already exists!</source>
@@ -6578,11 +6620,11 @@ Sobrescrevê-la?</translation>
     </message>
     <message>
         <source>Dirble</source>
-        <translation>Dirble</translation>
+        <translation type="vanished">Dirble</translation>
     </message>
     <message>
         <source>Configure Digitally Imported</source>
-        <translation>Configurar importado digitalmente</translation>
+        <translation type="vanished">Configurar importado digitalmente</translation>
     </message>
     <message>
         <source>Not Loaded</source>
@@ -6640,73 +6682,73 @@ Sobrescrevê-la?</translation>
     <name>StreamsSettings</name>
     <message>
         <source>Install Streams</source>
-        <translation>Instalar Fluxos</translation>
+        <translation type="vanished">Instalar Fluxos</translation>
     </message>
     <message>
         <source>Install</source>
-        <translation>Instalar</translation>
+        <translation type="vanished">Instalar</translation>
     </message>
     <message>
         <source>Invalid file format!</source>
-        <translation>Formato inválido de arquivo!</translation>
+        <translation type="vanished">Formato inválido de arquivo!</translation>
     </message>
     <message>
         <source>Built-in categories are shown in italic, and these cannot be removed.</source>
-        <translation>As categorias predefinidas são mostradas em itálico e não podem ser removidas.</translation>
+        <translation type="vanished">As categorias predefinidas são mostradas em itálico e não podem ser removidas.</translation>
     </message>
     <message>
         <source>Cantata Streams (*.streams)</source>
-        <translation>Fluxos do Cantata (*.streams)</translation>
+        <translation type="vanished">Fluxos do Cantata (*.streams)</translation>
     </message>
     <message>
         <source>Failed to remove streams folder!</source>
-        <translation>Não foi possível remover a pasta de fluxos!</translation>
+        <translation type="vanished">Não foi possível remover a pasta de fluxos!</translation>
     </message>
     <message>
         <source>Configure Provider</source>
-        <translation>Configurar Provedor</translation>
+        <translation type="vanished">Configurar Provedor</translation>
     </message>
     <message>
         <source>Download...</source>
-        <translation>Baixar...</translation>
+        <translation type="vanished">Baixar...</translation>
     </message>
     <message>
         <source>Use the checkboxes below to configure the list of active providers.</source>
-        <translation>Use as caixas de seleção abaixo para configurar a lista de provedores ativos.</translation>
+        <translation type="vanished">Use as caixas de seleção abaixo para configurar a lista de provedores ativos.</translation>
     </message>
     <message>
         <source>Failed to create stream category folder!</source>
-        <translation>Não foi possível criar a pasta para categorias de fluxo!</translation>
+        <translation type="vanished">Não foi possível criar a pasta para categorias de fluxo!</translation>
     </message>
     <message>
         <source>Failed to open package file.</source>
-        <translation>Não foi possível abrir o pacote.</translation>
+        <translation type="vanished">Não foi possível abrir o pacote.</translation>
     </message>
     <message>
         <source>Configure Streams</source>
-        <translation>Configurar Fluxos</translation>
+        <translation type="vanished">Configurar Fluxos</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Remover</translation>
+        <translation type="vanished">Remover</translation>
     </message>
     <message>
         <source>Are you sure you wish to remove &apos;%1&apos;?</source>
-        <translation>Deseja remover &apos;%1&apos;?</translation>
+        <translation type="vanished">Deseja remover &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>From File...</source>
-        <translation>Do arquivo...</translation>
+        <translation type="vanished">Do arquivo...</translation>
     </message>
     <message>
         <source>Failed to save stream list!</source>
-        <translation>Não foi possível salvar a lista de fluxo!</translation>
+        <translation type="vanished">Não foi possível salvar a lista de fluxo!</translation>
     </message>
     <message>
         <source>A category named &apos;%1&apos; already exists!
 
 Overwrite?</source>
-        <translation>Uma categoria chamada &apos;%1&apos; já existe!
+        <translation type="vanished">Uma categoria chamada &apos;%1&apos; já existe!
 
 Sobrescrevê-la?</translation>
     </message>

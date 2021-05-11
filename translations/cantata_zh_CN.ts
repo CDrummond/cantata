@@ -2937,7 +2937,7 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
 <context>
     <name>ApiKeys</name>
     <message>
-        <location filename="../gui/apikeys.cpp" line="160"/>
+        <location filename="../gui/apikeys.cpp" line="154"/>
         <source>The API call limit has been exceeded for %1, please try again later or register for your own API key.</source>
         <translation>已超出 %1 的 API 调用限制，请稍后重试或注册您自己的 API 密钥。</translation>
     </message>
@@ -3097,12 +3097,12 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
 <context>
     <name>CacheItem</name>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="169"/>
+        <location filename="../gui/cachesettings.cpp" line="171"/>
         <source>Deleting...</source>
         <translation>正在删除……</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="180"/>
+        <location filename="../gui/cachesettings.cpp" line="182"/>
         <source>Calculating...</source>
         <translation>计算中...</translation>
     </message>
@@ -3110,83 +3110,83 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
 <context>
     <name>CacheSettings</name>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="251"/>
+        <location filename="../gui/cachesettings.cpp" line="253"/>
         <source>Cantata caches various pieces of information (covers, lyrics, etc). Below is a summary of Cantata&apos;s current cache usage.</source>
         <translation>Cantata 缓存各种信息（封面，歌词等）。以下是 Cantata 当前缓存使用情况的摘要。</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="263"/>
+        <location filename="../gui/cachesettings.cpp" line="265"/>
         <source>Covers</source>
         <translation>封面</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="265"/>
+        <location filename="../gui/cachesettings.cpp" line="267"/>
         <source>Scaled Covers</source>
         <translation>缩放的封面</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="267"/>
+        <location filename="../gui/cachesettings.cpp" line="269"/>
         <source>Backdrops</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="268"/>
+        <location filename="../gui/cachesettings.cpp" line="270"/>
         <source>Lyrics</source>
         <translation>歌词</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="269"/>
+        <location filename="../gui/cachesettings.cpp" line="271"/>
         <source>Artist Information</source>
         <translation>艺术家信息</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="271"/>
+        <location filename="../gui/cachesettings.cpp" line="273"/>
         <source>Album Information</source>
         <translation>专辑信息</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="272"/>
+        <location filename="../gui/cachesettings.cpp" line="274"/>
         <source>Track Information</source>
         <translation>音轨信息</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="273"/>
+        <location filename="../gui/cachesettings.cpp" line="275"/>
         <source>Stream Listings</source>
         <translation>流列表</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="274"/>
+        <location filename="../gui/cachesettings.cpp" line="276"/>
         <source>Podcast Directories</source>
         <translation>播客目录</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="275"/>
+        <location filename="../gui/cachesettings.cpp" line="277"/>
         <source>Wikipedia Languages</source>
         <translation>维基百科语言</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="276"/>
+        <location filename="../gui/cachesettings.cpp" line="279"/>
         <source>Scrobble Tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="283"/>
+        <location filename="../gui/cachesettings.cpp" line="287"/>
         <source>Delete All</source>
         <translation>删除全部</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="322"/>
+        <location filename="../gui/cachesettings.cpp" line="326"/>
         <source>Delete all &apos;%1&apos; items?</source>
         <translation>确定所有 &apos;%1&apos; 的项目?</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="323"/>
-        <location filename="../gui/cachesettings.cpp" line="335"/>
+        <location filename="../gui/cachesettings.cpp" line="327"/>
+        <location filename="../gui/cachesettings.cpp" line="339"/>
         <source>Delete Cache Items</source>
         <translation>删除缓存</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="334"/>
+        <location filename="../gui/cachesettings.cpp" line="338"/>
         <source>Delete items from all selected categories?</source>
         <translation>确定从所有选定类别中删除项目？</translation>
     </message>
@@ -3194,17 +3194,17 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
 <context>
     <name>CacheTree</name>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="193"/>
+        <location filename="../gui/cachesettings.cpp" line="195"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="193"/>
+        <location filename="../gui/cachesettings.cpp" line="195"/>
         <source>Item Count</source>
         <translation>计数</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="193"/>
+        <location filename="../gui/cachesettings.cpp" line="195"/>
         <source>Space Used</source>
         <translation>已用空间</translation>
     </message>
@@ -3333,53 +3333,51 @@ If &apos;Title&apos; is &quot;Wibble - Wobble&quot;, then &apos;Artist&apos; wil
         <translation>添加本地文件</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.ui" line="37"/>
         <source>Configure</source>
-        <translation>设置</translation>
+        <translation type="vanished">设置</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.ui" line="47"/>
+        <location filename="../gui/coverdialog.ui" line="40"/>
         <source>This can only be used to change the file used for covers, it will not alter any embedded covers you may have in your song files.</source>
         <translation>这只能用于更改用于封面的文件，而不会更改歌曲文件中可能具有的任何嵌入封面。</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="394"/>
         <source>CoverArt Archive</source>
-        <translation>CoverArt Archive</translation>
+        <translation type="vanished">CoverArt Archive</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="424"/>
+        <location filename="../gui/coverdialog.cpp" line="398"/>
         <source>An image already exists for this artist, and the file is not writeable.</source>
         <translation>该艺术家的图像已经存在，并且该文件不可写。</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="426"/>
+        <location filename="../gui/coverdialog.cpp" line="400"/>
         <source>An image already exists for this composer, and the file is not writeable.</source>
         <translation>该作曲家已经存在一个图像，并且该文件不可写。</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="427"/>
+        <location filename="../gui/coverdialog.cpp" line="401"/>
         <source>A cover already exists for this album, and the file is not writeable.</source>
         <translation>该专辑的封面已经存在，并且该文件不可写。</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="434"/>
+        <location filename="../gui/coverdialog.cpp" line="408"/>
         <source>&apos;%1&apos; Artist Image</source>
         <translation>&apos;%1&apos; 艺术家图像</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="436"/>
+        <location filename="../gui/coverdialog.cpp" line="410"/>
         <source>&apos;%1&apos; Composer Image</source>
         <translation>&apos;%1&apos; 作曲家图像</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="438"/>
+        <location filename="../gui/coverdialog.cpp" line="412"/>
         <source>&apos;%1 - %2&apos; Album Cover</source>
         <comment>&apos;Artist - Album&apos; Album Cover</comment>
         <translation>&apos;%1 - %2&apos; 专辑封面</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="581"/>
+        <location filename="../gui/coverdialog.cpp" line="555"/>
         <source>Failed to set cover!
 
 Could not download to temporary file!</source>
@@ -3388,42 +3386,42 @@ Could not download to temporary file!</source>
 无法下载到临时文件！</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="612"/>
+        <location filename="../gui/coverdialog.cpp" line="586"/>
         <source>Failed to download image!</source>
         <translation>下载图片失败!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="812"/>
+        <location filename="../gui/coverdialog.cpp" line="779"/>
         <source>Load Local Cover</source>
         <translation>加载本地封面</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="812"/>
+        <location filename="../gui/coverdialog.cpp" line="779"/>
         <source>Images (*.png *.jpg *.jpeg)</source>
         <translation>图片 (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="816"/>
+        <location filename="../gui/coverdialog.cpp" line="783"/>
         <source>File is already in list!</source>
         <translation>文件已在列表中!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="820"/>
+        <location filename="../gui/coverdialog.cpp" line="787"/>
         <source>Failed to read image!</source>
         <translation>读取图片失败!</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="833"/>
+        <location filename="../gui/coverdialog.cpp" line="800"/>
         <source>Display</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="834"/>
+        <location filename="../gui/coverdialog.cpp" line="801"/>
         <source>Remove</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1215"/>
+        <location filename="../gui/coverdialog.cpp" line="1163"/>
         <source>Failed to set cover!
 
 Could not make copy!</source>
@@ -3432,7 +3430,7 @@ Could not make copy!</source>
 无法复制！</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1224"/>
+        <location filename="../gui/coverdialog.cpp" line="1172"/>
         <source>Failed to set cover!
 
 Could not backup original!</source>
@@ -3441,7 +3439,7 @@ Could not backup original!</source>
 无法备份原始文件！</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1280"/>
+        <location filename="../gui/coverdialog.cpp" line="1228"/>
         <source>Failed to set cover!
 
 Could not copy file to &apos;%1&apos;!</source>
@@ -3450,7 +3448,7 @@ Could not copy file to &apos;%1&apos;!</source>
 无法将文件复制到 &apos;%1&apos;！</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="1334"/>
+        <location filename="../gui/coverdialog.cpp" line="1282"/>
         <source>Searching...</source>
         <translation>正在搜索……</translation>
     </message>
@@ -3458,18 +3456,18 @@ Could not copy file to &apos;%1&apos;!</source>
 <context>
     <name>CoverPreview</name>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="229"/>
+        <location filename="../gui/coverdialog.cpp" line="222"/>
         <source>Image</source>
         <translation>图片</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="232"/>
+        <location filename="../gui/coverdialog.cpp" line="225"/>
         <source>Downloading...</source>
         <translation>正在下载...</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="277"/>
-        <location filename="../gui/coverdialog.cpp" line="312"/>
+        <location filename="../gui/coverdialog.cpp" line="270"/>
+        <location filename="../gui/coverdialog.cpp" line="305"/>
         <source>Image (%1 x %2 %3%)</source>
         <comment>Image (width x height zoom%)</comment>
         <translation>图片 (%1 x %2 %3%)</translation>
@@ -3858,7 +3856,9 @@ Could not copy file to &apos;%1&apos;!</source>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">您确定要删除所选的歌曲吗？
+
+这不能被撤消。</translation>
     </message>
     <message>
         <location filename="../devices/devicespage.cpp" line="482"/>
@@ -3897,138 +3897,18 @@ This cannot be undone.</source>
     </message>
 </context>
 <context>
-    <name>DigitallyImported</name>
-    <message>
-        <location filename="../models/digitallyimported.cpp" line="92"/>
-        <source>Not logged in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/digitallyimported.cpp" line="101"/>
-        <source>Logged in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/digitallyimported.cpp" line="166"/>
-        <location filename="../models/digitallyimported.cpp" line="187"/>
-        <source>Unknown error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/digitallyimported.cpp" line="174"/>
-        <source>No subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/digitallyimported.cpp" line="181"/>
-        <source>You do not have an active subscription</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/digitallyimported.cpp" line="200"/>
-        <source>Logged in (expiry:%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/digitallyimported.cpp" line="208"/>
-        <source>Session expired</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>DigitallyImportedSettings</name>
     <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="29"/>
-        <source>You can listen for free without an account, but Premium members can listen to higher quality streams without advertisements. Visit &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; to upgrade to a premium account.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="42"/>
-        <source>Premium Account</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="51"/>
         <source>Username:</source>
-        <translation>用户名:</translation>
+        <translation type="vanished">用户名:</translation>
     </message>
     <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="64"/>
         <source>Password:</source>
-        <translation>密码:</translation>
+        <translation type="vanished">密码:</translation>
     </message>
     <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="81"/>
-        <source>Stream type:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="94"/>
-        <source>Status:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="120"/>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="137"/>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="143"/>
-        <source>Login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="127"/>
-        <source>Session expiry:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="157"/>
-        <source>These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.ui" line="164"/>
-        <source>If you enter account details, then a &apos;DI&apos; status item will appear under the list of streams. This will indicate if you are logged in or not.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="35"/>
-        <source>Digitally Imported Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="40"/>
         <source>MP3 256k</source>
-        <translation>MP3 256k</translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="41"/>
-        <source>AAC 64k</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="42"/>
-        <source>AAC 128k</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="109"/>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="122"/>
-        <source>Not Authenticated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="112"/>
-        <source>Authenticating...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="122"/>
-        <source>Authenticated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/digitallyimportedsettings.cpp" line="143"/>
-        <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">MP3 256k</translation>
     </message>
 </context>
 <context>
@@ -4356,17 +4236,17 @@ This cannot be undone.</source>
         <translation>请选择您的 MPD 。如果未在此处列出您的 MPD ，请检查 MPD 配置中是否激活了 zeroconf 或手动插入主机配置。</translation>
     </message>
     <message>
-        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <location filename="../gui/findmpddialog.cpp" line="30"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <location filename="../gui/findmpddialog.cpp" line="30"/>
         <source>Address</source>
         <translation>地址</translation>
     </message>
     <message>
-        <location filename="../gui/findmpddialog.cpp" line="28"/>
+        <location filename="../gui/findmpddialog.cpp" line="30"/>
         <source>Port</source>
         <translation>端口</translation>
     </message>
@@ -4572,27 +4452,27 @@ This cannot be undone.</source>
         <translation>Cantata将使用“AlbumArtist”标签（如果已设置）将曲目分组为专辑，否则将回退到“Artist”标签。如果您的专辑中有多位歌手，则必须&lt;b&gt; &lt;/b&gt;设置“AlbumArtist”标签，才能使分组正常运行。建议在这种情况下使用“多个艺术家”。</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="61"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="62"/>
         <source>Not Connected</source>
         <translation>未连接</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="112"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="113"/>
         <source>Discover...</source>
         <translation>发现……</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="161"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="162"/>
         <source>Connection Established</source>
         <translation>连接已建立</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="161"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="162"/>
         <source>Connection Failed</source>
         <translation>连接失败</translation>
     </message>
     <message>
-        <location filename="../gui/initialsettingswizard.cpp" line="174"/>
+        <location filename="../gui/initialsettingswizard.cpp" line="175"/>
         <source>Cantata will now terminate</source>
         <translation>Cantata 现在将终止</translation>
     </message>
@@ -5396,85 +5276,85 @@ If this search does find new lyrics, these will still be associated with the ori
 <context>
     <name>MPDConnection</name>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="172"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="173"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="438"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="451"/>
         <source>Connection to %1 failed</source>
         <translation>连接 %1 失败</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="439"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="452"/>
         <source>Connection to %1 failed - please check your proxy settings</source>
         <translation>连接 %1 失败 - 请检查代理设置</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="440"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="453"/>
         <source>Connection to %1 failed - incorrect password</source>
         <translation>连接 %1 失败 - 密码错误</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="548"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="562"/>
         <source>Connecting to %1</source>
         <translation>连接到 %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="666"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="681"/>
         <source>Failed to send command to %1 - not connected</source>
         <translation>发送到 %1 失败 - 未能连接</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="734"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="750"/>
         <source>Failed to load. Please check user &quot;mpd&quot; has read permission.</source>
         <translation>无法加载. 请检查 &quot;mpd&quot; 是否有读取权限.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="736"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="752"/>
         <source>Failed to load. MPD can only play local files if connected via a local socket.</source>
         <translation>无法加载. MPD 只能从本地 Socket 播放本地文件.</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="738"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="745"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="754"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="761"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD报告了如下错误: %1</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="742"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="753"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="758"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="769"/>
         <source>Failed to send command. Disconnected from %1</source>
         <translation>发送失败. %1 已断开</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1808"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1913"/>
         <source>Failed to rename &lt;b&gt;%1&lt;/b&gt; to &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; 重命名为 &lt;b&gt;%2&lt;/b&gt; 失败</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1823"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1928"/>
         <source>Failed to save &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; 保存失败</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1836"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1941"/>
         <source>You cannot add parts of a cue sheet to a playlist!</source>
         <translation>您不能将 cue 的一部分添加到播放列表中！</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="1839"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="1944"/>
         <source>You cannot add a playlist to another playlist!</source>
         <translation>您不能将一个播放列表添加进另一个播放列表！</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2090"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2195"/>
         <source>Failed to send &apos;%1&apos; to %2. Please check %2 is registered with MPD.</source>
         <translation>无法将&apos;%1&apos;发送到 %2。请检查 %2 已在MPD中注册。</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2371"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="2398"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2484"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="2511"/>
         <source>Cannot store ratings, as the &apos;sticker&apos; MPD command is not supported.</source>
         <translation>无法存储评分，因为不支持 MPD 命令 &apos;sticker&apos;。</translation>
     </message>
@@ -5563,350 +5443,355 @@ If this search does find new lyrics, these will still be associated with the ori
         <translation>退出全屏模式</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="254"/>
+        <location filename="../gui/mainwindow.cpp" line="257"/>
         <source>Configure Cantata...</source>
         <translation>设置 Cantata...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="254"/>
+        <location filename="../gui/mainwindow.cpp" line="257"/>
         <source>Preferences...</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="257"/>
+        <location filename="../gui/mainwindow.cpp" line="260"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="260"/>
+        <location filename="../gui/mainwindow.cpp" line="263"/>
         <source>About Cantata...</source>
         <translation>关于 Cantata...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="267"/>
+        <location filename="../gui/mainwindow.cpp" line="270"/>
         <source>Show Window</source>
         <translation>显示窗口</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="270"/>
+        <location filename="../gui/mainwindow.cpp" line="273"/>
         <source>Server information...</source>
         <translation>服务器信息...</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="273"/>
+        <location filename="../gui/mainwindow.cpp" line="276"/>
         <source>Refresh Database</source>
         <translation>刷新数据</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="274"/>
+        <location filename="../gui/mainwindow.cpp" line="277"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="276"/>
+        <location filename="../gui/mainwindow.cpp" line="279"/>
         <source>Connect</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="277"/>
+        <location filename="../gui/mainwindow.cpp" line="280"/>
         <source>Collection</source>
         <translation>音乐集</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="278"/>
-        <location filename="../gui/mainwindow.cpp" line="1391"/>
-        <location filename="../gui/mainwindow.cpp" line="1395"/>
-        <location filename="../gui/mainwindow.cpp" line="1401"/>
+        <location filename="../gui/mainwindow.cpp" line="281"/>
+        <source>Partitions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="282"/>
+        <location filename="../gui/mainwindow.cpp" line="1473"/>
+        <location filename="../gui/mainwindow.cpp" line="1477"/>
+        <location filename="../gui/mainwindow.cpp" line="1483"/>
         <source>Outputs</source>
         <translation>输出</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="279"/>
+        <location filename="../gui/mainwindow.cpp" line="283"/>
         <source>Stop After Track</source>
         <translation>播放完毕后停止</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="285"/>
+        <location filename="../gui/mainwindow.cpp" line="289"/>
         <source>Seek forward (%1 seconds)</source>
         <translation>向前 (%1 秒)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="286"/>
+        <location filename="../gui/mainwindow.cpp" line="290"/>
         <source>Seek backward (%1 seconds)</source>
         <translation>向后 (%1 秒)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="299"/>
+        <location filename="../gui/mainwindow.cpp" line="303"/>
         <source>Add To Stored Playlist</source>
         <translation>添加到已有播放列表</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="304"/>
+        <location filename="../gui/mainwindow.cpp" line="308"/>
         <source>Crop Others</source>
         <translation>删除列表中其他曲目</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="305"/>
+        <location filename="../gui/mainwindow.cpp" line="309"/>
         <source>Add Stream URL</source>
         <translation>添加流媒体</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="306"/>
+        <location filename="../gui/mainwindow.cpp" line="310"/>
         <source>Add Local Files</source>
         <translation>添加本地文件</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="308"/>
+        <location filename="../gui/mainwindow.cpp" line="312"/>
         <source>Clear</source>
         <translation>清除</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="310"/>
+        <location filename="../gui/mainwindow.cpp" line="314"/>
         <source>Center On Current Track</source>
         <translation>在当前音轨上居中</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="311"/>
+        <location filename="../gui/mainwindow.cpp" line="315"/>
         <source>Expanded Interface</source>
         <translation>展开界面</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="313"/>
+        <location filename="../gui/mainwindow.cpp" line="317"/>
         <source>Show Current Song Information</source>
         <translation>显示当前曲目的信息</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="316"/>
+        <location filename="../gui/mainwindow.cpp" line="320"/>
         <source>Full Screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="320"/>
+        <location filename="../gui/mainwindow.cpp" line="324"/>
         <source>Random</source>
         <translation>随机</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="321"/>
+        <location filename="../gui/mainwindow.cpp" line="325"/>
         <source>Repeat</source>
         <translation>重复</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="322"/>
+        <location filename="../gui/mainwindow.cpp" line="326"/>
         <source>Single</source>
         <translation>单曲</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="322"/>
+        <location filename="../gui/mainwindow.cpp" line="326"/>
         <source>When &apos;Single&apos; is activated, playback is stopped after current song, or song is repeated if &apos;Repeat&apos; is enabled.</source>
         <translation>&apos;单曲&apos;启用时, 将在当前歌曲完成后停止播放. 或者 &apos;重复&apos;启用时, 将反复播放.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="323"/>
+        <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>Consume</source>
         <translation>播放后删除</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="323"/>
+        <location filename="../gui/mainwindow.cpp" line="327"/>
         <source>When consume is activated, a song is removed from the play queue after it has been played.</source>
         <translation>当‘播放后删除’打开时，播放过的歌曲将被从队列中移除.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="324"/>
+        <location filename="../gui/mainwindow.cpp" line="328"/>
         <source>Find in Play Queue</source>
         <translation>在播放列表中查找</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="328"/>
+        <location filename="../gui/mainwindow.cpp" line="332"/>
         <source>Play HTTP Output Stream</source>
         <translation>播放HTTP输出流</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="334"/>
+        <location filename="../gui/mainwindow.cpp" line="338"/>
         <source>Locate In Library</source>
         <translation>在库中定位</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="335"/>
+        <location filename="../gui/mainwindow.cpp" line="339"/>
         <source>Artist</source>
         <translation>艺术家</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="336"/>
+        <location filename="../gui/mainwindow.cpp" line="340"/>
         <source>Album</source>
         <translation>专辑</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="337"/>
+        <location filename="../gui/mainwindow.cpp" line="341"/>
         <source>Track</source>
         <translation>音轨</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="349"/>
+        <location filename="../gui/mainwindow.cpp" line="353"/>
         <source>Play Next</source>
         <translation>下一首播放</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="352"/>
+        <location filename="../gui/mainwindow.cpp" line="356"/>
         <source>Edit Track Information (Play Queue)</source>
         <translation>编辑音轨信息（播放队列）</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="354"/>
+        <location filename="../gui/mainwindow.cpp" line="358"/>
         <source>Expand All</source>
         <translation>展开所有</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="356"/>
+        <location filename="../gui/mainwindow.cpp" line="360"/>
         <source>Collapse All</source>
         <translation>收起所有</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="358"/>
+        <location filename="../gui/mainwindow.cpp" line="362"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="412"/>
+        <location filename="../gui/mainwindow.cpp" line="418"/>
         <source>Play Queue</source>
         <translation>播放队列</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="417"/>
+        <location filename="../gui/mainwindow.cpp" line="423"/>
         <source>Library</source>
         <translation>库</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="422"/>
+        <location filename="../gui/mainwindow.cpp" line="428"/>
         <source>Folders</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="428"/>
+        <location filename="../gui/mainwindow.cpp" line="434"/>
         <source>Playlists</source>
         <translation>播放列表</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="438"/>
+        <location filename="../gui/mainwindow.cpp" line="444"/>
         <source>Internet</source>
         <translation>网络</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="447"/>
+        <location filename="../gui/mainwindow.cpp" line="453"/>
         <source>Devices</source>
         <translation>设备</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="454"/>
+        <location filename="../gui/mainwindow.cpp" line="460"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="459"/>
+        <location filename="../gui/mainwindow.cpp" line="465"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="494"/>
+        <location filename="../gui/mainwindow.cpp" line="500"/>
         <source>&lt;p&gt;Enter a string to search artist, album, title, etc. To filter based on year, add &lt;i&gt;#year-range&lt;/i&gt; to search string - e.g.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; return tracks from 2000&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; return tracks from the 80&apos;s&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; to search for string &lt;i&gt;Blah&lt;/i&gt; and only return tracks from 2000&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;输入字符串以搜索艺术家、专辑、音轨名等。若要以年份过滤搜索结果，可将 &lt;i&gt;#year-range&lt;/i&gt; 添加到搜索串开头，如：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#2000&lt;/i&gt;&lt;/b&gt; 返回2000年的曲目&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;#1980-1989&lt;/i&gt;&lt;/b&gt; 返回八十年代的歌曲&lt;/li&gt;&lt;li&gt;&lt;b&gt;&lt;i&gt;Blah #2000&lt;/i&gt;&lt;/b&gt; 搜索 &lt;i&gt;Blah&lt;/i&gt; 并且只返回2000年的曲目&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="596"/>
+        <location filename="../gui/mainwindow.cpp" line="607"/>
         <source>Show Menubar</source>
         <translation>显示菜单栏</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="602"/>
+        <location filename="../gui/mainwindow.cpp" line="613"/>
         <source>&amp;Music</source>
         <translation>音乐(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="613"/>
+        <location filename="../gui/mainwindow.cpp" line="625"/>
         <source>&amp;Edit</source>
         <translation>编辑(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="625"/>
+        <location filename="../gui/mainwindow.cpp" line="637"/>
         <source>&amp;View</source>
         <translation>视图(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="637"/>
+        <location filename="../gui/mainwindow.cpp" line="649"/>
         <source>&amp;Queue</source>
         <translation>队列(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="647"/>
+        <location filename="../gui/mainwindow.cpp" line="659"/>
         <source>&amp;Settings</source>
         <translation>设置(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="663"/>
+        <location filename="../gui/mainwindow.cpp" line="675"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="708"/>
+        <location filename="../gui/mainwindow.cpp" line="721"/>
         <source>Set Rating</source>
         <translation>打分</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="713"/>
+        <location filename="../gui/mainwindow.cpp" line="726"/>
         <source>No Rating</source>
         <translation>无评分</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1041"/>
+        <location filename="../gui/mainwindow.cpp" line="1063"/>
         <source>Failed to locate any songs matching the dynamic playlist rules.</source>
         <translation>无法给歌曲匹配动态设置.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1172"/>
+        <location filename="../gui/mainwindow.cpp" line="1196"/>
         <source>Connecting to %1</source>
         <translation>连接到 %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1206"/>
+        <location filename="../gui/mainwindow.cpp" line="1230"/>
         <source>Refresh MPD Database?</source>
         <translation>刷新MPD数据吗？</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1212"/>
+        <location filename="../gui/mainwindow.cpp" line="1236"/>
         <source>About Cantata</source>
         <translation>关于 Cantata</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1213"/>
+        <location filename="../gui/mainwindow.cpp" line="1237"/>
         <source>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD client.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2021 Craig Drummond&lt;br/&gt;Released under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;</source>
         <translation>&lt;b&gt;Cantata %1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;MPD 客户端.&lt;br/&gt;&lt;br/&gt;&amp;copy; 2011-2021 Craig Drummond&lt;br/&gt;以&lt;a href=&quot;http://www.gnu.org/licenses/gpl.html&quot;&gt;GPLv3&lt;/a&gt;发布</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1216"/>
+        <location filename="../gui/mainwindow.cpp" line="1240"/>
         <source>Please refer to &lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt;Cantata&apos;s issue tracker&lt;/a&gt; for a list of known issues, and to report new issues.</source>
         <translation>请参阅&lt;a href=&quot;https://github.com/CDrummond/cantata/issues&quot;&gt; Cantata 的问题跟踪器&lt;/a&gt;以获取已知问题列表，并报告新问题。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1218"/>
+        <location filename="../gui/mainwindow.cpp" line="1242"/>
         <source>Based upon &lt;a href=&quot;http://lowblog.nl&quot;&gt;QtMPC&lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</source>
         <translation>基于&lt;a href=&quot;http://lowblog.nl&quot;&gt; QtMPC &lt;/a&gt; - &amp;copy; 2007-2010 The QtMPC Authors&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1219"/>
+        <location filename="../gui/mainwindow.cpp" line="1243"/>
         <source>Context view backdrops courtesy of &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;http://www.fanart.tv&quot;&gt; FanArt.tv &lt;/a&gt;提供的上下文视图背景</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1220"/>
+        <location filename="../gui/mainwindow.cpp" line="1244"/>
         <source>Context view metadata courtesy of &lt;a href=&quot;http://www.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; and &lt;a href=&quot;http://www.last.fm&quot;&gt;Last.fm&lt;/a&gt;</source>
         <translation>上下文视图元数据由&lt;a href=&quot;http://www.wikipedia.org&quot;&gt; Wikipedia &lt;/a&gt;和&lt;a href=&quot;http://www.last.fm&quot;&gt; Last.fm &lt;/a&gt;提供</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1221"/>
+        <location filename="../gui/mainwindow.cpp" line="1245"/>
         <source>Please consider uploading your own music fan-art to &lt;a href=&quot;http://www.fanart.tv&quot;&gt;FanArt.tv&lt;/a&gt;</source>
         <translation>请考虑将自己的音乐迷艺术上传到&lt;a href=&quot;http://www.fanart.tv&quot;&gt; FanArt.tv &lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1228"/>
+        <location filename="../gui/mainwindow.cpp" line="1252"/>
         <source>A Podcast is currently being downloaded
 
 Quitting now will abort the download.</source>
@@ -5914,100 +5799,147 @@ Quitting now will abort the download.</source>
 现在退出会终止下载。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1229"/>
+        <location filename="../gui/mainwindow.cpp" line="1253"/>
         <source>Abort download and quit</source>
         <translation>终止并退出</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1257"/>
+        <location filename="../gui/mainwindow.cpp" line="1281"/>
         <source>Please close other dialogs first.</source>
         <translation>请先关闭其他对话框.</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1391"/>
-        <location filename="../gui/mainwindow.cpp" line="1402"/>
+        <location filename="../gui/mainwindow.cpp" line="1378"/>
+        <source>Create new partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1379"/>
+        <source>Remove partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1446"/>
+        <source>Move output to this partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1473"/>
+        <location filename="../gui/mainwindow.cpp" line="1484"/>
         <source>Enabled: %1</source>
         <translation>启用：%1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1395"/>
-        <location filename="../gui/mainwindow.cpp" line="1403"/>
+        <location filename="../gui/mainwindow.cpp" line="1477"/>
+        <location filename="../gui/mainwindow.cpp" line="1485"/>
         <source>Disabled: %1</source>
         <translation>禁用：%1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1625"/>
-        <location filename="../gui/mainwindow.cpp" line="1648"/>
+        <location filename="../gui/mainwindow.cpp" line="1705"/>
+        <source>Partition Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1705"/>
+        <source>Enter a name for the partition:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1717"/>
+        <source>Are you sure you wish to remove partition &quot;%1&quot;?
+
+This cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1718"/>
+        <source>Remove Partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1744"/>
+        <location filename="../gui/mainwindow.cpp" line="1767"/>
         <source>Server Information</source>
         <translation>服务器信息</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1628"/>
+        <location filename="../gui/mainwindow.cpp" line="1747"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Server&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Protocol:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1.%2.%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Uptime:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Playing:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Handlers:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Tags:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%7&lt;/td&gt;&lt;/tr&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1639"/>
+        <location filename="../gui/mainwindow.cpp" line="1758"/>
         <source>&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;Database&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Artists:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Albums:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Songs:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Duration:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;right&quot;&gt;Updated:&amp;nbsp;&lt;/td&gt;&lt;td&gt;%5&lt;/td&gt;&lt;/tr&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1796"/>
+        <location filename="../gui/mainwindow.cpp" line="1917"/>
+        <source>Cantata (%1) [%2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1919"/>
         <source>Cantata (%1)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1868"/>
+        <location filename="../gui/mainwindow.cpp" line="1921"/>
+        <source>Cantata [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mainwindow.cpp" line="1997"/>
         <source>MPD reported the following error: %1</source>
         <translation>MPD报告了如下错误: %1</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1939"/>
+        <location filename="../gui/mainwindow.cpp" line="2087"/>
         <source>Cantata</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1939"/>
+        <location filename="../gui/mainwindow.cpp" line="2087"/>
         <source>Playback stopped</source>
         <translation>回放停止</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="1989"/>
+        <location filename="../gui/mainwindow.cpp" line="2141"/>
         <source>Remove all songs from play queue?</source>
         <translation>删除所有曲目吗？</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2040"/>
+        <location filename="../gui/mainwindow.cpp" line="2192"/>
         <source>Priority</source>
         <translation>优先级</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2040"/>
+        <location filename="../gui/mainwindow.cpp" line="2192"/>
         <source>Enter priority (0..255):</source>
         <translation>输入优先级 (0到255)：</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2041"/>
+        <location filename="../gui/mainwindow.cpp" line="2193"/>
         <source>Decrease priority for each subsequent track</source>
         <translation>为之后的所有曲目降低优先级</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2068"/>
+        <location filename="../gui/mainwindow.cpp" line="2220"/>
         <source>Playlist Name</source>
         <translation>播放列表名称</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2068"/>
+        <location filename="../gui/mainwindow.cpp" line="2220"/>
         <source>Enter a name for the playlist:</source>
         <translation>输入播放列表名称:</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2071"/>
+        <location filename="../gui/mainwindow.cpp" line="2223"/>
         <source>&apos;%1&apos; is used to store favorite streams, please choose another name.</source>
         <translation>&apos;%1&apos;用于存储收藏的流，请选择其他名称。</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2075"/>
+        <location filename="../gui/mainwindow.cpp" line="2227"/>
         <source>A playlist named &apos;%1&apos; already exists!
 
 Add to that playlist?</source>
@@ -6016,29 +5948,29 @@ Add to that playlist?</source>
 添加到这个播放列表吗？</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2076"/>
+        <location filename="../gui/mainwindow.cpp" line="2228"/>
         <source>Existing Playlist</source>
         <translation>已有同名播放列表</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2137"/>
+        <location filename="../gui/mainwindow.cpp" line="2289"/>
         <source>Select Music Files</source>
         <translation>选择音乐文件</translation>
     </message>
     <message>
-        <location filename="../gui/mainwindow.cpp" line="2137"/>
+        <location filename="../gui/mainwindow.cpp" line="2289"/>
         <source>Music Files </source>
         <translation>音乐文件 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2166"/>
+        <location filename="../gui/mainwindow.cpp" line="2318"/>
         <source>%n Track(s)</source>
         <translation>
             <numerusform>%n 音轨</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/mainwindow.cpp" line="2168"/>
+        <location filename="../gui/mainwindow.cpp" line="2320"/>
         <source>%n Tracks (%1)</source>
         <translation>
             <numerusform>%n 音轨 (%1)</numerusform>
@@ -6224,29 +6156,29 @@ This cannot be undone.</source>
 <context>
     <name>NowPlayingWidget</name>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="320"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="326"/>
         <source>Copy To Clipboard</source>
         <translation>复制到剪贴板</translation>
     </message>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="321"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="327"/>
         <source>Now Playing</source>
         <translation>正在播放</translation>
     </message>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="459"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
         <source>%1 kb/s</source>
         <translation>%1 kb/s</translation>
     </message>
     <message numerus="yes">
-        <location filename="../widgets/nowplayingwidget.cpp" line="465"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
         <source>%n bit</source>
         <translation>
             <numerusform>%n bit</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../widgets/nowplayingwidget.cpp" line="471"/>
+        <location filename="../widgets/nowplayingwidget.cpp" line="477"/>
         <source>%1 kHz</source>
         <translation>%1 kHz</translation>
     </message>
@@ -6752,7 +6684,7 @@ This cannot be undone.</source>
     </message>
     <message>
         <location filename="../gui/playbacksettings.ui" line="94"/>
-        <location filename="../gui/playbacksettings.cpp" line="176"/>
+        <location filename="../gui/playbacksettings.cpp" line="177"/>
         <source>&lt;i&gt;Not Connected!&lt;br/&gt;The entries below cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</source>
         <translation>&lt;i&gt;未连接！&lt;br/&gt;由于 Cantata 未连接到 MPD，因此无法修改以下条目。&lt;/i&gt;</translation>
     </message>
@@ -6822,12 +6754,12 @@ This cannot be undone.</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.cpp" line="173"/>
+        <location filename="../gui/playbacksettings.cpp" line="174"/>
         <source>&lt;i&gt;Connected to %1&lt;br/&gt;The entries below apply to the currently connected MPD collection.&lt;/i&gt;</source>
         <translation>&lt;i&gt;已连接到 %1 &lt;br/&gt;以下条目适用于当前连接的 MPD 集合。&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/playbacksettings.cpp" line="183"/>
+        <location filename="../gui/playbacksettings.cpp" line="184"/>
         <source>Replay Gain is a proposed standard published in 2001 to normalize the perceived loudness of computer audio formats such as MP3 and Ogg Vorbis. It works on a track/album basis, and is now supported in a growing number of players.&lt;br/&gt;&lt;br/&gt;The following ReplayGain settings may be used:&lt;ul&gt;&lt;li&gt;&lt;i&gt;None&lt;/i&gt; - No ReplayGain is applied.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Track&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Album&lt;/i&gt; - Volume will be adjusted using the albums&apos;s ReplayGain tags.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Auto&lt;/i&gt; - Volume will be adjusted using the track&apos;s ReplayGain tags if random play is activated, otherwise the album&apos;s tags will be used.&lt;/li&gt;&lt;/ul&gt;</source>
         <translation>重放增益是 2001 年发布的提议的标准，用于规范诸如 MP3 和 Ogg Vorbis 之类的计算机音频格式的感知响度。它可以在曲目/专辑上运行，现在越来越多的播放器都支持它。&lt;br/&gt; &lt;br/&gt;可以使用以下 ReplayGain 设置：&lt;ul&gt; &lt;li&gt; &lt;i&gt;无&lt;/i&gt; -没有应用ReplayGain。&lt;/li&gt; &lt;li&gt; &lt;i&gt;曲目&lt;/i&gt;-音量将使用曲目的 ReplayGain 标签进行调整。&lt;/li&gt; &lt;li&gt; &lt;i&gt;专辑&lt;/i&gt;-音量将&lt;/li&gt; &lt;li&gt; &lt;i&gt;自动&lt;/i&gt;-如果激活了随机播放，则将使用曲目的 ReplayGain 标签来调节音量，否则将使用专辑的标签。&lt;/li&gt; &gt; &lt;/ul&gt;</translation>
     </message>
@@ -7575,117 +7507,117 @@ Overwrite?</source>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Collection</source>
         <translation>音乐集</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="74"/>
+        <location filename="../gui/preferencesdialog.cpp" line="80"/>
         <source>Collection Settings</source>
         <translation>音乐集设置</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
+        <location filename="../gui/preferencesdialog.cpp" line="81"/>
         <source>Playback</source>
         <translation>回放</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="75"/>
+        <location filename="../gui/preferencesdialog.cpp" line="81"/>
         <source>Playback Settings</source>
         <translation>回放设置</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="82"/>
         <source>Interface</source>
         <translation>界面</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="76"/>
+        <location filename="../gui/preferencesdialog.cpp" line="82"/>
         <source>Interface Settings</source>
         <translation>界面设置</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="83"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="77"/>
+        <location filename="../gui/preferencesdialog.cpp" line="83"/>
         <source>Info View Settings</source>
         <translation>信息视图设置</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Scrobbling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="78"/>
+        <location filename="../gui/preferencesdialog.cpp" line="85"/>
         <source>Scrobbling Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="90"/>
         <source>Audio CD</source>
         <translation>音乐 CD</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="82"/>
+        <location filename="../gui/preferencesdialog.cpp" line="90"/>
         <source>Audio CD Settings</source>
         <translation>音乐 CD 设置</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Proxy</source>
         <translation>代理</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="87"/>
+        <location filename="../gui/preferencesdialog.cpp" line="95"/>
         <source>Proxy Settings</source>
         <translation>代理设置</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="90"/>
+        <location filename="../gui/preferencesdialog.cpp" line="98"/>
         <source>Shortcuts</source>
         <translation>快捷</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="90"/>
+        <location filename="../gui/preferencesdialog.cpp" line="98"/>
         <source>Keyboard Shortcut Settings</source>
         <translation>快捷键设定</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="92"/>
+        <location filename="../gui/preferencesdialog.cpp" line="100"/>
         <source>Cache</source>
         <translation>缓存</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="92"/>
+        <location filename="../gui/preferencesdialog.cpp" line="100"/>
         <source>Cached Items</source>
         <translation>缓存项目</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="93"/>
+        <location filename="../gui/preferencesdialog.cpp" line="101"/>
         <source>Custom Actions</source>
         <translation>自定义动作</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="102"/>
         <source>Service Keys</source>
         <translation>第三方服务Keys</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="94"/>
+        <location filename="../gui/preferencesdialog.cpp" line="102"/>
         <source>Service API Keys</source>
         <translation>服务 API 密钥</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="96"/>
+        <location filename="../gui/preferencesdialog.cpp" line="104"/>
         <source>Cantata Preferences</source>
         <translation>Cantata首选项</translation>
     </message>
     <message>
-        <location filename="../gui/preferencesdialog.cpp" line="99"/>
+        <location filename="../gui/preferencesdialog.cpp" line="107"/>
         <source>Configure</source>
         <translation>设置</translation>
     </message>
@@ -7751,17 +7683,17 @@ Overwrite?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../context/wikipediaengine.cpp" line="277"/>
+        <location filename="../context/wikipediaengine.cpp" line="278"/>
         <source>Track listing</source>
         <translation>音轨列表</translation>
     </message>
     <message>
-        <location filename="../context/wikipediaengine.cpp" line="330"/>
+        <location filename="../context/wikipediaengine.cpp" line="331"/>
         <source>Read more on wikipedia</source>
         <translation>参阅维基百科</translation>
     </message>
     <message>
-        <location filename="../context/wikipediaengine.cpp" line="331"/>
+        <location filename="../context/wikipediaengine.cpp" line="332"/>
         <source>Open in browser</source>
         <translation>在浏览器打开</translation>
     </message>
@@ -7964,7 +7896,7 @@ Overwrite?</source>
         <translation>未知错误</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="607"/>
+        <location filename="../mpd-interface/song.cpp" line="608"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="72"/>
         <source>Artist</source>
         <translation>艺术家</translation>
@@ -7980,7 +7912,7 @@ Overwrite?</source>
         <translation>专辑艺术家</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="611"/>
+        <location filename="../mpd-interface/song.cpp" line="612"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="78"/>
         <source>Composer</source>
         <translation>作曲家</translation>
@@ -7991,19 +7923,19 @@ Overwrite?</source>
         <translation>注释</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="613"/>
+        <location filename="../mpd-interface/song.cpp" line="614"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="82"/>
         <source>Album</source>
         <translation>专辑</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="606"/>
+        <location filename="../mpd-interface/song.cpp" line="607"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="84"/>
         <source>Title</source>
         <translation>标题</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="620"/>
+        <location filename="../mpd-interface/song.cpp" line="621"/>
         <location filename="../playlists/playlistrulesdialog.cpp" line="86"/>
         <source>Genre</source>
         <translation>流派</translation>
@@ -8034,7 +7966,7 @@ Overwrite?</source>
         <translation> (解压)</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="118"/>
+        <location filename="../gui/coverdialog.cpp" line="107"/>
         <source>%1
 %2 x %3 (%4)</source>
         <comment>name
@@ -8043,7 +7975,7 @@ width x height (file size)</comment>
 %2 x %3 (%4)</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="120"/>
+        <location filename="../gui/coverdialog.cpp" line="109"/>
         <source>%1
 %2 x %3</source>
         <comment>name
@@ -8052,14 +7984,14 @@ width x height</comment>
 %2 x %3</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="156"/>
+        <location filename="../gui/coverdialog.cpp" line="145"/>
         <source>Current Cover</source>
         <translation>当前封面</translation>
     </message>
     <message>
-        <location filename="../gui/coverdialog.cpp" line="198"/>
+        <location filename="../gui/coverdialog.cpp" line="189"/>
         <source>CoverArt Archive</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CoverArt Archive</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.cpp" line="57"/>
@@ -8279,25 +8211,25 @@ width x height</comment>
         <translation>解析错误加载缓存文件，请检查您的歌曲标签。</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="1287"/>
-        <location filename="../models/streamsmodel.cpp" line="1294"/>
+        <location filename="../models/streamsmodel.cpp" line="1250"/>
+        <location filename="../models/streamsmodel.cpp" line="1257"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="208"/>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="210"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="209"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="211"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/mpdconnection.cpp" line="221"/>
+        <location filename="../mpd-interface/mpdconnection.cpp" line="222"/>
         <source>&quot;%1&quot; (%2:%3)</source>
         <comment>name (host:port)</comment>
         <translation>&quot;%1&quot; (%2:%3)</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="74"/>
+        <location filename="../mpd-interface/song.cpp" line="75"/>
         <source>Single Tracks</source>
         <translation>单个音轨</translation>
     </message>
@@ -8307,65 +8239,65 @@ width x height</comment>
         <translation>个人</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="72"/>
+        <location filename="../mpd-interface/song.cpp" line="73"/>
         <location filename="../support/utils.cpp" line="706"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="73"/>
+        <location filename="../mpd-interface/song.cpp" line="74"/>
         <source>Various Artists</source>
         <translation>多个艺术家</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="609"/>
+        <location filename="../mpd-interface/song.cpp" line="610"/>
         <source>Album artist</source>
         <translation>专辑艺术家</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="612"/>
+        <location filename="../mpd-interface/song.cpp" line="613"/>
         <source>Performer</source>
         <translation>表演者</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="615"/>
+        <location filename="../mpd-interface/song.cpp" line="616"/>
         <source>Track number</source>
         <translation>专辑编号</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="618"/>
+        <location filename="../mpd-interface/song.cpp" line="619"/>
         <source>Disc number</source>
         <translation>唱片编号</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="622"/>
+        <location filename="../mpd-interface/song.cpp" line="623"/>
         <source>Year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="625"/>
+        <location filename="../mpd-interface/song.cpp" line="626"/>
         <source>Original Year</source>
         <translation>原始年份</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="628"/>
+        <location filename="../mpd-interface/song.cpp" line="629"/>
         <source>Length</source>
         <translation>长度</translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="842"/>
+        <location filename="../mpd-interface/song.cpp" line="853"/>
         <source>&lt;b&gt;%1&lt;/b&gt; on &lt;b&gt;%2&lt;/b&gt;</source>
         <comment>Song on Album</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="843"/>
+        <location filename="../mpd-interface/song.cpp" line="854"/>
         <source>&lt;b&gt;%1&lt;/b&gt; by &lt;b&gt;%2&lt;/b&gt; on &lt;b&gt;%3&lt;/b&gt;</source>
         <comment>Song by Artist on Album</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpd-interface/song.cpp" line="870"/>
+        <location filename="../mpd-interface/song.cpp" line="881"/>
         <source>(Stream)</source>
         <translation>(流媒体)</translation>
     </message>
@@ -8430,19 +8362,8 @@ width x height</comment>
         <translation>超过速率限制</translation>
     </message>
     <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="215"/>
         <source>General</source>
-        <translation>一般</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="216"/>
-        <source>Digitally Imported</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="217"/>
-        <source>Local and National Radio (ListenLive)</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">一般</translation>
     </message>
     <message>
         <location filename="../support/dialog.cpp" line="119"/>
@@ -8629,153 +8550,153 @@ width x height</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="138"/>
+        <location filename="../gui/main.cpp" line="140"/>
         <source>mpd - MPD communication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="139"/>
+        <location filename="../gui/main.cpp" line="141"/>
         <source>mpdparse - Parsing of MPD response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="140"/>
+        <location filename="../gui/main.cpp" line="142"/>
         <source>cue - Cue file parsing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="141"/>
+        <location filename="../gui/main.cpp" line="143"/>
         <source>covers - Cover fetching, and loading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="142"/>
+        <location filename="../gui/main.cpp" line="144"/>
         <source>covers-verbose - Cover fetching, and loading (verbose) </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="143"/>
+        <location filename="../gui/main.cpp" line="145"/>
         <source>context-wikipedia - Wikipedia info in context view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="144"/>
+        <location filename="../gui/main.cpp" line="146"/>
         <source>context-lastfm - Last.fm info in context view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="145"/>
+        <location filename="../gui/main.cpp" line="147"/>
         <source>context-widget - General debug in context view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="146"/>
+        <location filename="../gui/main.cpp" line="148"/>
         <source>context-lyrics - Lyrics in context view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="147"/>
+        <location filename="../gui/main.cpp" line="149"/>
         <source>dynamic - Dynamic playlists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="148"/>
+        <location filename="../gui/main.cpp" line="150"/>
         <source>stream-fetcher - Fetching of stream URLs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="149"/>
+        <location filename="../gui/main.cpp" line="151"/>
         <source>http-server - Built-in HTTP server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="150"/>
+        <location filename="../gui/main.cpp" line="152"/>
         <source>song-dialog - Song dialogs (tags, replaygain, organiser)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="151"/>
+        <location filename="../gui/main.cpp" line="153"/>
         <source>network-access - Network access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="152"/>
+        <location filename="../gui/main.cpp" line="154"/>
         <source>threads - Threads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="153"/>
+        <location filename="../gui/main.cpp" line="156"/>
         <source>scrobbler - Scrobbling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="154"/>
+        <location filename="../gui/main.cpp" line="158"/>
         <source>sql - SQL access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="155"/>
+        <location filename="../gui/main.cpp" line="159"/>
         <source>media-keys - Media-keys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="156"/>
+        <location filename="../gui/main.cpp" line="160"/>
         <source>custom-actions - Custom actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="158"/>
+        <location filename="../gui/main.cpp" line="162"/>
         <source>tags - Tag reading/writing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="161"/>
+        <location filename="../gui/main.cpp" line="165"/>
         <source>devices - Device support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="164"/>
+        <location filename="../gui/main.cpp" line="168"/>
         <source>http-stream - Playback of MPD output streams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="167"/>
+        <location filename="../gui/main.cpp" line="171"/>
         <source>avahi - Auto-discovery of MPD servers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="169"/>
+        <location filename="../gui/main.cpp" line="173"/>
         <source>all - Enable all debug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="360"/>
+        <location filename="../gui/main.cpp" line="366"/>
         <source>MPD Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="363"/>
+        <location filename="../gui/main.cpp" line="369"/>
         <source>Comma-separated list of debug areas - possible values:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="364"/>
+        <location filename="../gui/main.cpp" line="370"/>
         <source>Log debug messages to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="365"/>
+        <location filename="../gui/main.cpp" line="371"/>
         <source>Disable network access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="366"/>
+        <location filename="../gui/main.cpp" line="372"/>
         <source>Collection name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main.cpp" line="367"/>
+        <location filename="../gui/main.cpp" line="373"/>
         <source>Start full screen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9022,7 +8943,7 @@ Please choose a different name.</source>
         <location filename="../replaygain/rgdialog.cpp" line="242"/>
         <location filename="../replaygain/rgdialog.cpp" line="243"/>
         <source>Abort</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">终止</translation>
     </message>
     <message>
         <location filename="../replaygain/rgdialog.cpp" line="242"/>
@@ -9120,12 +9041,12 @@ Please choose a different name.</source>
     <message>
         <location filename="../replaygain/rgdialog.cpp" line="645"/>
         <source>Remove the selected tracks from the list?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">从列表中删除选定的曲目？</translation>
     </message>
     <message>
         <location filename="../replaygain/rgdialog.cpp" line="646"/>
         <source>Remove Tracks</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">删除曲目</translation>
     </message>
 </context>
 <context>
@@ -9294,7 +9215,7 @@ Please choose a different name.</source>
     <message>
         <location filename="../models/searchmodel.cpp" line="90"/>
         <source># (Track Number)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">#(音轨编号)</translation>
     </message>
 </context>
 <context>
@@ -9314,7 +9235,9 @@ Please choose a different name.</source>
         <source>Are you sure you wish to delete the selected songs?
 
 This cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">您确定要删除所选的歌曲吗？
+
+这不能被撤消。</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="176"/>
@@ -9424,7 +9347,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="273"/>
         <source>File:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">文件：</translation>
     </message>
     <message>
         <location filename="../gui/searchpage.cpp" line="273"/>
@@ -9444,7 +9367,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/searchpage.cpp" line="280"/>
         <source>No tracks found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">未发现音轨。</translation>
     </message>
     <message numerus="yes">
         <location filename="../gui/searchpage.cpp" line="280"/>
@@ -9569,7 +9492,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/serversettings.cpp" line="122"/>
         <source>Discover...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">发现……</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="262"/>
@@ -9589,12 +9512,12 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/serversettings.cpp" line="270"/>
         <source>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; %1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;i&gt;&lt;b&gt;注意：&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="270"/>
         <source>If you wish to have an advanced MPD setup (e.g. multiple audio outputs, full DSD support, etc) then you &lt;b&gt;must&lt;/b&gt; choose &apos;Standard&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">如果您希望使用高级 MPD 设置（例如，多个音频输出，全面的 DSD 支持等），则&lt;b&gt;必须&lt;/b&gt;选择“标准”</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.cpp" line="272"/>
@@ -9630,19 +9553,6 @@ This cannot be undone.</source>
         <location filename="../gui/serversettings.cpp" line="391"/>
         <source>Default</source>
         <translation>默认</translation>
-    </message>
-</context>
-<context>
-    <name>ServiceStatusLabel</name>
-    <message>
-        <location filename="../widgets/servicestatuslabel.cpp" line="42"/>
-        <source>Logged into %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../widgets/servicestatuslabel.cpp" line="43"/>
-        <source>&lt;b&gt;NOT&lt;/b&gt; logged into %1</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9889,209 +9799,209 @@ Reload from disk, or delete disk copy and download?</source>
         <translation>删除文件</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="531"/>
-        <location filename="../context/songview.cpp" line="611"/>
+        <location filename="../context/songview.cpp" line="529"/>
+        <location filename="../context/songview.cpp" line="609"/>
         <source>Artist</source>
         <translation>艺术家</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="532"/>
-        <location filename="../context/songview.cpp" line="612"/>
+        <location filename="../context/songview.cpp" line="530"/>
+        <location filename="../context/songview.cpp" line="610"/>
         <source>Album artist</source>
         <translation>专辑艺术家</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="533"/>
-        <location filename="../context/songview.cpp" line="613"/>
+        <location filename="../context/songview.cpp" line="531"/>
+        <location filename="../context/songview.cpp" line="611"/>
         <source>Composer</source>
         <translation>作曲家</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="535"/>
+        <location filename="../context/songview.cpp" line="533"/>
         <source>Lyricist</source>
         <translation>作词</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="536"/>
+        <location filename="../context/songview.cpp" line="534"/>
         <source>Conductor</source>
         <translation>指挥</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="537"/>
+        <location filename="../context/songview.cpp" line="535"/>
         <source>Remixer</source>
         <translation>混音</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="538"/>
-        <location filename="../context/songview.cpp" line="615"/>
+        <location filename="../context/songview.cpp" line="536"/>
+        <location filename="../context/songview.cpp" line="613"/>
         <source>Album</source>
         <translation>专辑</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="539"/>
+        <location filename="../context/songview.cpp" line="537"/>
         <source>Subtitle</source>
         <translation>副标题</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="540"/>
-        <location filename="../context/songview.cpp" line="616"/>
+        <location filename="../context/songview.cpp" line="538"/>
+        <location filename="../context/songview.cpp" line="614"/>
         <source>Track number</source>
         <translation>音轨编号</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="541"/>
-        <location filename="../context/songview.cpp" line="617"/>
+        <location filename="../context/songview.cpp" line="539"/>
+        <location filename="../context/songview.cpp" line="615"/>
         <source>Disc number</source>
         <translation>唱片编号</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="542"/>
-        <location filename="../context/songview.cpp" line="619"/>
+        <location filename="../context/songview.cpp" line="540"/>
+        <location filename="../context/songview.cpp" line="617"/>
         <source>Genre</source>
         <translation>流派</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="543"/>
+        <location filename="../context/songview.cpp" line="541"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="544"/>
+        <location filename="../context/songview.cpp" line="542"/>
         <source>Original date</source>
         <translation>原始日期</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="545"/>
-        <location filename="../context/songview.cpp" line="622"/>
+        <location filename="../context/songview.cpp" line="543"/>
+        <location filename="../context/songview.cpp" line="620"/>
         <source>Comment</source>
         <translation>注释</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="546"/>
+        <location filename="../context/songview.cpp" line="544"/>
         <source>Copyright</source>
         <translation>版权</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="547"/>
+        <location filename="../context/songview.cpp" line="545"/>
         <source>Label</source>
         <translation>标签</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="548"/>
+        <location filename="../context/songview.cpp" line="546"/>
         <source>Catalogue number</source>
         <translation>目录号</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="549"/>
+        <location filename="../context/songview.cpp" line="547"/>
         <source>Title sort</source>
         <translation>按标题排序</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="550"/>
+        <location filename="../context/songview.cpp" line="548"/>
         <source>Artist sort</source>
         <translation>按艺术家排序</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="551"/>
+        <location filename="../context/songview.cpp" line="549"/>
         <source>Album artist sort</source>
         <translation>按专辑艺术家排序</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="552"/>
+        <location filename="../context/songview.cpp" line="550"/>
         <source>Album sort</source>
         <translation>按专辑排序</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="553"/>
+        <location filename="../context/songview.cpp" line="551"/>
         <source>Encoded by</source>
         <translation>以...编码</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="554"/>
+        <location filename="../context/songview.cpp" line="552"/>
         <source>Encoder</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="555"/>
+        <location filename="../context/songview.cpp" line="553"/>
         <source>Mood</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="556"/>
+        <location filename="../context/songview.cpp" line="554"/>
         <source>Media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="557"/>
-        <location filename="../context/songview.cpp" line="596"/>
+        <location filename="../context/songview.cpp" line="555"/>
+        <location filename="../context/songview.cpp" line="594"/>
         <source>Bitrate</source>
         <translation>比特率</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="558"/>
-        <location filename="../context/songview.cpp" line="599"/>
+        <location filename="../context/songview.cpp" line="556"/>
+        <location filename="../context/songview.cpp" line="597"/>
         <source>Sample rate</source>
         <translation>采样率</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="559"/>
-        <location filename="../context/songview.cpp" line="602"/>
+        <location filename="../context/songview.cpp" line="557"/>
+        <location filename="../context/songview.cpp" line="600"/>
         <source>Channels</source>
         <translation>通道</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="561"/>
+        <location filename="../context/songview.cpp" line="559"/>
         <source>Tagging time</source>
         <translation>标记时间</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="583"/>
+        <location filename="../context/songview.cpp" line="581"/>
         <source>Performer (%1)</source>
         <translation>表演者（%1）</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="596"/>
+        <location filename="../context/songview.cpp" line="594"/>
         <source>%1 kb/s</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="599"/>
+        <location filename="../context/songview.cpp" line="597"/>
         <source>%1 Hz</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="606"/>
+        <location filename="../context/songview.cpp" line="604"/>
         <source>Bits</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="614"/>
+        <location filename="../context/songview.cpp" line="612"/>
         <source>Performer</source>
         <translation>表演者</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="618"/>
+        <location filename="../context/songview.cpp" line="616"/>
         <source>Duration</source>
         <translation>持续时间</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="620"/>
+        <location filename="../context/songview.cpp" line="618"/>
         <source>Year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="621"/>
+        <location filename="../context/songview.cpp" line="619"/>
         <source>Original Year</source>
         <translation>原始年份</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="658"/>
-        <location filename="../context/songview.cpp" line="661"/>
+        <location filename="../context/songview.cpp" line="656"/>
+        <location filename="../context/songview.cpp" line="659"/>
         <source>Filename</source>
         <translation>文件名</translation>
     </message>
     <message>
-        <location filename="../context/songview.cpp" line="894"/>
+        <location filename="../context/songview.cpp" line="892"/>
         <source>Fetching lyrics via %1</source>
         <translation>通过 %1 获取歌词</translation>
     </message>
@@ -10107,12 +10017,12 @@ Reload from disk, or delete disk copy and download?</source>
 <context>
     <name>SpaceLabel</name>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="230"/>
+        <location filename="../gui/cachesettings.cpp" line="232"/>
         <source>Calculating...</source>
         <translation>计算中...</translation>
     </message>
     <message>
-        <location filename="../gui/cachesettings.cpp" line="240"/>
+        <location filename="../gui/cachesettings.cpp" line="242"/>
         <source>Total space used: %1</source>
         <translation>总计空间占用: %1</translation>
     </message>
@@ -10326,86 +10236,6 @@ Overwrite?</source>
     </message>
 </context>
 <context>
-    <name>StreamProviderListDialog</name>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="127"/>
-        <source>Installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="129"/>
-        <source>Update available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="131"/>
-        <source>Check the providers you wish to install/update.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="144"/>
-        <source>Install/Update Stream Providers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="193"/>
-        <source>Downloading list...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="238"/>
-        <source>Failed to download list of stream providers!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="249"/>
-        <source>Installing/updating %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="256"/>
-        <source>Failed to install &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="265"/>
-        <source>Failed to download &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
-        <source>Abort installation/update?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="364"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../streams/streamproviderlistdialog.cpp" line="412"/>
-        <source>%n Update(s) available</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="422"/>
-        <source>Downloading %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="439"/>
-        <source>Install/Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamproviderlistdialog.cpp" line="441"/>
-        <source>Update all updateable providers</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>StreamSearchModel</name>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="46"/>
@@ -10419,41 +10249,36 @@ Overwrite?</source>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="48"/>
-        <source>Dirble</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/streamsearchmodel.cpp" line="49"/>
         <source>Community Radio Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="108"/>
+        <location filename="../models/streamsearchmodel.cpp" line="107"/>
         <source>Stream Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="110"/>
+        <location filename="../models/streamsearchmodel.cpp" line="109"/>
         <source>Search for radio streams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="137"/>
+        <location filename="../models/streamsearchmodel.cpp" line="136"/>
         <source>Enter string to search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="137"/>
+        <location filename="../models/streamsearchmodel.cpp" line="136"/>
         <source>Not Loaded</source>
         <translation>未加载</translation>
     </message>
     <message>
-        <location filename="../models/streamsearchmodel.cpp" line="139"/>
+        <location filename="../models/streamsearchmodel.cpp" line="138"/>
         <source>Loading...</source>
         <translation>加载中……</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/streamsearchmodel.cpp" line="141"/>
+        <location filename="../models/streamsearchmodel.cpp" line="140"/>
         <source>%n Entry(s)</source>
         <translation>
             <numerusform>%n 项</numerusform>
@@ -10463,7 +10288,7 @@ Overwrite?</source>
 <context>
     <name>StreamSearchPage</name>
     <message>
-        <location filename="../streams/streamspage.cpp" line="662"/>
+        <location filename="../streams/streamspage.cpp" line="603"/>
         <source>Added &apos;%1&apos;&apos; to favorites</source>
         <translation>已将“%1”添加到收藏夹</translation>
     </message>
@@ -10471,199 +10296,182 @@ Overwrite?</source>
 <context>
     <name>StreamsBrowsePage</name>
     <message>
-        <location filename="../streams/streamspage.cpp" line="103"/>
+        <location filename="../streams/streamspage.cpp" line="98"/>
         <source>Import Streams Into Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="104"/>
+        <location filename="../streams/streamspage.cpp" line="99"/>
         <source>Export Favorite Streams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="105"/>
+        <location filename="../streams/streamspage.cpp" line="100"/>
         <source>Add New Stream To Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="106"/>
+        <location filename="../streams/streamspage.cpp" line="101"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="107"/>
+        <location filename="../streams/streamspage.cpp" line="102"/>
         <source>Seatch For Streams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="141"/>
         <source>Configure</source>
-        <translation>设置</translation>
+        <translation type="vanished">设置</translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="157"/>
-        <source>Digitally Imported</source>
-        <comment>Service name</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamspage.cpp" line="253"/>
+        <location filename="../streams/streamspage.cpp" line="206"/>
         <source>Import Streams</source>
         <translation>导入流媒体</translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="254"/>
+        <location filename="../streams/streamspage.cpp" line="207"/>
         <source>XML Streams (*.xml *.xml.gz *.cantata)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="265"/>
+        <location filename="../streams/streamspage.cpp" line="218"/>
         <source>Export Streams</source>
         <translation>导出流媒体</translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="265"/>
+        <location filename="../streams/streamspage.cpp" line="218"/>
         <source>XML Streams (*.xml.gz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="276"/>
+        <location filename="../streams/streamspage.cpp" line="229"/>
         <source>Failed to create &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="290"/>
-        <location filename="../streams/streamspage.cpp" line="492"/>
+        <location filename="../streams/streamspage.cpp" line="243"/>
+        <location filename="../streams/streamspage.cpp" line="445"/>
         <source>Stream &apos;%1&apos; already exists!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="292"/>
-        <location filename="../streams/streamspage.cpp" line="494"/>
+        <location filename="../streams/streamspage.cpp" line="245"/>
+        <location filename="../streams/streamspage.cpp" line="447"/>
         <source>A stream named &apos;%1&apos; already exists!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="311"/>
+        <location filename="../streams/streamspage.cpp" line="264"/>
         <source>Bookmark added</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="313"/>
+        <location filename="../streams/streamspage.cpp" line="266"/>
         <source>Already bookmarked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="363"/>
-        <location filename="../streams/streamspage.cpp" line="381"/>
+        <location filename="../streams/streamspage.cpp" line="316"/>
+        <location filename="../streams/streamspage.cpp" line="334"/>
         <source>Already in favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="409"/>
+        <location filename="../streams/streamspage.cpp" line="362"/>
         <source>Reload &apos;%1&apos; streams?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="423"/>
+        <location filename="../streams/streamspage.cpp" line="376"/>
         <source>Are you sure you wish to remove bookmark to &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="429"/>
+        <location filename="../streams/streamspage.cpp" line="382"/>
         <source>Are you sure you wish to remove all &apos;%1&apos; bookmarks?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="453"/>
+        <location filename="../streams/streamspage.cpp" line="406"/>
         <source>Are you sure you wish to remove the %1 selected streams?</source>
         <translation>确定移除选择的流媒体 %1 ?</translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="457"/>
+        <location filename="../streams/streamspage.cpp" line="410"/>
         <source>Are you sure you wish to remove &apos;%1&apos;?</source>
         <translation>确定要移除 &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../streams/streamspage.cpp" line="581"/>
+        <location filename="../streams/streamspage.cpp" line="522"/>
         <source>Added &apos;%1&apos;&apos; to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">已将“%1”添加到收藏夹</translation>
     </message>
 </context>
 <context>
     <name>StreamsModel</name>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="229"/>
+        <location filename="../models/streamsmodel.cpp" line="226"/>
         <source>Bookmarks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="494"/>
+        <location filename="../models/streamsmodel.cpp" line="486"/>
         <source>TuneIn</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="497"/>
+        <location filename="../models/streamsmodel.cpp" line="489"/>
         <source>IceCast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="498"/>
+        <location filename="../models/streamsmodel.cpp" line="490"/>
         <source>ShoutCast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="501"/>
-        <source>Dirble</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/streamsmodel.cpp" line="504"/>
+        <location filename="../models/streamsmodel.cpp" line="493"/>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="507"/>
+        <location filename="../models/streamsmodel.cpp" line="495"/>
         <source>Bookmark Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="508"/>
+        <location filename="../models/streamsmodel.cpp" line="496"/>
         <source>Add Stream To Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="509"/>
-        <source>Configure Digitally Imported</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../models/streamsmodel.cpp" line="510"/>
+        <location filename="../models/streamsmodel.cpp" line="497"/>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">重新加载</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="545"/>
+        <location filename="../models/streamsmodel.cpp" line="532"/>
         <source>Streams</source>
         <translation>流媒体</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="550"/>
+        <location filename="../models/streamsmodel.cpp" line="537"/>
         <source>Radio stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="635"/>
+        <location filename="../models/streamsmodel.cpp" line="622"/>
         <source>Not Loaded</source>
         <translation>未加载</translation>
     </message>
     <message>
-        <location filename="../models/streamsmodel.cpp" line="637"/>
+        <location filename="../models/streamsmodel.cpp" line="624"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">加载中……</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/streamsmodel.cpp" line="639"/>
+        <location filename="../models/streamsmodel.cpp" line="626"/>
         <source>%n Entry(s)</source>
         <translation>
             <numerusform>%n 项</numerusform>
@@ -10673,92 +10481,12 @@ Overwrite?</source>
 <context>
     <name>StreamsSettings</name>
     <message>
-        <location filename="../streams/streamssettings.ui" line="12"/>
-        <source>Use the checkboxes below to configure the list of active providers.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.ui" line="25"/>
-        <source>Built-in categories are shown in italic, and these cannot be removed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="65"/>
-        <source>Configure Streams</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="73"/>
-        <source>From File...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="74"/>
-        <source>Download...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="81"/>
-        <source>Configure Provider</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="82"/>
-        <source>Install</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="83"/>
         <source>Remove</source>
-        <translation>删除</translation>
+        <translation type="vanished">删除</translation>
     </message>
     <message>
-        <location filename="../streams/streamssettings.cpp" line="136"/>
-        <source>Install Streams</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="136"/>
-        <source>Cantata Streams (*.streams)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="150"/>
-        <source>A category named &apos;%1&apos; already exists!
-
-Overwrite?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="181"/>
-        <source>Failed to open package file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="201"/>
-        <location filename="../streams/streamssettings.cpp" line="250"/>
-        <source>Invalid file format!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="210"/>
-        <source>Failed to create stream category folder!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="218"/>
-        <source>Failed to save stream list!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="276"/>
         <source>Are you sure you wish to remove &apos;%1&apos;?</source>
-        <translation>确定要移除 &apos;%1&apos;?</translation>
-    </message>
-    <message>
-        <location filename="../streams/streamssettings.cpp" line="283"/>
-        <source>Failed to remove streams folder!</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">确定要移除 &apos;%1&apos;?</translation>
     </message>
 </context>
 <context>
@@ -11390,7 +11118,7 @@ If you rename a file (or the folder it is within), then the rating associated wi
 <context>
     <name>TrayItem</name>
     <message>
-        <location filename="../gui/trayitem.cpp" line="182"/>
+        <location filename="../gui/trayitem.cpp" line="187"/>
         <source>Cantata</source>
         <translation></translation>
     </message>
@@ -11471,13 +11199,13 @@ If you rename a file (or the folder it is within), then the rating associated wi
 <context>
     <name>WikipediaEngine</name>
     <message>
-        <location filename="../context/wikipediaengine.cpp" line="470"/>
+        <location filename="../context/wikipediaengine.cpp" line="471"/>
         <source>artist|band|singer|vocalist|musician</source>
         <comment>Search pattern for an artist or band, separated by |</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../context/wikipediaengine.cpp" line="474"/>
+        <location filename="../context/wikipediaengine.cpp" line="475"/>
         <source>album|score|soundtrack</source>
         <comment>Search pattern for an album, separated by |</comment>
         <translation type="unfinished"></translation>
@@ -11493,7 +11221,7 @@ If you rename a file (or the folder it is within), then the rating associated wi
     <message>
         <location filename="../context/wikipediasettings.cpp" line="91"/>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">重新加载</translation>
     </message>
 </context>
 </TS>

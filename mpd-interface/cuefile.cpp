@@ -354,7 +354,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
                     fileType = cmdValSplitted[1];           // file audio: type
                 }
             }
-            // check if is a valid audio file (else if this is a data file, all of it's tracks will be ignored...)
+            // check if is a valid audio file (else if this is a data file, all of its tracks will be ignored...)
             isValidFile = fileType.compare("BINARY", Qt::CaseInsensitive) && fileType.compare("MOTOROLA", Qt::CaseInsensitive);
 
             DBUG << "FILE: file:" << file << ", fileType:" << fileType << ", fileValid?" << isValidFile;
@@ -556,7 +556,7 @@ bool CueFile::parse(const QString &fileName, const QString &dir, QList<Song> &so
             files.insert(songFile);
         }
         // set time...
-        //      note: the last TRACK for every FILE gets it's 'end' marker from the media file's length
+        //      note: the last TRACK for every FILE gets its 'end' marker from the media file's length
         //            (this will be calculated elsewhere when calling MPDParseUtils::parseDirItems)
         if (i+1 < tracks.size() && tracks.at(i).value("file") == tracks[i+1].value("file")) {
             int time=0;

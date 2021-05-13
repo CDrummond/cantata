@@ -1346,7 +1346,7 @@ void KCategorizedView::updateGeometries()
 
     //BEGIN bugs 213068, 287847 ------------------------------------------------------------
     /*
-     * QListView::updateGeometries() has it's own opinion on whether the scrollbars should be visible (valid range) or not
+     * QListView::updateGeometries() has its own opinion on whether the scrollbars should be visible (valid range) or not
      * and triggers a (sometimes additionally timered) resize through ::layoutChildren()
      * http://qt.gitorious.org/qt/qt/blobs/4.7/src/gui/itemviews/qlistview.cpp#line1499
      * (the comment above the main block isn't all accurate, layoutChldren is called regardless of the policy)

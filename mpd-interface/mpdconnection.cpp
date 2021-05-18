@@ -536,6 +536,7 @@ void MPDConnection::reconnect()
         if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
             sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
         }
+        serverInfo.detect();
         listPartitions();
         getStatus();
         getStats();

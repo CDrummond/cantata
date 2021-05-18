@@ -135,6 +135,13 @@ static int nextKey(int &key)
     return k;
 }
 
+static QString escapeActionText(const QString& text)
+{
+    QString result = text;
+    result.replace(QLatin1String("&"), QLatin1String("&&"));
+    return result;
+}
+
 static const char * constRatingKey="rating";
 static const char * constUserSettingProp = "user-setting-1";
 static const char * constUserSetting2Prop = "user-setting-2";
@@ -1368,7 +1375,7 @@ void MainWindow::partitionsUpdated(const QList<Partition> &partitions)
     QList<Partition> sortedPartitions=partitions;
     std::sort(sortedPartitions.begin(), sortedPartitions.end());
     for (const Partition &p: sortedPartitions) {
-        QAction *act=menu->addAction(p.name, this, SLOT(selectPartition()));
+        QAction *act=menu->addAction(escapeActionText(p.name), this, SLOT(selectPartition()));
         act->setData(p.name);
         act->setCheckable(true);
         act->setChecked(p.name==current);
@@ -1379,7 +1386,7 @@ void MainWindow::partitionsUpdated(const QList<Partition> &partitions)
     QMenu* deleteMenu = menu->addMenu(tr("Remove partition"));
     deleteMenu->menuAction()->setData("deletepartition");
     for (const Partition &p: sortedPartitions) {
-        QAction *act=deleteMenu->addAction(p.name, this, SLOT(deleteAPartition()));
+        QAction *act=deleteMenu->addAction(escapeActionText(p.name), this, SLOT(deleteAPartition()));
         act->setData(p.name);
         act->setVisible(p.name!=current);
     }
@@ -1438,7 +1445,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
             if (!o.inCurrentPartition) {
                 continue;
             }
-            QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
+            QAction *act=menu->addAction(escapeActionText(o.name), this, SLOT(toggleOutput()));
             act->setData(o.id);
             act->setCheckable(true);
             act->setChecked(o.enabled);
@@ -1452,7 +1459,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
             if (o.inCurrentPartition) {
                 continue;
             }
-            QAction *act=moveMenu->addAction(o.name, this, SLOT(moveOutputToThisPartition()));
+            QAction *act=moveMenu->addAction(escapeActionText(o.name), this, SLOT(moveOutputToThisPartition()));
             act->setData(o.name);
         }
     } else {
@@ -1521,7 +1528,7 @@ void MainWindow::updateConnectionsMenu()
             std::sort(connections.begin(), connections.end());
             int i=Qt::Key_1;
             for (const MPDConnectionDetails &d: connections) {
-                QAction *act=menu->addAction(d.getName(), this, SLOT(changeConnection()));
+                QAction *act=menu->addAction(escapeActionText(d.getName()), this, SLOT(changeConnection()));
                 act->setData(d.name);
                 act->setCheckable(true);
                 act->setChecked(d.name==currentConn);

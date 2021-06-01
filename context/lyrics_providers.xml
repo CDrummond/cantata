@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lyricproviders>
   <provider name="azlyrics.com" charset="utf-8" url="https://www.azlyrics.com/lyrics/{artist}/{title}.html">
-    <urlFormat replace=" ._@,;&amp;\/()'&quot;-" with=""/>
+    <urlFormat replace=" ._@,;&amp;\/()'&quot;-?" with=""/>
     <extract>
       <item begin="&lt;!-- END OF RINGTONE 1 --&gt;" end="&lt;!-- RINGTONE 2 --&gt;"/>
     </extract>
@@ -110,7 +110,7 @@
     <invalidIndicator value="Verifique se o nome do seu arquivo e sua"/>
   </provider>
   <provider name="genius.com" charset="utf-8" url="https://www.genius.com/{artist}-{title}-lyrics">
-      <urlFormat replace=",._@!#%^*+;\/&quot;'()[]" with=""/>
+      <urlFormat replace=",._@!#%^*+;\/&quot;'()[]?" with=""/>
       <urlFormat replace=" :" with="-"/>
       <!-- When $ is used as the dollar sign it is ommitted from the url
            When $ is used instead of 's',

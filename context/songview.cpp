@@ -915,7 +915,6 @@ void SongView::setMode(Mode m)
     mode=m;
     bool fileExists=Mode_Display==m && !lyricsFile.isEmpty() && QFileInfo(lyricsFile).isWritable();
     delAction->setEnabled(fileExists);
-    refreshAction->setEnabled(fileExists);
     if (scrollAction->isChecked()) {
         if (Mode_Display==mode) {
             scroll();

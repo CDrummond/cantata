@@ -91,6 +91,7 @@ namespace Utils
     inline QString formatNumber(double number, int precision) { return QString::number(number, 'f', precision); }
     extern QString formatDuration(const quint32 totalseconds);
     extern QString formatTime(const quint32 seconds, bool zeroIsUnknown=false);
+    inline QString escapeActionText(const QString &text) { return QString(text).replace(QLatin1String("&"), QLatin1String("&&")); }
 
     extern QString cleanPath(const QString &p);
     extern QString dataDir(const QString &sub=QString(), bool create=false);

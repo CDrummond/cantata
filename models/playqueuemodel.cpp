@@ -82,6 +82,7 @@ static const QLatin1String constSortByComposerKey("composer");
 static const QLatin1String constSortByPerformerKey("performer");
 static const QLatin1String constSortByTitleKey("title");
 static const QLatin1String constSortByNumberKey("track");
+static const QLatin1String constSortByPathKey("path");
 
 static QSet<QString> constM3uPlaylists = QSet<QString>() << QLatin1String("m3u") << QLatin1String("m3u8");
 static const QString constPlsPlaylist = QLatin1String("pls");
@@ -459,6 +460,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     addSortAction(tr("Year"), constSortByYearKey);
     addSortAction(tr("Composer"), constSortByComposerKey);
     addSortAction(tr("Performer"), constSortByPerformerKey);
+    addSortAction(tr("Path"), constSortByPathKey);
     controlActions();
     shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
@@ -1457,6 +1459,12 @@ static bool trackSort(const Song *s1, const Song *s2)
     return s1->track<s2->track || (s1->track==s2->track && (*s1)<(*s2));
 }
 
+static bool pathSort(const Song *s1, const Song *s2)
+{
+    int c=s1->file.localeAwareCompare(s2->file);
+    return c<0 || (c==0 && (*s1)<(*s2));
+}
+
 void PlayQueueModel::sortBy()
 {
     Action *act=qobject_cast<Action *>(sender());
@@ -1486,6 +1494,8 @@ void PlayQueueModel::sortBy()
             std::sort(copy.begin(), copy.end(), titleSort);
         } else if (constSortByNumberKey==key) {
             std::sort(copy.begin(), copy.end(), trackSort);
+        } else if (constSortByPathKey==key) {
+            std::sort(copy.begin(), copy.end(), pathSort);
         }
         QList<quint32> positions;
         for (const Song *s: copy) {

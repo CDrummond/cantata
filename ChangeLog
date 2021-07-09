@@ -22,6 +22,7 @@
     process.
 17. Add support for MPD's "Partitions" - implemented by dphoyes. Requires MPD
     0.22 or above.
+18. Allow queue to be sorted by path.
 
 2.4.2
 -----

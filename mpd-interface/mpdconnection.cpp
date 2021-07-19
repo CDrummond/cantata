@@ -1268,7 +1268,7 @@ void MPDConnection::setReplayGain(const QString &v)
 void MPDConnection::getReplayGain()
 {
     if (replaygainSupported()) {
-        QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', QString::SkipEmptyParts);
+        QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', Qt::SkipEmptyParts);
 
         if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
             QString mode=lines[0].mid(18);
@@ -2445,7 +2445,7 @@ void MPDConnection::readRemoteDynamicMessages()
                         for (const QString &m: messages[channel]) {
                             if (!m.isEmpty()) {
                                 DBUG << "Received message " << m;
-                                QStringList parts=m.split(':', QString::SkipEmptyParts);
+                                QStringList parts=m.split(':', Qt::SkipEmptyParts);
                                 QStringList message;
                                 for (QString part: parts) {
                                     part=part.replace("{c}", ":");

@@ -79,7 +79,7 @@ static QString trim(QString str) {
 
 // Split genres back out
 static void splitGenres(Song &song) {
-    QStringList genres=song.genres[0].split(",", QString::SkipEmptyParts);
+    QStringList genres=song.genres[0].split(",", Qt::SkipEmptyParts);
     for (int i=0; i<Song::constNumGenres; ++i) {
         song.genres[i]=i<genres.count() ? genres.at(i).trimmed() : QString();
     }

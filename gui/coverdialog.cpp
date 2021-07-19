@@ -1190,7 +1190,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     }
 
     if (isArtist) {
-        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', Qt::SkipEmptyParts).count()) {
             QDir d(dirName);
             d.cdUp();
             destName=d.absolutePath()+'/'+Covers::constArtistImage+ext;
@@ -1198,7 +1198,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
             destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumArtist())+ext;
         }
     } else if (isComposer) {
-        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', Qt::SkipEmptyParts).count()) {
             QDir d(dirName);
             d.cdUp();
             destName=d.absolutePath()+'/'+Covers::constComposerImage+ext;

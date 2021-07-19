@@ -176,7 +176,7 @@ static QString debugAreas()
 
 static void installDebugMessageHandler(const QString &cmdLine)
 {
-    QStringList items=cmdLine.split(",", QString::SkipEmptyParts);
+    QStringList items=cmdLine.split(",", Qt::SkipEmptyParts);
 
     for (const auto &area: items) {
         bool all = QLatin1String("all")==area;

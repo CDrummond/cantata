@@ -229,11 +229,11 @@ static QPair<int, int> splitDiscNumber(const QString &value)
     int disc;
     int count = 0;
     if (-1!=value.indexOf('/')) {
-        QStringList list = value.split('/', QString::SkipEmptyParts);
+        QStringList list = value.split('/', Qt::SkipEmptyParts);
         disc = list.value(0).toInt();
         count = list.value(1).toInt();
     } else if (-1!=value.indexOf(':')) {
-        QStringList list = value.split(':', QString::SkipEmptyParts);
+        QStringList list = value.split(':', Qt::SkipEmptyParts);
         disc = list.value(0).toInt();
         count = list.value(1).toInt();
     } else {

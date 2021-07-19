@@ -62,7 +62,7 @@ static QString encodeName(const QString &name)
 
 static inline QString episodeFileName(const QUrl &url)
 {
-    return url.path().split('/', QString::SkipEmptyParts).join('_').replace('~', '_');
+    return url.path().split('/', Qt::SkipEmptyParts).join('_').replace('~', '_');
 }
 
 PodcastService::Proxy::Proxy(QObject *parent)

@@ -312,7 +312,7 @@ void InterfaceSettings::load()
 
 static QSet<QString> toSet(const QString &str)
 {
-    QStringList parts=str.split(constSep, QString::SkipEmptyParts);
+    QStringList parts=str.split(constSep, Qt::SkipEmptyParts);
     QSet<QString> set;
     for (QString s: parts) {
         set.insert(s.trimmed());

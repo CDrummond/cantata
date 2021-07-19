@@ -374,7 +374,7 @@ void MtpConnection::updateLibrary(const DeviceOptions &opts)
         s.populateSorts();
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         if (getAlbumArtistFromPath) {
-            QStringList folderParts=(*folder).path.split('/', QString::SkipEmptyParts);
+            QStringList folderParts=(*folder).path.split('/', Qt::SkipEmptyParts);
             if (folderParts.length()>=3) {
                 // Path should be "Music/${AlbumArtist}/${Album}"
                 int artistPath=1;
@@ -822,7 +822,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         meta->parent_id=folderId=store.musicFolderId;
         meta->storage_id=store.id;
         destName=store.musicPath+opts.createFilename(song);
-        QStringList dirs=destName.split('/', QString::SkipEmptyParts);
+        QStringList dirs=destName.split('/', Qt::SkipEmptyParts);
         if (dirs.count()>1) {
             destName=dirs.takeLast();
             meta->parent_id=folderId=checkFolderStructure(dirs, store);

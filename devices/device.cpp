@@ -81,7 +81,7 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
     if (d.exists()) {
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
         QList<QString> extraFiles;
-        QSet<QString> others=Covers::standardNames().toSet();
+        QSet<QString> others=Utils::listToSet(Covers::standardNames());
         others << coverFile << "albumart.pamp";
 
         for (const QFileInfo &info: entries) {

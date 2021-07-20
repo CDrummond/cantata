@@ -320,12 +320,12 @@ int Settings::sidebar()
 
 QSet<QString> Settings::composerGenres()
 {
-    return cfg.get("composerGenres", Song::composerGenres().toList()).toSet();
+    return Utils::listToSet(cfg.get("composerGenres", Song::composerGenres().values()));
 }
 
 QSet<QString> Settings::singleTracksFolders()
 {
-    return cfg.get("singleTracksFolders", QStringList()).toSet();
+    return Utils::listToSet(cfg.get("singleTracksFolders", QStringList()));
 }
 
 MPDParseUtils::CueSupport Settings::cueSupport()
@@ -678,7 +678,7 @@ bool Settings::infoTooltips()
 
 QSet<QString> Settings::ignorePrefixes()
 {
-    return cfg.get("ignorePrefixes", Song::ignorePrefixes().toList()).toSet();
+    return Utils::listToSet(cfg.get("ignorePrefixes", Song::ignorePrefixes().values()));
 }
 
 bool Settings::mpris()

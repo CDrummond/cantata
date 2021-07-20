@@ -1404,7 +1404,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
     QSet<QString> enabledMpd;
     QSet<QString> inCurrentPartitionMpd;
     QSet<QString> inOtherPartitionMpd;
-    QSet<QString> lastEnabledMpd=QSet<QString>::fromList(property(constMpdEnabledOuptuts).toStringList());
+    QSet<QString> lastEnabledMpd=Utils::listToSet(property(constMpdEnabledOuptuts).toStringList());
     QSet<QString> menuItems;
     QSet<QString> menuMoveableItems;
     QMenu *menu=outputsAction->menu();

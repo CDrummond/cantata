@@ -957,7 +957,7 @@ Utils::Desktop Utils::currentDe()
     static int de=-1;
     if (-1==de) {
         de=Other;
-        QSet<QByteArray> desktop=qgetenv("XDG_CURRENT_DESKTOP").toLower().split(':').toSet();
+        QSet<QByteArray> desktop = Utils::listToSet(qgetenv("XDG_CURRENT_DESKTOP").toLower().split(':'));
         if (desktop.contains("unity")) {
             de=Unity;
         } else if (desktop.contains("kde")) {

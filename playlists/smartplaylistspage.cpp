@@ -27,6 +27,7 @@
 #include "widgets/icons.h"
 #include "support/action.h"
 #include "support/configuration.h"
+#include "support/utils.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
 #include "gui/stdactions.h"
@@ -162,9 +163,9 @@ void SmartPlaylistsPage::searchResponse(const QString &id, const QList<Song> &so
     }
 
     if (id.startsWith("I:")) {
-        command.songs.unite(songs.toSet());
+        command.songs.unite(Utils::listToSet(songs));
     } else if (id.startsWith("E:")) {
-        command.songs.subtract(songs.toSet());
+        command.songs.subtract(Utils::listToSet(songs));
     }
 
     if (command.includeRules.isEmpty()) {

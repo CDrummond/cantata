@@ -293,7 +293,7 @@ MPDConnection::MPDConnection()
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
-    MPDParseUtils::setSingleTracksFolders(Configuration().get("singleTracksFolders", QStringList()).toSet());
+    MPDParseUtils::setSingleTracksFolders(Utils::listToSet(Configuration().get("singleTracksFolders", QStringList())));
 }
 
 MPDConnection::~MPDConnection()
@@ -1122,7 +1122,7 @@ void MPDConnection::playListChanges()
             QList<Song> songs;
             QList<Song> newCantataStreams;
             QList<qint32> ids;
-            QSet<qint32> prevIds=playQueueIds.toSet();
+            QSet<qint32> prevIds=Utils::listToSet(playQueueIds);
             QSet<qint32> strmIds;
 
             for (const MPDParseUtils::IdPos &idp: changes) {
@@ -1196,7 +1196,7 @@ void MPDConnection::playListChanges()
             if (!newCantataStreams.isEmpty()) {
                 emit cantataStreams(newCantataStreams, true);
             }
-            QSet<qint32> removed=prevIds-playQueueIds.toSet();
+            QSet<qint32> removed=prevIds-Utils::listToSet(playQueueIds);
             if (!removed.isEmpty()) {
                 emit removedIds(removed);
             }
@@ -1528,7 +1528,7 @@ void MPDConnection::getUrlHandlers()
 {
     Response response=sendCommand("urlhandlers");
     if (response.ok) {
-        handlers=MPDParseUtils::parseList(response.data, QByteArray("handler: ")).toSet();
+        handlers=Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("handler: ")));
         DBUG << handlers;
     }
 }
@@ -1537,7 +1537,7 @@ void MPDConnection::getTagTypes()
 {
     Response response=sendCommand("tagtypes");
     if (response.ok) {
-        tagTypes=MPDParseUtils::parseList(response.data, QByteArray("tagtype: ")).toSet();
+        tagTypes=Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("tagtype: ")));
     }
 }
 
@@ -2203,7 +2203,7 @@ void MPDConnection::sendDynamicMessage(const QStringList &msg)
     // Check whether cantata-dynamic is still alive, by seeing if its channel is still open...
     if (1==msg.count() && QLatin1String("ping")==msg.at(0)) {
         Response response=sendCommand("channels");
-        if (!response.ok || !MPDParseUtils::parseList(response.data, QByteArray("channel: ")).toSet().contains(constDynamicIn)) {
+        if (!response.ok || !(Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("channel: ")))).contains(constDynamicIn)) {
             emit dynamicSupport(false);
         }
         return;
@@ -2389,7 +2389,7 @@ bool MPDConnection::checkRemoteDynamicSupport()
             idleSocket.waitForBytesWritten(constSocketCommsTimeout);
             response=readReply(idleSocket);
             if (response.ok) {
-                return MPDParseUtils::parseList(response.data, QByteArray("channel: ")).toSet().contains(constDynamicIn);
+                return Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("channel: "))).contains(constDynamicIn);
             }
         }
     }
@@ -2571,7 +2571,7 @@ void MPDConnection::getStickerSupport()
 {
     Response response=sendCommand("commands");
     canUseStickers=response.ok &&
-        MPDParseUtils::parseList(response.data, QByteArray("command: ")).toSet().contains("sticker");
+        Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("command: "))).contains("sticker");
 }
 
 bool MPDConnection::fadingVolume()

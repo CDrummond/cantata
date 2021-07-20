@@ -308,7 +308,7 @@ void CoverPreview::scaleImage(int adjust)
 void CoverPreview::wheelEvent(QWheelEvent *event)
 {
     if (scrollArea->isVisible() && QApplication::keyboardModifiers() & Qt::ControlModifier) {
-        const int numDegrees = event->delta() / 8;
+        const int numDegrees = event->angleDelta().y() / 8;
         const int numSteps = numDegrees / 15;
         if (0!=numSteps) {
             scaleImage(numSteps);

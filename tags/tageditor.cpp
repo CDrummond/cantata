@@ -269,7 +269,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     genre->insertItems(0, strings);
 
     trackName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    trackName->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    trackName->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
     trackName->view()->setTextElideMode(Qt::ElideLeft);
 
     if (original.count()>1) {

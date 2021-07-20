@@ -171,33 +171,6 @@ if (TAGLIB_FOUND)
 
     set(ENABLE_TAGEDITOR_SUPPORT 1)
     set(ENABLE_TRACKORGANIZER_SUPPORT 1)
-    include(CheckCXXSourceCompiles)
-    set(CMAKE_REQUIRED_INCLUDES "${TAGLIB_INCLUDES}")
-    set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
-
-    check_cxx_source_compiles("#include <asftag.h>
-                            int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
-    if (NOT TAGLIB_ASF_FOUND)
-        message("TagLib does not have ASF support compiled in.")
-    endif ()
-
-    check_cxx_source_compiles("#include <mp4tag.h>
-                            int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
-    if (NOT TAGLIB_MP4_FOUND)
-        message("TagLib does not have MP4 support compiled in.")
-    endif ()
-
-    check_cxx_source_compiles("#include <opusfile.h>
-                            int main() { TagLib::Ogg::Opus::File *f=0; return 0;}" TAGLIB_OPUS_FOUND)
-    if (NOT TAGLIB_OPUS_FOUND)
-        message("TagLib does not have OPUS support compiled in.")
-    endif ()
-
-    set(CMAKE_REQUIRED_INCLUDES)
-    set(CMAKE_REQUIRED_LIBRARIES)
-
-    #include(CheckTagLibFileName)
-    #check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
 
     add_definitions(${TAGLIB_CFLAGS})
 

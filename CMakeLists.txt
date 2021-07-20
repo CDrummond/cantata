@@ -222,7 +222,6 @@ endif ()
 find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Widgets Xml Network Concurrent Svg Sql REQUIRED)
 
 set(CMAKE_AUTOMOC TRUE)
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_STANDARD 11)
 
 set(QTCORELIBS ${Qt5Core_LIBRARIES})

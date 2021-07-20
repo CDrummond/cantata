@@ -107,7 +107,7 @@ static QString tString2QString(const TagLib::String &str)
 TagLib::String qString2TString(const QString &str)
 {
     QString val = str.trimmed();
-    return val.isEmpty() ? TagLib::String::null : TagLib::String(val.toUtf8().data(), TagLib::String::UTF8);
+    return TagLib::String(val.toUtf8().data(), TagLib::String::UTF8);
 }
 
 static inline int convertToCantataRating(double r)

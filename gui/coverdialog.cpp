@@ -301,7 +301,7 @@ void CoverPreview::scaleImage(int adjust)
         return;
     }
     zoom=newZoom;
-    imageLabel->resize(zoom * imageLabel->pixmap()->size());
+    imageLabel->resize(zoom * imageLabel->pixmap(Qt::ReturnByValue).size());
     setWindowTitle(tr("Image (%1 x %2 %3%)", "Image (width x height zoom%)").arg(imgW).arg(imgH).arg(zoom*100));
 }
 

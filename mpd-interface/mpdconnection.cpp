@@ -2796,9 +2796,9 @@ void MPDServerInfo::detect() {
 
         QByteArray message = "sendmessage rating \"";
         message += "rating ";                           // sticker name
-        message += QString().number(Song::Rating_Max);  // max rating
+        message += QString().number(Song::Rating_Max).toUtf8();  // max rating
         message += " ";
-        message += QString().number(Song::Rating_Step); // rating step (optional)
+        message += QString().number(Song::Rating_Step).toUtf8(); // rating step (optional)
         message += "\"";
         conn->sendCommand(message, false, false);
     }

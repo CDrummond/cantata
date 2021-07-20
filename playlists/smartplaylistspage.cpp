@@ -441,7 +441,7 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
                        RulesPlaylists::constCommentKey==rIt.key() || RulesPlaylists::constTitleKey==rIt.key() ||
                        RulesPlaylists::constSimilarArtistsKey==rIt.key() || RulesPlaylists::constGenreKey==rIt.key() ||
                        RulesPlaylists::constFileKey==rIt.key()) {
-                baseRule += " " + rIt.key() + " " + MPDConnection::encodeName(rIt.value());
+                baseRule += " " + rIt.key().toUtf8() + " " + MPDConnection::encodeName(rIt.value());
             } else if (RulesPlaylists::constExactKey==rIt.key()) {
                 if ("false" == rIt.value()) {
                     match = "search";

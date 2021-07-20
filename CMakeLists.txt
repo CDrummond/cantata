@@ -1,4 +1,6 @@
-PROJECT(cantata)
+cmake_minimum_required(VERSION 3.0)
+project(cantata)
+cmake_policy(SET CMP0020 NEW)
 
 #  NOTE: If PROJECT_URL, or PROJECT_REV_URL, are changed, then cantata-dynamic, README, and
 #        dbus/mpd.cantata.xml will need renaming/updating.
@@ -18,8 +20,8 @@ else ()
     set(ORGANIZATION_NAME ${CMAKE_PROJECT_NAME})
 endif ()
 
-cmake_minimum_required(VERSION 2.6)
-cmake_policy(SET CMP0020 OLD)
+
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set (QT_MIN_VERSION 5.11)
 

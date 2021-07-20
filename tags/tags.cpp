@@ -987,20 +987,19 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics, int *rating)
 {
     DBUG;
-    TagLib::MP4::ItemListMap &map = tag->itemListMap();
 
     if (song) {
-        if (map.contains("aART") && !map["aART"].toStringList().isEmpty()) {
-            song->albumartist=tString2QString(map["aART"].toStringList().front());
+        if (tag->contains("aART") && !tag->item("aART").toStringList().isEmpty()) {
+            song->albumartist=tString2QString(tag->item("aART").toStringList().front());
         }
-        if (map.contains("\xA9wrt") && !map["\xA9wrt"].toStringList().isEmpty()) {
-            song->setComposer(tString2QString(map["\xA9wrt"].toStringList().front()));
+        if (tag->contains("\xA9wrt") && !tag->item("\xA9wrt").toStringList().isEmpty()) {
+            song->setComposer(tString2QString(tag->item("\xA9wrt").toStringList().front()));
         }
-        if (map.contains("disk")) {
-            song->disc=map["disk"].toIntPair().first;
+        if (tag->contains("disk")) {
+            song->disc=tag->item("disk").toIntPair().first;
         }
-        if (map.contains("\251gen")) {
-            TagLib::StringList genres=map["\251gen"].toStringList();
+        if (tag->contains("\251gen")) {
+            TagLib::StringList genres=tag->item("\251gen").toStringList();
             TagLib::StringList::ConstIterator it=genres.begin();
             TagLib::StringList::ConstIterator end=genres.end();
             for (; it!=end; ++it) {
@@ -1009,22 +1008,22 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
         }
     }
     if (rg) {
-        if (map.contains("----:com.apple.iTunes:replaygain_track_gain")) {
-            rg->trackGain=parseRgString(map["----:com.apple.iTunes:replaygain_track_gain"].toStringList().front());
+        if (tag->contains("----:com.apple.iTunes:replaygain_track_gain")) {
+            rg->trackGain=parseRgString(tag->item("----:com.apple.iTunes:replaygain_track_gain").toStringList().front());
         }
-        if (map.contains("----:com.apple.iTunes:replaygain_track_peak")) {
-            rg->trackPeak=parseRgString(map["----:com.apple.iTunes:replaygain_track_peak"].toStringList().front());
+        if (tag->contains("----:com.apple.iTunes:replaygain_track_peak")) {
+            rg->trackPeak=parseRgString(tag->item("----:com.apple.iTunes:replaygain_track_peak").toStringList().front());
         }
-        if (map.contains("----:com.apple.iTunes:replaygain_album_gain")) {
-            rg->albumGain=parseRgString(map["----:com.apple.iTunes:replaygain_album_gain"].toStringList().front());
+        if (tag->contains("----:com.apple.iTunes:replaygain_album_gain")) {
+            rg->albumGain=parseRgString(tag->item("----:com.apple.iTunes:replaygain_album_gain").toStringList().front());
         }
-        if (map.contains("----:com.apple.iTunes:replaygain_album_peak")) {
-            rg->albumPeak=parseRgString(map["----:com.apple.iTunes:replaygain_album_peak"].toStringList().front());
+        if (tag->contains("----:com.apple.iTunes:replaygain_album_peak")) {
+            rg->albumPeak=parseRgString(tag->item("----:com.apple.iTunes:replaygain_album_peak").toStringList().front());
         }
     }
     if (img) {
-        if (map.contains("covr")) {
-            TagLib::MP4::Item coverItem = map["covr"];
+        if (tag->contains("covr")) {
+            TagLib::MP4::Item coverItem = tag->item("covr");
             TagLib::MP4::CoverArtList coverArtList = coverItem.toCoverArtList();
             if (!coverArtList.isEmpty()) {
                 TagLib::MP4::CoverArt coverArt = coverArtList.front();
@@ -1034,28 +1033,26 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImag
         }
     }
     if (lyrics) {
-        if (map.contains("\251lyr") && !map["\251lyr"].toStringList().isEmpty()) {
-            *lyrics=tString2QString(map["\251lyr"].toStringList().front());
+        if (tag->contains("\251lyr") && !tag->item("\251lyr").toStringList().isEmpty()) {
+            *lyrics=tString2QString(tag->item("\251lyr").toStringList().front());
         }
     }
     if (rating) {
-        if (map.contains("----:com.apple.iTunes:FMPS_Rating")) {
-            *rating=convertToCantataRating(parseDoubleString(map["----:com.apple.iTunes:FMPS_Rating"].toStringList().front()));
+        if (tag->contains("----:com.apple.iTunes:FMPS_Rating")) {
+            *rating=convertToCantataRating(parseDoubleString(tag->item("----:com.apple.iTunes:FMPS_Rating").toStringList().front()));
         }
     }
 }
 
 static bool updateMP4Tag(TagLib::MP4::Tag *tag, const char *tagName, const QString &value)
 {
-    TagLib::MP4::ItemListMap &map = tag->itemListMap();
-
     if (value.isEmpty()) {
-        if (map.contains(tagName)) {
-            map.erase(tagName);
+        if (tag->contains(tagName)) {
+            tag->removeItem(tagName);
             return true;
         }
     } else {
-        map.insert(tagName, TagLib::StringList(qString2TString(value)));
+        tag->setItem(tagName, TagLib::StringList(qString2TString(value)));
         return true;
     }
     return false;
@@ -1084,7 +1081,7 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
                 for(int i=0; i<Song::constNumGenres; ++i) {
                     tagGenres.append(qString2TString(to.genres[i].trimmed()));
                 }
-                tag->itemListMap()["\251gen"]=tagGenres;
+                tag->setItem("\251gen",tagGenres);
             }
             changed=true;
         }
@@ -1092,15 +1089,14 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
 
     if (!rg.null) {
         RgTagsStrings rgs(rg);
-        TagLib::MP4::ItemListMap &map = tag->itemListMap();
-        map["----:com.apple.iTunes:replaygain_track_gain"] = TagLib::MP4::Item(TagLib::StringList(rgs.trackGain));
-        map["----:com.apple.iTunes:replaygain_track_peak"] = TagLib::MP4::Item(TagLib::StringList(rgs.trackPeak));
+        tag->setItem("----:com.apple.iTunes:replaygain_track_gain",TagLib::MP4::Item(TagLib::StringList(rgs.trackGain)));
+        tag->setItem("----:com.apple.iTunes:replaygain_track_peak",TagLib::MP4::Item(TagLib::StringList(rgs.trackPeak)));
         if (rg.albumMode) {
-            map["----:com.apple.iTunes:replaygain_album_gain"] = TagLib::MP4::Item(TagLib::StringList(rgs.albumGain));
-            map["----:com.apple.iTunes:replaygain_album_peak"] = TagLib::MP4::Item(TagLib::StringList(rgs.albumPeak));
+            tag->setItem("----:com.apple.iTunes:replaygain_album_gain",TagLib::MP4::Item(TagLib::StringList(rgs.albumGain)));
+            tag->setItem("----:com.apple.iTunes:replaygain_album_peak",TagLib::MP4::Item(TagLib::StringList(rgs.albumPeak)));
         } else {
-            map.erase("----:com.apple.iTunes:replaygain_album_gain");
-            map.erase("----:com.apple.iTunes:replaygain_album_peak");
+            tag->removeItem("----:com.apple.iTunes:replaygain_album_gain");
+            tag->removeItem("----:com.apple.iTunes:replaygain_album_peak");
         }
         changed=true;
     }
@@ -1111,16 +1107,14 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
         TagLib::MP4::CoverArtList coverArtList;
         coverArtList.append(coverArt);
         TagLib::MP4::Item coverItem(coverArtList);
-        TagLib::MP4::ItemListMap &map = tag->itemListMap();
-        map.insert("covr", coverItem);
+        tag->setItem("covr",coverItem);
     }
 
     if (rating>-1) {
         int old=-1;
         readMP4Tags(tag, nullptr, nullptr, nullptr, nullptr, &old);
         if (old!=rating) {
-            TagLib::MP4::ItemListMap &map = tag->itemListMap();
-            map["----:com.apple.iTunes:FMPS_Rating"] = TagLib::MP4::Item(TagLib::StringList(convertFromCantataRating(rating)));
+            tag->setItem("----:com.apple.iTunes:FMPS_Rating", TagLib::MP4::Item(TagLib::StringList(convertFromCantataRating(rating))));
             changed=true;
         }
     }

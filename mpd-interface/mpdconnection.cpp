@@ -49,6 +49,8 @@
 #include "dbus/powermanagement.h"
 #elif defined Q_OS_MAC && defined IOKIT_FOUND
 #include "mac/powermanagement.h"
+#elif defined Q_OS_WIN
+#define sscanf sscanf_s
 #endif
 #include <algorithm>
 #include <QDebug>

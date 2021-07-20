@@ -25,12 +25,11 @@
 #include "config.h"
 #include <QString>
 #include <QOperatingSystemVersion>
-#ifdef QT_MAC_EXTRAS_FOUND
-#include <qmacfunctions.h>
 #include <QImage>
 #include <QPixmap>
-#endif
 #include <Foundation/NSUserNotification.h>
+#include <Cocoa/Cocoa.h>
+#include <AppKit/NSApplication.h>
 
 @interface UserNotificationItem : NSObject<NSUserNotificationCenterDelegate> { }
 
@@ -74,11 +73,10 @@ void MacNotify::showMessage(const QString &title, const QString &text, const QIm
         NSUserNotification *userNotification = [[[NSUserNotification alloc] init] autorelease];
         userNotification.title = title.toNSString();
         userNotification.informativeText = text.toNSString();
-        #ifdef QT_MAC_EXTRAS_FOUND
-        userNotification.contentImage = QtMac::toNSImage(QPixmap::fromImage(img));
-        #else
-        Q_UNUSED(img)
-        #endif
+        CGImageRef cg = img.toCGImage();
+        NSImage *image = [[NSImage alloc] initWithCGImage:cg size:NSZeroSize];
+        CFRelease(cg);
+        userNotification.contentImage = image;
         [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
     }
 }

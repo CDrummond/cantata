@@ -120,6 +120,7 @@
 #include <QSpacerItem>
 #include <QMenuBar>
 #include <QFileDialog>
+#include <QLocale>
 #include "mediakeys.h"
 #include <cstdlib>
 #include <algorithm>
@@ -1768,7 +1769,7 @@ void MainWindow::showServerInfo()
                                        "<tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr>"
                                        "<tr><td align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>")
                                        .arg(MPDStats::self()->artists()).arg(MPDStats::self()->albums()).arg(MPDStats::self()->songs())
-                                       .arg(Utils::formatDuration(MPDStats::self()->dbPlaytime())).arg(dbUpdate.toString(Qt::SystemLocaleShortDate))+
+                                       .arg(Utils::formatDuration(MPDStats::self()->dbPlaytime())).arg(QLocale().toString(dbUpdate, QLocale::ShortFormat))+
                                   QLatin1String("</table></p>"),
                             tr("Server Information"));
 }

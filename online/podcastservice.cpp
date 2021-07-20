@@ -47,6 +47,7 @@
 #include <QMimeData>
 #include <QDateTime>
 #include <QTextDocument>
+#include <QLocale>
 #include <stdio.h>
 
 GLOBAL_STATIC(PodcastService, instance)
@@ -630,7 +631,7 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
                 return Utils::formatTime(episode->duration, true)+QLatin1Char(' ')+
                        tr("(Downloading: %1%)").arg(episode->downloadProg);
             }
-            return episode->publishedDate.toString(Qt::LocalDate)+
+            return QLocale().toString(episode->publishedDate, QLocale::LongFormat)+
                         (0==episode->duration
                             ? QString()
                             : (QLatin1String(" (")+Utils::formatTime(episode->duration, true)+QLatin1Char(')')));
@@ -640,7 +641,7 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
                         episode->name+QLatin1String("<br/>")+
                         trimDescr(episode->descr)+
                         Utils::formatTime(episode->duration, true)+QLatin1String("<br/>")+
-                        episode->publishedDate.toString(Qt::LocalDate);
+                        QLocale().toString(episode->publishedDate, QLocale::LongFormat);
             }
             break;
         case Qt::FontRole:

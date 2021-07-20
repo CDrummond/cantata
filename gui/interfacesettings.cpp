@@ -41,7 +41,7 @@
 #include <QDBusConnectionInterface>
 #endif
 #include <QSystemTrayIcon>
-#include <QSysInfo>
+#include <QOperatingSystemVersion>
 #include <QStyleFactory>
 #include <algorithm>
 
@@ -132,7 +132,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     bool enableTrayItem=Utils::useSystemTray();
     #ifdef Q_OS_MAC
     // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
-    bool enableNotifications=QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8;
+    bool enableNotifications=QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8);
     #else
     #ifdef QT_QTDBUS_FOUND
     // We have dbus, check that org.freedesktop.Notifications exists

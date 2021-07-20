@@ -24,7 +24,7 @@
 #include "macnotify.h"
 #include "config.h"
 #include <QString>
-#include <QSysInfo>
+#include <QOperatingSystemVersion>
 #ifdef QT_MAC_EXTRAS_FOUND
 #include <qmacfunctions.h>
 #include <QImage>
@@ -50,12 +50,12 @@ class UserNotificationItemClass
 public:
     UserNotificationItemClass() {
         item = [UserNotificationItem alloc];
-        if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+        if(QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8)) {
             [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:item];
         }
     }
     ~UserNotificationItemClass() {
-        if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+        if(QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8)) {
             [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:nil];
         }
         [item release];
@@ -65,7 +65,7 @@ public:
 
 void MacNotify::showMessage(const QString &title, const QString &text, const QImage &img)
 {
-    if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+    if(QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8)) {
         static UserNotificationItemClass *n=0;
         if (!n) {
             n=new UserNotificationItemClass();

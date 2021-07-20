@@ -61,13 +61,6 @@ static PProcessIdToSessionId pProcessIdToSessionId = 0;
 #include <time.h>
 #endif
 
-#include "qtlockedfile.cpp"
-#if defined(Q_OS_WIN)
-#include "qtlockedfile_win.cpp"
-#else
-#include "qtlockedfile_unix.cpp"
-#endif
-
 const char* QtLocalPeer::ack = "ack";
 
 QtLocalPeer::QtLocalPeer(QObject* parent, const QString &appId)

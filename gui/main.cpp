@@ -87,10 +87,10 @@ static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QSt
         if (f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text)) {
             QTextStream stream(&f);
             if (firstMsg) {
-                stream << "------------START------------" << endl;
+                stream << "------------START------------" << Qt::endl;
                 firstMsg=false;
             }
-            stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << endl;
+            stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << Qt::endl;
         }
     } else {
         std::cout << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ").toLatin1().constData()

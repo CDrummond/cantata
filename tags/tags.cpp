@@ -869,7 +869,7 @@ static bool updateVorbisCommentTag(TagLib::Ogg::XiphComment *tag, const char *ta
     if (value.isEmpty()) {
         const TagLib::StringList &list = tag->fieldListMap()[tagName];
         if (!list.isEmpty()) {
-            tag->removeField(tagName);
+            tag->removeFields(tagName);
             return true;
         }
     } else {
@@ -899,7 +899,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
             changed=true;
         }
         if (0!=from.compareGenres(to)) {
-            tag->removeField("GENRE");
+            tag->removeFields("GENRE");
             if (to.genres[1].isEmpty()) {
                 tag->setGenre(qString2TString(to.firstGenre().trimmed()));
             } else {
@@ -941,14 +941,14 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
             if (rg.albumMode) {
                 tag->addField("R128_ALBUM_GAIN", toString(toOpusGain(rg.albumGain + opusHeaderGainCurrent - R128_RG_DIFF)));
             } else {
-                tag->removeField("R128_ALBUM_GAIN");
+                tag->removeFields("R128_ALBUM_GAIN");
             }
 #endif
 
-            tag->removeField("REPLAYGAIN_TRACK_GAIN");
-            tag->removeField("REPLAYGAIN_TRACK_PEAK");
-            tag->removeField("REPLAYGAIN_ALBUM_GAIN");
-            tag->removeField("REPLAYGAIN_ALBUM_PEAK");
+            tag->removeFields("REPLAYGAIN_TRACK_GAIN");
+            tag->removeFields("REPLAYGAIN_TRACK_PEAK");
+            tag->removeFields("REPLAYGAIN_ALBUM_GAIN");
+            tag->removeFields("REPLAYGAIN_ALBUM_PEAK");
         } else
         #endif
         {
@@ -959,8 +959,8 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
                 tag->addField("REPLAYGAIN_ALBUM_GAIN", rgs.albumGain);
                 tag->addField("REPLAYGAIN_ALBUM_PEAK", rgs.albumPeak);
             } else {
-                tag->removeField("REPLAYGAIN_ALBUM_GAIN");
-                tag->removeField("REPLAYGAIN_ALBUM_PEAK");
+                tag->removeFields("REPLAYGAIN_ALBUM_GAIN");
+                tag->removeFields("REPLAYGAIN_ALBUM_PEAK");
             }
         }
         changed=true;

@@ -319,7 +319,7 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
         return;
     }
 
-    QList<Song> songs = command.songs.toList();
+    QList<Song> songs = command.songs.values();
     command.songs.clear();
 
     sortAscending = command.orderAscending;

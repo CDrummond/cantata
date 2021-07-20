@@ -230,18 +230,18 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
     setAttribute(Qt::WA_DeleteOnClose);
 
-    QStringList strings=existingArtists.toList();
+    QStringList strings=existingArtists.values();
     strings.sort();
     artist->clear();
     artist->insertItems(0, strings);
 
-    strings=existingAlbumArtists.toList();
+    strings=existingAlbumArtists.values();
     strings.sort();
     albumArtist->clear();
     albumArtist->insertItems(0, strings);
 
     if (composerSupport) {
-        strings=existingComposers.toList();
+        strings=existingComposers.values();
         strings.sort();
         composer->clear();
         composer->insertItems(0, strings);
@@ -258,12 +258,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         REMOVE(commentLabel)
     }
 
-    strings=existingAlbums.toList();
+    strings=existingAlbums.values();
     strings.sort();
     album->clear();
     album->insertItems(0, strings);
 
-    strings=existingGenres.toList();
+    strings=existingGenres.values();
     strings.sort();
     genre->clear();
     genre->insertItems(0, strings);

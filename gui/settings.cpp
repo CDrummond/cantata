@@ -838,12 +838,12 @@ void Settings::saveSidebar(int v)
 
 void Settings::saveComposerGenres(const QSet<QString> &v)
 {
-    cfg.set("composerGenres", v.toList());
+    cfg.set("composerGenres", v.values());
 }
 
 void Settings::saveSingleTracksFolders(const QSet<QString> &v)
 {
-    cfg.set("singleTracksFolders", v.toList());
+    cfg.set("singleTracksFolders", v.values());
 }
 
 void Settings::saveCueSupport(MPDParseUtils::CueSupport v)
@@ -1173,7 +1173,7 @@ void Settings::saveInfoTooltips(bool v)
 
 void Settings::saveIgnorePrefixes(const QSet<QString> &v)
 {
-    cfg.set("ignorePrefixes", v.toList());
+    cfg.set("ignorePrefixes", v.values());
 }
 
 void Settings::saveMpris(bool v)

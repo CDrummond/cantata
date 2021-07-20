@@ -235,9 +235,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    ignorePrefixes->setText(QStringList(Settings::self()->ignorePrefixes().toList()).join(QString(constSep)));
-    composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(constSep)));
-    singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().toList()).join(QString(constSep)));
+    ignorePrefixes->setText(QStringList(Settings::self()->ignorePrefixes().values()).join(QString(constSep)));
+    composerGenres->setText(QStringList(Settings::self()->composerGenres().values()).join(QString(constSep)));
+    singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().values()).join(QString(constSep)));
     selectEntry(cueSupport, Settings::self()->cueSupport());
     yearTag->setCurrentIndex(Settings::self()->useOriginalYear() ? 1 : 0);
     #ifdef ENABLE_DEVICES_SUPPORT

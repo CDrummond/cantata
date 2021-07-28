@@ -325,7 +325,7 @@ void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStr
     QTextStream stream(&encodedData, QIODevice::WriteOnly);
 
     for (const QString &v: values) {
-        stream << v << endl;
+        stream << v << Qt::endl;
     }
 
     mimeData.setData(mime, encodedData);
@@ -1270,7 +1270,7 @@ void PlayQueueModel::crop(const QList<int> &rowsToKeep)
 
     QSet<qint32> removeIds=allIds-keepIds;
     if (!removeIds.isEmpty()) {
-        emit removeSongs(removeIds.toList());
+        emit removeSongs(removeIds.values());
     }
 }
 
@@ -1285,7 +1285,7 @@ void PlayQueueModel::setRating(const QList<int> &rows, quint8 rating) const
             }
         }
     }
-    emit setRating(files.toList(), rating);
+    emit setRating(files.values(), rating);
 }
 
 void PlayQueueModel::enableUndo(bool e)

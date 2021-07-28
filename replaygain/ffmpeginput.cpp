@@ -75,20 +75,24 @@ struct FfmpegInput::Handle {
         #endif
         , audioStream(0)
         , currentBytes(0) {
-        av_init_packet(&packet);
+        packet = av_packet_alloc();
+        origPacket = NULL;
         audioBuffer = (int16_t*)av_malloc(BUFFER_SIZE);
         #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
         #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55, 39, 101)
         frame = avcodec_alloc_frame();
         #else
         frame = av_frame_alloc();
-        packet.data = NULL;
-        origPacket.size = 0;
-        origPacket.data=NULL;
         #endif
         #endif
     }
     ~Handle() {
+        if(origPacket != NULL) {
+            av_packet_free(&origPacket);
+        }
+        if(packet != NULL) {
+            av_packet_free(&packet);
+        }
         if (audioBuffer) {
             av_free(audioBuffer);
         }
@@ -112,9 +116,9 @@ struct FfmpegInput::Handle {
     int gotFrame;
     bool packetLeft;
     bool flushing;
-    AVPacket origPacket;
+    AVPacket* origPacket;
     #endif
-    AVPacket packet;
+    AVPacket* packet;
     int audioStream;
     int16_t *audioBuffer;
     float buffer[BUFFER_SIZE / 2 + 1];
@@ -387,18 +391,18 @@ static int decodePacket(FfmpegInput::Handle *handle)
         ret = 0;
     }
     if (0 == ret) {
-        ret = avcodec_send_packet(handle->codecContext, &handle->packet);
+        ret = avcodec_send_packet(handle->codecContext, handle->packet);
     }
     if (AVERROR(EAGAIN) == ret) {
         ret = 0;
     }
-    return ret<0 ? ret : handle->packet.size;
+    return ret<0 ? ret : handle->packet->size;
     #else
-    int ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &handle->gotFrame, &handle->packet);
+    int ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &handle->gotFrame, handle->packet);
     if (ret < 0) {
         return ret;
     }
-    return FFMIN(ret, handle->packet.size);
+    return FFMIN(ret, handle->packet->size);
     #endif
 }
 
@@ -410,8 +414,8 @@ size_t FfmpegInput::readOnePacket()
 
 start:
     if (handle->flushing) {
-        handle->packet.data = NULL;
-        handle->packet.size = 0;
+        handle->packet->data = NULL;
+        handle->packet->size = 0;
         decodePacket(handle);
         if (!handle->gotFrame) {
             return 0;
@@ -426,12 +430,12 @@ start:
 
 //next_frame:
     for (;;) {
-        if (av_read_frame(handle->formatContext, &handle->packet) < 0) {
+        if (av_read_frame(handle->formatContext, handle->packet) < 0) {
             handle->flushing = true;
             goto start;
         }
-        if (handle->packet.stream_index != handle->audioStream) {
-            AV_FREE(&handle->packet);
+        if (handle->packet->stream_index != handle->audioStream) {
+            AV_FREE(handle->packet);
             continue;
         } else {
             break;
@@ -439,19 +443,23 @@ start:
     }
 
     int ret;
-    handle->origPacket = handle->packet;
+    if(handle->origPacket != NULL) {
+        AV_FREE(handle->origPacket);
+    }
+    handle->origPacket = av_packet_clone(handle->packet);
 packetLeft:
     ret = decodePacket(handle);
     if (ret < 0) {
         goto free_packet;
     }
-    handle->packet.data += ret;
-    handle->packet.size -= ret;
-    if (handle->packet.size > 0) {
+    handle->packet->data += ret;
+    handle->packet->size -= ret;
+    if (handle->packet->size > 0) {
         handle->packetLeft = true;
     } else {
 free_packet:
-        AV_FREE(&handle->origPacket);
+        AV_FREE(handle->origPacket);
+        handle->origPacket = NULL;
         handle->packetLeft = false;
     }
 
@@ -562,7 +570,7 @@ static int decodeAudio(FfmpegInput::Handle *handle, int *frame_size_ptr)
     }
     #endif
 
-    ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &got_frame, &handle->packet);
+    ret = avcodec_decode_audio4(handle->codecContext, handle->frame, &got_frame, handle->packet);
 
     if (ret >= 0 && got_frame) {
         int ch, plane_size;
@@ -599,13 +607,13 @@ size_t FfmpegInput::readOnePacket()
 
     next_frame:
     for (;;) {
-        if (av_read_frame(handle->formatContext, &handle->packet) < 0) {
+        if (av_read_frame(handle->formatContext, handle->packet) < 0) {
             return 0;
         }
-        if (handle->packet.stream_index == handle->audioStream) {
+        if (handle->packet->stream_index == handle->audioStream) {
             break;
         }
-        AV_FREE(&handle->packet);
+        AV_FREE(handle->packet);
     }
 
     size_t numberRead=0;
@@ -614,9 +622,9 @@ size_t FfmpegInput::readOnePacket()
     int len = decodeAudio(handle, &dataSize);
     #elif LIBAVCODEC_VERSION_MAJOR >= 53 || \
         (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 23, 0))
-    int len = avcodec_decode_audio3(handle->codecContext, handle->audioBuffer, &dataSize, &handle->packet);
+    int len = avcodec_decode_audio3(handle->codecContext, handle->audioBuffer, &dataSize, handle->packet);
     #else
-    int len = avcodec_decode_audio2(handle->codecContext, handle->audioBuffer, &dataSize, handle->packet.data, handle->packet.size);
+    int len = avcodec_decode_audio2(handle->codecContext, handle->audioBuffer, &dataSize, handle->packet->data, handle->packet->size);
     #endif
     if (len < 0) {
         goto out;
@@ -624,7 +632,7 @@ size_t FfmpegInput::readOnePacket()
 
     /* No data used, (happens with metadata frames for example) */
     if (len <= 0) {
-        AV_FREE(&handle->packet);
+        AV_FREE(handle->packet);
         goto next_frame;
     }
     switch (handle->codecContext->sample_fmt) {
@@ -669,7 +677,7 @@ size_t FfmpegInput::readOnePacket()
     }
 
     out:
-    AV_FREE(&handle->packet);
+    AV_FREE(handle->packet);
     return numberRead;
 }
 #endif

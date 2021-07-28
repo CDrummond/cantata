@@ -851,7 +851,7 @@ QList<LibraryDb::Album> LibraryDb::getAlbums(const QString &artistId, const QStr
         QMap<QString, QSet<QString> >::ConstIterator aEnd = albumIdArtists.constEnd();
         for(; aIt!=aEnd; ++aIt) {
             if (aIt.value().count()>1) {
-                QStringList artists = aIt.value().toList();
+                QStringList artists = aIt.value().values();
                 artists.sort();
                 Album &al = entries.find(aIt.key()).value();
                 al.artist = artists.join(", ");

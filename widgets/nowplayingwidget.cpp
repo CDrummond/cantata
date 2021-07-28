@@ -211,7 +211,7 @@ void PosSlider::wheelEvent(QWheelEvent *ev)
     }
 
     static const int constStep=5;
-    int numDegrees = ev->delta() / 8;
+    int numDegrees = ev->angleDelta().y() / 8;
     int numSteps = numDegrees / 15;
     int val=value();
     if (numSteps > 0) {

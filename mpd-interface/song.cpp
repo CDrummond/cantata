@@ -311,14 +311,14 @@ void Song::guessTags()
     if (isEmpty() && !isStream()) {
         static const QLatin1String constAlbumArtistSep(" - ");
         guessed=true;
-        QStringList parts = file.split("/", QString::SkipEmptyParts);
+        QStringList parts = file.split("/", Qt::SkipEmptyParts);
         if (3==parts.length()) {
             title=parts.at(2);
             album=parts.at(1);
             artist=parts.at(0);
         } else if (2==parts.length() && parts.at(0).contains(constAlbumArtistSep)) {
             title=parts.at(1);
-            QStringList albumArtistParts = parts.at(0).split(constAlbumArtistSep, QString::SkipEmptyParts);
+            QStringList albumArtistParts = parts.at(0).split(constAlbumArtistSep, Qt::SkipEmptyParts);
             if (2==albumArtistParts.length()) {
                 album=albumArtistParts.at(1);
                 artist=albumArtistParts.at(0);
@@ -718,7 +718,7 @@ QString Song::capitalize(const QString &s)
         return s;
     }
 
-    QStringList words = s.split(' ', QString::SkipEmptyParts);
+    QStringList words = s.split(' ', Qt::SkipEmptyParts);
     for (int i = 0; i < words.count(); i++) {
         QString word = words[i]; //.toLower();
         int j = 0;

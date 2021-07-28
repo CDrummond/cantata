@@ -46,7 +46,7 @@
 #include <QAbstractItemView>
 #include <QTimer>
 #include <QPropertyAnimation>
-#include <QSysInfo>
+#include <QOperatingSystemVersion>
 #include <QDesktopWidget>
 #include "icon.h"
 #include "osxstyle.h"
@@ -91,7 +91,7 @@ public:
             QColor col(Qt::black);
             QRect r(rect());
 
-            if (QSysInfo::MacintoshVersion > QSysInfo::MV_10_9) {
+            if (QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 9)) {
                 col.setAlphaF(0.1);
                 p.setClipRect(r);
                 p.setRenderHint(QPainter::Antialiasing, true);

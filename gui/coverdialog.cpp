@@ -301,14 +301,14 @@ void CoverPreview::scaleImage(int adjust)
         return;
     }
     zoom=newZoom;
-    imageLabel->resize(zoom * imageLabel->pixmap()->size());
+    imageLabel->resize(zoom * imageLabel->pixmap(Qt::ReturnByValue).size());
     setWindowTitle(tr("Image (%1 x %2 %3%)", "Image (width x height zoom%)").arg(imgW).arg(imgH).arg(zoom*100));
 }
 
 void CoverPreview::wheelEvent(QWheelEvent *event)
 {
     if (scrollArea->isVisible() && QApplication::keyboardModifiers() & Qt::ControlModifier) {
-        const int numDegrees = event->delta() / 8;
+        const int numDegrees = event->angleDelta().y() / 8;
         const int numSteps = numDegrees / 15;
         if (0!=numSteps) {
             scaleImage(numSteps);
@@ -1190,7 +1190,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     }
 
     if (isArtist) {
-        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', Qt::SkipEmptyParts).count()) {
             QDir d(dirName);
             d.cdUp();
             destName=d.absolutePath()+'/'+Covers::constArtistImage+ext;
@@ -1198,7 +1198,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
             destName=Utils::cacheDir(Covers::constCoverDir, true)+Covers::encodeName(song.albumArtist())+ext;
         }
     } else if (isComposer) {
-        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+        /*if (saveInMpd && !mpdDir.isEmpty() && dirName.startsWith(mpdDir) && 2==dirName.mid(mpdDir.length()).split('/', Qt::SkipEmptyParts).count()) {
             QDir d(dirName);
             d.cdUp();
             destName=d.absolutePath()+'/'+Covers::constComposerImage+ext;

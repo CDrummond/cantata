@@ -188,7 +188,7 @@ void ViewSelector::setCurrentIndex(int index)
 
 void ViewSelector::wheelEvent(QWheelEvent *ev)
 {
-    int numDegrees = ev->angleDelta().y() / 8;
+    int numDegrees = ev->delta() / 8;
     int numSteps = numDegrees / 15;
     if (numSteps > 0) {
         for (int i = 0; i < numSteps; ++i) {

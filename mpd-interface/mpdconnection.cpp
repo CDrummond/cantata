@@ -37,7 +37,6 @@
 #include <QTimer>
 #include <QDir>
 #include <QHostInfo>
-#include <QDate>
 #include <QDateTime>
 #include <QPropertyAnimation>
 #include <QCoreApplication>
@@ -49,8 +48,6 @@
 #include "dbus/powermanagement.h"
 #elif defined Q_OS_MAC && defined IOKIT_FOUND
 #include "mac/powermanagement.h"
-#elif defined Q_OS_WIN
-#define sscanf sscanf_s
 #endif
 #include <algorithm>
 #include <QDebug>
@@ -296,7 +293,7 @@ MPDConnection::MPDConnection()
     #if (defined Q_OS_LINUX && defined QT_QTDBUS_FOUND) || (defined Q_OS_MAC && defined IOKIT_FOUND)
     connect(PowerManagement::self(), SIGNAL(resuming()), this, SLOT(reconnect()));
     #endif
-    MPDParseUtils::setSingleTracksFolders(Utils::listToSet(Configuration().get("singleTracksFolders", QStringList())));
+    MPDParseUtils::setSingleTracksFolders(Configuration().get("singleTracksFolders", QStringList()).toSet());
 }
 
 MPDConnection::~MPDConnection()
@@ -1125,7 +1122,7 @@ void MPDConnection::playListChanges()
             QList<Song> songs;
             QList<Song> newCantataStreams;
             QList<qint32> ids;
-            QSet<qint32> prevIds=Utils::listToSet(playQueueIds);
+            QSet<qint32> prevIds=playQueueIds.toSet();
             QSet<qint32> strmIds;
 
             for (const MPDParseUtils::IdPos &idp: changes) {
@@ -1199,7 +1196,7 @@ void MPDConnection::playListChanges()
             if (!newCantataStreams.isEmpty()) {
                 emit cantataStreams(newCantataStreams, true);
             }
-            QSet<qint32> removed=prevIds-Utils::listToSet(playQueueIds);
+            QSet<qint32> removed=prevIds-playQueueIds.toSet();
             if (!removed.isEmpty()) {
                 emit removedIds(removed);
             }
@@ -1271,7 +1268,7 @@ void MPDConnection::setReplayGain(const QString &v)
 void MPDConnection::getReplayGain()
 {
     if (replaygainSupported()) {
-        QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', Qt::SkipEmptyParts);
+        QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', QString::SkipEmptyParts);
 
         if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
             QString mode=lines[0].mid(18);
@@ -1531,7 +1528,7 @@ void MPDConnection::getUrlHandlers()
 {
     Response response=sendCommand("urlhandlers");
     if (response.ok) {
-        handlers=Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("handler: ")));
+        handlers=MPDParseUtils::parseList(response.data, QByteArray("handler: ")).toSet();
         DBUG << handlers;
     }
 }
@@ -1540,7 +1537,7 @@ void MPDConnection::getTagTypes()
 {
     Response response=sendCommand("tagtypes");
     if (response.ok) {
-        tagTypes=Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("tagtype: ")));
+        tagTypes=MPDParseUtils::parseList(response.data, QByteArray("tagtype: ")).toSet();
     }
 }
 
@@ -2042,7 +2039,7 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
     if (field==constModifiedSince) {
         time_t v=0;
         if (QRegExp("\\d*").exactMatch(value)) {
-            v=QDateTime::currentDateTime().date().startOfDay().toTime_t()-(value.toInt()*24*60*60);
+            v=QDateTime(QDateTime::currentDateTime().date()).toTime_t()-(value.toInt()*24*60*60);
         } else if (QRegExp("^((19|20)\\d\\d)[-/](0[1-9]|1[012])[-/](0[1-9]|[12][0-9]|3[01])$").exactMatch(value)) {
             QDateTime dt=QDateTime::fromString(QString(value).replace("/", "-"), Qt::ISODate);
             if (dt.isValid()) {
@@ -2206,7 +2203,7 @@ void MPDConnection::sendDynamicMessage(const QStringList &msg)
     // Check whether cantata-dynamic is still alive, by seeing if its channel is still open...
     if (1==msg.count() && QLatin1String("ping")==msg.at(0)) {
         Response response=sendCommand("channels");
-        if (!response.ok || !(Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("channel: ")))).contains(constDynamicIn)) {
+        if (!response.ok || !MPDParseUtils::parseList(response.data, QByteArray("channel: ")).toSet().contains(constDynamicIn)) {
             emit dynamicSupport(false);
         }
         return;
@@ -2392,7 +2389,7 @@ bool MPDConnection::checkRemoteDynamicSupport()
             idleSocket.waitForBytesWritten(constSocketCommsTimeout);
             response=readReply(idleSocket);
             if (response.ok) {
-                return Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("channel: "))).contains(constDynamicIn);
+                return MPDParseUtils::parseList(response.data, QByteArray("channel: ")).toSet().contains(constDynamicIn);
             }
         }
     }
@@ -2448,7 +2445,7 @@ void MPDConnection::readRemoteDynamicMessages()
                         for (const QString &m: messages[channel]) {
                             if (!m.isEmpty()) {
                                 DBUG << "Received message " << m;
-                                QStringList parts=m.split(':', Qt::SkipEmptyParts);
+                                QStringList parts=m.split(':', QString::SkipEmptyParts);
                                 QStringList message;
                                 for (QString part: parts) {
                                     part=part.replace("{c}", ":");
@@ -2574,7 +2571,7 @@ void MPDConnection::getStickerSupport()
 {
     Response response=sendCommand("commands");
     canUseStickers=response.ok &&
-        Utils::listToSet(MPDParseUtils::parseList(response.data, QByteArray("command: "))).contains("sticker");
+        MPDParseUtils::parseList(response.data, QByteArray("command: ")).toSet().contains("sticker");
 }
 
 bool MPDConnection::fadingVolume()
@@ -2798,9 +2795,9 @@ void MPDServerInfo::detect() {
 
         QByteArray message = "sendmessage rating \"";
         message += "rating ";                           // sticker name
-        message += QString().number(Song::Rating_Max).toUtf8();  // max rating
+        message += QString().number(Song::Rating_Max);  // max rating
         message += " ";
-        message += QString().number(Song::Rating_Step).toUtf8(); // rating step (optional)
+        message += QString().number(Song::Rating_Step); // rating step (optional)
         message += "\"";
         conn->sendCommand(message, false, false);
     }

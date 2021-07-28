@@ -38,14 +38,6 @@ SOLID_GLOBAL_STATIC(Solid::DeviceManagerStorage, globalDeviceStorage)
 #define QtPointer QPointer
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-    template <typename T>
-    QSet<T> listToSet(const QList<T> &list) { return QSet<T>(list.cbegin(), list.cend()); }
-#else
-    template <typename T>
-    static inline QSet<T> listToSet(const QList<T> &list) { return list.toSet(); }
-#endif
-
 Solid::DeviceManagerPrivate::DeviceManagerPrivate()
     : m_nullDevice(new DevicePrivate(QString()))
 {
@@ -153,10 +145,10 @@ QList<Solid::Device> Solid::Device::listFromQuery(const Predicate &predicate,
             }
 
             for (DeviceInterface::Type type: supportedTypes) {
-                udis+= listToSet(backend->devicesFromQuery(parentUdi, type));
+                udis+= QSet<QString>::fromList(backend->devicesFromQuery(parentUdi, type));
             }
         } else {
-            udis+= listToSet(backend->allDevices());
+            udis+= QSet<QString>::fromList(backend->allDevices());
         }
 
         for (const QString &udi: udis)

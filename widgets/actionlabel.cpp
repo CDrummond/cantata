@@ -29,21 +29,21 @@
 #include <QMatrix>
 
 // Borrowed from kolourpaint...
-static QTransform transformWithZeroOrigin(const QMatrix &matrix, int width, int height)
+static QMatrix matrixWithZeroOrigin(const QMatrix &matrix, int width, int height)
 {
     QRect newRect(matrix.mapRect(QRect(0, 0, width, height)));
 
-    return QTransform(matrix.m11(), matrix.m12(), matrix.m21(), matrix.m22(),
+    return QMatrix(matrix.m11(), matrix.m12(), matrix.m21(), matrix.m22(),
                    matrix.dx() - newRect.left(), matrix.dy() - newRect.top());
 }
 
-static QTransform rotateMatrix(int width, int height, double angle)
+static QMatrix rotateMatrix(int width, int height, double angle)
 {
     QMatrix matrix;
     matrix.translate(width/2, height/2);
     matrix.rotate(angle);
 
-    return transformWithZeroOrigin(matrix, width, height);
+    return matrixWithZeroOrigin(matrix, width, height);
 }
 
 static const int constNumIcons=8;

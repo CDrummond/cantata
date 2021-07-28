@@ -320,12 +320,12 @@ int Settings::sidebar()
 
 QSet<QString> Settings::composerGenres()
 {
-    return Utils::listToSet(cfg.get("composerGenres", Song::composerGenres().values()));
+    return cfg.get("composerGenres", Song::composerGenres().toList()).toSet();
 }
 
 QSet<QString> Settings::singleTracksFolders()
 {
-    return Utils::listToSet(cfg.get("singleTracksFolders", QStringList()));
+    return cfg.get("singleTracksFolders", QStringList()).toSet();
 }
 
 MPDParseUtils::CueSupport Settings::cueSupport()
@@ -678,7 +678,7 @@ bool Settings::infoTooltips()
 
 QSet<QString> Settings::ignorePrefixes()
 {
-    return Utils::listToSet(cfg.get("ignorePrefixes", Song::ignorePrefixes().values()));
+    return cfg.get("ignorePrefixes", Song::ignorePrefixes().toList()).toSet();
 }
 
 bool Settings::mpris()
@@ -838,12 +838,12 @@ void Settings::saveSidebar(int v)
 
 void Settings::saveComposerGenres(const QSet<QString> &v)
 {
-    cfg.set("composerGenres", v.values());
+    cfg.set("composerGenres", v.toList());
 }
 
 void Settings::saveSingleTracksFolders(const QSet<QString> &v)
 {
-    cfg.set("singleTracksFolders", v.values());
+    cfg.set("singleTracksFolders", v.toList());
 }
 
 void Settings::saveCueSupport(MPDParseUtils::CueSupport v)
@@ -1173,7 +1173,7 @@ void Settings::saveInfoTooltips(bool v)
 
 void Settings::saveIgnorePrefixes(const QSet<QString> &v)
 {
-    cfg.set("ignorePrefixes", v.values());
+    cfg.set("ignorePrefixes", v.toList());
 }
 
 void Settings::saveMpris(bool v)

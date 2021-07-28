@@ -227,7 +227,7 @@ public:
             QPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                     ? QPalette::Normal : QPalette::Disabled;
             o.backgroundColor = option.palette.color(cg, (option.state & QStyle::State_Selected)
-                                                      ? QPalette::Highlight : QPalette::Window);
+                                                      ? QPalette::Highlight : QPalette::Background);
             QApplication::style()->drawPrimitive(QStyle::PE_FrameFocusRect, &o, painter);
         }
     }

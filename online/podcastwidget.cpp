@@ -200,7 +200,7 @@ void PodcastWidget::download()
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
         for (; it!=end; ++it) {
-            srv->downloadPodcasts(it.key(), it.value().values());
+            srv->downloadPodcasts(it.key(), it.value().toList());
         }
     }
 }
@@ -223,7 +223,7 @@ void PodcastWidget::deleteDownload()
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
         for (; it!=end; ++it) {
-            srv->deleteDownloadedPodcasts(it.key(), it.value().values());
+            srv->deleteDownloadedPodcasts(it.key(), it.value().toList());
         }
     }
 }
@@ -236,7 +236,7 @@ void PodcastWidget::markAsNew()
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
         for (; it!=end; ++it) {
-            srv->setPodcastsAsListened(it.key(), it.value().values(), false);
+            srv->setPodcastsAsListened(it.key(), it.value().toList(), false);
         }
     }
 }
@@ -249,7 +249,7 @@ void PodcastWidget::markAsListened()
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator it(urls.constBegin());
         QMap<PodcastService::Podcast *, QSet<PodcastService::Episode *> >::ConstIterator end(urls.constEnd());
         for (; it!=end; ++it) {
-            srv->setPodcastsAsListened(it.key(), it.value().values(), true);
+            srv->setPodcastsAsListened(it.key(), it.value().toList(), true);
         }
     }
 }

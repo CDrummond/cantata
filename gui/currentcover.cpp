@@ -51,7 +51,7 @@ static void themes(const QString &theme, QStringList &iconThemes)
             while (!f.atEnd()) {
                 QString line=QString::fromUtf8(f.readLine()).trimmed().simplified();
                 if (line.startsWith(key)) {
-                    QStringList inherited=line.mid(key.length()).split(",", Qt::SkipEmptyParts);
+                    QStringList inherited=line.mid(key.length()).split(",", QString::SkipEmptyParts);
                     for (const QString &i: inherited) {
                         themes(i, iconThemes);
                     }

@@ -240,7 +240,7 @@ WmiQuery::WmiQuery()
     hres =  CoInitializeEx(0,COINIT_MULTITHREADED);
     if( FAILED(hres) && hres != S_FALSE && hres != RPC_E_CHANGED_MODE )
     {
-        qCritical() << "Failed to initialize COM library.  Error code = 0x" << hex << quint32(hres) << Qt::endl;
+        qCritical() << "Failed to initialize COM library.  Error code = 0x" << hex << quint32(hres) << endl;
         m_failed = true;
     }
     m_bNeedUninit = ( hres != S_FALSE && hres != RPC_E_CHANGED_MODE );
@@ -252,7 +252,7 @@ WmiQuery::WmiQuery()
         // RPC_E_TOO_LATE --> security already initialized
         if( FAILED(hres) && hres != RPC_E_TOO_LATE )
         {
-            qCritical() << "Failed to initialize security. " << "Error code = " << hres << Qt::endl;
+            qCritical() << "Failed to initialize security. " << "Error code = " << hres << endl;
             if ( m_bNeedUninit )
                 CoUninitialize();
             m_failed = true;
@@ -263,7 +263,7 @@ WmiQuery::WmiQuery()
         hres = CoCreateInstance( CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, IID_IWbemLocator, (LPVOID *) &pLoc );
         if (FAILED(hres))
         {
-            qCritical() << "Failed to create IWbemLocator object. " << "Error code = " << hres << Qt::endl;
+            qCritical() << "Failed to create IWbemLocator object. " << "Error code = " << hres << endl;
             if ( m_bNeedUninit )
                 CoUninitialize();
             m_failed = true;
@@ -274,14 +274,14 @@ WmiQuery::WmiQuery()
         hres = pLoc->ConnectServer( L"ROOT\\CIMV2", NULL, NULL, 0, NULL, 0, 0, &pSvc );
         if( FAILED(hres) )
         {
-            qCritical() << "Could not connect. Error code = " << hres << Qt::endl;
+            qCritical() << "Could not connect. Error code = " << hres << endl;
             pLoc->Release();
             if ( m_bNeedUninit )
                 CoUninitialize();
             m_failed = true;
         }
         //        else
-        //            qDebug() << "Connected to ROOT\\CIMV2 WMI namespace" << Qt::endl;
+        //            qDebug() << "Connected to ROOT\\CIMV2 WMI namespace" << endl;
     }
 
     if( !m_failed )
@@ -290,7 +290,7 @@ WmiQuery::WmiQuery()
                                   RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE );
         if( FAILED(hres) )
         {
-            qCritical() << "Could not set proxy blanket. Error code = " << hres << Qt::endl;
+            qCritical() << "Could not set proxy blanket. Error code = " << hres << endl;
             pSvc->Release();
             pLoc->Release();
             if ( m_bNeedUninit )
@@ -346,7 +346,7 @@ WmiQuery::ItemList WmiQuery::sendQuery( const QString &wql )
     
     if( FAILED(hres) )
     {
-        qDebug() << "Query with string \"" << wql << "\" failed. Error code = " << hres << Qt::endl;
+        qDebug() << "Query with string \"" << wql << "\" failed. Error code = " << hres << endl;
     }
     else
     {

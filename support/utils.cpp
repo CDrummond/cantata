@@ -957,7 +957,7 @@ Utils::Desktop Utils::currentDe()
     static int de=-1;
     if (-1==de) {
         de=Other;
-        QSet<QByteArray> desktop = Utils::listToSet(qgetenv("XDG_CURRENT_DESKTOP").toLower().split(':'));
+        QSet<QByteArray> desktop=qgetenv("XDG_CURRENT_DESKTOP").toLower().split(':').toSet();
         if (desktop.contains("unity")) {
             de=Unity;
         } else if (desktop.contains("kde")) {
@@ -1022,10 +1022,6 @@ QColor Utils::monoIconColor()
     return clampColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
 }
 
-QSize Utils::minSize(const QSize& fst, const QSize& snd) {
-    return QSize(std::min(fst.width(), snd.width()), std::min(fst.height(), snd.height()));
-}
-
 #ifdef Q_OS_WIN
 // This is down here, because windows.h includes ALL windows stuff - and we get conflicts with MessageBox :-(
 #include <windows.h>
@@ -1062,3 +1058,6 @@ void Utils::raiseWindow(QWidget *w)
     #endif
 }
 
+QSize Utils::minSize(const QSize &fst, const QSize &snd) {
+    return QSize(std::min(fst.width(), snd.width()), std::min(fst.height(), snd.height()));
+}

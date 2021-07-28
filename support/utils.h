@@ -51,14 +51,6 @@ namespace Utils
         return (fabs(d1 - d2) < precision);
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-    template <typename T>
-    QSet<T> listToSet(const QList<T> &list) { return QSet<T>(list.cbegin(), list.cend()); }
-#else
-    template <typename T>
-    static inline QSet<T> listToSet(const QList<T> &list) { return list.toSet(); }
-#endif
-
     extern QString fixPath(const QString &d, bool ensureEndsInSlash=true);
     #ifdef Q_OS_WIN
     inline QString homeToTilda(const QString &s) { return s; }

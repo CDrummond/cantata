@@ -35,7 +35,7 @@ public:
         : ComboBox(p) {
         setEditable(true);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
+        setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
         view()->setTextElideMode(Qt::ElideRight);
     }
 

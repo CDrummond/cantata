@@ -54,7 +54,7 @@ static const QString constTuneInNotCompat = QLatin1String("service/Audio/notcomp
 
 static QString parsePlaylist(const QByteArray &data, const QString &key, const QSet<QString> &handlers)
 {
-    QStringList lines=QString(data).split('\n', Qt::SkipEmptyParts);
+    QStringList lines=QString(data).split('\n', QString::SkipEmptyParts);
 
     for (QString line: lines) {
         if (line.startsWith(key, Qt::CaseInsensitive)) {
@@ -75,7 +75,7 @@ static QString parsePlaylist(const QByteArray &data, const QString &key, const Q
 
 static QString parseExt3Mu(const QByteArray &data, const QSet<QString> &handlers)
 {
-    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), Qt::SkipEmptyParts);
+    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
 
     for (QString line: lines) {
         for (const QString &handler: handlers) {
@@ -93,7 +93,7 @@ static QString parseExt3Mu(const QByteArray &data, const QSet<QString> &handlers
 
 static QString parseAsx(const QByteArray &data, const QSet<QString> &handlers)
 {
-    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r|/>)")), Qt::SkipEmptyParts);
+    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r|/>)")), QString::SkipEmptyParts);
 
     for (QString line: lines) {
         int ref=line.indexOf(QLatin1String("<ref href"), Qt::CaseInsensitive);
@@ -179,7 +179,7 @@ static QString parse(const QByteArray &data, const QString &host)
         for (const auto &h: handlers) {
             DBUG << h;
             if (data.startsWith(h.toLatin1()+"://")) {
-                QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), Qt::SkipEmptyParts);
+                QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
                 if (!lines.isEmpty()) {
                     DBUG << h;
                     return lines.first();

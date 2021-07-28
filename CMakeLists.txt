@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
-project(cantata)
-cmake_policy(SET CMP0020 NEW)
+PROJECT(cantata)
 
 #  NOTE: If PROJECT_URL, or PROJECT_REV_URL, are changed, then cantata-dynamic, README, and
 #        dbus/mpd.cantata.xml will need renaming/updating.
@@ -20,8 +18,8 @@ else ()
     set(ORGANIZATION_NAME ${CMAKE_PROJECT_NAME})
 endif ()
 
-
-
+cmake_minimum_required(VERSION 2.6)
+cmake_policy(SET CMP0020 OLD)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set (QT_MIN_VERSION 5.11)
 
@@ -85,6 +83,7 @@ endif()
 
 if (AVAHI_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/findmpddialog.cpp gui/avahidiscovery.cpp gui/avahipoll.cpp)
+    set(CANTATA_UIS ${CANTATA_UIS} gui/findmpddialog.ui)
 
     set(CANTATA_LIBS ${CANTATA_LIBS} ${AVAHI_LIBRARIES})
 endif()
@@ -170,6 +169,33 @@ if (TAGLIB_FOUND)
 
     set(ENABLE_TAGEDITOR_SUPPORT 1)
     set(ENABLE_TRACKORGANIZER_SUPPORT 1)
+    include(CheckCXXSourceCompiles)
+    set(CMAKE_REQUIRED_INCLUDES "${TAGLIB_INCLUDES}")
+    set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
+
+    check_cxx_source_compiles("#include <asftag.h>
+                            int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
+    if (NOT TAGLIB_ASF_FOUND)
+        message("TagLib does not have ASF support compiled in.")
+    endif ()
+
+    check_cxx_source_compiles("#include <mp4tag.h>
+                            int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
+    if (NOT TAGLIB_MP4_FOUND)
+        message("TagLib does not have MP4 support compiled in.")
+    endif ()
+
+    check_cxx_source_compiles("#include <opusfile.h>
+                            int main() { TagLib::Ogg::Opus::File *f=0; return 0;}" TAGLIB_OPUS_FOUND)
+    if (NOT TAGLIB_OPUS_FOUND)
+        message("TagLib does not have OPUS support compiled in.")
+    endif ()
+
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_LIBRARIES)
+
+    #include(CheckTagLibFileName)
+    #check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
 
     add_definitions(${TAGLIB_CFLAGS})
 
@@ -193,11 +219,15 @@ if (NOT MTP_FOUND)
    set(ENABLE_UNCACHED_MTP OFF)
 endif ()
 
-find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Widgets Xml Network Concurrent Svg Sql REQUIRED)
+find_package(Qt5Widgets ${QT_MIN_VERSION} REQUIRED)
+find_package(Qt5Xml ${QT_MIN_VERSION} REQUIRED)
+find_package(Qt5Network ${QT_MIN_VERSION} REQUIRED)
+find_package(Qt5Concurrent ${QT_MIN_VERSION} REQUIRED)
+find_package(Qt5Svg ${QT_MIN_VERSION} REQUIRED)
+find_package(Qt5Sql ${QT_MIN_VERSION} REQUIRED)
 
 set(CMAKE_AUTOMOC TRUE)
-set(CMAKE_AUTOUIC TRUE)
-set(CMAKE_AUTORCC TRUE)
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_STANDARD 11)
 
 set(QTCORELIBS ${Qt5Core_LIBRARIES})
@@ -232,7 +262,7 @@ if (ENABLE_HTTP_STREAM_PLAYBACK)
         include_directories(${LIBVLC_INCLUDE_DIR})
         set(CANTATA_LIBS ${CANTATA_LIBS} ${LIBVLC_LIBRARY})
     else ()
-        find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Multimedia REQUIRED)
+        find_package(Qt5Multimedia REQUIRED)
         macro_log_feature(Qt5Multimedia_FOUND "Qt5Multimedia" "MPD HTTP stream playback." "http://qtproject.org")
         include_directories(${Qt5Multimedia_INCLUDE_DIRS})
         add_definitions(${Qt5Multimedia_DEFINITIONS})
@@ -259,8 +289,15 @@ if (APPLE)
         set(CANTATA_LIBS ${CANTATA_LIBS} ${MAC_MEDIAPLAYER_LIBRARY})
         add_definitions(-DMAC_MEDIAPLAYER_FOUND)
     endif ()
+    find_package(Qt5MacExtras)
+    if (Qt5MacExtras_FOUND)
+        set(QTINCLUDES ${QTINCLUDES} ${Qt5MacExtras_INCLUDE_DIRS})
+        set(QTLIBS ${QTLIBS} ${Qt5MacExtras_LIBRARIES})
+        add_definitions(${Qt5MacExtras_DEFINITIONS})
+        set(QT_MAC_EXTRAS_FOUND 1)
+    endif ()
 elseif (WIN32)
-    find_package(Qt5 COMPONENTS WinExtras REQUIRED)
+    find_package(Qt5WinExtras REQUIRED)
     set(QTINCLUDES ${QTINCLUDES} ${Qt5WinExtras_INCLUDE_DIRS})
     set(QTLIBS ${QTLIBS} ${Qt5WinExtras_LIBRARIES})
     add_definitions(${Qt5WinExtras_DEFINITIONS})
@@ -321,6 +358,12 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     online/podcastsettingsdialog.cpp online/podcastwidget.cpp online/onlinesearchservice.cpp
     db/onlinedb.cpp
     http/httpserver.cpp)
+set(CANTATA_UIS ${CANTATA_UIS}
+    gui/initialsettingswizard.ui gui/mainwindow.ui gui/interfacesettings.ui gui/playbacksettings.ui gui/serversettings.ui gui/coverdialog.ui
+    context/togglelist.ui context/othersettings.ui
+    streams/digitallyimportedsettings.ui streams/streamssettings.ui
+    playlists/playlistrule.ui playlists/playlistrules.ui
+    widgets/itemview.ui)
 
 if (ENABLE_CATEGORIZED_VIEW)
     set(CANTATA_SRCS ${CANTATA_SRCS} widgets/categorizedview.cpp)
@@ -330,6 +373,7 @@ if (ENABLE_SIMPLE_MPD_SUPPORT)
 endif ()
 if (ENABLE_SCROBBLING)
     set(CANTATA_SRCS ${CANTATA_SRCS} scrobbling/scrobbler.cpp scrobbling/pausabletimer.cpp scrobbling/scrobblingsettings.cpp scrobbling/scrobblinglove.cpp)
+    set(CANTATA_UIS ${CANTATA_UIS} scrobbling/scrobblingsettings.ui)
 endif()
 
 set(CANTATA_LIBS ${CANTATA_LIBS} support)
@@ -368,10 +412,11 @@ if (NOT WIN32 AND NOT APPLE)
     set(CANTATA_SRCS ${CANTATA_SRCS} devices/mountpoints.cpp)
 endif ()
 
-set(CANTATA_SRCS ${CANTATA_SRCS} cantata.qrc cantata_media.qrc)
+set(CANTATA_RCS cantata.qrc cantata_media.qrc)
 
 if (TAGLIB_FOUND)
     set(CANTATA_SRCS ${CANTATA_SRCS}  tags/tageditor.cpp tags/trackorganiser.cpp devices/filenameschemedialog.cpp widgets/tagspinbox.cpp)
+    set(CANTATA_UIS ${CANTATA_UIS} tags/tageditor.ui tags/trackorganiser.ui devices/filenameschemedialog.ui)
 
     # Cantata still links to taglib, even if external tag reader/writer is used, because JamendoService uses taglib for ID3 genres.
     set(CANTATA_LIBS ${CANTATA_LIBS} ${TAGLIB_LIBRARIES})
@@ -412,6 +457,7 @@ if (TAGLIB_FOUND)
             endif ()
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddbselectiondialog.cpp
                  devices/cdparanoia.cpp devices/audiocdsettings.cpp devices/extractjob.cpp devices/albumdetailsdialog.cpp)
+            set(CANTATA_UIS ${CANTATA_UIS} devices/albumdetails.ui devices/audiocdsettings.ui)
             # If CDDB/MusicBrainz5 found - then CDParanoia must have been!
             if (CDIOPARANOIA_FOUND)
                 set(CANTATA_LIBS ${CANTATA_LIBS} ${CDIOPARANOIA_LIBRARIES})
@@ -429,10 +475,13 @@ if (TAGLIB_FOUND)
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp
                 devices/synccollectionwidget.cpp
                 models/musiclibrarymodel.cpp)
+        set(CANTATA_UIS ${CANTATA_UIS} devices/actiondialog.ui devices/devicepropertieswidget.ui
+                devices/synccollectionwidget.ui)
 
         if (ENABLE_REMOTE_DEVICES)
             set(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp
                 devices/remotedevicepropertieswidget.cpp)
+            set(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
         endif ()
     else (ENABLE_DEVICES_SUPPORT)
         set(CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp)
@@ -444,6 +493,7 @@ endif ()
 
 if (ENABLE_PROXY_CONFIG)
     set(CANTATA_SRCS ${CANTATA_SRCS} network/proxysettings.cpp)
+    set(CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui)
 endif ()
 
 if (WIN32 OR APPLE OR HAIKU)
@@ -461,9 +511,17 @@ endif ()
 if (WIN32)
     add_definitions(-DWIN32)
     add_subdirectory(windows)
-    set(CANTATA_SRCS ${CANTATA_SRCS} windows/cantataico.rc)
     if (NOT CANTATA_WINDOWS_INSTALLER_DEST)
         set(CANTATA_WINDOWS_INSTALLER_DEST z:\ )
+    endif ()
+    if (MINGW)
+        # resource compilation for MinGW
+        ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
+            COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/windows/cantataico.rc
+            -o ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
+        set(CANTATA_SRCS ${CANTATA_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
+    else ()
+        set(CANTATA_SRCS ${CANTATA_SRCS} windows/cantataico.rc)
     endif ()
 elseif (APPLE)
     add_definitions(-D__APPLE__)
@@ -472,20 +530,23 @@ endif ()
 set(CANTATA_SRCS ${CANTATA_SRCS} gui/shortcutssettingspage.cpp gui/mediakeys.cpp)
 
 if (WIN32 OR APPLE)
-    set(CANTATA_SRCS ${CANTATA_SRCS} cantata_icon.qrc)
+    set(CANTATA_RCS ${CANTATA_RCS} cantata_icon.qrc)
 else()
     add_subdirectory(icons)
 endif()
+
+QT5_ADD_RESOURCES(CANTATA_RC_SRCS ${CANTATA_RCS})
+QT5_WRAP_UI(CANTATA_UI_HDRS ${CANTATA_UIS})
 
 if (WIN32)
     add_definitions(-DQXT_STATIC)
     add_subdirectory(3rdparty/qxt)
     set(CANTATA_SRCS ${CANTATA_SRCS} gui/qxtmediakeys.cpp)
     set(CMAKE_BUILD_TYPE "Release")
-    ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_PO})
+    ADD_EXECUTABLE(cantata WIN32 ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
     install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
 elseif (APPLE)
-    ADD_EXECUTABLE(cantata MACOSX_BUNDLE ${CANTATA_SRCS} ${CANTATA_PO})
+    ADD_EXECUTABLE(cantata MACOSX_BUNDLE ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} ${CANTATA_PO})
 
     set(BREW_OPENSSL_PATH /usr/local/opt/openssl/lib)
     if (EXISTS ${BREW_OPENSSL_PATH}/libcrypto.1.0.0.dylib AND EXISTS ${BREW_OPENSSL_PATH}/libssl.1.0.0.dylib)
@@ -514,10 +575,10 @@ elseif (APPLE)
         install_qt5_executable(Cantata.app "qjpeg;qsvg;qsvgicon;qcocoa;qmacstyle;qsqlite")
     endif (ENABLE_HTTP_STREAM_PLAYBACK AND NOT ENABLE_LIBVLC)
 elseif (HAIKU)
-    ADD_EXECUTABLE(cantata ${CANTATA_SRCS})
+    ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
     install(TARGETS cantata DESTINATION ${CMAKE_INSTALL_PREFIX})
 else ()
-    ADD_EXECUTABLE(cantata ${CANTATA_SRCS})
+    ADD_EXECUTABLE(cantata ${CANTATA_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
     install(TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 endif ()
 

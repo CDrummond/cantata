@@ -7,6 +7,7 @@ if (CANTATA_SSL_LIBS)
     set(CANTATA_SSL_WIN_NSIS_INSTALL "file \"libeay32.dll\"\n    file \"ssleay32.dll\"")
 endif (CANTATA_SSL_LIBS)
 
+FILE(TO_CMAKE_PATH $ENV{QTDIR} QT_DIR)
 set(QT_BINARY_DIR ${QT_DIR}/bin)
 set(QT_PLUGINS_DIR ${QT_DIR}/plugins)
 set(QT_TRANSLATIONS_DIR ${QT_DIR}/translations)

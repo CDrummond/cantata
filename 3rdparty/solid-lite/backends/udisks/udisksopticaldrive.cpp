@@ -110,7 +110,7 @@ void UDisksOpticalDrive::initReadWriteSpeeds() const
         m_readSpeed = read_speed;
         m_writeSpeed = write_speed;
 
-        QStringList list = QString::fromLatin1(write_speeds).split(',', Qt::SkipEmptyParts);
+        QStringList list = QString::fromLatin1(write_speeds).split(',', QString::SkipEmptyParts);
         foreach (const QString & speed, list)
             m_writeSpeeds.append(speed.toInt());
 

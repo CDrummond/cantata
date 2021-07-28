@@ -136,20 +136,20 @@ static struct SOLID_GLOBAL_STATIC_STRUCT_NAME(NAME)                            \
     }                                                                          \
     inline TYPE *operator->()                                                  \
     {                                                                          \
-        if (!_solid_static_##NAME.loadRelaxed()) {                                    \
+        if (!_solid_static_##NAME.load()) {                                    \
             if (isDestroyed()) {                                               \
                 qFatal("Fatal Error: Accessed global static '%s *%s()' after destruction. " \
                        "Defined at %s:%d", #TYPE, #NAME, __FILE__, __LINE__);  \
             }                                                                  \
             TYPE *x = new TYPE ARGS;                                           \
             if (!_solid_static_##NAME.testAndSetOrdered(0, x)                  \
-                && _solid_static_##NAME.loadRelaxed() != x ) {                        \
+                && _solid_static_##NAME.load() != x ) {                        \
                 delete x;                                                      \
             } else {                                                           \
                 static Solid::CleanUpGlobalStatic cleanUpObject = { destroy }; \
             }                                                                  \
         }                                                                      \
-        return _solid_static_##NAME.loadRelaxed();                                    \
+        return _solid_static_##NAME.load();                                    \
     }                                                                          \
     inline TYPE &operator*()                                                   \
     {                                                                          \
@@ -158,8 +158,8 @@ static struct SOLID_GLOBAL_STATIC_STRUCT_NAME(NAME)                            \
     static void destroy()                                                      \
     {                                                                          \
         _solid_static_##NAME##_destroyed = true;                               \
-        TYPE *x = _solid_static_##NAME.loadRelaxed();                                 \
-        _solid_static_##NAME.storeRelaxed(0);                                         \
+        TYPE *x = _solid_static_##NAME.load();                                 \
+        _solid_static_##NAME.store(0);                                         \
         delete x;                                                              \
     }                                                                          \
 } NAME;

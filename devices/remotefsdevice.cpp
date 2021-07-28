@@ -288,7 +288,7 @@ void RemoteFsDevice::mount()
                  << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
             //<< QLatin1String("-o") << QLatin1String("Ciphers=arcfour");
             if (!details.extraOptions.isEmpty()) {
-                args << details.extraOptions.split(' ', Qt::SkipEmptyParts);
+                args << details.extraOptions.split(' ', QString::SkipEmptyParts);
             }
         } else {
             emit error(tr("\"sshfs\" is not installed!").replace("sshfs", "setsid")); // TODO: 2.4 use correct string!

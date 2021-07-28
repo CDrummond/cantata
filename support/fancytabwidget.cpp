@@ -752,8 +752,8 @@ void FancyTabWidget::recreate()
 
 void FancyTabWidget::setHiddenPages(const QStringList &hidden)
 {
-    QSet<QString> h = Utils::listToSet(hidden);
-    if (h==Utils::listToSet(hiddenPages())) {
+    QSet<QString> h=hidden.toSet();
+    if (h==hiddenPages().toSet()) {
         return;
     }
     bool needToRecreate=false;

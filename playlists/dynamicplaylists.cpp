@@ -402,7 +402,7 @@ void DynamicPlaylists::parseRemote(const QStringList &response)
     Rule r;
 
     for (const QString &part: response) {
-        QStringList lines=part.split('\n', Qt::SkipEmptyParts);
+        QStringList lines=part.split('\n', QString::SkipEmptyParts);
         for (const QString &s: lines) {
             QString str=s.trimmed();
             if (str.isEmpty() || str.startsWith('#')) {

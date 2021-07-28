@@ -49,7 +49,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event) override
     {
         if (QEvent::Wheel==event->type()) {
-            int numDegrees = static_cast<QWheelEvent *>(event)->angleDelta().y() / 8;
+            int numDegrees = static_cast<QWheelEvent *>(event)->delta() / 8;
             int numSteps = numDegrees / 15;
             if (numSteps > 0) {
                 for (int i = 0; i < numSteps; ++i) {

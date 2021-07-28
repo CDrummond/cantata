@@ -672,7 +672,7 @@ bool CoverDownloader::downloadViaHttp(Job &job, JobType type)
     QString dir=Utils::getDir(job.filePath);
     if (job.song.isArtistImageRequest() || job.song.isComposerImageRequest()) {
         if (job.level) {
-            QStringList parts=dir.split(Utils::constDirSep, Qt::SkipEmptyParts);
+            QStringList parts=dir.split(Utils::constDirSep, QString::SkipEmptyParts);
             if (parts.size()<job.level) {
                 return false;
             }
@@ -1048,7 +1048,7 @@ QString CoverDownloader::saveImg(const Job &job, const QImage &img, const QByteA
         // (As of 2.3.0) No longer save artist images into MPD dir
 //        if (saveInMpdDir && !job.song.isNonMPD() && canSaveTo(job.dir)) {
 //            QString mpdDir=MPDConnection::self()->getDetails().dir;
-//            if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split(Utils::constDirSep, Qt::SkipEmptyParts).count()) {
+//            if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split(Utils::constDirSep, QString::SkipEmptyParts).count()) {
 //                QDir d(job.dir);
 //                d.cdUp();
 //                savedName=save(mimeType, extension, d.absolutePath()+Utils::constDirSep+

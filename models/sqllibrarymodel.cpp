@@ -26,7 +26,6 @@
 #include "gui/settings.h"
 #include "widgets/icons.h"
 #include "support/configuration.h"
-#include "support/utils.h"
 #include "roles.h"
 #include <QMimeData>
 #include <time.h>
@@ -483,7 +482,7 @@ static bool containsParent(const QSet<QModelIndex> &set, const QModelIndex &idx)
 QList<Song> SqlLibraryModel::songs(const QModelIndexList &list, bool allowPlaylists) const
 {
     QList<Song> songList;
-    QSet<QModelIndex> set=Utils::listToSet(list);
+    QSet<QModelIndex> set=list.toSet();
     populate(list);
     for (const QModelIndex &idx: list) {
         if (!containsParent(set, idx)) {

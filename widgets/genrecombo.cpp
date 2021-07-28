@@ -58,7 +58,7 @@ void GenreCombo::update(const QSet<QString> &g)
     }
 
     genres=mg;
-    QStringList entries=g.values();
+    QStringList entries=g.toList();
     std::sort(entries.begin(), entries.end());
     entries.prepend(tr("All Genres"));
 

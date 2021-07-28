@@ -443,7 +443,7 @@ bool MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QString &base
                     song.setAlbumArtistSort(attributes.value(constAlbumArtistSortAttribute).toString());
                 }
                 if (attributes.hasAttribute(constGenreAttribute)) {
-                    QStringList genres=attributes.value(constGenreAttribute).toString().split(",", Qt::SkipEmptyParts);
+                    QStringList genres=attributes.value(constGenreAttribute).toString().split(",", QString::SkipEmptyParts);
                     for (int i=0; i<Song::constNumGenres && i<genres.count(); ++i) {
                         song.addGenre(genres[i]);
                     }

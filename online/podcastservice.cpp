@@ -47,7 +47,6 @@
 #include <QMimeData>
 #include <QDateTime>
 #include <QTextDocument>
-#include <QLocale>
 #include <stdio.h>
 
 GLOBAL_STATIC(PodcastService, instance)
@@ -63,7 +62,7 @@ static QString encodeName(const QString &name)
 
 static inline QString episodeFileName(const QUrl &url)
 {
-    return url.path().split('/', Qt::SkipEmptyParts).join('_').replace('~', '_');
+    return url.path().split('/', QString::SkipEmptyParts).join('_').replace('~', '_');
 }
 
 PodcastService::Proxy::Proxy(QObject *parent)
@@ -631,7 +630,7 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
                 return Utils::formatTime(episode->duration, true)+QLatin1Char(' ')+
                        tr("(Downloading: %1%)").arg(episode->downloadProg);
             }
-            return QLocale().toString(episode->publishedDate, QLocale::LongFormat)+
+            return episode->publishedDate.toString(Qt::LocalDate)+
                         (0==episode->duration
                             ? QString()
                             : (QLatin1String(" (")+Utils::formatTime(episode->duration, true)+QLatin1Char(')')));
@@ -641,7 +640,7 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
                         episode->name+QLatin1String("<br/>")+
                         trimDescr(episode->descr)+
                         Utils::formatTime(episode->duration, true)+QLatin1String("<br/>")+
-                        QLocale().toString(episode->publishedDate, QLocale::LongFormat);
+                        episode->publishedDate.toString(Qt::LocalDate);
             }
             break;
         case Qt::FontRole:

@@ -42,6 +42,7 @@
 #cmakedefine QT_QTDBUS_FOUND 1
 #cmakedefine ENABLE_HTTP_SERVER 1
 #cmakedefine IOKIT_FOUND 1
+#cmakedefine QT_MAC_EXTRAS_FOUND 1
 #cmakedefine ENABLE_SIMPLE_MPD_SUPPORT 1
 #cmakedefine AVAHI_FOUND
 #cmakedefine ENABLE_CATEGORIZED_VIEW 1

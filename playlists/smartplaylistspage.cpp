@@ -27,7 +27,6 @@
 #include "widgets/icons.h"
 #include "support/action.h"
 #include "support/configuration.h"
-#include "support/utils.h"
 #include "mpd-interface/mpdconnection.h"
 #include "support/messagebox.h"
 #include "gui/stdactions.h"
@@ -163,9 +162,9 @@ void SmartPlaylistsPage::searchResponse(const QString &id, const QList<Song> &so
     }
 
     if (id.startsWith("I:")) {
-        command.songs.unite(Utils::listToSet(songs));
+        command.songs.unite(songs.toSet());
     } else if (id.startsWith("E:")) {
-        command.songs.subtract(Utils::listToSet(songs));
+        command.songs.subtract(songs.toSet());
     }
 
     if (command.includeRules.isEmpty()) {
@@ -319,7 +318,7 @@ void SmartPlaylistsPage::addSongsToPlayQueue()
         return;
     }
 
-    QList<Song> songs = command.songs.values();
+    QList<Song> songs = command.songs.toList();
     command.songs.clear();
 
     sortAscending = command.orderAscending;
@@ -441,7 +440,7 @@ void SmartPlaylistsPage::addSelectionToPlaylist(const QString &name, int action,
                        RulesPlaylists::constCommentKey==rIt.key() || RulesPlaylists::constTitleKey==rIt.key() ||
                        RulesPlaylists::constSimilarArtistsKey==rIt.key() || RulesPlaylists::constGenreKey==rIt.key() ||
                        RulesPlaylists::constFileKey==rIt.key()) {
-                baseRule += " " + rIt.key().toUtf8() + " " + MPDConnection::encodeName(rIt.value());
+                baseRule += " " + rIt.key() + " " + MPDConnection::encodeName(rIt.value());
             } else if (RulesPlaylists::constExactKey==rIt.key()) {
                 if ("false" == rIt.value()) {
                     match = "search";

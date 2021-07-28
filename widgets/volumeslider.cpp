@@ -244,7 +244,7 @@ void VolumeSlider::contextMenuEvent(QContextMenuEvent *ev)
 
 void VolumeSlider::wheelEvent(QWheelEvent *ev)
 {
-    int numDegrees = ev->angleDelta().y() / 8;
+    int numDegrees = ev->delta() / 8;
     int numSteps = numDegrees / 15;
     if (numSteps > 0) {
         for (int i = 0; i < numSteps; ++i) {

@@ -496,7 +496,7 @@ StreamsModel::StreamsModel(QObject *parent)
     addToFavouritesAction = new Action(favouritesIcon(), tr("Add Stream To Favorites"), this);
     reloadAction = new Action(Icons::self()->reloadIcon, tr("Reload"), this);
 
-    QSet<QString> hidden = Utils::listToSet(Settings::self()->hiddenStreamCategories());
+    QSet<QString> hidden=Settings::self()->hiddenStreamCategories().toSet();
     for (Item *c: root->children) {
         if (c!=favourites) {
             CategoryItem *cat=static_cast<CategoryItem *>(c);
@@ -1231,7 +1231,7 @@ QList<StreamsModel::Item *> StreamsModel::parseRadioTimeResponse(QIODevice *dev,
 
 static QStringList fixGenres(const QString &genre)
 {
-    QStringList allGenres=Song::capitalize(genre).split(' ', Qt::SkipEmptyParts);
+    QStringList allGenres=Song::capitalize(genre).split(' ', QString::SkipEmptyParts);
     QStringList fixed;
     for (const QString &genre: allGenres) {
         if (genre.length() < 2 ||
@@ -1255,7 +1255,7 @@ static QStringList fixGenres(const QString &genre)
 static void trimGenres(QMap<QString, QList<StreamsModel::Item *> > &genres)
 {
     QString other=QObject::tr("Other");
-    QSet<QString> genreSet = Utils::listToSet(genres.keys());
+    QSet<QString> genreSet = genres.keys().toSet();
     for (const QString &genre: genreSet) {
         if (other!=genre && genres[genre].count() < 2) {
             genres[other]+=genres[genre];

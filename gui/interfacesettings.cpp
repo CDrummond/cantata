@@ -41,7 +41,7 @@
 #include <QDBusConnectionInterface>
 #endif
 #include <QSystemTrayIcon>
-#include <QSysInfo>
+#include <QOperatingSystemVersion>
 #include <QStyleFactory>
 #include <algorithm>
 
@@ -132,7 +132,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     bool enableTrayItem=Utils::useSystemTray();
     #ifdef Q_OS_MAC
     // OSX always displays an entry in the taskbar - and the tray seems to confuse things.
-    bool enableNotifications=QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8;
+    bool enableNotifications=QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8);
     #else
     #ifdef QT_QTDBUS_FOUND
     // We have dbus, check that org.freedesktop.Notifications exists
@@ -235,9 +235,9 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    ignorePrefixes->setText(QStringList(Settings::self()->ignorePrefixes().toList()).join(QString(constSep)));
-    composerGenres->setText(QStringList(Settings::self()->composerGenres().toList()).join(QString(constSep)));
-    singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().toList()).join(QString(constSep)));
+    ignorePrefixes->setText(QStringList(Settings::self()->ignorePrefixes().values()).join(QString(constSep)));
+    composerGenres->setText(QStringList(Settings::self()->composerGenres().values()).join(QString(constSep)));
+    singleTracksFolders->setText(QStringList(Settings::self()->singleTracksFolders().values()).join(QString(constSep)));
     selectEntry(cueSupport, Settings::self()->cueSupport());
     yearTag->setCurrentIndex(Settings::self()->useOriginalYear() ? 1 : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -312,7 +312,7 @@ void InterfaceSettings::load()
 
 static QSet<QString> toSet(const QString &str)
 {
-    QStringList parts=str.split(constSep, QString::SkipEmptyParts);
+    QStringList parts=str.split(constSep, Qt::SkipEmptyParts);
     QSet<QString> set;
     for (QString s: parts) {
         set.insert(s.trimmed());

@@ -349,7 +349,7 @@ static void init()
                 return;
             }
 
-            QStringList lines=output.split('\n', QString::SkipEmptyParts);
+            QStringList lines=output.split('\n', Qt::SkipEmptyParts);
             for (const QString &line: lines) {
                 int pos=line.indexOf(QRegExp(QLatin1String("[\\. D]EA")));
                 if (0==pos || 1==pos) {

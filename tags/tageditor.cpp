@@ -79,7 +79,7 @@ static QString trim(QString str) {
 
 // Split genres back out
 static void splitGenres(Song &song) {
-    QStringList genres=song.genres[0].split(",", QString::SkipEmptyParts);
+    QStringList genres=song.genres[0].split(",", Qt::SkipEmptyParts);
     for (int i=0; i<Song::constNumGenres; ++i) {
         song.genres[i]=i<genres.count() ? genres.at(i).trimmed() : QString();
     }
@@ -230,18 +230,18 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
     setAttribute(Qt::WA_DeleteOnClose);
 
-    QStringList strings=existingArtists.toList();
+    QStringList strings=existingArtists.values();
     strings.sort();
     artist->clear();
     artist->insertItems(0, strings);
 
-    strings=existingAlbumArtists.toList();
+    strings=existingAlbumArtists.values();
     strings.sort();
     albumArtist->clear();
     albumArtist->insertItems(0, strings);
 
     if (composerSupport) {
-        strings=existingComposers.toList();
+        strings=existingComposers.values();
         strings.sort();
         composer->clear();
         composer->insertItems(0, strings);
@@ -258,18 +258,18 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         REMOVE(commentLabel)
     }
 
-    strings=existingAlbums.toList();
+    strings=existingAlbums.values();
     strings.sort();
     album->clear();
     album->insertItems(0, strings);
 
-    strings=existingGenres.toList();
+    strings=existingGenres.values();
     strings.sort();
     genre->clear();
     genre->insertItems(0, strings);
 
     trackName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    trackName->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    trackName->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
     trackName->view()->setTextElideMode(Qt::ElideLeft);
 
     if (original.count()>1) {

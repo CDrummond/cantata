@@ -24,13 +24,12 @@
 #include "macnotify.h"
 #include "config.h"
 #include <QString>
-#include <QSysInfo>
-#ifdef QT_MAC_EXTRAS_FOUND
-#include <qmacfunctions.h>
+#include <QOperatingSystemVersion>
 #include <QImage>
 #include <QPixmap>
-#endif
 #include <Foundation/NSUserNotification.h>
+#include <Cocoa/Cocoa.h>
+#include <AppKit/NSApplication.h>
 
 @interface UserNotificationItem : NSObject<NSUserNotificationCenterDelegate> { }
 
@@ -50,12 +49,12 @@ class UserNotificationItemClass
 public:
     UserNotificationItemClass() {
         item = [UserNotificationItem alloc];
-        if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+        if(QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8)) {
             [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:item];
         }
     }
     ~UserNotificationItemClass() {
-        if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+        if(QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8)) {
             [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:nil];
         }
         [item release];
@@ -65,7 +64,7 @@ public:
 
 void MacNotify::showMessage(const QString &title, const QString &text, const QImage &img)
 {
-    if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_8) {
+    if(QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::MacOS, 10, 8)) {
         static UserNotificationItemClass *n=0;
         if (!n) {
             n=new UserNotificationItemClass();
@@ -74,11 +73,10 @@ void MacNotify::showMessage(const QString &title, const QString &text, const QIm
         NSUserNotification *userNotification = [[[NSUserNotification alloc] init] autorelease];
         userNotification.title = title.toNSString();
         userNotification.informativeText = text.toNSString();
-        #ifdef QT_MAC_EXTRAS_FOUND
-        userNotification.contentImage = QtMac::toNSImage(QPixmap::fromImage(img));
-        #else
-        Q_UNUSED(img)
-        #endif
+        CGImageRef cg = img.toCGImage();
+        NSImage *image = [[NSImage alloc] initWithCGImage:cg size:NSZeroSize];
+        CFRelease(cg);
+        userNotification.contentImage = image;
         [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotification];
     }
 }

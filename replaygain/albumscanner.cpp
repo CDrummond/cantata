@@ -81,13 +81,13 @@ void AlbumScanner::read()
         return;
     }
 
-    QStringList lines=output.split("\n", QString::SkipEmptyParts);
+    QStringList lines=output.split("\n", Qt::SkipEmptyParts);
 
     for (const QString &line: lines) {
         if (line.startsWith(constProgLine)) {
             emit progress(line.mid(constProgLine.length()).toUInt());
         } else if (line.startsWith(constTrackLine)) {
-            QStringList parts=line.mid(constTrackLine.length()).split(" ", QString::SkipEmptyParts);
+            QStringList parts=line.mid(constTrackLine.length()).split(" ", Qt::SkipEmptyParts);
             if (!parts.isEmpty()) {
                 int num=parts[0].toUInt();
                 Values vals;
@@ -99,7 +99,7 @@ void AlbumScanner::read()
                 tracks[trackIndexMap[num]]=vals;
             }
         } else if (line.startsWith(constAlbumLine)) {
-            QStringList parts=line.mid(constAlbumLine.length()).split(" ", QString::SkipEmptyParts);
+            QStringList parts=line.mid(constAlbumLine.length()).split(" ", Qt::SkipEmptyParts);
             if (parts.length()>=2) {
                 album.gain=parts[0].toDouble();
                 album.peak=parts[1].toDouble();

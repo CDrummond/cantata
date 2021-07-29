@@ -69,7 +69,7 @@ PlaylistRuleDialog::PlaylistRuleDialog(QWidget *parent, bool isDynamic)
     QSet<QString> genres;
     MpdLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
 
-    QStringList strings=artists.toList();
+    QStringList strings=artists.values();
     strings.sort();
     artistText->clear();
     artistText->insertItems(0, strings);
@@ -79,22 +79,22 @@ PlaylistRuleDialog::PlaylistRuleDialog(QWidget *parent, bool isDynamic)
         similarArtistsText->insertItems(0, strings);
     }
 
-    strings=albumArtists.toList();
+    strings=albumArtists.values();
     strings.sort();
     albumArtistText->clear();
     albumArtistText->insertItems(0, strings);
 
-    strings=composers.toList();
+    strings=composers.values();
     strings.sort();
     composerText->clear();
     composerText->insertItems(0, strings);
 
-    strings=albums.toList();
+    strings=albums.values();
     strings.sort();
     albumText->clear();
     albumText->insertItems(0, strings);
 
-    strings=genres.toList();
+    strings=genres.values();
     strings.sort();
     genreText->clear();
     genreText->insertItems(0, strings);

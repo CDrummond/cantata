@@ -198,7 +198,7 @@ void SyncDialog::librarySongs(const QList<Song> &songs, double pc)
         disconnect(MpdLibraryModel::self(), SIGNAL(songListing(QList<Song>,double)), this, SLOT(librarySongs(QList<Song>,double)));
         updateSongs();
     } else {
-        libSongs+=songs.toSet();
+        libSongs+=Utils::listToSet(songs);
         statusLabel->setText(tr("Loading all songs from library, please wait...%1%...").arg(pc));
     }
 }

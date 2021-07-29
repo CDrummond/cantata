@@ -85,7 +85,7 @@ bool SelectorLabel::event(QEvent *e)
     case QEvent::Wheel:
         if (menu) {
             QList<QAction *> actions=menu->actions();
-            int numDegrees = static_cast<QWheelEvent *>(e)->delta() / 8;
+            int numDegrees = static_cast<QWheelEvent *>(e)->angleDelta().y() / 8;
             int numSteps = numDegrees / 15;
             int newIndex = current;
             if (numSteps > 0) {

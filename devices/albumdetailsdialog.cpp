@@ -115,22 +115,22 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
     QSet<QString> genres;
     MpdLibraryModel::self()->getDetails(artists, albumArtists, composers, albums, genres);
 
-    QStringList strings=albumArtists.toList();
+    QStringList strings=albumArtists.values();
     strings.sort();
     artist->clear();
     artist->insertItems(0, strings);
 
-    strings=composers.toList();
+    strings=composers.values();
     strings.sort();
     composer->clear();
     composer->insertItems(0, strings);
 
-    strings=albums.toList();
+    strings=albums.values();
     strings.sort();
     title->clear();
     title->insertItems(0, strings);
 
-    strings=genres.toList();
+    strings=genres.values();
     strings.sort();
     genre->clear();
     genre->insertItems(0, strings);

@@ -216,7 +216,7 @@ void SongView::edit()
         QFile file(lyricsFile);
         if (file.open(QIODevice::ReadWrite|QIODevice::Text)) {
             QTextStream stream(&file);
-            stream << tr("Failed to locate lyrics") << endl;
+            stream << tr("Failed to locate lyrics") << Qt::endl;
         }
     }
     QDesktopServices::openUrl(QUrl::fromLocalFile(lyricsFile));

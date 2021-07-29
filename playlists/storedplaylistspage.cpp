@@ -295,7 +295,7 @@ void StoredPlaylistsPage::removeInvalid()
 
         PlaylistsModel::PlaylistItem *pl=static_cast<PlaylistsModel::PlaylistItem *>(item);
         QList<quint32> toRemove;
-        for (quint32 i=0; i<pl->songs.count(); ++i) {
+        for (quint32 i=0; i<(quint32)pl->songs.count(); ++i) {
             const auto song = pl->songs.at(i);
             if (song->isInvalid()) {
                 toRemove.append(i);

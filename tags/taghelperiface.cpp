@@ -318,7 +318,7 @@ bool TagHelperIface::startHelper()
 
         connect(proc, SIGNAL(finished(int)), this, SLOT(helperClosed()));
         if (proc->waitForStarted(constMaxWait)) {
-            DBUG << "Process started, on pid" << proc->pid() << "- wait for helper to connect";
+            DBUG << "Process started, on pid" << proc->processId() << "- wait for helper to connect";
             if (server->waitForNewConnection(constMaxWait)) {
                 sock=server->nextPendingConnection();
             }

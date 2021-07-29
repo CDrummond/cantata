@@ -120,6 +120,7 @@
 #include <QSpacerItem>
 #include <QMenuBar>
 #include <QFileDialog>
+#include <QLocale>
 #include "mediakeys.h"
 #include <cstdlib>
 #include <algorithm>
@@ -1404,7 +1405,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
     QSet<QString> enabledMpd;
     QSet<QString> inCurrentPartitionMpd;
     QSet<QString> inOtherPartitionMpd;
-    QSet<QString> lastEnabledMpd=QSet<QString>::fromList(property(constMpdEnabledOuptuts).toStringList());
+    QSet<QString> lastEnabledMpd=Utils::listToSet(property(constMpdEnabledOuptuts).toStringList());
     QSet<QString> menuItems;
     QSet<QString> menuMoveableItems;
     QMenu *menu=outputsAction->menu();
@@ -1474,24 +1475,24 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
         QSet<QString> switchedOff=lastEnabledMpd-enabledMpd;
 
         if (!switchedOn.isEmpty() && switchedOff.isEmpty()) {
-            QStringList names=switchedOn.toList();
+            QStringList names=switchedOn.values();
             std::sort(names.begin(), names.end());
             trayItem->showMessage(tr("Outputs"), tr("Enabled: %1").arg(names.join(QLatin1String(", "))));
         } else if (!switchedOff.isEmpty() && switchedOn.isEmpty()) {
-            QStringList names=switchedOff.toList();
+            QStringList names=switchedOff.values();
             std::sort(names.begin(), names.end());
             trayItem->showMessage(tr("Outputs"), tr("Disabled: %1").arg(names.join(QLatin1String(", "))));
         } else if (!switchedOn.isEmpty() && !switchedOff.isEmpty()) {
-            QStringList on=switchedOn.toList();
+            QStringList on=switchedOn.values();
             std::sort(on.begin(), on.end());
-            QStringList off=switchedOff.toList();
+            QStringList off=switchedOff.values();
             std::sort(off.begin(), off.end());
             trayItem->showMessage(tr("Outputs"),
                                   tr("Enabled: %1").arg(on.join(QLatin1String(", ")))+QLatin1Char('\n')+
                                   tr("Disabled: %1").arg(off.join(QLatin1String(", "))));
         }
     }
-    setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.toList());
+    setProperty(constMpdEnabledOuptuts, QStringList() << enabledMpd.values());
     outputsAction->setVisible(outputs.count()>(MPDConnection::self()->canUsePartitions() ? 0 : 1));
     trayItem->updateOutputs();
 }
@@ -1738,8 +1739,8 @@ void MainWindow::changeConnection()
 
 void MainWindow::showServerInfo()
 {
-    QStringList handlers=MPDConnection::self()->urlHandlers().toList();
-    QStringList tags=MPDConnection::self()->tags().toList();
+    QStringList handlers=MPDConnection::self()->urlHandlers().values();
+    QStringList tags=MPDConnection::self()->tags().values();
     std::sort(handlers.begin(), handlers.end());
     std::sort(tags.begin(), tags.end());
     long version=MPDConnection::self()->version();
@@ -1768,7 +1769,7 @@ void MainWindow::showServerInfo()
                                        "<tr><td align=\"right\">Duration:&nbsp;</td><td>%4</td></tr>"
                                        "<tr><td align=\"right\">Updated:&nbsp;</td><td>%5</td></tr>")
                                        .arg(MPDStats::self()->artists()).arg(MPDStats::self()->albums()).arg(MPDStats::self()->songs())
-                                       .arg(Utils::formatDuration(MPDStats::self()->dbPlaytime())).arg(dbUpdate.toString(Qt::SystemLocaleShortDate))+
+                                       .arg(Utils::formatDuration(MPDStats::self()->dbPlaytime())).arg(QLocale().toString(dbUpdate, QLocale::ShortFormat))+
                                   QLatin1String("</table></p>"),
                             tr("Server Information"));
 }

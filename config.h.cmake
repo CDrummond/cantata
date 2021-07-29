@@ -64,4 +64,14 @@
 
 #define CANTATA_ICON_THEME "@CANTATA_ICON_THEME@"
 
+#if QT_VERSION >= 0x051400
+#define CANTATA_ENDL Qt::endl
+#define CANTATA_SKIP_EMPTY Qt::SkipEmptyParts
+#define CANTATA_GET_LABEL_PIXMAP(L) L->pixmap(Qt::ReturnByValue)
+#else
+#define CANTATA_ENDL endl
+#define CANTATA_SKIP_EMPTY QString::SkipEmptyParts
+#define CANTATA_GET_LABEL_PIXMAP(L) (*(L->pixmap()))
+#endif
+
 #endif

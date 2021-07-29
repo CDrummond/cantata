@@ -277,7 +277,7 @@ void ActionDialog::calcFileSize()
                 setPage(PAGE_START);
             } else {
                 setPage(PAGE_INSUFFICIENT_SIZE);
-                sizeInfoIcon->setPixmap(skipIcon->pixmap(Qt::ReturnByValue));
+                sizeInfoIcon->setPixmap(CANTATA_GET_LABEL_PIXMAP(skipIcon));
                 sizeInfoText->setText(tr("There is insufficient space left on the destination device.\n\n"
                                           "The selected songs consume %1, but there is only %2 left.\n"
                                           "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.")
@@ -287,7 +287,7 @@ void ActionDialog::calcFileSize()
         } else {
             setPage(PAGE_INSUFFICIENT_SIZE);
             setButtons(Cancel);
-            sizeInfoIcon->setPixmap(errorIcon->pixmap(Qt::ReturnByValue));
+            sizeInfoIcon->setPixmap(CANTATA_GET_LABEL_PIXMAP(errorIcon));
             sizeInfoText->setText(tr("There is insufficient space left on the destination.\n\n"
                                       "The selected songs consume %1, but there is only %2 left.")
                                       .arg(Utils::formatByteSize(spaceRequired))

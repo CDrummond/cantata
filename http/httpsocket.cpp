@@ -160,7 +160,7 @@ static void getRange(const QStringList &params, qint32 &from, qint32 &to)
         if (str.startsWith("Range:")) {
             int start=str.indexOf("bytes=");
             if (start>0) {
-                QStringList range=str.mid(start+6).split("-", Qt::SkipEmptyParts);
+                QStringList range=str.mid(start+6).split("-", CANTATA_SKIP_EMPTY);
                 if (1==range.length()) {
                     from=range.at(0).toLong();
                 } else if (2==range.length()) {
@@ -289,7 +289,7 @@ void HttpSocket::readClient()
 
                 if (song.isCdda()) {
                     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-                    QStringList parts=song.file.split("/", Qt::SkipEmptyParts);
+                    QStringList parts=song.file.split("/", CANTATA_SKIP_EMPTY);
                     if (parts.length()>=3) {
                         QString dev=QLatin1Char('/')+parts.at(1)+QLatin1Char('/')+parts.at(2);
                         CdParanoia cdparanoia(dev, false, false, true, Settings::self()->paranoiaOffset());

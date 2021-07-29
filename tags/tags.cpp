@@ -229,11 +229,11 @@ static QPair<int, int> splitDiscNumber(const QString &value)
     int disc;
     int count = 0;
     if (-1!=value.indexOf('/')) {
-        QStringList list = value.split('/', Qt::SkipEmptyParts);
+        QStringList list = value.split('/', CANTATA_SKIP_EMPTY);
         disc = list.value(0).toInt();
         count = list.value(1).toInt();
     } else if (-1!=value.indexOf(':')) {
-        QStringList list = value.split(':', Qt::SkipEmptyParts);
+        QStringList list = value.split(':', CANTATA_SKIP_EMPTY);
         disc = list.value(0).toInt();
         count = list.value(1).toInt();
     } else {
@@ -1482,11 +1482,12 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
             #ifdef TAGLIB_CAN_SAVE_ID3VER
             TagLib::ID3v2::Tag *v2=mpeg->ID3v2Tag(false);
             bool isID3v24=v2 && isId3V24(v2->header());
-            int ver = id3Ver==3 ? 3 : (id3Ver==4 ? 4 : (isID3v24 ? 4 : 3));
-            return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers, TagLib::ID3v2::Version(ver)) ? Update_Modified : Update_Failed;
+            int ver=id3Ver==3 ? 3 : (id3Ver==4 ? 4 : (isID3v24 ? 4 : 3));
+            DBUG << "isID3v24" << isID3v24 << "reqVer:" << id3Ver << "use:" << ver;
+            return mpeg->save(TagLib::MPEG::File::ID3v2, true, ver) ? Update_Modified : Update_Failed;
             #else
             Q_UNUSED(id3Ver)
-            return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers) ? Update_Modified : Update_Failed;
+            return mpeg->save(TagLib::MPEG::File::ID3v2, true) ? Update_Modified : Update_Failed;
             #endif
         }
         return fileref.file()->save() ? Update_Modified : Update_Failed;
@@ -1511,9 +1512,9 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
         TagLib::ID3v2::Tag *v2=mpeg->ID3v2Tag(false);
         int ver=v2 && isId3V24(v2->header()) ? 4 : 3;
         DBUG << "useId3ver:" << ver;
-        return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers, TagLib::ID3v2::Version(ver)) ? Update_Modified : Update_Failed;
+        return mpeg->save(TagLib::MPEG::File::ID3v2, true, ver) ? Update_Modified : Update_Failed;
         #else
-        return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers) ? Update_Modified : Update_Failed;
+        return mpeg->save(TagLib::MPEG::File::ID3v2, true) ? Update_Modified : Update_Failed;
         #endif
     }
     return fileref.file()->save() ? Update_Modified : Update_Failed;

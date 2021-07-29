@@ -45,7 +45,7 @@ UmsDevice::UmsDevice(MusicLibraryModel *m, Solid::Device &dev)
 
     QString details=QLatin1String(" (")+Utils::formatByteSize(spaceInfo.size());
 
-    QStringList udiParts=dev.udi().split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    QStringList udiParts=dev.udi().split(QLatin1Char('/'), CANTATA_SKIP_EMPTY);
     if (udiParts.length()>1) {
         details+=QLatin1String(" - ")+udiParts.last();
     }

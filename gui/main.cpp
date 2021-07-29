@@ -87,10 +87,10 @@ static void cantataQtMsgHandler(QtMsgType, const QMessageLogContext &, const QSt
         if (f.open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Text)) {
             QTextStream stream(&f);
             if (firstMsg) {
-                stream << "------------START------------" << Qt::endl;
+                stream << "------------START------------" << CANTATA_ENDL;
                 firstMsg=false;
             }
-            stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << Qt::endl;
+            stream << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ") << " - " << msg << CANTATA_ENDL;
         }
     } else {
         std::cout << QDateTime::currentDateTime().toString(Qt::ISODate).replace("T", " ").toLatin1().constData()
@@ -176,7 +176,7 @@ static QString debugAreas()
 
 static void installDebugMessageHandler(const QString &cmdLine)
 {
-    QStringList items=cmdLine.split(",", Qt::SkipEmptyParts);
+    QStringList items=cmdLine.split(",", CANTATA_SKIP_EMPTY);
 
     for (const auto &area: items) {
         bool all = QLatin1String("all")==area;

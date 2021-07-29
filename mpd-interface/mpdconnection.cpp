@@ -1271,7 +1271,7 @@ void MPDConnection::setReplayGain(const QString &v)
 void MPDConnection::getReplayGain()
 {
     if (replaygainSupported()) {
-        QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', Qt::SkipEmptyParts);
+        QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', CANTATA_SKIP_EMPTY);
 
         if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
             QString mode=lines[0].mid(18);
@@ -2042,7 +2042,7 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
     if (field==constModifiedSince) {
         time_t v=0;
         if (QRegExp("\\d*").exactMatch(value)) {
-            v=QDateTime::currentDateTime().date().startOfDay().toTime_t()-(value.toInt()*24*60*60);
+            v=QDateTime(QDateTime::currentDateTime().date()).toTime_t()-(value.toInt()*24*60*60);
         } else if (QRegExp("^((19|20)\\d\\d)[-/](0[1-9]|1[012])[-/](0[1-9]|[12][0-9]|3[01])$").exactMatch(value)) {
             QDateTime dt=QDateTime::fromString(QString(value).replace("/", "-"), Qt::ISODate);
             if (dt.isValid()) {
@@ -2448,7 +2448,7 @@ void MPDConnection::readRemoteDynamicMessages()
                         for (const QString &m: messages[channel]) {
                             if (!m.isEmpty()) {
                                 DBUG << "Received message " << m;
-                                QStringList parts=m.split(':', Qt::SkipEmptyParts);
+                                QStringList parts=m.split(':', CANTATA_SKIP_EMPTY);
                                 QStringList message;
                                 for (QString part: parts) {
                                     part=part.replace("{c}", ":");

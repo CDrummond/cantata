@@ -95,7 +95,7 @@ AudioCdDevice::AudioCdDevice(MusicLibraryModel *m, Solid::Device &dev)
     if (block) {
         device=block->device();
     } else { // With UDisks2 we cannot get block from device :-(
-        QStringList parts=dev.udi().split("/", Qt::SkipEmptyParts);
+        QStringList parts=dev.udi().split("/", CANTATA_SKIP_EMPTY);
         if (!parts.isEmpty()) {
             parts=parts.last().split(":");
             if (!parts.isEmpty()) {

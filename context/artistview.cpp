@@ -293,7 +293,7 @@ void ArtistView::handleSimilarReply()
                     stream.setGenerateByteOrderMark(true);
                     #endif
                     for (const QString &artist: artists) {
-                        stream << artist << Qt::endl;
+                        stream << artist << CANTATA_ENDL;
                     }
                 }
             }

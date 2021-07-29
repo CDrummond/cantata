@@ -323,7 +323,7 @@ void RulesPlaylists::loadLocal()
                 Rule r;
                 QTextStream in(&f);
                 in.setCodec("UTF-8");
-                QStringList lines = in.readAll().split('\n', Qt::SkipEmptyParts);
+                QStringList lines = in.readAll().split('\n', CANTATA_SKIP_EMPTY);
                 for (const QString &line: lines) {
                     QString str=line.trimmed();
 

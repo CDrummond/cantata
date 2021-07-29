@@ -111,7 +111,7 @@ bool ProxyModel::update(const QString &txt)
     filterStrings.clear();
     yearFrom=yearTo=0;
 
-    QStringList parts = text.split(' ', Qt::SkipEmptyParts, Qt::CaseInsensitive);
+    QStringList parts = text.split(' ', CANTATA_SKIP_EMPTY, Qt::CaseInsensitive);
 
     for (const auto &str: parts) {
         if (str.startsWith('#')) {

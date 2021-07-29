@@ -154,7 +154,7 @@ void HttpStream::streamUrl(const QString &url)
     #else
     if (player) {
         QMediaContent media = player->media();
-        if (media != nullptr && media.request().url() != url) {
+        if (media != nullptr && media.canonicalUrl() != url) {
             player->stop();
             player->deleteLater();
             player = nullptr;
@@ -226,13 +226,13 @@ void HttpStream::updateStatus()
     case MPDState_Playing:
         // Only start playback if not aready playing
         if (playerNeedsToStart) {
-        #ifdef LIBVLC_FOUND
+            #ifdef LIBVLC_FOUND
             libvlc_media_player_play(player);
             startTimer();
-        #else
-            QUrl url = player->media().request().url();
+            #else
+            QUrl url = player->media().canonicalUrl();
             player->setMedia(url);
-        #endif
+            #endif
         }
         break;
     case MPDState_Paused:

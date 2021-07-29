@@ -1231,7 +1231,7 @@ QList<StreamsModel::Item *> StreamsModel::parseRadioTimeResponse(QIODevice *dev,
 
 static QStringList fixGenres(const QString &genre)
 {
-    QStringList allGenres=Song::capitalize(genre).split(' ', Qt::SkipEmptyParts);
+    QStringList allGenres=Song::capitalize(genre).split(' ', CANTATA_SKIP_EMPTY);
     QStringList fixed;
     for (const QString &genre: allGenres) {
         if (genre.length() < 2 ||

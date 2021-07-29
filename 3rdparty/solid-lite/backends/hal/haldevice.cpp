@@ -387,7 +387,7 @@ void HalDevicePrivate::checkCache(const QString &key)
         cache = reply;
     } else {
         qWarning() << Q_FUNC_INFO << " error: " << reply.error().name()
-            << ", " << reply.error().message() << Qt::endl;
+            << ", " << reply.error().message();
         cache = QVariantMap();
     }
 
@@ -430,7 +430,7 @@ bool HalDevice::queryDeviceInterface(const Solid::DeviceInterface::Type &type) c
         QDBusReply<bool> reply = d->device.call("QueryCapability", cap);
 
         if (!reply.isValid()) {
-            qWarning() << Q_FUNC_INFO << " error: " << reply.error().name() << Qt::endl;
+            qWarning() << Q_FUNC_INFO << " error: " << reply.error().name();
             return false;
         }
 

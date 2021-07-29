@@ -107,7 +107,7 @@ QStringList HalManager::allDevices()
 
     if (!reply.isValid())
     {
-        qWarning() << Q_FUNC_INFO << " error: " << reply.error().name() << Qt::endl;
+        qWarning() << Q_FUNC_INFO << " error: " << reply.error().name();
         return QStringList();
     }
 
@@ -132,7 +132,7 @@ bool HalManager::deviceExists(const QString &udi)
 
     if (!reply.isValid())
     {
-        qWarning() << Q_FUNC_INFO << " error: " << reply.error().name() << Qt::endl;
+        qWarning() << Q_FUNC_INFO << " error: " << reply.error().name();
         return false;
     }
 

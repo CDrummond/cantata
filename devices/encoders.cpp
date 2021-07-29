@@ -22,6 +22,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
+#include "config.h"
 #include "encoders.h"
 #include "support/utils.h"
 #include <QRegExp>
@@ -349,7 +350,7 @@ static void init()
                 return;
             }
 
-            QStringList lines=output.split('\n', Qt::SkipEmptyParts);
+            QStringList lines=output.split('\n', CANTATA_SKIP_EMPTY);
             for (const QString &line: lines) {
                 int pos=line.indexOf(QRegExp(QLatin1String("[\\. D]EA")));
                 if (0==pos || 1==pos) {

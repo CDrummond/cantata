@@ -320,7 +320,7 @@ void BrowseModel::folderContents(const QString &path, const QStringList &folders
 
 		beginInsertRows(idx, 0, folders.count() + songs.count() - 1);
         for (const QString &folder: folders) {
-			FolderItem *item = new FolderItem(folder.split("/", Qt::SkipEmptyParts).last(), folder, it.value());
+			FolderItem *item = new FolderItem(folder.split("/", CANTATA_SKIP_EMPTY).last(), folder, it.value());
 			it.value()->add(item);
 			folderIndex.insert(folder, item);
 		}

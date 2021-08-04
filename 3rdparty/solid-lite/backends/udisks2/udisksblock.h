@@ -24,6 +24,8 @@
 #include <solid-lite/ifaces/block.h>
 #include "udisksdeviceinterface.h"
 
+#include <sys/types.h> // dev_t
+
 namespace Solid
 {
 namespace Backends

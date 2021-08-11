@@ -24,6 +24,8 @@
     0.22 or above.
 18. Allow queue to be sorted by path.
 19. Fix some deprecation warnings - thanks to John Regan.
+20. Fix crash when trying to copy songs to MTP device but libMTP has failed to
+    get storage list.
 
 2.4.2
 -----

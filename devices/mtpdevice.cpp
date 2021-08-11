@@ -772,6 +772,10 @@ static QTemporaryFile * saveImageToTemp(const QImage &img, const QString &name)
 void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts, bool overwrite, bool copyCover)
 {
     int status=Device::Failed;
+    if (storage.isEmpty()) {
+        emit putSongStatus(status, QString(), false, false);
+        return;
+    }
     bool fixedVa=false;
     bool embedCoverImage=Device::constEmbedCover==opts.coverName;
     bool copiedCover=false;
@@ -1057,28 +1061,29 @@ bool MtpConnection::removeFolder(uint32_t folderId)
 
 void MtpConnection::cleanDirs(const QSet<QString> &dirs)
 {
-    for (const QString &d: dirs) {
-        Path path=decodePath(d);
-        Storage &store=getStorage(path.storage);
-        if (0==store.musicFolderId) {
-            continue;
-        }
-        uint32_t folderId=path.parent;
-        while (0!=folderId && folderId!=store.musicFolderId) {
-            QMap<uint32_t, Folder>::iterator it=folderMap.find(folderId);
-            if (it!=folderMap.end()) {
-                if (removeFolder(folderId)) {
-                    folderId=(*it).parentId;
-                    folderMap.erase(it);
+    if (!storage.isEmpty()) {
+        for (const QString &d: dirs) {
+            Path path=decodePath(d);
+            Storage &store=getStorage(path.storage);
+            if (0==store.musicFolderId) {
+                continue;
+            }
+            uint32_t folderId=path.parent;
+            while (0!=folderId && folderId!=store.musicFolderId) {
+                QMap<uint32_t, Folder>::iterator it=folderMap.find(folderId);
+                if (it!=folderMap.end()) {
+                    if (removeFolder(folderId)) {
+                        folderId=(*it).parentId;
+                        folderMap.erase(it);
+                    } else {
+                        break;
+                    }
                 } else {
                     break;
                 }
-            } else {
-                break;
             }
         }
     }
-
     updateStorage();
     emit cleanDirsStatus(true);
 }

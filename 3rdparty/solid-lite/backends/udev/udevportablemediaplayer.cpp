@@ -106,7 +106,11 @@ QStringList PortableMediaPlayer::supportedProtocols() const
         return QStringList();
     }
     QString value = readMpiValue(mpiFile, QString("Device"), QString("AccessProtocol"));
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    return value.split(QChar(';'), Qt::SkipEmptyParts);
+    #else
     return value.split(QChar(';'), QString::SkipEmptyParts);
+    #endif
 }
 
 QStringList PortableMediaPlayer::supportedDrivers(QString protocol) const

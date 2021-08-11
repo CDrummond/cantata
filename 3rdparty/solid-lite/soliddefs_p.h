@@ -76,7 +76,7 @@ namespace Solid
 
 #define SOLID_GLOBAL_STATIC(TYPE, NAME) SOLID_GLOBAL_STATIC_WITH_ARGS(TYPE, NAME, ())
 
-#if QT_VERSION < 0x050000
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #define SOLID_GLOBAL_STATIC_WITH_ARGS(TYPE, NAME, ARGS)                        \
 static QBasicAtomicPointer<TYPE > _solid_static_##NAME = Q_BASIC_ATOMIC_INITIALIZER(0);\
 static bool _solid_static_##NAME##_destroyed;                                  \
@@ -120,7 +120,7 @@ static struct SOLID_GLOBAL_STATIC_STRUCT_NAME(NAME)                            \
     }                                                                          \
 } NAME;
 
-#elif QT_VERSION < 0x051500
+#elif QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 
 #define SOLID_GLOBAL_STATIC_WITH_ARGS(TYPE, NAME, ARGS)                        \
 static QBasicAtomicPointer<TYPE > _solid_static_##NAME = Q_BASIC_ATOMIC_INITIALIZER(0);\

@@ -2042,7 +2042,11 @@ void MPDConnection::search(const QString &field, const QString &value, int id)
     if (field==constModifiedSince) {
         time_t v=0;
         if (QRegExp("\\d*").exactMatch(value)) {
+            #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+            v=QDateTime::currentDateTime().date().startOfDay().toTime_t()-(value.toInt()*24*60*60);
+            #else
             v=QDateTime(QDateTime::currentDateTime().date()).toTime_t()-(value.toInt()*24*60*60);
+            #endif
         } else if (QRegExp("^((19|20)\\d\\d)[-/](0[1-9]|1[012])[-/](0[1-9]|[12][0-9]|3[01])$").exactMatch(value)) {
             QDateTime dt=QDateTime::fromString(QString(value).replace("/", "-"), Qt::ISODate);
             if (dt.isValid()) {

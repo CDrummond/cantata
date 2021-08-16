@@ -266,7 +266,7 @@ static void installDebugMessageHandler(const QString &cmdLine)
     qInstallMessageHandler(cantataQtMsgHandler);
 }
 
-#if defined Q_OS_LINUX && defined __GNUC__
+#if defined Q_OS_LINUX && defined __GNUC__ && defined __GLIBC__
 #include <execinfo.h>
 #include <unistd.h>
 #include <signal.h>
@@ -346,7 +346,7 @@ static void sigHandler(int i)
 
 int main(int argc, char *argv[])
 {
-    #if defined Q_OS_LINUX && defined __GNUC__
+    #if defined Q_OS_LINUX && defined __GNUC__ && defined __GLIBC__
     signal(SIGSEGV, sigHandler);
     #endif
     QThread::currentThread()->setObjectName("GUI");

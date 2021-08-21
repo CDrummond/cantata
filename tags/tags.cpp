@@ -1485,7 +1485,7 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
             int ver=id3Ver==3 ? 3 : (id3Ver==4 ? 4 : (isID3v24 ? 4 : 3));
             DBUG << "isID3v24" << isID3v24 << "reqVer:" << id3Ver << "use:" << ver;
 
-            #if CANTATA_MAKE_VERSION(TAGLIB_MAJOR_VERSION, TAGLIB_MINOR_VERSION, TAGLIB_PATCH_VERSION)>=CANTATA_MAKE_VERSION(1, 12, 0)
+            #if TAGLIB_VERSION>=CANTATA_MAKE_VERSION(1, 12, 0)
             return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers, TagLib::ID3v2::Version(ver)) ? Update_Modified : Update_Failed;
             #else
             return mpeg->save(TagLib::MPEG::File::ID3v2, true, ver) ? Update_Modified : Update_Failed;
@@ -1494,7 +1494,7 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
             #else
             Q_UNUSED(id3Ver)
 
-            #if CANTATA_MAKE_VERSION(TAGLIB_MAJOR_VERSION, TAGLIB_MINOR_VERSION, TAGLIB_PATCH_VERSION)>=CANTATA_MAKE_VERSION(1, 12, 0)
+            #if TAGLIB_VERSION>=CANTATA_MAKE_VERSION(1, 12, 0)
             return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers) ? Update_Modified : Update_Failed;
             #else
             return mpeg->save(TagLib::MPEG::File::ID3v2, true) ? Update_Modified : Update_Failed;
@@ -1525,14 +1525,15 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
         int ver=v2 && isId3V24(v2->header()) ? 4 : 3;
         DBUG << "useId3ver:" << ver;
 
-        #if CANTATA_MAKE_VERSION(TAGLIB_MAJOR_VERSION, TAGLIB_MINOR_VERSION, TAGLIB_PATCH_VERSION)>=CANTATA_MAKE_VERSION(1, 12, 0)
+        #if TAGLIB_VERSION>=CANTATA_MAKE_VERSION(1, 12, 0)
+        return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers, TagLib::ID3v2::Version(ver)) ? Update_Modified : Update_Failed;
         #else
         return mpeg->save(TagLib::MPEG::File::ID3v2, true, ver) ? Update_Modified : Update_Failed;
         #endif
-        return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers, TagLib::ID3v2::Version(ver)) ? Update_Modified : Update_Failed;
+
         #else
 
-        #if CANTATA_MAKE_VERSION(TAGLIB_MAJOR_VERSION, TAGLIB_MINOR_VERSION, TAGLIB_PATCH_VERSION)>=CANTATA_MAKE_VERSION(1, 12, 0)
+        #if TAGLIB_VERSION>=CANTATA_MAKE_VERSION(1, 12, 0)
         return mpeg->save(TagLib::MPEG::File::ID3v2, TagLib::File::StripOthers) ? Update_Modified : Update_Failed;
         #else
         return mpeg->save(TagLib::MPEG::File::ID3v2, true) ? Update_Modified : Update_Failed;

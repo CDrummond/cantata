@@ -815,11 +815,27 @@ Build via QtCreator
 Build via commandline
 ---------------------
 
+If you have qt6 installed as well as qt5 (installed above), then homebrew
+calls qt6 "qt". Since we need to build Cantata against qt5, the easiest
+option is to temporarily unlink qt6 and link qt5, then undo the process.
+
+If you have qt6 installed (check version in "brew info qt"), then do this:
+
+    brew unlink qt@6
+    brew link qt@5
+
+Build and install Cantata:
+
     cd build
     export Qt5_DIR="/usr/local/opt/qt5/lib/cmake"
     cmake -S "../src" -B "./" -DCMAKE_INSTALL_PREFIX="../install" -DENABLE_TAGLIB=ON -DCMAKE_PREFIX_PATH="/usr/local/opt/qt5/;/usr/local/opt/qt5/lib/cmake/Qt5Widgets/" -DCMAKE_BUILD_TYPE=Release
     make
     make install
+
+Finally, relink the original qt6 (again, if you had qt6 at all):
+
+    brew unlink qt@5
+    brew link qt@6
 
 
 Create Installer

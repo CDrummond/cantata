@@ -150,7 +150,7 @@ QString InputDialog::getText(const QString &caption, const QString &label, QLine
         if (ok) {
             *ok=false;
         }
-        return value;
+        return QString();
     }
 }
 

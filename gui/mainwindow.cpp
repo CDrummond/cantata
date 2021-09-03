@@ -2225,6 +2225,9 @@ void MainWindow::addToNewStoredPlaylist()
     bool pq=playQueue->hasFocus();
     for(;;) {
         QString name = InputDialog::getText(tr("Playlist Name"), tr("Enter a name for the playlist:"), QString(), nullptr, this);
+        if (name.isEmpty()) {
+            return;
+        }
 
         if (name==MPDConnection::constStreamsPlayListName) {
             MessageBox::error(this, tr("'%1' is used to store favorite streams, please choose another name.").arg(name));

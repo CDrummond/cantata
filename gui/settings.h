@@ -138,6 +138,7 @@ public:
     QString lang();
     bool showCoverWidget();
     bool showStopButton();
+    bool showVolumeSlider();
     bool showRatingWidget();
     bool showTechnicalInfo();
     bool infoTooltips();
@@ -244,6 +245,7 @@ public:
     void saveLang(const QString &v);
     void saveShowCoverWidget(bool v);
     void saveShowStopButton(bool v);
+    void saveShowVolumeSlider(bool v);
     void saveShowRatingWidget(bool v);
     void saveShowTechnicalInfo(bool v);
     void saveInfoTooltips(bool v);

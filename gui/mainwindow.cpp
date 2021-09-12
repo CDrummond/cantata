@@ -1637,6 +1637,7 @@ void MainWindow::readSettings()
     tabWidget->setProperty(constUserSetting2Prop, Settings::self()->sidebar());
     coverWidget->setProperty(constUserSettingProp, Settings::self()->showCoverWidget());
     stopTrackButton->setProperty(constUserSettingProp, Settings::self()->showStopButton());
+    volumeSlider->setProperty(constUserSettingProp, Settings::self()->showVolumeSlider());
     responsiveSidebar=Settings::self()->responsiveSidebar();
     controlView(true);
     #if defined Q_OS_WIN
@@ -2839,6 +2840,7 @@ void MainWindow::controlView(bool forceUpdate)
 
     if (forceUpdate || -1==lastWidth || qAbs(lastWidth-width())>20) {
         bool stopEnabled = stopTrackButton->property(constUserSettingProp).toBool();
+	bool volumeEnabled = volumeSlider->property(constUserSettingProp).toBool();
         bool coverWidgetEnabled = coverWidget->property(constUserSettingProp).toBool();
         int tabWidgetStyle = tabWidget->property(constUserSetting2Prop).toInt();
         QStringList tabWidgetPages = tabWidget->property(constUserSettingProp).toStringList();
@@ -2858,6 +2860,14 @@ void MainWindow::controlView(bool forceUpdate)
             coverWidget->setEnabled(coverWidgetEnabled);
             stopTrackButton->setVisible(stopEnabled);
         }
+
+	if (!volumeEnabled) {
+		volumeSlider->setVisible(false);
+		volumeSliderSpacer->changeSize(-1,-1);
+	} else {
+		volumeSlider->setVisible(true);
+		volumeSliderSpacer->changeSize(4,4);
+	}
 
         if (expandInterfaceAction->isChecked() && (responsiveSidebar || forceUpdate)) {
             if (!responsiveSidebar || width()>Utils::scaleForDpi(450)) {

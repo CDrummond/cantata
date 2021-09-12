@@ -661,6 +661,11 @@ bool Settings::showStopButton()
     return cfg.get("showStopButton", false);
 }
 
+bool Settings::showVolumeSlider()
+{
+	return cfg.get("showVolumeSlider", true);
+}
+
 bool Settings::showRatingWidget()
 {
     return cfg.get("showRatingWidget", false);
@@ -1154,6 +1159,11 @@ void Settings::saveShowCoverWidget(bool v)
 void Settings::saveShowStopButton(bool v)
 {
     cfg.set("showStopButton", v);
+}
+
+void Settings::saveShowVolumeSlider(bool v)
+{
+	cfg.set("showVolumeSlider", v);
 }
 
 void Settings::saveShowRatingWidget(bool v)

@@ -408,6 +408,13 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="0" colspan="2">
+	<widget class="QCheckBox" name="showVolumeSlider">
+         <property name="text">
+	  <string>Show volume slider</string>
+	 </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_7">

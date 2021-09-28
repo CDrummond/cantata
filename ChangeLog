@@ -28,6 +28,7 @@
     get storage list.
 21. Don't save queue if string entered in dave dialog but cancel button
     pressed.
+22. Handle case where IceCast list is not GZipped.
 
 2.4.2
 -----

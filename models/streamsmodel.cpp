@@ -1266,11 +1266,25 @@ static void trimGenres(QMap<QString, QList<StreamsModel::Item *> > &genres)
 
 QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, CategoryItem *cat)
 {
+    bool isGZipped = true;
+    QNetworkReply *nr = qobject_cast<QNetworkReply *>(dev);
+    if (nr) {
+        const auto hdr = nr->rawHeader("Content-Type");
+        if ("application/xml"==hdr) {
+            isGZipped = false;
+        }
+    }
     QList<Item *> newItems;
-    QtIOCompressor compressor(dev);
-    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-    compressor.open(QIODevice::ReadOnly);
-    QXmlStreamReader doc(&compressor);
+    QtIOCompressor *compressor = nullptr;
+    QIODevice *readDev = dev;
+
+    if (isGZipped) {
+        compressor = new QtIOCompressor(dev);
+        compressor->setStreamFormat(QtIOCompressor::GzipFormat);
+        compressor->open(QIODevice::ReadOnly);
+        readDev = compressor;
+    }
+    QXmlStreamReader doc(readDev);
     QSet<QString> names;
     QMap<QString, QList<Item *> > genres;
     while (!doc.atEnd()) {
@@ -1319,6 +1333,7 @@ QList<StreamsModel::Item *> StreamsModel::parseIceCastResponse(QIODevice *dev, C
         newItems.append(genre);
     }
 
+    delete compressor;
     return newItems;
 }
 

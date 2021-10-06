@@ -316,7 +316,8 @@ set(CANTATA_SRCS ${CANTATA_SRCS}
     playlists/playlistrulesdialog.cpp playlists/playlistspage.cpp playlists/storedplaylistspage.cpp playlists/rulesplaylists.cpp
     playlists/smartplaylists.cpp playlists/smartplaylistspage.cpp
     online/onlineservicespage.cpp online/onlinedbservice.cpp online/jamendoservice.cpp online/onlinedbwidget.cpp online/onlineservice.cpp
-    online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp online/soundcloudservice.cpp
+    online/jamendosettingsdialog.cpp online/magnatuneservice.cpp online/magnatunesettingsdialog.cpp
+    #online/soundcloudservice.cpp
     online/onlinesearchwidget.cpp online/podcastservice.cpp online/rssparser.cpp online/opmlparser.cpp online/podcastsearchdialog.cpp
     online/podcastsettingsdialog.cpp online/podcastwidget.cpp online/onlinesearchservice.cpp
     db/onlinedb.cpp

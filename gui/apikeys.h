@@ -43,7 +43,7 @@ public:
         LastFm,
         FanArt,
         ShoutCast,
-        SoundCloud,
+        //SoundCloud,
 
         NumServices
     };

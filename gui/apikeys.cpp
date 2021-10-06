@@ -35,12 +35,12 @@ ApiKeys::ApiKeys()
     defaultKeys[LastFm]="5a854b839b10f8d46e630e8287c2299b";
     defaultKeys[FanArt]="ee86404cb429fa27ac32a1a3c117b006";
     defaultKeys[ShoutCast]="fa1669MuiRPorUBw";
-    defaultKeys[SoundCloud]="0cb23dce473528973ce74815bd36a334";
+    //defaultKeys[SoundCloud]="0cb23dce473528973ce74815bd36a334";
 
     queryItems[LastFm]="api_key";
     queryItems[FanArt]="api_key";
     queryItems[ShoutCast]="k";
-    queryItems[SoundCloud]="client_id";
+    //queryItems[SoundCloud]="client_id";
     load();
 }
 
@@ -74,7 +74,7 @@ QList<ApiKeys::Details> ApiKeys::getDetails()
     list.append(Details(LastFm, "LastFM", userKeys[LastFm], "https://www.last.fm/api"));
     list.append(Details(FanArt, "FanArt", userKeys[FanArt], "https://fanart.tv/get-an-api-key/"));
     list.append(Details(ShoutCast, "SHOUTcast", userKeys[ShoutCast], "https://shoutcast.com/Developer"));
-    list.append(Details(SoundCloud, "Soundcloud", userKeys[SoundCloud], "https://developers.soundcloud.com/"));
+    //list.append(Details(SoundCloud, "Soundcloud", userKeys[SoundCloud], "https://developers.soundcloud.com/"));
     return list;
 }
 

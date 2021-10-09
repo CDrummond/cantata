@@ -1,0 +1,58 @@
+on:
+  push:
+    branches:
+      - github-actions
+
+jobs:
+
+  Mac-OS-build:
+
+    runs-on: macos-latest
+
+    steps:
+
+      - run: echo "Job was triggered by a ${{ github.event_name }} event."
+      - run: echo "Job now running on a ${{ runner.os }} server hosted by GitHub."
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "Workflow is now ready to build."
+      - run: echo "Installing dependencies with homebrew."
+
+      - name: Brew-install deps
+        run: brew install cmake taglib ffmpeg openssl qt5
+
+      - run: echo "Generating icons."
+
+      - name: Generate icons
+        run: |
+          cd /Users/runner/work/cantata/cantata/mac
+          ./createicon.sh
+
+      - run: echo "Starting build."
+
+      - name: Build
+        id: build
+        run: |
+          mkdir /Users/runner/work/cantata/build
+          mkdir /Users/runner/work/cantata/install
+          cd /Users/runner/work/cantata/build
+          export Qt5_DIR="/usr/local/opt/qt@5/lib/cmake"
+          /usr/local/bin/cmake -S "/Users/runner/work/cantata/cantata" -B "/Users/runner/work/cantata/build" -DCMAKE_INSTALL_PREFIX="/Users/runner/work/cantata/install" -DENABLE_TAGLIB=ON -DCMAKE_PREFIX_PATH="/usr/local/opt/qt@5/;/usr/local/opt/qt@5/lib/cmake/Qt5Widgets/" -DCMAKE_BUILD_TYPE=Release
+          make
+          make install
+          cd /Users/runner/work/cantata/build/mac
+          ./create-dmg.sh
+
+      - run: echo "Uploading dmg to release page."
+
+      - uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'cantata/build/mac/Cantata-*.dmg'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: echo "All done!"

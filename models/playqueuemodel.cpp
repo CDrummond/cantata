@@ -64,7 +64,10 @@
 #include <QMenu>
 #include <QXmlStreamReader>
 #include <QRandomGenerator>
+#include <QCollator>
 #include <algorithm>
+
+static QCollator collator = QCollator();
 
 GLOBAL_STATIC(PlayQueueModel, instance)
 
@@ -402,6 +405,8 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , lastCommand(Cmd_Other)
     , dropAdjust(0)
 {
+    collator.setNumericMode(true);
+    collator.setIgnorePunctuation(true);
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int, int, quint8, bool)), SLOT(addFiles(const QStringList &, int, int, quint8, bool)));
@@ -1450,8 +1455,7 @@ static bool yearSort(const Song *s1, const Song *s2)
 
 static bool titleSort(const Song *s1, const Song *s2)
 {
-    int c=s1->title.localeAwareCompare(s2->title);
-    return c<0 || (c==0 && (*s1)<(*s2));
+    return collator.compare(s1->title, s2->title) < 0;
 }
 
 static bool trackSort(const Song *s1, const Song *s2)
@@ -1477,25 +1481,25 @@ void PlayQueueModel::sortBy()
         }
 
         if (constSortByArtistKey==key) {
-            std::sort(copy.begin(), copy.end(), artistSort);
+            std::stable_sort(copy.begin(), copy.end(), artistSort);
         } else if (constSortByAlbumArtistKey==key) {
-            std::sort(copy.begin(), copy.end(), albumArtistSort);
+            std::stable_sort(copy.begin(), copy.end(), albumArtistSort);
         } else if (constSortByAlbumKey==key) {
-            std::sort(copy.begin(), copy.end(), albumSort);
+            std::stable_sort(copy.begin(), copy.end(), albumSort);
         } else if (constSortByGenreKey==key) {
-            std::sort(copy.begin(), copy.end(), genreSort);
+            std::stable_sort(copy.begin(), copy.end(), genreSort);
         } else if (constSortByYearKey==key) {
-            std::sort(copy.begin(), copy.end(), yearSort);
+            std::stable_sort(copy.begin(), copy.end(), yearSort);
         } else if (constSortByComposerKey==key) {
-            std::sort(copy.begin(), copy.end(), composerSort);
+            std::stable_sort(copy.begin(), copy.end(), composerSort);
         } else if (constSortByPerformerKey==key) {
-            std::sort(copy.begin(), copy.end(), performerSort);
+            std::stable_sort(copy.begin(), copy.end(), performerSort);
         } else if (constSortByTitleKey==key) {
-            std::sort(copy.begin(), copy.end(), titleSort);
+            std::stable_sort(copy.begin(), copy.end(), titleSort);
         } else if (constSortByNumberKey==key) {
-            std::sort(copy.begin(), copy.end(), trackSort);
+            std::stable_sort(copy.begin(), copy.end(), trackSort);
         } else if (constSortByPathKey==key) {
-            std::sort(copy.begin(), copy.end(), pathSort);
+            std::stable_sort(copy.begin(), copy.end(), pathSort);
         }
         QList<quint32> positions;
         for (const Song *s: copy) {

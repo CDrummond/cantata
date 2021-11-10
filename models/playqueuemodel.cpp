@@ -1162,6 +1162,7 @@ void PlayQueueModel::update(const QList<Song> &songList, bool isComplete)
                     Song old=songs.takeAt(existingPos);
 //                     old.pos=s.pos;
                     s.rating=old.rating;
+                    s.time=old.time;
                     songs.insert(i, isEmpty ? old : s);
                     endMoveRows();
                 }

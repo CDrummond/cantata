@@ -30,6 +30,8 @@
     pressed.
 22. Handle case where IceCast list is not GZipped.
 23. Remove SoundCloud support, no longer works due to API changes.
+24. Correctly update play queue time when re-order tracks - thanks to Philip
+    Sequeira.
 
 2.4.2
 -----

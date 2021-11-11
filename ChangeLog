@@ -32,6 +32,8 @@
 23. Remove SoundCloud support, no longer works due to API changes.
 24. Correctly update play queue time when re-order tracks - thanks to Philip
     Sequeira.
+25. When searching for lyrics, if fail and artist starts with "The " then try
+    again without "The "
 
 2.4.2
 -----

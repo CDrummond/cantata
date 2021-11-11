@@ -57,7 +57,7 @@ public:
     QString getName() const { return name; }
     QString displayName() const;
     int getRelevance() const { return relevance; }
-    void fetchInfo(int id, const Song &metadata);
+    void fetchInfo(int id, Song metadata, bool removeThe=false);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e) { enabled = e; }
     void abort();

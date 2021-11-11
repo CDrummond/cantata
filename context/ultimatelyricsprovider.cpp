@@ -47,6 +47,7 @@ static const QString constTitleArg=QLatin1String("{Title}");
 static const QString constTitleCaseArg=QLatin1String("{Title2}");
 static const QString constYearArg=QLatin1String("{year}");
 static const QString constTrackNoArg=QLatin1String("{track}");
+static const QString constThe=QLatin1String("The ");
 
 static QString noSpace(const QString &text)
 {
@@ -188,6 +189,10 @@ static QString urlEncode(QString str)
     return str;
 }
 
+static bool tryWithoutThe(const Song &s) {
+    return 0==s.priority && s.basicArtist().startsWith(constThe);
+}
+
 UltimateLyricsProvider::UltimateLyricsProvider()
     : enabled(true)
     , relevance(0)
@@ -207,7 +212,7 @@ QString UltimateLyricsProvider::displayName() const
     return n;
 }
 
-void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
+void UltimateLyricsProvider::fetchInfo(int id, Song metadata, bool removeThe)
 {
     const QTextCodec *codec = QTextCodec::codecForName(charset.toLatin1().constData());
     if (!codec) {
@@ -218,6 +223,10 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
     QString artistFixed=metadata.basicArtist();
     QString titleFixed=metadata.basicTitle();
     QString urlText(url);
+
+    if (removeThe && artistFixed.startsWith(constThe)) {
+        artistFixed=artistFixed.mid(constThe.length());
+    }
 
     if (QLatin1String("lyrics.wikia.com")==name) {
         QUrl url(urlText);
@@ -235,6 +244,7 @@ void UltimateLyricsProvider::fetchInfo(int id, const Song &metadata)
         return;
     }
 
+    metadata.priority = removeThe ? 1 : 0; // HACK Use this to indicate if searching without 'The '
     songs.insert(id, metadata);
 
     // Fill in fields in the URL
@@ -296,7 +306,12 @@ void UltimateLyricsProvider::wikiMediaSearchResponse()
     reply->deleteLater();
 
     if (!reply->ok()) {
-        emit lyricsReady(id, QString());
+        Song song=songs.take(id);
+        if (tryWithoutThe(song)) {
+            fetchInfo(id, song, true);
+        } else {
+            emit lyricsReady(id, QString());
+        }
         return;
     }
 
@@ -336,7 +351,12 @@ void UltimateLyricsProvider::wikiMediaLyricsFetched()
     reply->deleteLater();
 
     if (!reply->ok()) {
-        emit lyricsReady(id, QString());
+        Song song=songs.take(id);
+        if (tryWithoutThe(song)) {
+            fetchInfo(id, song, true);
+        } else {
+            emit lyricsReady(id, QString());
+        }
         return;
     }
 
@@ -359,7 +379,11 @@ void UltimateLyricsProvider::lyricsFetched()
 
     if (!reply->ok()) {
         //emit Finished(id);
-        emit lyricsReady(id, QString());
+        if (tryWithoutThe(song)) {
+            fetchInfo(id, song, true);
+        } else {
+            emit lyricsReady(id, QString());
+        }
         return;
     }
 
@@ -372,7 +396,11 @@ void UltimateLyricsProvider::lyricsFetched()
         if (originalContent.contains(indicator)) {
             //emit Finished(id);
             DBUG << name << "invalid";
-            emit lyricsReady(id, QString());
+            if (tryWithoutThe(song)) {
+                fetchInfo(id, song, true);
+            } else {
+                emit lyricsReady(id, QString());
+            }
             return;
         }
     }
@@ -403,7 +431,11 @@ void UltimateLyricsProvider::lyricsFetched()
     lyrics.replace("<br/>\n", "<br/>");
     lyrics.replace("<br>\n", "<br/>");
     DBUG << name << (lyrics.isEmpty() ? "empty" : "succeeded");
-    emit lyricsReady(id, lyrics);
+    if (lyrics.isEmpty() && tryWithoutThe(song)) {
+        fetchInfo(id, song, true);
+    } else {
+        emit lyricsReady(id, lyrics);
+    }
 }
 
 void UltimateLyricsProvider::doUrlReplace(const QString &tag, const QString &value, QString &u) const

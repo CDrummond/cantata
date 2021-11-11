@@ -160,6 +160,7 @@ void AlbumView::update(const Song &song, bool force)
         clearDetails();
         setHeader(song.album.isEmpty() ? stdHeader : song.album);
         Covers::Image cImg=Covers::self()->requestImage(song, true);
+        detailsReceived|=Cover; // Sometimes cover download fails, and no error?
         if (!cImg.img.isNull()) {
             detailsReceived|=Cover;
             pic=createPicTag(cImg.img, cImg.fileName);

@@ -52,10 +52,12 @@ private Q_SLOTS:
     //void showUnplayedOnly(bool on);
     void configure();
     void exportSubscriptions();
+    void refreshPodcast();
 
 private:
     void doSearch() override;
     void refresh() override;
+    void doRefresh(bool singleOnly);
     void controlActions() override;
 
 private:

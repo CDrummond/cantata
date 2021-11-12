@@ -28,6 +28,7 @@
 #include "support/utils.h"
 #include "support/monoicon.h"
 #include "gui/settings.h"
+#include "gui/stdactions.h"
 #include "widgets/icons.h"
 #include "mpd-interface/mpdconnection.h"
 #include "config.h"
@@ -427,6 +428,7 @@ PodcastService::PodcastService()
     useCovers(name(), true);
     clearPartialDownloads();
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(currentMpdSong(const Song &)));
+    refreshAction = new Action(Icons::self()->reloadIcon, tr("Refresh"), this);
 }
 
 QString PodcastService::name() const
@@ -577,6 +579,11 @@ QVariant PodcastService::data(const QModelIndex &index, int role) const
         Podcast *podcast=static_cast<Podcast *>(item);
 
         switch(role) {
+        case Cantata::Role_Actions: {
+            QVariant v;
+            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->appendToPlayQueueAction << refreshAction);
+            return v;
+        }
         case Cantata::Role_ListImage:
             return true;
         case Cantata::Role_CoverSong: {

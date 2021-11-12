@@ -162,6 +162,7 @@ public:
     void startRssUpdateTimer();
     void stopRssUpdateTimer();
     bool exportSubscriptions(const QString &name);
+    Action * refreshAct() { return refreshAction; }
 
 Q_SIGNALS:
     void error(const QString &msg);
@@ -206,6 +207,7 @@ private:
     QTimer *deleteTimer;
     QDateTime lastDelete;
     QSet<QUrl> updateUrls;
+    Action *refreshAction;
     static QString iconFile;
 };
 

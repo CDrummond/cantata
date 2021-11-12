@@ -68,6 +68,7 @@ PodcastWidget::PodcastWidget(PodcastService *s, QWidget *p)
     connect(markAsListenedAction, SIGNAL(triggered()), this, SLOT(markAsListened()));
     //connect(unplayedOnlyAction, SIGNAL(toggled(bool)), this, SLOT(showUnplayedOnly(bool)));
     connect(exportAction, SIGNAL(triggered()), SLOT(exportSubscriptions()));
+    connect(srv->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshPodcast()));
 
     view->setMode(ItemView::Mode_DetailedTree);
     Configuration config(metaObject()->className());
@@ -271,7 +272,17 @@ void PodcastWidget::doSearch()
     }
 }
 
+void PodcastWidget::refreshPodcast()
+{
+    doRefresh(true);
+}
+
 void PodcastWidget::refresh()
+{
+    doRefresh(false);
+}
+
+void PodcastWidget::doRefresh(bool singleOnly)
 {
     QModelIndexList sel=view->selectedIndexes(false);
     QModelIndexList selected;
@@ -279,6 +290,13 @@ void PodcastWidget::refresh()
         if (!i.parent().isValid()) {
             selected+=proxy.mapToSource(i);
         }
+    }
+
+    if (singleOnly) {
+        if (1==selected.count()) {
+            srv->refresh(selected);
+        }
+        return;
     }
 
     if (selected.isEmpty() || selected.count()==srv->podcastCount()) {

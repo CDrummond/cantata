@@ -31,10 +31,6 @@ Cantata started off as a fork of QtMPC, however, the code (and user interface) i
 For more detailed information, please refer to the main [README](https://raw.githubusercontent.com/CDrummond/cantata/master/README)
 
 
----
-
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/craigd)
-
 ## Donations
 
 I develop Cantata purely for fun, so no donations are required. However, seeing as I have been asked about this a few times, here is a link...

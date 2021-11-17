@@ -79,11 +79,11 @@ void CoverLabel::updateToolTip(bool isEvent)
 
     QString toolTip;
     if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height()) {
-        toolTip=QString("<br/>%1").arg(View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+        toolTip=View::encode(img.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     } else if (CurrentCover::self()->fileName().isEmpty() || !QFile::exists(CurrentCover::self()->fileName())) {
-        toolTip=QString("<br/>%1").arg(View::encode(img));
+        toolTip=View::encode(img);
     } else {
-        toolTip=QString("<br/><img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
+        toolTip=QString("<img src=\"%1\"/>").arg(CurrentCover::self()->fileName());
     }
     setToolTip(toolTip);
 

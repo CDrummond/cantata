@@ -35,6 +35,7 @@
 25. When searching for lyrics, if fail and artist starts with "The " then try
     again without "The "
 26. Add "Refresh" action to hover actions for podcasts.
+27. Remove superfluous blank space from the top of the cover tooltip.
 
 2.4.2
 -----

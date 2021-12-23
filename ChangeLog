@@ -35,7 +35,8 @@
 25. When searching for lyrics, if fail and artist starts with "The " then try
     again without "The "
 26. Add "Refresh" action to hover actions for podcasts.
-27. Fix looking for cover-art with MPD's new cue track file listing.
+27. Remove superfluous blank space from the top of the cover tooltip.
+28. Fix looking for cover-art with MPD's new cue track file listing.
 
 2.4.2
 -----

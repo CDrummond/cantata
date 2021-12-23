@@ -7560,7 +7560,7 @@ Cette action est définitive.</translation>
     <message>
         <location filename="../gui/interfacesettings.ui" line="537"/>
         <source>By default, Cantata uses the &apos;Album Artist&apos; tag (or &apos;Artist&apos; tag if a song has no &apos;Album Artist&apos;) to group songs and albums. For certain genres, e.g &apos;Classical&apos;, it may be preferable to use the &apos;Composer&apos; tag (if set) to perform this grouping. Please enter a (comma separated) list of the genres with which you would like Cantata to use the &apos;Composer&apos; tag.</source>
-        <translation>Cantata utilise par défaut le tag &apos;artiste de l&apos;album&apos;, s&apos;il existe,  pour trier les pistes et les albums. Pour certains genres comme le classique, il est préférable d&apos;utiliser le tag &apos;compositeur&apos;, s&apos;il existe, pour ce tri. Entrez uneliste de genres, séparés par une virgule, pour lesquels Cantata utilisera le tag &apos;compositeur&apos;.</translation>
+        <translation>Cantata utilise par défaut le tag &apos;artiste de l&apos;album&apos;, s&apos;il existe,  pour trier les pistes et les albums. Pour certains genres comme le classique, il est préférable d&apos;utiliser le tag &apos;compositeur&apos;, s&apos;il existe, pour ce tri. Entrez une liste de genres, séparés par une virgule, pour lesquels Cantata utilisera le tag &apos;compositeur&apos;.</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="547"/>

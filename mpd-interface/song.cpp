@@ -843,8 +843,8 @@ QString Song::getDir() const
     return QString();
     #else
     QString dir = Utils::getDir(file);
-    if (isMpdCueTrack() && file.endsWith(".cue/")) {
-        dir = Utils::getDir(file.left(file.length()-1));
+    if (isMpdCueTrack() && dir.endsWith(".cue/")) {
+        dir = Utils::getDir(dir.left(dir.length()-1));
     }
     return dir;
     #endif

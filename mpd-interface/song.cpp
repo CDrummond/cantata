@@ -31,6 +31,7 @@
 #include "online/onlineservice.h"
 #include "online/podcastservice.h"
 #endif
+#include "support/utils.cpp"
 #include <QStringList>
 #include <QSet>
 #include <QChar>
@@ -834,6 +835,15 @@ QString Song::filePath(const QString &base) const
 bool Song::isMpdCueTrack() const
 {
     return file.indexOf(constMpdQueue)==file.length()-(constMpdQueue.length()+4);
+}
+
+QString Song::getDir() const
+{
+    QString dir = Utils::getDir(file);
+    if (isMpdCueTrack() && file.endsWith(".cue/")) {
+        dir = Utils::getDir(file.left(file.length()-1));
+    }
+    return dir;
 }
 
 QString Song::describe() const

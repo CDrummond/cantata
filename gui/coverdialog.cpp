@@ -1184,7 +1184,7 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         mpdDir=MPDConnection::self()->getDetails().dir;
         if (haveAbsPath || !mpdDir.isEmpty()) {
             dirName=filePath.endsWith('/') ? (haveAbsPath ? QString() : mpdDir)+filePath
-                                            : Utils::getDir((haveAbsPath ? QString() : mpdDir)+filePath);
+                                            : Utils:fixPath((haveAbsPath ? QString() : mpdDir)+song.getDir());
         }
         saveInMpd=QDir(dirName).exists();
     }

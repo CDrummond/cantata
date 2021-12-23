@@ -635,7 +635,7 @@ void CoverDownloader::download(const Song &song)
 
     if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
         dirName=fileName.endsWith(Utils::constDirSep) ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+fileName
-                                                      : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+fileName);
+                                                      : Utils:fixPath((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.getDir());
     }
 
     Job job(song, dirName);
@@ -1745,7 +1745,7 @@ Covers::Image Covers::locateImage(const Song &song)
         dirName=song.isCantataStream() ? Utils::getDir(songFile)
                                        : songFile.endsWith(Utils::constDirSep)
                                             ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
-                                            : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
+                                            : Utils:fixPath((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.getDir());
 
         if (song.isArtistImageRequest() || song.isComposerImageRequest()) {
             for (int level=0; level<2; ++level) {

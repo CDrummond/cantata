@@ -30,8 +30,8 @@
 #if !defined CANTATA_NO_UI_FUNCTIONS
 #include "online/onlineservice.h"
 #include "online/podcastservice.h"
+#include "support/utils.h"
 #endif
-#include "support/utils.cpp"
 #include <QStringList>
 #include <QSet>
 #include <QChar>
@@ -839,11 +839,15 @@ bool Song::isMpdCueTrack() const
 
 QString Song::getDir() const
 {
+    #ifdef CANTATA_NO_UI_FUNCTIONS
+    return QString();
+    #else
     QString dir = Utils::getDir(file);
     if (isMpdCueTrack() && file.endsWith(".cue/")) {
         dir = Utils::getDir(file.left(file.length()-1));
     }
     return dir;
+    #endif
 }
 
 QString Song::describe() const

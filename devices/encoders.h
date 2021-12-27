@@ -85,6 +85,6 @@ namespace Encoders
 
     extern QList<Encoder> getAvailable();
     extern Encoder getEncoder(const QString &codec);
-};
+}
 
 #endif

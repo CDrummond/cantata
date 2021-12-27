@@ -200,7 +200,7 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index, int adjust) co
     ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect2, iconSize);
     QPoint cursorPos=QCursor::pos();
 
-    for (const QPointer<Action> &a: actions) {
+    for (Action *a: actions) {
         actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
         if (actionRect.contains(cursorPos)) {
             return a;

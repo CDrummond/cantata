@@ -58,6 +58,7 @@ static const QByteArray constTimeKey("Time: ");
 static const QByteArray constAlbumKey("Album: ");
 static const QByteArray constArtistKey("Artist: ");
 static const QByteArray constAlbumArtistKey("AlbumArtist: ");
+static const QByteArray constGroupingKey("Grouping: ");
 static const QByteArray constAlbumSortKey("AlbumSort: ");
 static const QByteArray constArtistSortKey("ArtistSort: ");
 static const QByteArray constAlbumArtistSortKey("AlbumArtistSort: ");
@@ -316,6 +317,8 @@ Song MPDParseUtils::parseSong(const QList<QByteArray> &lines, Location location)
             song.artist = QString::fromUtf8(line.mid(constArtistKey.length()));
         } else if (line.startsWith(constAlbumArtistKey)) {
             song.albumartist = QString::fromUtf8(line.mid(constAlbumArtistKey.length()));
+        } else if (line.startsWith(constGroupingKey)) {
+            song.setGrouping(QString::fromUtf8(line.mid(constGroupingKey.length())));
         } else if (line.startsWith(constComposerKey)) {
             song.setComposer(QString::fromUtf8(line.mid(constComposerKey.length())));
         } else if (line.startsWith(constTitleKey)) {

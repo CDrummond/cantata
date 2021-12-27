@@ -83,6 +83,7 @@ static const QLatin1String constSortByPerformerKey("performer");
 static const QLatin1String constSortByTitleKey("title");
 static const QLatin1String constSortByNumberKey("track");
 static const QLatin1String constSortByPathKey("path");
+static const QLatin1String constSortByGrouping("grouping");
 
 static QSet<QString> constM3uPlaylists = QSet<QString>() << QLatin1String("m3u") << QLatin1String("m3u8");
 static const QString constPlsPlaylist = QLatin1String("pls");
@@ -382,6 +383,7 @@ QString PlayQueueModel::headerText(int col)
     case COL_PRIO:      return tr("Priority");
     case COL_COMPOSER:  return tr("Composer");
     case COL_PERFORMER: return tr("Performer");
+    case COL_GROUPING:  return tr("Grouping");
     case COL_RATING:    return tr("Rating");
     case COL_FILENAME:  return tr("Filename");
     case COL_PATH:      return tr("Path");
@@ -461,11 +463,12 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     addSortAction(tr("Composer"), constSortByComposerKey);
     addSortAction(tr("Performer"), constSortByPerformerKey);
     addSortAction(tr("Path"), constSortByPathKey);
+    addSortAction(tr("Grouping"), constSortByGrouping);
     controlActions();
     shuffleAction->setEnabled(false);
     sortAction->setEnabled(false);
     alignments[COL_TITLE]=alignments[COL_ARTIST]=alignments[COL_ALBUM]=alignments[COL_GENRE]=alignments[COL_COMPOSER]=
-            alignments[COL_PERFORMER]=alignments[COL_FILENAME]=alignments[COL_PATH]=int(Qt::AlignVCenter|Qt::AlignLeft);
+            alignments[COL_PERFORMER]=alignments[COL_FILENAME]=alignments[COL_PATH]=alignments[COL_GROUPING]=int(Qt::AlignVCenter|Qt::AlignLeft);
     alignments[COL_TRACK]=alignments[COL_LENGTH]=alignments[COL_DISC]=alignments[COL_YEAR]=alignments[COL_ORIGYEAR]=
             alignments[COL_PRIO]=int(Qt::AlignVCenter|Qt::AlignRight);
     alignments[COL_RATING]=int(Qt::AlignVCenter|Qt::AlignHCenter);
@@ -496,7 +499,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             return alignments[section];
         case Cantata::Role_InitiallyHidden:
             return COL_YEAR==section || COL_ORIGYEAR==section || COL_DISC==section || COL_GENRE==section || COL_PRIO==section ||
-                   COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section || COL_FILENAME==section || COL_PATH==section;
+                   COL_COMPOSER==section || COL_PERFORMER==section || COL_RATING==section || COL_FILENAME==section || COL_PATH==section || COL_GROUPING==section;
         case Cantata::Role_Hideable:
             return COL_LENGTH!=section;
         case Cantata::Role_Width:
@@ -513,6 +516,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_PRIO:      return 0.015;
             case COL_COMPOSER:  return 0.2;
             case COL_PERFORMER: return 0.2;
+            case COL_GROUPING:  return 0.2;
             case COL_RATING:    return 0.08;
             case COL_FILENAME:  return 0.27;
             case COL_PATH:      return 0.27;
@@ -749,6 +753,8 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return song.composer();
         case COL_PERFORMER:
             return song.performer();
+        case  COL_GROUPING:
+            return song.grouping();
 //        case COL_RATING:{
 //            QVariant var;
 //            const Song &s=songs.at(index.row());
@@ -1399,20 +1405,27 @@ void PlayQueueModel::addSortAction(const QString &name, const QString &key)
     connect(action, SIGNAL(triggered()), SLOT(sortBy()));
 }
 
-static bool composerSort(const Song *s1, const Song *s2)
+static bool otherSort(const Song *s1, const Song *s2, quint32 other)
 {
-    const QString v1=s1->hasComposer() ? s1->composer() : QString();
-    const QString v2=s2->hasComposer() ? s2->composer() : QString();
+    const QString v1=s1->hasExtraField(other) ? s1->extraField(other) : QString();
+    const QString v2=s2->hasExtraField(other) ? s2->extraField(other) : QString();
     int c=v1.localeAwareCompare(v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
+static bool composerSort(const Song *s1, const Song *s2)
+{
+    return otherSort(s1, s2, Song::Composer);
+}
+
 static bool performerSort(const Song *s1, const Song *s2)
 {
-    const QString v1=s1->hasPerformer() ? s1->performer() : QString();
-    const QString v2=s2->hasPerformer() ? s2->performer() : QString();
-    int c=v1.localeAwareCompare(v2);
-    return c<0 || (c==0 && (*s1)<(*s2));
+    return otherSort(s1, s2, Song::Performer);
+}
+
+static bool groupingSort(const Song *s1, const Song *s2)
+{
+    return otherSort(s1, s2, Song::Grouping);
 }
 
 static bool artistSort(const Song *s1, const Song *s2)
@@ -1498,7 +1511,10 @@ void PlayQueueModel::sortBy()
             std::sort(copy.begin(), copy.end(), trackSort);
         } else if (constSortByPathKey==key) {
             std::sort(copy.begin(), copy.end(), pathSort);
+        } else if (constSortByGrouping==key) {
+            std::sort(copy.begin(), copy.end(), groupingSort);
         }
+
         QList<quint32> positions;
         for (const Song *s: copy) {
             positions.append(getRowById(s->id));

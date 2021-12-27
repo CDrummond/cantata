@@ -613,6 +613,7 @@ void SongView::loadMetadata()
         addIfNotEmpty(tags, pos++, tr("Album"), currentSong.album);
         addIfNotEmpty(tags, pos++, tr("Track number"), 0==currentSong.track ? QString() : QString::number(currentSong.track));
         addIfNotEmpty(tags, pos++, tr("Disc number"), 0==currentSong.disc ? QString() : QString::number(currentSong.disc));
+        addIfNotEmpty(tags, pos++, tr("Grouping"), currentSong.grouping());
         addIfNotEmpty(tags, pos++, tr("Duration"), 0==currentSong.time ? QString() : Utils::formatTime(currentSong.time));
         addIfNotEmpty(tags, pos++, tr("Genre"), currentSong.displayGenre());
         addIfNotEmpty(tags, pos++, tr("Year"), 0==currentSong.track ? QString() : QString::number(currentSong.year));

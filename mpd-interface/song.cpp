@@ -626,6 +626,7 @@ QString Song::toolTip() const
     if (origYear>0) {
         addField(QObject::tr("Original Year"), QString::number(origYear), toolTip);
     }
+    addField(QObject::tr("Grouping"), grouping(), toolTip);
     if (time>0) {
         addField(QObject::tr("Length"), Utils::formatTime(time, true), toolTip);
     }
@@ -658,7 +659,7 @@ int Song::compareGenres(const Song &o) const
     return 0;
 }
 
-void Song::setExtraField(quint16 f, const QString &v)
+void Song::setExtraField(quint32 f, const QString &v)
 {
     if (v.isEmpty()) {
         extra.remove(f);

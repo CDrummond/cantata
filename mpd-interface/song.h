@@ -55,25 +55,26 @@ struct Song
     static void setComposerGenres(const QSet<QString> &g);
 
     enum ExtraTags {
-        Composer             = 0x0001,
-        Performer            = 0x0002,
-        Comment              = 0x0004,
-        MusicBrainzAlbumId   = 0x0008,
-        Name                 = 0x0010,
+        Composer             = 0x00000001,
+        Performer            = 0x00000002,
+        Grouping             = 0x00000004,
+        Comment              = 0x00000008,
+        MusicBrainzAlbumId   = 0x00000010,
+        Name                 = 0x00000020,
 
-        AlbumSort            = 0x0020,
-        ArtistSort           = 0x0040,
-        AlbumArtistSort      = 0x0080,
+        AlbumSort            = 0x00000040,
+        ArtistSort           = 0x00000080,
+        AlbumArtistSort      = 0x00000100,
 
         // These are not real tags - but fields used elsewhere in the code...
-        PodcastPublishedDate = 0x0100,
-        LocalPath            = 0x0200, // Podcasts and HTTP files
-        PodcastImage         = 0x0400,
-        OnlineServiceName    = 0x0800,
-        OnlineImageUrl       = 0x1000,
-        OnlineImageCacheName = 0x2000,
-        DeviceId             = 0x4000,
-        DecodedPath          = 0x8000
+        PodcastPublishedDate = 0x00000200,
+        LocalPath            = 0x00000400, // Podcasts and HTTP files
+        PodcastImage         = 0x00000800,
+        OnlineServiceName    = 0x00001000,
+        OnlineImageUrl       = 0x00002000,
+        OnlineImageCacheName = 0x00004000,
+        DeviceId             = 0x00008000,
+        DecodedPath          = 0x00010000
     };
 
     enum Type {
@@ -99,7 +100,7 @@ struct Song
     QString albumartist;
     QString title;
     QString genres[constNumGenres];
-    QHash<quint16, QString> extra;
+    QHash<quint32, QString> extra;
     quint16 extraFields;
     mutable quint8 priority;
     quint8 disc:5;
@@ -171,9 +172,9 @@ struct Song
     const QString & firstGenre() const { return genres[0]; }
     int compareGenres(const Song &o) const;
 
-    QString extraField(quint16 f) const { return hasExtraField(f) ? extra[f] : QString(); }
-    bool hasExtraField(quint16 f) const { return extraFields&f; }
-    void setExtraField(quint16 f, const QString &v);
+    QString extraField(quint32 f) const { return hasExtraField(f) ? extra[f] : QString(); }
+    bool hasExtraField(quint32 f) const { return extraFields&f; }
+    void setExtraField(quint32 f, const QString &v);
     QString name() const { return extraField(Name); }
     void setName(const QString &v) { setExtraField(Name, v); }
     bool hasName() const { return hasExtraField(Name); }
@@ -187,6 +188,9 @@ struct Song
     QString performer() const { return extraField(Performer); }
     void setPerformer(const QString &v) { setExtraField(Performer, v); }
     bool hasPerformer() const { return hasExtraField(Performer); }
+    QString grouping() const { return extraField(Grouping); }
+    void setGrouping(const QString &v) { setExtraField(Grouping, v); }
+    bool hasGrouping() const { return hasExtraField(Grouping); }
     QString comment() const { return extraField(Comment); }
     void setComment(const QString &v) { setExtraField(Comment, v); }
     bool hasComment() const { return hasExtraField(Comment); }

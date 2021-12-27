@@ -60,6 +60,7 @@ public:
         COL_PRIO,
         COL_COMPOSER,
         COL_PERFORMER,
+        COL_GROUPING,
         COL_RATING,
         COL_FILENAME,
         COL_PATH,

@@ -96,7 +96,7 @@ public:
         setToolTip("<b>"+mainText->fullText()+"</b><br/>"+subText->fullText());
     }
 
-    void paintEvent(QPaintEvent *e) override
+    void paintEvent(QPaintEvent */*e*/) override
     {
         QStylePainter p(this);
         QStyleOptionToolButton opt;

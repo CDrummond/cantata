@@ -158,7 +158,7 @@ void SmartPlaylistsPage::enableWidgets(bool enable)
 
 void SmartPlaylistsPage::searchResponse(const QString &id, const QList<Song> &songs)
 {
-    if (id.length()<3 || id.mid(2).toInt()!=command.id || command.isEmpty()) {
+    if (id.length()<3 || id.mid(2).toUInt()!=command.id || command.isEmpty()) {
         return;
     }
 

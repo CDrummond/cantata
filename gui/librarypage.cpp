@@ -143,11 +143,6 @@ void LibraryPage::clear()
     view->goToTop();
 }
 
-static inline QString nameKey(const QString &artist, const QString &album)
-{
-    return '{'+artist+"}{"+album+'}';
-}
-
 QStringList LibraryPage::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();

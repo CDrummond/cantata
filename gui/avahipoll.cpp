@@ -19,7 +19,7 @@
 #include <avahi-common/timeval.h>
 #include <QThread>
 
-static AvahiWatch * avahiWatchNew(const AvahiPoll *ap, int fd, AvahiWatchEvent event, AvahiWatchCallback callback, void *userdata)
+static AvahiWatch * avahiWatchNew(const AvahiPoll */*ap*/, int fd, AvahiWatchEvent event, AvahiWatchCallback callback, void *userdata)
 {
     return new AvahiWatch(fd, event, callback, userdata);
 }
@@ -114,7 +114,7 @@ AvahiWatch::AvahiWatch(int f, AvahiWatchEvent ev, AvahiWatchCallback cb, void *u
 
 void AvahiWatch::setEventType(AvahiWatchEvent event)
 {
-    event = event;
+    this->event = event;
 
     switch(event) {
     case AVAHI_WATCH_IN : {

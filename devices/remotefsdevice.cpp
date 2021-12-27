@@ -530,11 +530,6 @@ bool RemoteFsDevice::canPlaySongs() const
     return details.isLocalFile() || HttpServer::self()->isAlive();
 }
 
-static inline QString toString(bool b)
-{
-    return b ? QLatin1String("true") : QLatin1String("false");
-}
-
 void RemoteFsDevice::saveOptions()
 {
     opts.save(id());

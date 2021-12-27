@@ -144,7 +144,6 @@ private:
     MPDStatusValues lastStatus;
     QString currentCover;
     Song currentSong;
-    int pos;
 };
 
 #endif

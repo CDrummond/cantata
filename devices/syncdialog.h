@@ -36,12 +36,6 @@ class SyncDialog : public Dialog
 {
     Q_OBJECT
 
-    enum State {
-        State_Lists,
-        State_CopyToDevice,
-        State_CopyToLib
-    };
-
 public:
     static int instanceCount();
 
@@ -63,7 +57,6 @@ private:
     Device * getDevice();
 
 private:
-    State state;
     SqueezedTextLabel *statusLabel;
     QString devUdi;
     Device *currentDev;

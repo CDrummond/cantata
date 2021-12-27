@@ -140,7 +140,7 @@ void LocalFolderBrowsePage::itemDoubleClicked(const QModelIndex &)
     addSelectionToPlaylist();
 }
 
-void LocalFolderBrowsePage::addSelectionToPlaylist(const QString &name, int action, quint8 priority, bool decreasePriority)
+void LocalFolderBrowsePage::addSelectionToPlaylist(const QString& /*name*/, int action, quint8 priority, bool decreasePriority)
 {
     const QModelIndexList selected = view->selectedIndexes(true);
     QStringList paths;

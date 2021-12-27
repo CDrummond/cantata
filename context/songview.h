@@ -116,10 +116,7 @@ private:
     int currentRequest;
     Action *scrollAction;
     Action *refreshAction;
-    Action *searchAction;
     Action *editAction;
-    Action *saveAction;
-    Action *cancelEditAction;
     Action *delAction;
     Mode mode;
     QString lyricsFile;

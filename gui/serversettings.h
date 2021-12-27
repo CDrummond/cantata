@@ -69,8 +69,6 @@ private:
     QList<Collection> collections;
     Collection prevBasic;
     bool haveBasicCollection;
-    bool isCurrentConnection;
-    bool allOptions;
     int prevIndex;
     #ifdef AVAHI_FOUND
     QPushButton *discoveryButton;

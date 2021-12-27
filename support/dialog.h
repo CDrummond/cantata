@@ -66,7 +66,7 @@ namespace StdGuiItem {
     extern GuiItem back(bool useRtl=false);
     extern GuiItem forward(bool useRtl=false);
     extern QSet<QString> standardNames();
-};
+}
 
 class QAbstractButton;
 class QMenu;
@@ -151,7 +151,7 @@ private:
 
 private:
     int defButton;
-    int buttonTypes;
+    unsigned int buttonTypes;
     QWidget *mw;
     QDialogButtonBox *buttonBox;
     QMap<ButtonCode, QAbstractButton *> userButtons;

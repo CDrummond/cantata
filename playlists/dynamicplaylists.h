@@ -34,7 +34,6 @@
 #include "support/icon.h"
 
 class QTimer;
-class NetworkJob;
 
 class DynamicPlaylists : public RulesPlaylists
 {
@@ -118,7 +117,6 @@ private:
     int statusTime;
     QString lastState;
     QString dynamicUrl;
-    NetworkJob *currentJob;
     Command currentCommand;
     QString currentDelete;
     Entry currentSave;

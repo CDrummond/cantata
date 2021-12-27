@@ -55,7 +55,6 @@ private:
 private:
     Song song;
     bool pressed;
-    QLabel *back;
     QLabel *image;
     QWidget *controls;
     SqueezedTextLabel *mainText;

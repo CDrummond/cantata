@@ -98,11 +98,6 @@ static inline int getValue(QComboBox *box)
     return box->itemData(box->currentIndex()).toInt();
 }
 
-static inline QString getStrValue(QComboBox *box)
-{
-    return box->itemData(box->currentIndex()).toString();
-}
-
 static const char * constValueProperty="value";
 static const char * constSep=",";
 

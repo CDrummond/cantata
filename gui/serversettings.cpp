@@ -70,8 +70,6 @@ class CollectionNameValidator : public QValidator
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
     , haveBasicCollection(false)
-    , isCurrentConnection(false)
-    , allOptions(true) // will be toggled
     , prevIndex(0)
 {
     setupUi(this);

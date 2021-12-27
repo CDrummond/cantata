@@ -44,7 +44,6 @@
 #include <QScopedPointer>
 #include <QStringList>
 
-class QMenu;
 class QPainter;
 class QSignalMapper;
 class QStackedWidget;
@@ -228,7 +227,6 @@ private:
     QWidget *sideWidget;
     QVBoxLayout *sideLayout;
     QVBoxLayout *topLayout;
-    QMenu *menu;
     QScopedPointer<FancyTabProxyStyle> proxyStyle;
 };
 

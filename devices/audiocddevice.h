@@ -104,7 +104,6 @@ private:
     void updateDetails();
 
 private:
-    Service srv;
     Solid::OpticalDrive *drive;
     #ifdef CDDB_FOUND
     CddbInterface *cddb;

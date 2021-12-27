@@ -272,7 +272,7 @@ static void installDebugMessageHandler(const QString &cmdLine)
 #include <signal.h>
 #include <cxxabi.h>
 
-static void sigHandler(int i)
+static void sigHandler(int /*i*/)
 {
     // Adapted from: https://panthema.net/2008/0901-stacktrace-demangled/
 

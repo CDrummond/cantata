@@ -543,7 +543,7 @@ void ContextWidget::paintEvent(QPaintEvent *e)
     }
 }
 
-void ContextWidget::setFade(float value)
+void ContextWidget::setFade(double value)
 {
     if (fadeValue!=value) {
         fadeValue = value;

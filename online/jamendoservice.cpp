@@ -305,9 +305,6 @@ void JamendoXmlParser::parseSong(Song &song, const QString &albumGenre, QXmlStre
     song.fillEmptyFields();
 }
 
-static const QLatin1String constMp3Format("mp3");
-static const QLatin1String constOggFormat("ogg");
-
 static QString formatStr(JamendoService::Format f)
 {
     return JamendoService::FMT_MP3==f ? "mp3" : "ogg";

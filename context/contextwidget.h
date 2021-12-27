@@ -104,7 +104,7 @@ public:
     void showEvent(QShowEvent *e) override;
     void paintEvent(QPaintEvent *e) override;
     float fade() { return fadeValue; }
-    void setFade(float value);
+    void setFade(double value);
     void updateImage(QImage img);
     void search();
 

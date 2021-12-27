@@ -119,7 +119,7 @@ CategorizedView::~CategorizedView()
 {
 }
 
-void CategorizedView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void CategorizedView::selectionChanged(const QItemSelection &/*selected*/, const QItemSelection &/*deselected*/)
 {
     //KCategorizedView::selectionChanged(selected, deselected);
     bool haveSelection=haveSelectedItems();

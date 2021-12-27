@@ -98,7 +98,6 @@ int SyncDialog::instanceCount()
 
 SyncDialog::SyncDialog(QWidget *parent)
     : Dialog(parent, "SyncDialog", QSize(680, 680))
-    , state(State_Lists)
     , currentDev(nullptr)
 {
     iCount++;

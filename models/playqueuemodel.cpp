@@ -517,6 +517,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_FILENAME:  return 0.27;
             case COL_PATH:      return 0.27;
             }
+            break;
         case Cantata::Role_ContextMenuText:
             return COL_TRACK==section ? tr("# (Track Number)") : headerText(section);
         default:

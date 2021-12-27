@@ -108,7 +108,7 @@ public:
     QModelIndexList selectedIndexes(bool sorted=true) const;
     QList<Song> selectedSongs() const;
     float fade() { return fadeValue; }
-    void setFade(float value);
+    void setFade(double value);
     void updatePalette();
     Action * removeFromAct() { return removeFromAction; }
 

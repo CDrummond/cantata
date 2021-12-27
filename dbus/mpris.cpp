@@ -35,7 +35,6 @@ static inline qlonglong convertTime(qlonglong t)
 
 Mpris::Mpris(QObject *p)
     : QObject(p)
-    , pos(-1)
 {
     QDBusConnection::sessionBus().registerService("org.mpris.MediaPlayer2.cantata");
 

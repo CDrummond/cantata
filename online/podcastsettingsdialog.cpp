@@ -140,6 +140,7 @@ void PodcastSettingsDialog::slotButtonClicked(int button)
             Settings::self()->savePodcastAutoDownloadLimit(autoDownloadCombo->itemData(autoDownloadCombo->currentIndex()).toInt());
         }
         accept();
+        break;
     case Close:
     case Cancel:
         reject();

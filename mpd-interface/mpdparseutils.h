@@ -98,6 +98,6 @@ namespace MPDParseUtils
     extern QString getStreamName(const QString &url);
     // checkSingleHash - check for #<Name> as well as #StreamName:<Name>
     extern QString getAndRemoveStreamName(QString &url, bool checkSingleHash=false);
-};
+}
 
 #endif

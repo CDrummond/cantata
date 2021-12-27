@@ -253,8 +253,6 @@ void DeviceOptions::load(const QString &group, bool isMpd)
             if (mpdGrp.hasEntry(constTransWhenKey)) {
                 transcoderWhen=(TranscodeWhen)mpdGrp.get(constTransWhenKey, (int)transcoderWhen);
             } else {
-                bool transcoderWhenDifferent=mpdGrp.get(constTransIfDiffKey, false);
-                bool transcoderWhenSourceIsLosssless=mpdGrp.get(constTransIfLosslessKey, false);
                 if (mpdGrp.get(constTransIfLosslessKey, false)) {
                     transcoderWhen=TW_IfLossess;
                 } else if (mpdGrp.get(constTransIfDiffKey, false)) {

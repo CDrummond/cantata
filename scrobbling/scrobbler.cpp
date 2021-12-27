@@ -169,7 +169,6 @@ Scrobbler::Scrobbler()
     , lastNowPlaying(0)
     , nowPlayingIsPending(false)
     , lovePending(false)
-    , lastScrobbleFailed(false)
     , nowPlayingSent(false)
     , loveSent(false)
     , scrobbledCurrent(false)
@@ -770,8 +769,7 @@ void Scrobbler::mpdStateUpdated(bool songChanged)
     if (isEnabled() && !scrobbleViaMpd) {
         DBUG << songChanged << lastState << MPDStatus::self()->state();
         bool stateChange=songChanged || lastState!=MPDStatus::self()->state();
-        bool isRepeat=!stateChange && MPDState_Playing==MPDStatus::self()->state() &&
-                      MPDStatus::self()->timeElapsed()>=0 && MPDStatus::self()->timeElapsed()<2;
+        bool isRepeat=!stateChange && MPDState_Playing==MPDStatus::self()->state() && MPDStatus::self()->timeElapsed()<2;
         if (!stateChange && !isRepeat) {
             return;
         }

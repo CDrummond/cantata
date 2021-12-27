@@ -204,7 +204,6 @@ private:
     QList<DownloadEntry> toDownload;
     QTimer *rssUpdateTimer;
     QDateTime lastRssUpdate;
-    QTimer *deleteTimer;
     QDateTime lastDelete;
     QSet<QUrl> updateUrls;
     Action *refreshAction;

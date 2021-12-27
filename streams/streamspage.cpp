@@ -290,7 +290,7 @@ void StreamsBrowsePage::addToFavourites()
 void StreamsBrowsePage::addToFavourites(const QList<StreamItem> &items)
 {
     int added=0;
-    for (const StreamItem item: items) {
+    for (const StreamItem &item: items) {
         QUrl url(item.url);
         QUrlQuery query(url);
         query.removeQueryItem(QLatin1String("locale"));

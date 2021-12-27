@@ -132,7 +132,6 @@ DynamicPlaylists::DynamicPlaylists()
     , remoteTimer(nullptr)
     , remotePollingEnabled(false)
     , statusTime(0)
-    , currentJob(nullptr)
     , currentCommand(Unknown)
 {
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));

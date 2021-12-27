@@ -218,7 +218,7 @@ bool FancyTabProxyStyle::eventFilter(QObject* o, QEvent* e)
 }
 
 FancyTab::FancyTab(FancyTabBar* tabbar)
-    : QWidget(tabbar), tabbar(tabbar), underMouse(false)
+    : QWidget(tabbar), underMouse(false), tabbar(tabbar)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     setAttribute(Qt::WA_Hover, true);
@@ -490,7 +490,6 @@ FancyTabWidget::FancyTabWidget(QWidget *parent)
     , sideWidget(new QWidget)
     , sideLayout(new QVBoxLayout)
     , topLayout(new QVBoxLayout)
-    , menu(nullptr)
     , proxyStyle(new FancyTabProxyStyle)
 {
     sideLayout->setSpacing(0);

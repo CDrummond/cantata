@@ -1521,7 +1521,7 @@ void MPDConnection::getStatus()
         emitStatusUpdated(sv);
 
         // If playlist length does not match number of IDs, then refresh
-        if (sv.playlistLength!=playQueueIds.length()) {
+        if (sv.playlistLength!=static_cast<size_t>(playQueueIds.length())) {
             playListInfo();
         }
     }
@@ -2765,7 +2765,7 @@ void MPDServerInfo::detect() {
         MPDConnection::Response response=conn->sendCommand(lsinfoCommand, false, false);
         QList<QByteArray> lines = response.data.split('\n');
         bool match = false;
-        int indx;
+        unsigned int indx;
         for (const QByteArray &line: lines) {
             for (indx=0; indx<sizeof(lsinfoResponseParameters)/sizeof(ResponseParameter); ++indx) {
                 ResponseParameter &rp = lsinfoResponseParameters[indx];

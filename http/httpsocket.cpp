@@ -255,7 +255,7 @@ void HttpSocket::readClient()
         return;
     }
 
-    if (socket->bytesAvailable() >= constMaxBuffer) {
+    if (static_cast<size_t>(socket->bytesAvailable()) >= constMaxBuffer) {
         // Request too large, reject
         sendErrorResponse(socket, 400);
         socket->close();

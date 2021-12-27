@@ -132,7 +132,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     QRect actionRect=calcActionRect(rtl, actionPos, r);
     QList<Action *> actions=index.data(Cantata::Role_Actions).value<QList<Action *> >();
 
-    for (const QPointer<Action> &a: actions) {
+    for (const Action *a: actions) {
         QPixmap pix=a->icon().pixmap(QSize(iconSize, iconSize));
         QSize pixSize = pix.isNull() ? QSize(0, 0) : (pix.size() / pix.DEVICE_PIXEL_RATIO());
 

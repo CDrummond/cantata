@@ -146,7 +146,6 @@ private:
     QTimer * hardFailTimer;
     bool nowPlayingIsPending;
     bool lovePending;
-    bool lastScrobbleFailed;
     bool nowPlayingSent;
     bool loveSent;
     bool scrobbledCurrent;

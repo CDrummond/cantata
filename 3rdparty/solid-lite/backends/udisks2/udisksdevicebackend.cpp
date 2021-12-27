@@ -193,7 +193,7 @@ void DeviceBackend::checkCache(const QString& key) const
     }
 }
 
-void DeviceBackend::slotPropertiesChanged(const QString& ifaceName, const QVariantMap& changedProps, const QStringList& invalidatedProps)
+void DeviceBackend::slotPropertiesChanged(const QString& /*ifaceName*/, const QVariantMap& changedProps, const QStringList& invalidatedProps)
 {
     //qDebug() << m_udi << "'s interface" << ifaceName << "changed props:";
 

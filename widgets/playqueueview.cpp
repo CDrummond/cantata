@@ -393,7 +393,7 @@ void PlayQueueView::hideSpinner()
     }
 }
 
-void PlayQueueView::setFade(float value)
+void PlayQueueView::setFade(double value)
 {
     if (fadeValue!=value) {
         fadeValue = value;

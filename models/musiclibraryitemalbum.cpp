@@ -58,8 +58,6 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
     return aa->year()<ab->year();
 }
 
-static const QLatin1String constThe("The ");
-
 MusicLibraryItemAlbum::MusicLibraryItemAlbum(const Song &song, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(song.album, parent)
     , m_year(song.year)

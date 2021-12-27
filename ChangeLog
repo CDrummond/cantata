@@ -37,8 +37,9 @@
 26. Add "Refresh" action to hover actions for podcasts.
 27. Remove superfluous blank space from the top of the cover tooltip.
 28. Fix looking for cover-art with MPD's new cue track file listing.
-29. Add Grouping tag support to playlists and queue.
+29. Add Grouping tag support to playlists and play queue.
 30. Use QCollator to compare strings.
+31. If using table-style play queue, then only sort one column at a time.
 
 2.4.2
 -----

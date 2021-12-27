@@ -391,6 +391,12 @@ QString PlayQueueModel::headerText(int col)
     }
 }
 
+static bool simpleSort = false;
+void PlayQueueModel::setSimpleSort(bool simple)
+{
+    simpleSort = simple;
+}
+
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractItemModel(parent)
     , currentSongId(-1)
@@ -1410,6 +1416,9 @@ static bool otherSort(const Song *s1, const Song *s2, quint32 other)
     const QString v1=s1->hasExtraField(other) ? s1->extraField(other) : QString();
     const QString v2=s2->hasExtraField(other) ? s2->extraField(other) : QString();
     int c=Utils::compare(v1, v2);
+    if (simpleSort) {
+        return c<0;
+    }
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1433,6 +1442,9 @@ static bool artistSort(const Song *s1, const Song *s2)
     const QString v1=s1->hasArtistSort() ? s1->artistSort() : s1->artist;
     const QString v2=s2->hasArtistSort() ? s2->artistSort() : s2->artist;
     int c=Utils::compare(v1, v2);
+    if (simpleSort) {
+        return c<0;
+    }
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1441,6 +1453,9 @@ static bool albumArtistSort(const Song *s1, const Song *s2)
     const QString v1=s1->hasAlbumArtistSort() ? s1->albumArtistSort() : s1->albumArtistOrComposer();
     const QString v2=s2->hasAlbumArtistSort() ? s2->albumArtistSort() : s2->albumArtistOrComposer();
     int c=Utils::compare(v1, v2);
+    if (simpleSort) {
+        return c<0;
+    }
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1449,34 +1464,54 @@ static bool albumSort(const Song *s1, const Song *s2)
     const QString v1=s1->hasAlbumSort() ? s1->albumSort() : s1->album;
     const QString v2=s2->hasAlbumSort() ? s2->albumSort() : s2->album;
     int c=Utils::compare(v1, v2);
+    if (simpleSort) {
+        return c<0;
+    }
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
 static bool genreSort(const Song *s1, const Song *s2)
 {
     int c=s1->compareGenres(*s2);
+    if (simpleSort) {
+        return c<0;
+    }
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
 static bool yearSort(const Song *s1, const Song *s2)
 {
-    return s1->year<s2->year || (s1->year==s2->year && (*s1)<(*s2));
+    bool c = s1->year<s2->year;
+    if (simpleSort) {
+        return c;
+    }
+    return c || (s1->year==s2->year && (*s1)<(*s2));
 }
 
 static bool titleSort(const Song *s1, const Song *s2)
 {
     int c=Utils::compare(s1->title, s2->title);
+    if (simpleSort) {
+        return c<0;
+    }
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
 static bool trackSort(const Song *s1, const Song *s2)
 {
-    return s1->track<s2->track || (s1->track==s2->track && (*s1)<(*s2));
+    bool c = s1->track<s2->track;
+    if (simpleSort) {
+        return c;
+    }
+    return c || (s1->track==s2->track && (*s1)<(*s2));
 }
 
 static bool pathSort(const Song *s1, const Song *s2)
 {
     int c=Utils::compare(s1->file, s2->file);
+    if (simpleSort) {
+        return c<0;
+    }
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1492,27 +1527,27 @@ void PlayQueueModel::sortBy()
         }
 
         if (constSortByArtistKey==key) {
-            std::sort(copy.begin(), copy.end(), artistSort);
+            std::stable_sort(copy.begin(), copy.end(), artistSort);
         } else if (constSortByAlbumArtistKey==key) {
-            std::sort(copy.begin(), copy.end(), albumArtistSort);
+            std::stable_sort(copy.begin(), copy.end(), albumArtistSort);
         } else if (constSortByAlbumKey==key) {
-            std::sort(copy.begin(), copy.end(), albumSort);
+            std::stable_sort(copy.begin(), copy.end(), albumSort);
         } else if (constSortByGenreKey==key) {
-            std::sort(copy.begin(), copy.end(), genreSort);
+            std::stable_sort(copy.begin(), copy.end(), genreSort);
         } else if (constSortByYearKey==key) {
-            std::sort(copy.begin(), copy.end(), yearSort);
+            std::stable_sort(copy.begin(), copy.end(), yearSort);
         } else if (constSortByComposerKey==key) {
-            std::sort(copy.begin(), copy.end(), composerSort);
+            std::stable_sort(copy.begin(), copy.end(), composerSort);
         } else if (constSortByPerformerKey==key) {
-            std::sort(copy.begin(), copy.end(), performerSort);
+            std::stable_sort(copy.begin(), copy.end(), performerSort);
         } else if (constSortByTitleKey==key) {
-            std::sort(copy.begin(), copy.end(), titleSort);
+            std::stable_sort(copy.begin(), copy.end(), titleSort);
         } else if (constSortByNumberKey==key) {
-            std::sort(copy.begin(), copy.end(), trackSort);
+            std::stable_sort(copy.begin(), copy.end(), trackSort);
         } else if (constSortByPathKey==key) {
-            std::sort(copy.begin(), copy.end(), pathSort);
+            std::stable_sort(copy.begin(), copy.end(), pathSort);
         } else if (constSortByGrouping==key) {
-            std::sort(copy.begin(), copy.end(), groupingSort);
+            std::stable_sort(copy.begin(), copy.end(), groupingSort);
         }
 
         QList<quint32> positions;

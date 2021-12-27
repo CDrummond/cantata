@@ -220,6 +220,7 @@ void PlayQueueView::setMode(ItemView::Mode m)
         break;
     }
 
+    PlayQueueModel::self()->setSimpleSort(ItemView::Mode_Table==m);
     QAbstractItemModel *model=nullptr;
     QList<QAction *> actions;
     if (ItemView::Mode_Count!=mode) {

@@ -31,8 +31,8 @@
 #include "widgets/icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
-#include "support/utils.h"
 #endif
+#include "support/utils.h"
 
 static bool dateSort=false;
 
@@ -52,7 +52,7 @@ bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibra
     const MusicLibraryItemAlbum *ab=static_cast<const MusicLibraryItemAlbum *>(b);
 
     if (!MusicLibraryItemAlbum::sortByDate() || aa->year()==ab->year()) {
-        int compare=aa->sortString().localeAwareCompare(ab->sortString());
+        int compare=Utils::compare(aa->sortString(), ab->sortString());
         return compare==0 ? aa->id().compare(ab->id())<0 : compare<0;
     }
     return aa->year()<ab->year();

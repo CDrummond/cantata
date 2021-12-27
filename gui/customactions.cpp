@@ -25,6 +25,7 @@
 #include "mainwindow.h"
 #include "support/globalstatic.h"
 #include "support/configuration.h"
+#include "support/utils.h"
 #include <QMenu>
 #include <QProcess>
 #include <algorithm>
@@ -42,12 +43,12 @@ void CustomActions::enableDebug()
 
 bool CustomActions::Command::operator<(const Command &o) const
 {
-    int c=name.localeAwareCompare(o.name);
+    int c=Utils::compare(name, o.name);
     if (c<0) {
         return true;
     }
     if (c==0) {
-        return cmd.localeAwareCompare(o.cmd)<0;
+        return Utils::compare(cmd, o.cmd)<0;
     }
     return false;
 }

@@ -420,6 +420,8 @@ int main(int argc, char *argv[])
     loadTranslation("cantata", QDir(local).exists() ? local : CANTATA_SYS_TRANS_DIR, lang);
 
     Application::init();
+    // Ensure QColator gets initialised...
+    Utils::compare(QString(), QString());
 
     if (Settings::self()->firstRun()) {
         InitialSettingsWizard wz;

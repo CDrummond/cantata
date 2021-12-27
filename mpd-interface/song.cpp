@@ -42,6 +42,12 @@
 #include <QMutexLocker>
 #include <algorithm>
 
+#if defined CANTATA_NO_UI_FUNCTIONS
+#define COMPARE(A, B) A.localeAwareCompare(B)
+#else
+#define COMPARE(A, B) Utils::compare(A, B)
+#endif
+
 //static const quint8 constOnlineDiscId=0xEE;
 static const QString constMpdQueue=QLatin1String(".cue/track"); // .cue.track0123
 
@@ -238,21 +244,21 @@ int Song::compareTo(const Song &o) const
     // For playlists, we only need to compare filename...
     if (Playlist!=type) {
         if (SingleTracks==type) {
-            int compare=artistSong().localeAwareCompare(artistSong());
+            int compare=COMPARE(artistSong(), o.artistSong());
             if (0!=compare) {
                 return compare<0;
             }
         }
 
-        int compare=albumArtistOrComposer().localeAwareCompare(o.albumArtistOrComposer());
+        int compare=COMPARE(albumArtistOrComposer(), o.albumArtistOrComposer());
         if (0!=compare) {
             return compare;
         }
-        compare=album.localeAwareCompare(o.album);
+        compare=COMPARE(album, o.album);
         if (0!=compare) {
             return compare;
         }
-        compare=mbAlbumId().compare(o.mbAlbumId());
+        compare=COMPARE(mbAlbumId(), o.mbAlbumId());
         if (0!=compare) {
             return compare;
         }
@@ -277,11 +283,11 @@ int Song::compareTo(const Song &o) const
                 return origYear<o.origYear ? -1 : 1;
             }
         }
-        compare=title.localeAwareCompare(o.title);
+        compare=COMPARE(title, o.title);
         if (0!=compare) {
             return compare;
         }
-        compare=name().compare(o.name());
+        compare=COMPARE(name(), o.name());
         if (0!=compare) {
             return compare;
         }

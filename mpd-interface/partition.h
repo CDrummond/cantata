@@ -24,6 +24,7 @@
 #ifndef PARTITION_H
 #define PARTITION_H
 
+#include "support/utils.h"
 #include <QString>
 
 struct Partition
@@ -33,7 +34,7 @@ struct Partition
     ~Partition() = default;
 
     bool operator<(const Partition &o) const {
-        return name.localeAwareCompare(o.name)<0;
+        return Utils::compare(name, o.name)<0;
     }
 
     QString name;

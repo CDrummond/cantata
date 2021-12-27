@@ -27,6 +27,7 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
 
+#include "support/utils.h"
 #include <QString>
 
 struct Output
@@ -45,7 +46,7 @@ struct Output
     }
 
     bool operator<(const Output &o) const {
-        return name.localeAwareCompare(o.name)<0;
+        return Utils::compare(name, o.name)<0;
     }
 
     virtual ~Output() { }

@@ -252,7 +252,7 @@ static bool composerSort(const Song &s1, const Song &s2)
 {
     const QString v1=s1.hasComposer() ? s1.composer() : QString();
     const QString v2=s2.hasComposer() ? s2.composer() : QString();
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
@@ -260,7 +260,7 @@ static bool artistSort(const Song &s1, const Song &s2)
 {
     const QString v1=s1.hasArtistSort() ? s1.artistSort() : s1.artist;
     const QString v2=s2.hasArtistSort() ? s2.artistSort() : s2.artist;
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
@@ -268,7 +268,7 @@ static bool albumArtistSort(const Song &s1, const Song &s2)
 {
     const QString v1=s1.hasAlbumArtistSort() ? s1.albumArtistSort() : s1.albumArtistOrComposer();
     const QString v2=s2.hasAlbumArtistSort() ? s2.albumArtistSort() : s2.albumArtistOrComposer();
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
@@ -276,7 +276,7 @@ static bool albumSort(const Song &s1, const Song &s2)
 {
     const QString v1=s1.hasAlbumSort() ? s1.albumSort() : s1.album;
     const QString v2=s2.hasAlbumSort() ? s2.albumSort() : s2.album;
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 
@@ -284,7 +284,7 @@ static bool titleSort(const Song &s1, const Song &s2)
 {
     const QString v1=s1.title;
     const QString v2=s2.title;
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return sortAscending ? (c<0 || (c==0 && s1<s2)) : (c>0 || (c==0 && s1<s2));
 }
 

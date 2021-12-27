@@ -22,6 +22,7 @@
  */
 
 #include "librarydb.h"
+#include "support/utils.h"
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -70,14 +71,14 @@ static bool albumsSortAlArYr(const LibraryDb::Album &a, const LibraryDb::Album &
 {
     const QString &an=a.sort.isEmpty() ? a.name : a.sort;
     const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-    int cmp=an.localeAwareCompare(bn);
+    int cmp=Utils::compare(an, bn);
     if (cmp!=0) {
         return cmp<0;
     }
 
     const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
     const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-    cmp=aa.localeAwareCompare(ba);
+    cmp=Utils::compare(aa, ba);
     if (cmp!=0) {
         return cmp<0;
     }
@@ -88,14 +89,14 @@ static bool albumsSortArAlYr(const LibraryDb::Album &a, const LibraryDb::Album &
 {
     const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
     const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-    int cmp=aa.localeAwareCompare(ba);
+    int cmp=Utils::compare(aa, ba);
     if (cmp!=0) {
         return cmp<0;
     }
 
     const QString &an=a.sort.isEmpty() ? a.name : a.sort;
     const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-    cmp=an.localeAwareCompare(bn);
+    cmp=Utils::compare(an, bn);
     if (cmp!=0) {
         return cmp<0;
     }
@@ -107,7 +108,7 @@ static bool albumsSortAlYrAr(const LibraryDb::Album &a, const LibraryDb::Album &
 {
     const QString &an=a.sort.isEmpty() ? a.name : a.sort;
     const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-    int cmp=an.localeAwareCompare(bn);
+    int cmp=Utils::compare(an, bn);
     if (cmp!=0) {
         return cmp<0;
     }
@@ -118,14 +119,14 @@ static bool albumsSortAlYrAr(const LibraryDb::Album &a, const LibraryDb::Album &
 
     const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
     const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-    return aa.localeAwareCompare(ba)<0;
+    return Utils::compare(aa, ba)<0;
 }
 
 static bool albumsSortArYrAl(const LibraryDb::Album &a, const LibraryDb::Album &b)
 {
     const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
     const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-    int cmp=aa.localeAwareCompare(ba);
+    int cmp=Utils::compare(aa, ba);
     if (cmp!=0) {
         return cmp<0;
     }
@@ -136,7 +137,7 @@ static bool albumsSortArYrAl(const LibraryDb::Album &a, const LibraryDb::Album &
 
     const QString &an=a.sort.isEmpty() ? a.name : a.sort;
     const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-    return an.localeAwareCompare(bn)<0;
+    return Utils::compare(an, bn)<0;
 }
 
 static bool albumsSortYrAlAr(const LibraryDb::Album &a, const LibraryDb::Album &b)
@@ -147,14 +148,14 @@ static bool albumsSortYrAlAr(const LibraryDb::Album &a, const LibraryDb::Album &
 
     const QString &an=a.sort.isEmpty() ? a.name : a.sort;
     const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-    int cmp=an.localeAwareCompare(bn);
+    int cmp=Utils::compare(an, bn);
     if (cmp!=0) {
         return cmp<0;
     }
 
     const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
     const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-    return aa.localeAwareCompare(ba)<0;
+    return Utils::compare(aa, ba)<0;
 }
 
 static bool albumsSortYrArAl(const LibraryDb::Album &a, const LibraryDb::Album &b)
@@ -165,14 +166,14 @@ static bool albumsSortYrArAl(const LibraryDb::Album &a, const LibraryDb::Album &
 
     const QString &aa=a.artistSort.isEmpty() ? a.artist : a.artistSort;
     const QString &ba=b.artistSort.isEmpty() ? b.artist : b.artistSort;
-    int cmp=aa.localeAwareCompare(ba);
+    int cmp=Utils::compare(aa, ba);
     if (cmp!=0) {
         return cmp<0;
     }
 
     const QString &an=a.sort.isEmpty() ? a.name : a.sort;
     const QString &bn=b.sort.isEmpty() ? b.name : b.sort;
-    return an.localeAwareCompare(bn)<0;
+    return Utils::compare(an, bn)<0;
 }
 
 static bool albumsSortModified(const LibraryDb::Album &a, const LibraryDb::Album &b)
@@ -186,11 +187,11 @@ static bool albumsSortModified(const LibraryDb::Album &a, const LibraryDb::Album
 static bool songSort(const Song &a, const Song &b)
 {
     if (Song::SingleTracks==a.type && Song::SingleTracks==b.type) {
-        int cmp=a.title.localeAwareCompare(b.title);
+        int cmp=Utils::compare(a.title, b.title);
         if (0!=cmp) {
             return cmp<0;
         }
-        cmp=a.artist.localeAwareCompare(b.artist);
+        cmp=Utils::compare(a.artist, b.artist);
         if (0!=cmp) {
             return cmp<0;
         }
@@ -205,15 +206,15 @@ static bool songSort(const Song &a, const Song &b)
     if (a.displayYear()!=b.displayYear()) {
         return a.displayYear()<b.displayYear();
     }
-    int cmp=a.title.localeAwareCompare(b.title);
+    int cmp=Utils::compare(a.title, b.title);
     if (0!=cmp) {
         return cmp<0;
     }
-    cmp=a.name().localeAwareCompare(b.name());
+    cmp=Utils::compare(a.name(), b.name());
     if (0!=cmp) {
         return cmp<0;
     }
-    cmp=a.displayGenre().localeAwareCompare(b.displayGenre());
+    cmp=Utils::compare(a.displayGenre(), b.displayGenre());
     if (0!=cmp) {
         return cmp<0;
     }
@@ -227,14 +228,14 @@ static bool songsSortAlAr(const Song &a, const Song &b)
 {
     const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
     const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-    int cmp=an.localeAwareCompare(bn);
+    int cmp=Utils::compare(an, bn);
     if (cmp!=0) {
         return cmp<0;
     }
 
     const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
     const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-    cmp=aa.localeAwareCompare(ba);
+    cmp=Utils::compare(aa, ba);
     if (cmp!=0) {
         return cmp<0;
     }
@@ -249,14 +250,14 @@ static bool songsSortArAl(const Song &a, const Song &b)
 {
     const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
     const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-    int cmp=aa.localeAwareCompare(ba);
+    int cmp=Utils::compare(aa, ba);
     if (cmp!=0) {
         return cmp<0;
     }
 
     const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
     const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-    cmp=an.localeAwareCompare(bn);
+    cmp=Utils::compare(an, bn);
     if (cmp!=0) {
         return cmp<0;
     }
@@ -271,7 +272,7 @@ static bool songsSortArAl(const Song &a, const Song &b)
 //{
 //    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
 //    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-//    int cmp=an.localeAwareCompare(bn);
+//    int cmp=Utils::compare(an, bn);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }
@@ -282,7 +283,7 @@ static bool songsSortArAl(const Song &a, const Song &b)
 
 //    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
 //    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-//    cmp=aa.localeAwareCompare(ba);
+//    cmp=Utils::compare(aa, ba);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }
@@ -294,7 +295,7 @@ static bool songsSortArAl(const Song &a, const Song &b)
 //{
 //    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
 //    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-//    int cmp=aa.localeAwareCompare(ba);
+//    int cmp=Utils::compare(aa, ba);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }
@@ -305,7 +306,7 @@ static bool songsSortArAl(const Song &a, const Song &b)
 
 //    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
 //    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-//    cmp=an.localeAwareCompare(bn);
+//    cmp=Utils::compare(an, bn);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }
@@ -321,14 +322,14 @@ static bool songsSortArAl(const Song &a, const Song &b)
 
 //    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
 //    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-//    int cmp=an.localeAwareCompare(bn);
+//    int cmp=Utils::compare(an, bn);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }
 
 //    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
 //    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-//    cmp=aa.localeAwareCompare(ba);
+//    cmp=Utils::compare(aa, ba);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }
@@ -344,14 +345,14 @@ static bool songsSortArAl(const Song &a, const Song &b)
 
 //    const QString aa=a.hasArtistSort() ? a.artistSort() : a.albumArtist();
 //    const QString ba=b.hasArtistSort() ? b.artistSort() : b.albumArtist();
-//    int cmp=aa.localeAwareCompare(ba);
+//    int cmp=Utils::compare(aa, ba);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }
 
 //    const QString an=a.hasAlbumSort() ? a.albumSort() : a.album;
 //    const QString bn=b.hasAlbumSort() ? b.albumSort() : b.album;
-//    cmp=an.localeAwareCompare(bn);
+//    cmp=Utils::compare(an, bn);
 //    if (cmp!=0) {
 //        return cmp<0;
 //    }

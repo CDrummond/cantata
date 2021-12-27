@@ -38,6 +38,7 @@
 27. Remove superfluous blank space from the top of the cover tooltip.
 28. Fix looking for cover-art with MPD's new cue track file listing.
 29. Add Grouping tag support to playlists and queue.
+30. Use QCollator to compare strings.
 
 2.4.2
 -----

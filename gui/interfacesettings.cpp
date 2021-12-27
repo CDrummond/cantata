@@ -390,7 +390,7 @@ void InterfaceSettings::save()
 
 static bool localeAwareCompare(const QString &a, const QString &b)
 {
-    return a.localeAwareCompare(b) < 0;
+    return Utils::compare(a, b) < 0;
 }
 
 static QSet<QString> translationCodes(const QString &dir)

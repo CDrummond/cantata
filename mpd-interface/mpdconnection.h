@@ -42,6 +42,7 @@
 #include "playlist.h"
 #include "stream.h"
 #include "config.h"
+#include "support/utils.h"
 #include <time.h>
 
 class QTimer;
@@ -151,7 +152,7 @@ struct MPDConnectionDetails {
     MPDConnectionDetails & operator=(const MPDConnectionDetails &o);
     bool operator==(const MPDConnectionDetails &o) const { return hostname==o.hostname && isLocal()==o.isLocal() && (isLocal() || port==o.port) && password==o.password; }
     bool operator!=(const MPDConnectionDetails &o) const { return !(*this==o); }
-    bool operator<(const MPDConnectionDetails &o) const { return name.localeAwareCompare(o.name)<0; }
+    bool operator<(const MPDConnectionDetails &o) const { return Utils::compare(name, o.name)<0; }
     static QString configGroupName(const QString &n=QString()) { return n.isEmpty() ? "Connection" : ("Connection-"+n); }
     void setDirReadable();
 

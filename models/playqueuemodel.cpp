@@ -1409,7 +1409,7 @@ static bool otherSort(const Song *s1, const Song *s2, quint32 other)
 {
     const QString v1=s1->hasExtraField(other) ? s1->extraField(other) : QString();
     const QString v2=s2->hasExtraField(other) ? s2->extraField(other) : QString();
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1432,7 +1432,7 @@ static bool artistSort(const Song *s1, const Song *s2)
 {
     const QString v1=s1->hasArtistSort() ? s1->artistSort() : s1->artist;
     const QString v2=s2->hasArtistSort() ? s2->artistSort() : s2->artist;
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1440,7 +1440,7 @@ static bool albumArtistSort(const Song *s1, const Song *s2)
 {
     const QString v1=s1->hasAlbumArtistSort() ? s1->albumArtistSort() : s1->albumArtistOrComposer();
     const QString v2=s2->hasAlbumArtistSort() ? s2->albumArtistSort() : s2->albumArtistOrComposer();
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1448,7 +1448,7 @@ static bool albumSort(const Song *s1, const Song *s2)
 {
     const QString v1=s1->hasAlbumSort() ? s1->albumSort() : s1->album;
     const QString v2=s2->hasAlbumSort() ? s2->albumSort() : s2->album;
-    int c=v1.localeAwareCompare(v2);
+    int c=Utils::compare(v1, v2);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1465,7 +1465,7 @@ static bool yearSort(const Song *s1, const Song *s2)
 
 static bool titleSort(const Song *s1, const Song *s2)
 {
-    int c=s1->title.localeAwareCompare(s2->title);
+    int c=Utils::compare(s1->title, s2->title);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 
@@ -1476,7 +1476,7 @@ static bool trackSort(const Song *s1, const Song *s2)
 
 static bool pathSort(const Song *s1, const Song *s2)
 {
-    int c=s1->file.localeAwareCompare(s2->file);
+    int c=Utils::compare(s1->file, s2->file);
     return c<0 || (c==0 && (*s1)<(*s2));
 }
 

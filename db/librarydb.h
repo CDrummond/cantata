@@ -29,6 +29,7 @@
 #include <QMap>
 #include <QElapsedTimer>
 #include "mpd-interface/song.h"
+#include "support/utils.h"
 #include <time.h>
 
 class QSqlDatabase;
@@ -72,7 +73,7 @@ public:
             if (constNullGenre==name) {
                 return constNullGenre!=o.name;
             }
-            return name.localeAwareCompare(o.name)<0;
+            return Utils::compare(name, o.name)<0;
         }
     };
 
@@ -89,7 +90,7 @@ public:
             const QString &field=sort.isEmpty() ? name : sort;
             const QString &ofield=o.sort.isEmpty() ? o.name : o.sort;
 
-            return field.localeAwareCompare(ofield)<0;
+            return Utils::compare(field, ofield)<0;
         }
     };
 

@@ -26,6 +26,7 @@
 #include "playqueuemodel.h"
 #include "widgets/icons.h"
 #include "gui/stdactions.h"
+#include "support/utils.h"
 
 FileSystemProxyModel::FileSystemProxyModel(LocalBrowseModel *p)
     : QSortFilterProxyModel(p)
@@ -60,7 +61,7 @@ bool FileSystemProxyModel::lessThan(const QModelIndex &left, const QModelIndex &
     if (!l.isDir() && r.isDir()) {
         return false;
     }
-    return l.fileName().toLower().localeAwareCompare(r.fileName().toLower())<0;
+    return Utils::compare(l.fileName(), r.fileName())<0;
 }
 
 LocalBrowseModel::LocalBrowseModel(const QString &name, const QString &title, const QString &descr, const QIcon &icon, QObject *p)

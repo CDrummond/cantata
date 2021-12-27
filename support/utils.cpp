@@ -55,6 +55,7 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #endif
+#include <QCollator>
 
 const QLatin1Char Utils::constDirSep('/');
 const QLatin1String Utils::constDirSepStr("/");
@@ -1062,3 +1063,14 @@ void Utils::raiseWindow(QWidget *w)
     #endif
 }
 
+int Utils::compare(const QString &a, const QString &b)
+{
+    static QCollator *collator = nullptr;
+    if (!collator) {
+        collator=new QCollator();
+        collator->setNumericMode(true);
+        collator->setIgnorePunctuation(true);
+        collator->setCaseSensitivity(Qt::CaseInsensitive);
+    }
+    return collator->compare(a, b);
+}

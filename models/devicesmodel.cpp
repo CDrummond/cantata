@@ -43,6 +43,7 @@
 #include "devices/audiocddevice.h"
 #endif
 #include "support/globalstatic.h"
+#include "support/utils.h"
 #include <QStringList>
 #include <QMimeData>
 #include <QTimer>
@@ -880,7 +881,7 @@ void DevicesModel::playCd(const QString &dev)
 
 static bool lessThan(const QString &left, const QString &right)
 {
-    return left.localeAwareCompare(right)<0;
+    return Utils::compare(left, right)<0;
 }
 
 void DevicesModel::updateItemMenu()

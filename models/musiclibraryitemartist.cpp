@@ -32,8 +32,8 @@
 #include "widgets/icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devices/device.h"
-#include "support/utils.h"
 #endif
+#include "support/utils.h"
 
 bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
 {
@@ -43,7 +43,7 @@ bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibr
 //    if (aa->isVarious() != ab->isVarious()) {
 //        return aa->isVarious() > ab->isVarious();
 //    }
-    return aa->sortString().localeAwareCompare(ab->sortString())<0;
+    return Utils::compare(aa->sortString(), ab->sortString())<0;
 }
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const Song &song, MusicLibraryItemContainer *parent)

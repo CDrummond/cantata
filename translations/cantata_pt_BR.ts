@@ -3504,6 +3504,10 @@ Não será possível desfazer esta escolha.</translation>
         <source>Unable to add local files. No suitable files found.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Grouping</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlayQueueView</name>
@@ -4003,6 +4007,10 @@ Sobrescrevè-lo?</translation>
     <message>
         <source>Subscribe to RSS feeds</source>
         <translation>Assinar fontes de notícias RSS</translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Recarregar</translation>
     </message>
 </context>
 <context>
@@ -5153,6 +5161,10 @@ width x height</comment>
         <source>Start full screen</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Grouping</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RemoteDevicePropertiesDialog</name>
@@ -5743,7 +5755,7 @@ Não será possível desfazer esta escolha.</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
-        <translation>A configuração &apos;Pasta de músicas&apos; é utilizada para procurar por capas. Pode ser ajustada para uma URL HTTP caso seu MPD esteja noutra máquina e as capas acessíveis via HTTP. Caso não esteja ajustada para URL HTTP e você tiver permissões de gravação nessa pasta (e em suas subpastas), quaisquer capas serão salvas nas pastas dos respectivos álbuns pelo Cantata.</translation>
+        <translation type="vanished">A configuração &apos;Pasta de músicas&apos; é utilizada para procurar por capas. Pode ser ajustada para uma URL HTTP caso seu MPD esteja noutra máquina e as capas acessíveis via HTTP. Caso não esteja ajustada para URL HTTP e você tiver permissões de gravação nessa pasta (e em suas subpastas), quaisquer capas serão salvas nas pastas dos respectivos álbuns pelo Cantata.</translation>
     </message>
     <message>
         <source>Delete &apos;%1&apos;?</source>
@@ -5836,6 +5848,10 @@ Não será possível desfazer esta escolha.</translation>
     <message>
         <source>Basic - music collection is not shared with others, and Cantata will configure and control the MPD instance. This setup will be exclusive to Cantata, and will &lt;b&gt;not&lt;/b&gt; be accessible to other MPD clients.</source>
         <translation>Básico - a coleção de músicas não é compartilhada com outros usuários e o Cantata configurará e controlará a instância MPD. Esta configuração estará exclusivamente no Cantata e &lt;b&gt;não&lt;/b&gt; será acessível a outros clientes MPD.</translation>
+    </message>
+    <message>
+        <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and its sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6204,6 +6220,10 @@ Deseja recarregar a partir da cópia no disco ou apagar essa cópia e baixar nov
     <message>
         <source>Original Year</source>
         <translation type="unfinished">Ano original</translation>
+    </message>
+    <message>
+        <source>Grouping</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

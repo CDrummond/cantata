@@ -101,7 +101,7 @@ struct Song
     QString title;
     QString genres[constNumGenres];
     QHash<quint32, QString> extra;
-    quint16 extraFields;
+    quint32 extraFields;
     mutable quint8 priority;
     quint8 disc:5;
     quint8 blank:3; // Which field were blank, and Cantata set to Unknown

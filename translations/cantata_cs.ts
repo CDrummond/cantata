@@ -9429,7 +9429,7 @@ Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s p�
     <message>
         <location filename="../gui/mainwindow.cpp" line="282"/>
         <source>Partitions</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddíly</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="283"/>
@@ -9746,17 +9746,17 @@ Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1379"/>
         <source>Create new partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytvořit nový oddíl</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1380"/>
         <source>Remove partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstranit oddíl</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1449"/>
         <source>Move output to this partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Přesunout výstup do tohoto oddílu</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1480"/>
@@ -9773,24 +9773,26 @@ Pokud bude program ukončen nyní, bude stahování zrušeno.</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Partition Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Název oddílu</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Enter a name for the partition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zadejte název oddílu:</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1724"/>
         <source>Are you sure you wish to remove partition &quot;%1&quot;?
 
 This cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>Opravdu chcete odstranit oddíl &quot;%1&quot;?
+
+Tento krok nelze vrátit zpět.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1725"/>
         <source>Remove Partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstranit oddíl</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1751"/>
@@ -9811,7 +9813,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1924"/>
         <source>Cantata (%1) [%2]</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata (%1) [%2]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1926"/>
@@ -9821,7 +9823,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1928"/>
         <source>Cantata [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata [%1]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2004"/>
@@ -10516,7 +10518,7 @@ Tento krok nelze vrátit zpět.</translation>
         <location filename="../models/playqueuemodel.cpp" line="386"/>
         <location filename="../models/playqueuemodel.cpp" line="472"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Seskupení</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="387"/>
@@ -11167,7 +11169,7 @@ Přepsat?</translation>
     <message>
         <location filename="../online/podcastservice.cpp" line="431"/>
         <source>Refresh</source>
-        <translation type="unfinished">Obnovit</translation>
+        <translation>Obnovit</translation>
     </message>
     <message>
         <location filename="../online/podcastservice.cpp" line="446"/>
@@ -12257,7 +12259,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="635"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Seskupení</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="637"/>
@@ -13458,7 +13460,7 @@ Tento krok nelze vrátit zpět.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and its sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení pro hudební složku je používáno k vyhledání obrázků obalů. Může být nastaveno na adresu (URL) HTTP, pokud je vaše MPD na jiném stroji a obaly jsou přístupné přes HTTP. Pokud není nastaveno na adresu (URL) HTTP a vy máte i oprávnění pro zápis do této složky (a jejích podsložek), Cantata uloží všechny stažené obaly do příslušné složky s albem.</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
@@ -14000,7 +14002,7 @@ Nahrát znovu z disku, nebo smazat kopii na disku a stáhnout?</translation>
     <message>
         <location filename="../context/songview.cpp" line="616"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Seskupení</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="617"/>

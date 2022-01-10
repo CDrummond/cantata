@@ -908,17 +908,9 @@ Hvis &apos;Titel&apos; er &quot;D-A-D - Reconstrucdead&quot;, så vil &apos;Kuns
         <translation>Tilføj en lokal fil</translation>
     </message>
     <message>
-        <source>Configure</source>
-        <translation type="vanished">Konfigurer</translation>
-    </message>
-    <message>
         <location filename="../gui/coverdialog.ui" line="40"/>
         <source>This can only be used to change the file used for covers, it will not alter any embedded covers you may have in your song files.</source>
         <translation>Det kan kun bruges til at ændre filen som bruges til covers. Det ændre ikke nogen indlejrede covers i dine sangfiler.</translation>
-    </message>
-    <message>
-        <source>CoverArt Archive</source>
-        <translation type="vanished">CoverArt-arkiv</translation>
     </message>
     <message>
         <location filename="../gui/coverdialog.cpp" line="398"/>
@@ -1469,112 +1461,6 @@ Det kan ikke fortrydes.</translation>
         <location filename="../devices/devicespage.cpp" line="549"/>
         <source>Please close other dialogs first.</source>
         <translation>Luk venligst andre dialoger først.</translation>
-    </message>
-</context>
-<context>
-    <name>DigitallyImported</name>
-    <message>
-        <source>Not logged in</source>
-        <translation type="vanished">Ikke logget ind</translation>
-    </message>
-    <message>
-        <source>Logged in</source>
-        <translation type="vanished">Logget ind</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation type="vanished">Ukendt fejl</translation>
-    </message>
-    <message>
-        <source>No subscriptions</source>
-        <translation type="vanished">Ingen abonneringer</translation>
-    </message>
-    <message>
-        <source>You do not have an active subscription</source>
-        <translation type="vanished">Du har ikke nogen aktiv abonnering</translation>
-    </message>
-    <message>
-        <source>Logged in (expiry:%1)</source>
-        <translation type="vanished">Logget ind (udløbet:%1)</translation>
-    </message>
-    <message>
-        <source>Session expired</source>
-        <translation type="vanished">Session udløbet</translation>
-    </message>
-</context>
-<context>
-    <name>DigitallyImportedSettings</name>
-    <message>
-        <source>You can listen for free without an account, but Premium members can listen to higher quality streams without advertisements. Visit &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; to upgrade to a premium account.</source>
-        <translation type="vanished">Du kan lytte gratis uden en konto, men præmiummedlemmer kan lytte til strømme i højere kvalitet uden reklamer. Besøg &lt;a href=&quot;http://www.di.fm/premium/&quot;&gt;http://www.di.fm/premium/&lt;/a&gt; for at opgradere til en præmiumkonto.</translation>
-    </message>
-    <message>
-        <source>Premium Account</source>
-        <translation type="vanished">Præmiumkonto</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Brugernavn:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Adgangskode:</translation>
-    </message>
-    <message>
-        <source>Stream type:</source>
-        <translation type="vanished">Strømtype:</translation>
-    </message>
-    <message>
-        <source>Status:</source>
-        <translation type="vanished">Status:</translation>
-    </message>
-    <message>
-        <source>Login</source>
-        <translation type="vanished">Log ind</translation>
-    </message>
-    <message>
-        <source>Session expiry:</source>
-        <translation type="vanished">Session udløbet:</translation>
-    </message>
-    <message>
-        <source>These settings apply to Digitally Imported, JazzRadio.com, RockRadio.com, and Sky.fm</source>
-        <translation type="vanished">Disse indstillinger gælder for digitalt importerede, JazzRadio.com, RockRadio.com og Sky.fm</translation>
-    </message>
-    <message>
-        <source>If you enter account details, then a &apos;DI&apos; status item will appear under the list of streams. This will indicate if you are logged in or not.</source>
-        <translation type="vanished">Hvis du indtaster kontodetaljer, vises en post med &apos;DI&apos;-status under listen over strømme. Det indikerer om du er logget ind eller ej.</translation>
-    </message>
-    <message>
-        <source>Digitally Imported Settings</source>
-        <translation type="vanished">Digitalt importerede indstillinger</translation>
-    </message>
-    <message>
-        <source>MP3 256k</source>
-        <translation type="vanished">MP3 256k</translation>
-    </message>
-    <message>
-        <source>AAC 64k</source>
-        <translation type="vanished">AAC 64k</translation>
-    </message>
-    <message>
-        <source>AAC 128k</source>
-        <translation type="vanished">AAC 128k</translation>
-    </message>
-    <message>
-        <source>Not Authenticated</source>
-        <translation type="vanished">Ikke autentificeret</translation>
-    </message>
-    <message>
-        <source>Authenticating...</source>
-        <translation type="vanished">Autentificerer...</translation>
-    </message>
-    <message>
-        <source>Authenticated</source>
-        <translation type="vanished">Autentificeret</translation>
-    </message>
-    <message>
-        <source>Logout</source>
-        <translation type="vanished">Log ud</translation>
     </message>
 </context>
 <context>
@@ -3292,7 +3178,7 @@ Hvis søgningen ikke finder nye sangtekster, vil de stadig være tilknyttet den 
     <message>
         <location filename="../gui/mainwindow.cpp" line="282"/>
         <source>Partitions</source>
-        <translation type="unfinished"></translation>
+        <translation>Partitioner</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="354"/>
@@ -3481,17 +3367,17 @@ Hvis der afsluttes nu, så afbrydes downloaden.</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1379"/>
         <source>Create new partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Opret ny partition</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1380"/>
         <source>Remove partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjern partition</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1449"/>
         <source>Move output to this partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Flyt output til partitionen</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1480"/>
@@ -3508,24 +3394,26 @@ Hvis der afsluttes nu, så afbrydes downloaden.</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Partition Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Partitionsnavn</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Enter a name for the partition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Indtast et navn til partitionen:</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1724"/>
         <source>Are you sure you wish to remove partition &quot;%1&quot;?
 
 This cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er du sikker på, at du vil fjerne partitionen &quot;%1&quot;?
+
+Det kan ikke fortrydes.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1725"/>
         <source>Remove Partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjern partition</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1751"/>
@@ -3546,7 +3434,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1924"/>
         <source>Cantata (%1) [%2]</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata (%1) [%2]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1926"/>
@@ -3556,7 +3444,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1928"/>
         <source>Cantata [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata [%1]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2004"/>
@@ -3851,7 +3739,7 @@ Det kan ikke fortrydes.</translation>
         <source>%n bit</source>
         <translation>
             <numerusform>%n bit</numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n bit</numerusform>
         </translation>
     </message>
     <message>
@@ -4242,7 +4130,7 @@ Det kan ikke fortrydes.</translation>
         <location filename="../models/playqueuemodel.cpp" line="386"/>
         <location filename="../models/playqueuemodel.cpp" line="472"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppering</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="387"/>
@@ -4892,7 +4780,7 @@ Overskriv?</translation>
     <message>
         <location filename="../online/podcastservice.cpp" line="431"/>
         <source>Refresh</source>
-        <translation type="unfinished">Genopfrisk</translation>
+        <translation>Genopfrisk</translation>
     </message>
     <message>
         <location filename="../online/podcastservice.cpp" line="446"/>
@@ -5133,10 +5021,6 @@ Overskriv?</translation>
         <location filename="../online/podcastwidget.cpp" line="51"/>
         <source>Mark Episodes As Listened</source>
         <translation>Mærk episoder som lyttede</translation>
-    </message>
-    <message>
-        <source>Show Unplayed Only</source>
-        <translation type="vanished">Vis kun uafspillede</translation>
     </message>
     <message>
         <location filename="../online/podcastwidget.cpp" line="54"/>
@@ -5980,7 +5864,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="635"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppering</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="637"/>
@@ -6063,18 +5947,6 @@ width x height</comment>
         <location filename="../scrobbling/scrobbler.cpp" line="102"/>
         <source>Rate-limit exceeded</source>
         <translation>Ratebegrænsning oversteget</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation type="vanished">Generelt</translation>
-    </message>
-    <message>
-        <source>Digitally Imported</source>
-        <translation type="vanished">Digitalt importeret</translation>
-    </message>
-    <message>
-        <source>Local and National Radio (ListenLive)</source>
-        <translation type="vanished">Lokal- og landsdækkende radio (ListenLive)</translation>
     </message>
     <message>
         <location filename="../support/dialog.cpp" line="119"/>
@@ -6645,14 +6517,6 @@ Vælg venligst et andet navn.</translation>
         <translation>Skan</translation>
     </message>
     <message>
-        <source>Update ReplayGain tags in tracks?</source>
-        <translation type="vanished">Opdater ReplayGain-mærkater i spor?</translation>
-    </message>
-    <message>
-        <source>Update Tags</source>
-        <translation type="vanished">Opdater mærkater</translation>
-    </message>
-    <message>
         <location filename="../replaygain/rgdialog.cpp" line="233"/>
         <source>Abort scanning of tracks?</source>
         <translation>Afbryd skanning af spor?</translation>
@@ -7179,11 +7043,7 @@ Det kan ikke fortrydes.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and its sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
-        <translation type="vanished">&apos;Musikmappe&apos;-indstillingen bruges til at opslå cover-art. Den kan sættes til en HTTP-URL hvis din MPD er på en anden maskine, eller hvis covers kan tilgås via HTTP. Hvis den ikke er sat til en HTTP-URL, og du også har skrivetilladelser til mappen (og dens undermapper), så gemmer Cantata downloadede covers i den respektive albummappe.</translation>
+        <translation>&apos;Musikmappe&apos;-indstillingen bruges til at opslå cover-art. Den kan sættes til en HTTP-URL hvis din MPD er på en anden maskine, eller hvis covers kan tilgås via HTTP. Hvis den ikke er sat til en HTTP-URL, og du også har skrivetilladelser til mappen (og dens undermapper), så gemmer Cantata downloadede covers i den respektive albummappe.</translation>
     </message>
     <message>
         <location filename="../gui/serversettings.ui" line="201"/>
@@ -7279,17 +7139,6 @@ Det kan ikke fortrydes.</translation>
         <location filename="../gui/serversettings.cpp" line="389"/>
         <source>Default</source>
         <translation>Standard</translation>
-    </message>
-</context>
-<context>
-    <name>ServiceStatusLabel</name>
-    <message>
-        <source>Logged into %1</source>
-        <translation type="vanished">Logget ind i %1</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;NOT&lt;/b&gt; logged into %1</source>
-        <translation type="vanished">&lt;b&gt;IKKE&lt;/b&gt; logget ind i %1</translation>
     </message>
 </context>
 <context>
@@ -7721,7 +7570,7 @@ Genindlæs fra disk, eller slet kopien på disken og download?</translation>
     <message>
         <location filename="../context/songview.cpp" line="616"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppering</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="617"/>
@@ -7983,72 +7832,6 @@ Overskriv?</translation>
     </message>
 </context>
 <context>
-    <name>StreamProviderListDialog</name>
-    <message>
-        <source>Installed</source>
-        <translation type="vanished">Installeret</translation>
-    </message>
-    <message>
-        <source>Update available</source>
-        <translation type="vanished">Opdatering tilgængelig</translation>
-    </message>
-    <message>
-        <source>Check the providers you wish to install/update.</source>
-        <translation type="vanished">Tilvælg de udbydere som du vil installere/opdatere.</translation>
-    </message>
-    <message>
-        <source>Install/Update Stream Providers</source>
-        <translation type="vanished">Installer/opdater strømudbydere</translation>
-    </message>
-    <message>
-        <source>Downloading list...</source>
-        <translation type="vanished">Downloader liste...</translation>
-    </message>
-    <message>
-        <source>Failed to download list of stream providers!</source>
-        <translation type="vanished">Kunne ikke downloade liste over strømudbydere!</translation>
-    </message>
-    <message>
-        <source>Installing/updating %1</source>
-        <translation type="vanished">Installerer/opdaterer %1</translation>
-    </message>
-    <message>
-        <source>Failed to install &apos;%1&apos;</source>
-        <translation type="vanished">Kunne ikke installere &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Failed to download &apos;%1&apos;</source>
-        <translation type="vanished">Kunne ikke downloade &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Abort installation/update?</source>
-        <translation type="vanished">Afbryd installation/opdatering?</translation>
-    </message>
-    <message>
-        <source>Abort</source>
-        <translation type="vanished">Afbryd</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n Update(s) available</source>
-        <translation type="vanished">
-            <numerusform>%n opdatering tilgængelig</numerusform>
-            <numerusform>%n opdateringer tilgængelig</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Downloading %1</source>
-        <translation type="vanished">Downloader %1</translation>
-    </message>
-    <message>
-        <source>Install/Update</source>
-        <translation type="vanished">Installer/opdater</translation>
-    </message>
-    <message>
-        <source>Update all updateable providers</source>
-        <translation type="vanished">Opdater alle udbydere som kan opdateres</translation>
-    </message>
-</context>
-<context>
     <name>StreamSearchModel</name>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="46"/>
@@ -8059,10 +7842,6 @@ Overskriv?</translation>
         <location filename="../models/streamsearchmodel.cpp" line="47"/>
         <source>ShoutCast</source>
         <translation>ShoutCast</translation>
-    </message>
-    <message>
-        <source>Dirble</source>
-        <translation type="vanished">Dirble</translation>
     </message>
     <message>
         <location filename="../models/streamsearchmodel.cpp" line="48"/>
@@ -8137,15 +7916,6 @@ Overskriv?</translation>
         <location filename="../streams/streamspage.cpp" line="102"/>
         <source>Seatch For Streams</source>
         <translation>Søg efter strømme</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation type="vanished">Konfigurer</translation>
-    </message>
-    <message>
-        <source>Digitally Imported</source>
-        <comment>Service name</comment>
-        <translation type="vanished">Digitalt importeret</translation>
     </message>
     <message>
         <location filename="../streams/streamspage.cpp" line="206"/>
@@ -8254,10 +8024,6 @@ Overskriv?</translation>
         <translation>ShoutCast</translation>
     </message>
     <message>
-        <source>Dirble</source>
-        <translation type="vanished">Dirble</translation>
-    </message>
-    <message>
         <location filename="../models/streamsmodel.cpp" line="493"/>
         <source>Favorites</source>
         <translation>Favoritter</translation>
@@ -8271,10 +8037,6 @@ Overskriv?</translation>
         <location filename="../models/streamsmodel.cpp" line="496"/>
         <source>Add Stream To Favorites</source>
         <translation>Tilføj strøm til favoritter</translation>
-    </message>
-    <message>
-        <source>Configure Digitally Imported</source>
-        <translation type="vanished">Konfigurer digitalt importerede</translation>
     </message>
     <message>
         <location filename="../models/streamsmodel.cpp" line="497"/>
@@ -8308,81 +8070,6 @@ Overskriv?</translation>
             <numerusform>%n post</numerusform>
             <numerusform>%n poster</numerusform>
         </translation>
-    </message>
-</context>
-<context>
-    <name>StreamsSettings</name>
-    <message>
-        <source>Use the checkboxes below to configure the list of active providers.</source>
-        <translation type="vanished">Brug afkrydsningsboksene nedenfor til at konfigurere listen over aktive udbydere.</translation>
-    </message>
-    <message>
-        <source>Built-in categories are shown in italic, and these cannot be removed.</source>
-        <translation type="vanished">Indbyggede kategorier vises i kursiv, og de kan ikke fjernes.</translation>
-    </message>
-    <message>
-        <source>Configure Streams</source>
-        <translation type="vanished">Konfigurer strømme</translation>
-    </message>
-    <message>
-        <source>From File...</source>
-        <translation type="vanished">Fra fil...</translation>
-    </message>
-    <message>
-        <source>Download...</source>
-        <translation type="vanished">Download...</translation>
-    </message>
-    <message>
-        <source>Configure Provider</source>
-        <translation type="vanished">Konfigurer udbyder</translation>
-    </message>
-    <message>
-        <source>Install</source>
-        <translation type="vanished">Installer</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="vanished">Fjern</translation>
-    </message>
-    <message>
-        <source>Install Streams</source>
-        <translation type="vanished">Installer strømme</translation>
-    </message>
-    <message>
-        <source>Cantata Streams (*.streams)</source>
-        <translation type="vanished">Cantata-strømme (*.streams)</translation>
-    </message>
-    <message>
-        <source>A category named &apos;%1&apos; already exists!
-
-Overwrite?</source>
-        <translation type="vanished">En kategori ved navn &apos;%1&apos; findes allerede!
-
-Overskriv?</translation>
-    </message>
-    <message>
-        <source>Failed to open package file.</source>
-        <translation type="vanished">Kunne ikke åbne pakkefil.</translation>
-    </message>
-    <message>
-        <source>Invalid file format!</source>
-        <translation type="vanished">Ugyldigt filformat!</translation>
-    </message>
-    <message>
-        <source>Failed to create stream category folder!</source>
-        <translation type="vanished">Kunne ikke oprette strømkategorimappe!</translation>
-    </message>
-    <message>
-        <source>Failed to save stream list!</source>
-        <translation type="vanished">Kunne ikke gemme strømliste!</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to remove &apos;%1&apos;?</source>
-        <translation type="vanished">Er du sikker på, at du vil fjerne &apos;%1&apos;?</translation>
-    </message>
-    <message>
-        <source>Failed to remove streams folder!</source>
-        <translation type="vanished">Kunne ikke fjerne strømmappe!</translation>
     </message>
 </context>
 <context>

@@ -9403,7 +9403,7 @@ If this search does find new lyrics, these will still be associated with the ori
     <message>
         <location filename="../gui/mainwindow.cpp" line="282"/>
         <source>Partitions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파티션</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="283"/>
@@ -9720,17 +9720,17 @@ Quitting now will abort the download.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1379"/>
         <source>Create new partition</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">새 파티션 만들기</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1380"/>
         <source>Remove partition</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파티션 지우기</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1449"/>
         <source>Move output to this partition</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">출력을 이 파티션으로 옮기기</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1480"/>
@@ -9747,24 +9747,26 @@ Quitting now will abort the download.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Partition Name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파티션 이름</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Enter a name for the partition:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파티션 이름 입력:</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1724"/>
         <source>Are you sure you wish to remove partition &quot;%1&quot;?
 
 This cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파티션을 지울까요 &quot;%1&quot;?
+
+되돌릴 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1725"/>
         <source>Remove Partition</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">파티션 지우기</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1751"/>
@@ -9785,7 +9787,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1924"/>
         <source>Cantata (%1) [%2]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">칸타타 (%1) [%2]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1926"/>
@@ -9795,7 +9797,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1928"/>
         <source>Cantata [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">칸타타 [%1]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2004"/>
@@ -10472,7 +10474,7 @@ This cannot be undone.</source>
         <location filename="../models/playqueuemodel.cpp" line="386"/>
         <location filename="../models/playqueuemodel.cpp" line="472"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">그룹화</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="387"/>
@@ -12207,7 +12209,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="635"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">그룹화</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="637"/>
@@ -13403,7 +13405,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and its sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&apos;음악 폴더&apos; 설정은 표지 아트를 조회하는 데 사용됩니다. MPD가 다른 시스템에 있고 HTTP를 통해 표지에 액세스할 수 있는 경우 HTTP URL로 설정할 수 있습니다. HTTP URL로 설정되어 있지 않고 이 폴더(및 하위 폴더)에 대한 쓰기 권한도 있는 경우 칸타타는 다운로드한 모든 표지를 해당 앨범 폴더에 저장합니다.</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
@@ -13945,7 +13947,7 @@ Reload from disk, or delete disk copy and download?</source>
     <message>
         <location filename="../context/songview.cpp" line="616"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">그룹화</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="617"/>

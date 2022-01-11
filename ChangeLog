@@ -40,6 +40,8 @@
 29. Add Grouping tag support to playlists and play queue.
 30. Use QCollator to compare strings.
 31. If using table-style play queue, then only sort one column at a time.
+32. Stop user MPD instance from GUI thread when terminating, to ensure state
+    can be saved.
 
 2.4.2
 -----

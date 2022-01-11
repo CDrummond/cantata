@@ -33,6 +33,7 @@
 #include <QFileInfo>
 #include <QSet>
 #include <QCoreApplication>
+#include <QMutexLocker>
 #include <signal.h>
 
 const QString MPDUser::constName=QLatin1String("-");
@@ -347,8 +348,11 @@ void MPDUser::killProcess()
 
 bool MPDUser::controlMpd(bool stop)
 {
+    // Both the UI thread (from MainWindow) and MPD thread (from MPDConnection)
+    // will stop MPDUser. Use a mutex to ensure thread safety...
+    QMutexLocker locker(&mutex);
     QString confFile=Utils::dataDir(constDir, true)+constConfigFile;
-    if (!QFile::exists(confFile)) {
+    if (!QFile::exists(confFile) || (stop && (pidFileName.isEmpty() || !QFile::exists(pidFileName)))) {
         if (stop) {
             killProcess();
         }

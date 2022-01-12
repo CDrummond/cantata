@@ -37,6 +37,9 @@
 #include "preferencesdialog.h"
 #include "mpd-interface/mpdstats.h"
 #include "mpd-interface/mpdparseutils.h"
+#ifdef ENABLE_SIMPLE_MPD_SUPPORT
+#include "mpd-interface/mpduser.h"
+#endif
 #include "settings.h"
 #include "support/utils.h"
 #include "models/musiclibraryitemartist.h"
@@ -996,10 +999,14 @@ MainWindow::~MainWindow()
     disconnect(MPDConnection::self(), nullptr, nullptr, nullptr);
     if (Settings::self()->stopOnExit()) {
         DynamicPlaylists::self()->stop();
-    }
-    if (Settings::self()->stopOnExit()) {
         emit terminating();
         Utils::sleep(); // Allow time for stop to be sent...
+        #ifdef ENABLE_SIMPLE_MPD_SUPPORT
+        // Hide this waindow, as we /might/ delay for up to 2 seconds waiting
+        // for MPD to terminate...
+        setVisible(false);
+        MPDUser::self()->stop();
+        #endif
     } else if (hadCantataStreams) {
         Utils::sleep(); // Allow time for removal of cantata streams...
     }

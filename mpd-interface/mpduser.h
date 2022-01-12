@@ -25,6 +25,7 @@
 #define MPD_USER_H
 
 #include <QString>
+#include <QMutex>
 #include "mpdconnection.h"
 
 class MPDUser
@@ -58,6 +59,7 @@ private:
     QString mpdExe;
     QString pidFileName;
     MPDConnectionDetails det;
+    QMutex mutex;
 };
 
 #endif

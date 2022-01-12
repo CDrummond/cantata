@@ -3164,7 +3164,7 @@ Se questa ricerca dovesse trovare nuovi testi, sarebbero ancora associarti al ti
     <message>
         <location filename="../gui/mainwindow.cpp" line="282"/>
         <source>Partitions</source>
-        <translation type="unfinished"></translation>
+        <translation>Partizioni</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="283"/>
@@ -3481,17 +3481,17 @@ Uscire ora interromperà lo scaricamento.</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1379"/>
         <source>Create new partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Crea nuova partizione</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1380"/>
         <source>Remove partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina partizione</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1449"/>
         <source>Move output to this partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta l&apos;output in questa partizione</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1480"/>
@@ -3508,24 +3508,26 @@ Uscire ora interromperà lo scaricamento.</translation>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Partition Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome Partizione</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1712"/>
         <source>Enter a name for the partition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserire un nome per la partizione:</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1724"/>
         <source>Are you sure you wish to remove partition &quot;%1&quot;?
 
 This cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sei sicuro di voler rliminare la partizione &quot;%1&quot;?
+
+Questa operazione non può essere annullata.</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1725"/>
         <source>Remove Partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina partizione</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1751"/>
@@ -3546,7 +3548,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1924"/>
         <source>Cantata (%1) [%2]</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata (%1) [%2]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1926"/>
@@ -3556,7 +3558,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/mainwindow.cpp" line="1928"/>
         <source>Cantata [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantata [%1]</translation>
     </message>
     <message>
         <location filename="../gui/mainwindow.cpp" line="2004"/>
@@ -4242,7 +4244,7 @@ Non sarà possibile tornare indietro.</translation>
         <location filename="../models/playqueuemodel.cpp" line="386"/>
         <location filename="../models/playqueuemodel.cpp" line="472"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggruppamento</translation>
     </message>
     <message>
         <location filename="../models/playqueuemodel.cpp" line="387"/>
@@ -4893,7 +4895,7 @@ Sovrascrivere?</translation>
     <message>
         <location filename="../online/podcastservice.cpp" line="431"/>
         <source>Refresh</source>
-        <translation type="unfinished">Aggiorna</translation>
+        <translation>Aggiorna</translation>
     </message>
     <message>
         <location filename="../online/podcastservice.cpp" line="446"/>
@@ -5981,7 +5983,7 @@ width x height</comment>
     <message>
         <location filename="../mpd-interface/song.cpp" line="635"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggruppamento</translation>
     </message>
     <message>
         <location filename="../mpd-interface/song.cpp" line="637"/>
@@ -7179,7 +7181,7 @@ Non sarà possibile tornare indietro.</translation>
     <message>
         <location filename="../gui/serversettings.ui" line="194"/>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and its sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;impostazione della &apos;Cartella Musica&apos; verrà usata per cercare la copertina. Può venire impostata ad un URL HTTP se il tuo MPD è su un&apos;altra macchina e le copertine sono accessibili tramite HTTP. Se non è impostata su un URL HTTP ed hai i permessi di scrittua in quella cartella (e nelle sue sotto-cartelle), Cantata salverà qualsiasi copertina scaricata nella rispettiva cartella dell&apos;album.</translation>
     </message>
     <message>
         <source>The &apos;Music folder&apos; setting is used to lookup cover-art. It may be set to a HTTP URL if your MPD is on another machine, and covers are accessible via HTTP. If it is not set to a HTTP URL, and you also have write permissions to this folder (and it&apos;s sub-folders), then Cantata will save any downloaded covers into the respective album folder.</source>
@@ -7721,7 +7723,7 @@ Ricaricare da disco, oppure cancellare la copia su disco e scaricare?</translati
     <message>
         <location filename="../context/songview.cpp" line="616"/>
         <source>Grouping</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggruppamento</translation>
     </message>
     <message>
         <location filename="../context/songview.cpp" line="617"/>

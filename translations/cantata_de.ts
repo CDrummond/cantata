@@ -6189,7 +6189,7 @@ This cannot be undone.</source>
     <message>
         <location filename="../gui/interfacesettings.ui" line="438"/>
         <source>Show icon in notification area</source>
-        <translation>Symbol in der Systemlesite anzeigen</translation>
+        <translation>Symbol in der Systemleiste anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/interfacesettings.ui" line="448"/>

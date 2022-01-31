@@ -110,7 +110,7 @@ struct FfmpegInput::Handle {
     }
     AVFormatContext *formatContext;
     AVCodecContext *codecContext;
-    AVCodec *codec;
+    const AVCodec *codec;
     #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 35, 0)
     AVFrame *frame;
     int gotFrame;
@@ -211,7 +211,7 @@ FfmpegInput::FfmpegInput(const QString &fileName)
 
         if (ok) {
             QString floatCodec=QLatin1String(handle->codec->name)+QLatin1String("float");
-            AVCodec *possibleFloatCodec = avcodec_find_decoder_by_name(floatCodec.toLatin1().constData());
+            const AVCodec *possibleFloatCodec = avcodec_find_decoder_by_name(floatCodec.toLatin1().constData());
             if (possibleFloatCodec) {
                 handle->codec = possibleFloatCodec;
                 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 89, 100) // Not 100% of version here!

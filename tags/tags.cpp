@@ -516,10 +516,13 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
                 tag->setGenre(qString2TString(to.firstGenre().trimmed()));
             } else {
                 for(int i=0; i<Song::constNumGenres; ++i) {
-                    TagLib::ID3v2::TextIdentificationFrame *frame = new TagLib::ID3v2::TextIdentificationFrame("TCON");
-                    tag->addFrame(frame);
-                    DBUG << "add genre" << to.genres[i].trimmed();
-                    frame->setText(qString2TString(to.genres[i].trimmed()));
+                    QString genre = to.genres[i].trimmed();
+                    if (!genre.isEmpty()) {
+                        TagLib::ID3v2::TextIdentificationFrame *frame = new TagLib::ID3v2::TextIdentificationFrame("TCON");
+                        tag->addFrame(frame);
+                        DBUG << "add genre" << genre;
+                        frame->setText(qString2TString(genre));
+                    }
                 }
             }
             changed=true;
@@ -670,7 +673,10 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
                 tag->setGenre(qString2TString(to.firstGenre().trimmed()));
             } else {
                 for(int i=0; i<Song::constNumGenres; ++i) {
-                    tag->addValue("GENRE", qString2TString(to.genres[i].trimmed()), false);
+                    QString genre = to.genres[i].trimmed();
+                    if (!genre.isEmpty()) {
+                        tag->addValue("GENRE", qString2TString(genre), false);
+                    }
                 }
             }
             changed=true;
@@ -904,7 +910,10 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
                 tag->setGenre(qString2TString(to.firstGenre().trimmed()));
             } else {
                 for(int i=0; i<Song::constNumGenres; ++i) {
-                    tag->addField("GENRE", qString2TString(to.genres[i].trimmed()), false);
+                    QString  genre = to.genres[i].trimmed();
+                    if (!genre.isEmpty()) {
+                        tag->addField("GENRE", qString2TString(genre), false);
+                    }
                 }
             }
             changed=true;
@@ -1079,7 +1088,10 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
             } else {
                 TagLib::StringList tagGenres;
                 for(int i=0; i<Song::constNumGenres; ++i) {
-                    tagGenres.append(qString2TString(to.genres[i].trimmed()));
+                    QString genre = to.genres[i].trimmed();
+                    if (!genre.isEmpty()) {
+                        tagGenres.append(qString2TString(genre));
+                    }
                 }
                 tag->setItem("\251gen",tagGenres);
             }
@@ -1195,7 +1207,10 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
                 tag->setGenre(qString2TString(to.firstGenre().trimmed()));
             } else {
                 for(int i=0; i<Song::constNumGenres; ++i) {
-                    tag->addAttribute("WM/Genre", qString2TString(to.genres[i].trimmed()));
+                    QString genre = to.genres[i].trimmed();
+                    if (!genre.isEmpty()) {
+                        tag->addAttribute("WM/Genre", qString2TString(genre));
+                    }
                 }
             }
             changed=true;

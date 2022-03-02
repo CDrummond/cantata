@@ -1,7 +1,7 @@
 Cantata
 =======
 
-**NOTE** After 10 years I have decided to cease development of Cantata. v2.5.0 is the last released version.
+**NOTE** After 10 years, development of Cantata has now ceased, and this repository is read-only. v2.5.0 is the last released version.
 
 ![ScreenShot](screenshots/mainwindow.png)
 
